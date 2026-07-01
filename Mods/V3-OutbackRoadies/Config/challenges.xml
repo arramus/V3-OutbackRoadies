@@ -1,0 +1,6 @@
+<configs>
+
+	<!-- *** DESERT_CHALLENGES -->	
+	<append xpath="/challenges/challenge[@name='desertSurvivalKillZombie']/objective[@type='Kill']/@entity_names">,zombieMiniRancher,zombieMiniRancherFeral,zombieMiniRancherRadiated,zombieMiniRancherCharged,zombieMiniRancherInfernal</append>
+	
+</configs>

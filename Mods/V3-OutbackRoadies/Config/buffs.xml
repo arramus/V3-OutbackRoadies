@@ -1,0 +1,333 @@
+<configs>
+
+	<append xpath="/buffs/buff[@name='buffStatusCheck01']/effect_group">
+		<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" buff="VehicleChecker">
+			<requirement name="NotHasBuff" buff="VehicleChecker"/>
+		</triggered_effect>
+	</append>
+	
+    <!-- Change icons for Sprained Leg and Arm to look like sprains and not breaks with a match for healing icons -->
+	<set xpath="/buffs/buff[@name='buffLegSprained']/@icon">ui_game_symbol_sprained_ankle</set>
+	<set xpath="/buffs/buff[@name='buffArmSprained']/@icon">ui_game_symbol_sprained_wrist</set>
+
+    <!-- Make Encumberence Debuff percentage lower to accomodate more locked inventory slots - KhaineGB -->
+	<set xpath="/buffs/buff[@name='buffEncumberedInv']/effect_group/triggered_effect[@cvar='$encumbranceEffect'][@value='0.026']/@value">0.013</set>
+	<set xpath="/buffs/buff[@name='buffDrugSteroids']/effect_group/passive_effect[@name='CarryCapacity'][@operation='base_set']/@operation">base_add</set>
+	
+	<!-- Yucca Cactus Aloe Juice Cooler - God Mode Hyperthermal Resistance Buff Clear -->	
+
+	<append xpath="/buffs/buff[@name='god']/effect_group">	
+	<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$buffYuccaCactusAloeJuiceCoolerDuration" operation="set" value="0"/>
+	</append>
+	
+<!-- Brainsaw -->
+		
+	<append xpath="/buffs">	
+        <buff name="BrainsawBloodSplatRoadies" hidden="true">
+            <stack_type value="replace"/>
+            <duration value="3"/>
+            <effect_group>
+                <triggered_effect trigger="onSelfKilledOther" action="ModifyScreenEffect" intensity="2" fade="1" effect_name="Dead"/>
+                <triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" intensity="0" fade="1" effect_name="Dead"/>
+                <triggered_effect trigger="onSelfDied" action="ModifyScreenEffect" intensity="0" fade="1" effect_name="Dead"/>
+                <triggered_effect trigger="onSelfKilledOther" action="ModifyScreenEffect" intensity="0.1" fade="1" effect_name="Vibrant"/>
+                <triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" intensity="0" fade="1" effect_name="Vibrant"/>
+                <triggered_effect trigger="onSelfDied" action="ModifyScreenEffect" intensity="0" fade="1" effect_name="Vibrant"/>
+            </effect_group>
+        </buff>
+	</append>
+
+	<!-- Yucca Cactus Aloe Juice Storm Breaker -->
+	
+	<append xpath="/buffs">
+	<buff name="buffYuccaCactusAloeJuiceCooler" name_key="drinkYuccaCactusAloeJuiceCooler" description_key="drinkYuccaCactusAloeJuiceCoolerDesc" icon="ui_game_symbol_beer">
+		<stack_type value="replace"/><duration value="0"/>
+		<display_value value=".buffYuccaCactusAloeJuiceCoolerDisplay"/><display_value_format value="time"/>
+		<effect_group>
+			<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$buffYuccaCactusAloeJuiceCoolerDuration" operation="subtract" value="@$MetabolismDuration"/>
+			<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar=".buffYuccaCactusAloeJuiceCoolerDisplay" operation="set" value="@$buffYuccaCactusAloeJuiceCoolerDuration"/>
+			<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar=".buffYuccaCactusAloeJuiceCoolerDisplay" operation="divide" value="@$MetabolismDuration"/>
+		</effect_group>
+		<effect_group>
+			<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="buffYuccaCactusAloeJuiceCooler">
+				<requirement name="CVarCompare" cvar="$buffYuccaCactusAloeJuiceCoolerDuration" operation="LTE" value="0"/>
+			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffRemove" action="ModifyCVar" cvar=".buffYuccaCactusAloeJuiceCoolerDisplay" operation="set" value="0"/>
+			<triggered_effect trigger="onSelfBuffRemove" action="ModifyCVar" cvar="$buffYuccaCactusAloeJuiceCoolerDuration" operation="set" value="0"/>
+		</effect_group>
+		
+		<effect_group>
+			<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffBurnt_Storm,buffDesert_Storm,buffSnow_Storm,buffWasteland_Storm"/>
+		</effect_group>
+		
+		<effect_group>
+			<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="buffBurnt_Storm,buffDesert_Storm,buffSnow_Storm,buffWasteland_Storm"/>
+		</effect_group>
+	</buff>
+	</append>
+	
+	<append xpath="/buffs">
+	<buff name="buffStormBreaker" hidden="true" name_key="drinkStormBreaker" description_key="drinkStormBreakerDesc" icon="ui_game_symbol_beer">
+		<stack_type value="replace"/><duration value="0"/>		
+		<effect_group>
+			<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffBurnt_Storm,buffDesert_Storm,buffSnow_Storm,buffWasteland_Storm"/>
+		</effect_group>
+		
+		<effect_group>
+			<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="buffBurnt_Storm,buffDesert_Storm,buffSnow_Storm,buffWasteland_Storm"/>
+		</effect_group>
+	</buff>
+	</append>
+	
+	<!-- Oakraven Fish Traps - Thank you to MeanCloud Fishing, which in turn credits ACP Fishing, for inspiration -->
+
+	<append xpath="/buffs/buff[@name='buffStatusCheck01']">
+		<effect_group name="buffFishTrapWater">
+			<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" buff="buffFishTrapEmptyWater">
+				<requirement name="CVarCompare" cvar="_underwater" operation="Equals" value="1"/>
+			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="buffFishTrapEmptyWater">
+				<requirement name="CVarCompare" cvar="_underwater" operation="NotEquals" value="1"/>
+			</triggered_effect>
+		</effect_group>
+	</append>
+	
+	<append xpath="/buffs">
+		<buff name="buffFishTrapEmptyWater" duration="2" name_key="buffFishTrapEmptyWaterName" description_key="buffFishTrapEmptyWaterDesc" icon="ui_game_symbol_water_trap">
+			<display_value_key value="Bait Fish Trap"/> <display_value value="xxx"/>
+			<update_rate value="0.5"/>
+			<stack_type value="replace"/>
+		<effect_group>
+			<passive_effect name="BuffBlink" operation="base_set" value="2" duration="0,3" tags="buffFishTrapEmptyWater"/>
+		</effect_group>
+		</buff>		
+	</append>
+
+	<append xpath="/buffs">
+	
+<!-- Xyth Spiders -->
+	
+		<buff name="buffFeralSpiderBite" icon="ui_game_symbol_stunned" icon_color="20,210,60">
+			<stack_type value="replace"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="horde_spawn_warning" play_in_head="true"/>
+				<triggered_effect trigger="onSelfBuffStart" action="FadeOutSound" sound="horde_spawn_warning" play_in_head="true"/>
+				<triggered_effect trigger="onSelfBuffRemove" action="StopSound" sound="horde_spawn_warning" play_in_head="true"/>
+			</effect_group>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyScreenEffect" intensity="0.1" effect_name="Distortion"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyScreenEffect" intensity="0.1" fade="1" effect_name="VibrantDeSat"/>
+				<triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" intensity="0" fade="1"  effect_name="VibrantDeSat"/>
+				<triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" intensity="0" fade="1"  effect_name="Distortion"/>
+			</effect_group>
+		</buff>	
+
+		<buff name="buffQueenSpiderBite" icon="ui_game_symbol_stunned" icon_color="20,210,60">
+			<stack_type value="replace"/>
+			<duration value="2"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="horde_spawn_warning" play_in_head="true"/>
+				<triggered_effect trigger="onSelfBuffStart" action="FadeOutSound" sound="horde_spawn_warning" play_in_head="true"/>
+				<triggered_effect trigger="onSelfBuffRemove" action="StopSound" sound="horde_spawn_warning" play_in_head="true"/>
+			</effect_group>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyScreenEffect" intensity="0.2" effect_name="Distortion"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyScreenEffect" intensity="0.2" fade="1" effect_name="VibrantDeSat"/>
+				<triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" intensity="0" fade="1"  effect_name="VibrantDeSat"/>
+				<triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" intensity="0" fade="1"  effect_name="Distortion"/>
+			</effect_group>
+		</buff>
+		
+<!-- Xyth Spiders Deco -->
+<!-- All Boss Queen Fred Spiders feed off 01 -->
+
+		<buff name="animalBloodMoonSpider01QueenFredDeco" hidden="true">
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Entities/Zombies/Crawler/ZCrawlerFeral.prefab" local_offset="1,0,-0.65" local_rotation="0,90,95" local_scale=".5,.5,.5" parent_transform="Bone35"/>	
+			</effect_group>
+		</buff>
+		
+<!-- Zombie Deco -->
+		<buff name="zombieMoeDeco" hidden="true">
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Entities/Commercial/wineBottlePrefab.prefab" local_offset="0.15,0.05,0.1" local_rotation="-90,0,0" parent_transform="RightHand"/>
+			</effect_group>
+		</buff>
+		<buff name="zombieBikerDeco" hidden="true">
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Tools/wrenchPrefab.prefab" local_offset="0.14,0.04,0.1" local_rotation="-90,0,0" parent_transform="RightHand"/>
+			</effect_group>
+		</buff>
+		<buff name="zombieBurntRadiatedMiniDeco" hidden="true">
+			<effect_group>				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Entities/Furniture/woodBurningStovePrefab.prefab" local_offset="0,0.15,0" local_rotation="0,0,0" local_scale=".8,.8,.8" parent_transform="Spine"/> <!-- Local Offset Up-Down/Front-Back/Left-Right -->				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="p_torch_wall" local_offset="0,0,0.2" local_rotation="0,0,0" parent_transform="Spine"/>
+			</effect_group>
+		</buff>
+		
+		<!-- Tom Clark Desert Eagle -->
+
+		<buff name="npcTomClarkDPistolDeco" hidden="true">
+			<effect_group>				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/Desert Eagle/desertEaglePrefab.prefab" local_offset="0.17,0.03,-0.04" local_rotation="187,-80,90" parent_transform="RightHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down -->
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/Desert Eagle/desertEaglePrefab.prefab" local_offset="-0.17,-0.03,0.04" local_rotation="7,-80,-90" parent_transform="LeftHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down --> <!-- Local Rotation Exorcist Spin/Nodding/Thinking -->	
+			</effect_group>
+		</buff>
+		
+		<!-- Demolition Dave - M60 -->
+		
+		<buff name="npcDemolitionDaveM60Deco" hidden="true">
+			<effect_group>				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/MachineGun/m60MachinegunPrefab.prefab" local_offset="0.18,0.03,-0.07" local_rotation="187,-80,90" parent_transform="RightHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down -->
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/MachineGun/m60MachinegunPrefab.prefab" local_offset="-0.18,-0.03,0.07" local_rotation="7,-80,-90" parent_transform="LeftHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down --> <!-- Local Rotation Exorcist Spin/Nodding/Thinking -->	
+			</effect_group>
+		</buff>
+		
+		<!-- Momma - AK47 -->
+		
+		<buff name="npcMommaAK47Deco" hidden="true">
+			<effect_group>				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/AK47/ak47Prefab.prefab" local_offset="0.35,0.06,-0.12" local_rotation="187,-80,90" parent_transform="RightHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down -->
+			</effect_group>
+		</buff>
+		
+		<!-- Business Man - TAR -->
+		
+		<buff name="npcBusinessManTRifleDeco" hidden="true">
+			<effect_group>				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/Tactical Assault Rifle/tacticalAssaultRiflePrefab.prefab" local_offset="0.3,0.04,-0.1" local_rotation="187,-80,90" parent_transform="RightHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down -->
+			</effect_group>
+		</buff>
+		
+		<!-- Arlene - SMG -->
+		
+		<buff name="npcMarleneSMGDeco" hidden="true">
+			<effect_group>				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/SMG/smgPrefab.prefab" local_offset="-0.3,-0.05,0.0975" local_rotation="7,-80,-90" parent_transform="LeftHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down -->
+			</effect_group>
+		</buff>
+		
+		<!-- Biker - Magnum DPistol -->
+		
+		<buff name="npcBikerMagnumDPistolDeco" hidden="true">
+			<effect_group>				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/Magnums/magnumPrefab.prefab" local_offset="0.12,0.03,-0.04" local_rotation="187,-80,90" parent_transform="RightHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down -->
+			</effect_group>
+		</buff>
+		
+		<!-- Burnt - Sniper -->
+		
+		<buff name="npcBurntSRifleDeco" hidden="true">
+			<effect_group>				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/Sharp Shooter/sharpShooterGunPrefab.prefab" local_offset="0.16,0.03,-0.06" local_rotation="187,-80,90" parent_transform="RightHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down -->
+			</effect_group>
+		</buff>
+		
+		<!-- Moe - Auto Shotgun -->
+		
+		<buff name="npcMoeAShotgunDeco" hidden="true">
+			<effect_group>				
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Other/Items/Weapons/Ranged/Auto Shotgun/autoShotgunPrefab.prefab" local_offset="0.12,0.03,-0.07" local_rotation="187,-80,90" parent_transform="RightHand"/> <!-- Local Offset Front-Back/Left-Right/Up-Down -->
+			</effect_group>
+		</buff>
+		
+<!-- Zombie Powers -->
+
+		<buff name="zombieOakRadNurseRadiatedShowerAOE" hidden="true">
+			<damage_type value="radiation"/>
+			<stack_type value="replace"/>
+			<duration value="0"/>
+			<update_rate value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="selfAOE" range="4" buff="zombieOakRadNurseRadiatedShowerAOEEffect">
+					<requirement name="!EntityTagCompare" target="other" tags="vehicle,zombie,turret,drone"/>
+				</triggered_effect>
+			</effect_group>
+		</buff>
+		<buff name="zombieOakRadNurseRadiatedShowerAOEEffect" icon="ui_game_symbol_radiation" icon_color="255,0,0" icon_blink="true">
+			<damage_type value="radiation"/>
+			<stack_type value="replace"/>
+			<duration value="4"/>
+			<update_rate value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyStats" stat="Health" operation="subtract" value=".5"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="RadiationSignal" operation="add" value="1"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="RadiationSignal" operation="set" value="0">
+					<requirement name="CVarCompare" cvar="RadiationSignal" operation="Equals" value="2"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="RadiationSignal" operation="set" value="0"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyScreenEffect" intensity=".15" fade=".5" effect_name="Hot">
+					<requirement name="CVarCompare" cvar="RadiationSignal" operation="Equals" value="1"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyScreenEffect" intensity="0" fade=".5" effect_name="Hot">
+					<requirement name="CVarCompare" cvar="RadiationSignal" operation="Equals" value="0"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" intensity="0" fade="1" effect_name="Hot"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyScreenEffect" effect_name="Radiation" intensity=".3" fade="2"/>
+				<triggered_effect trigger="onSelfDied" action="ModifyScreenEffect" effect_name="Radiation" intensity="0" fade="0"/>
+				<triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" effect_name="Radiation" intensity="0" fade="2"/>
+			</effect_group>
+		</buff>
+		
+	<!-- *** twitch_buffTrippy -->
+	<!-- Temporarily gives psychedelic color vision screen effect -->
+	<buff name="buff5Trippy" name_key="TwitchBuff_Trippy" description_key="TwitchBuff_BlurDesc">
+		<stack_type value="replace"/>
+		<duration value="5"/>
+
+		<effect_group>
+			<triggered_effect trigger="onSelfEnteredGame" action="RemoveBuff" buff="buff5Trippy"/>
+		</effect_group>
+
+		<effect_group>
+			<triggered_effect trigger="onSelfBuffStart" action="ModifyScreenEffect" intensity="1" fade="1" effect_name="Trippy"/>
+			<triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" intensity="0" fade="1" effect_name="Trippy"/>
+		</effect_group>
+	</buff>	
+	
+	<buff name="buff10Trippy" name_key="TwitchBuff_Trippy" description_key="TwitchBuff_BlurDesc">
+		<stack_type value="replace"/>
+		<duration value="10"/>
+
+		<effect_group>
+			<triggered_effect trigger="onSelfEnteredGame" action="RemoveBuff" buff="buff10Trippy"/>
+		</effect_group>
+
+		<effect_group>
+			<triggered_effect trigger="onSelfBuffStart" action="ModifyScreenEffect" intensity="1" fade="1" effect_name="Trippy"/>
+			<triggered_effect trigger="onSelfBuffRemove" action="ModifyScreenEffect" intensity="0" fade="1" effect_name="Trippy"/>
+		</effect_group>
+	</buff>
+		
+	</append>
+	
+	<append xpath="/buffs">
+		<buff name="VehicleChecker" hidden="true">
+			<stack_type value="replace"/>
+			<duration value="500"/>
+			<update_rate value=".1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="selfAOE" range="100" buff="vehicleSpiderRiderBikeCheck">
+					<requirement name="EntityTagCompare" target="other" tags="vehiclespiderrider"/>
+					<requirement name="NotHasBuff" target="other" buff="vehicleSpiderRiderBikeCheck"/>
+				</triggered_effect>			
+			</effect_group>				
+		</buff>
+
+		<buff name="vehicleSpiderRiderBikeCheck" hidden="true">
+			<damage_type value="heat"/>		
+			<stack_type value="ignore"/>			
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="@:Entities/LootContainers/weapon_bags_largePrefab.prefab" local_offset="0.05,.45,-1.05" local_rotation="0,0,0" parent_transform="GameObject"/>
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" prefab="#@modfolder:Resources/XythSpiders.unity3d?Spider02_X" local_offset="0,0.85,-0.95" local_rotation="-20,0,0" local_scale="6.5,4.5,4.5" parent_transform="Collider"/>
+				<triggered_effect trigger="onSelfBuffStart" action="SetTransformActive" active="false" parent_transform="Collider" transform_path="Spider02_X"/>				
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="selfAOE" range="1.2" buff="buffInjuryKnockdown01">
+					<requirement name="EntityTagCompare" target="other" tags="zombie,enemy"/>
+				</triggered_effect>
+			</effect_group>
+		</buff>	
+		
+	</append>
+	
+</configs>

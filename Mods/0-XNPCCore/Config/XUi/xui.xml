@@ -1,0 +1,7 @@
+<configs>
+  <!-- 3.0: the in-game NPC popup window_group registrations (HireInformation,
+       JoinInformation, EntityInformation, SetCode) were moved to
+       Config/XUi_InGame/xui.xml and re-pointed from /xui/ruleset[@name='default']
+       to /xui (3.0 in-game xui has no ruleset element). Keep this file empty unless
+       adding a genuine main-menu registration. -->
+</configs>

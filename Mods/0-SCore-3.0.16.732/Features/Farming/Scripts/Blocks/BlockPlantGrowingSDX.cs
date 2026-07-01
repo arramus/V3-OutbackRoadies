@@ -1,0 +1,139 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+public class BlockPlantGrowingSDX : BlockPlantGrowing
+{
+    public static Dictionary<Vector3i, Vector3i> WaterSources = new Dictionary<Vector3i, Vector3i>();
+    public bool RequireWater { get; set; } = false;
+    public int WaterRange { get; set; } = 5;
+    private bool willWilt = false;
+
+    public bool WillWilt() {
+        return willWilt;
+    }
+    protected BlockValue wiltedPlant = BlockValue.Air;
+    public override void LateInit()
+    {
+        base.LateInit();
+        if (this.Properties.Values.ContainsKey("RequireWater"))
+            RequireWater = StringParsers.ParseBool(this.Properties.Values["RequireWater"]);
+
+        // if (this.Properties.Values.ContainsKey("Wilt"))
+        //     this.willWilt = StringParsers.ParseBool(this.Properties.Values["Wilt"]);
+
+        if (this.Properties.Values.ContainsKey("WaterRange"))
+            this.WaterRange = int.Parse(this.Properties.Values["WaterRange"]);
+
+        if (this.Properties.Values.ContainsKey("Wilt"))
+            this.wiltedPlant = ItemClass.GetItem(this.Properties.Values["Wilt"], false).ToBlockValue();
+    }
+
+
+    // Records the plant when placed as a seed
+    public override void PlaceBlock(WorldBase _world, BlockPlacement.Result _result, EntityAlive _ea)
+    {
+        base.PlaceBlock(_world, _result, _ea);
+        CropManager.Instance.Add(_result.blockPos, WaterRange);
+    }
+
+    // Checks the preview if the plant can actually go there.
+    public override bool CanPlaceBlockAt(WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, bool _bOmitCollideCheck = false)
+    {
+        if (!base.CanPlaceBlockAt(_world, _blockPos, _blockValue, _bOmitCollideCheck))
+            return false;
+
+        if (RequireWater == false) return true;
+        return CropManager.Instance.IsNearWater(_blockPos, WaterRange);
+    }
+
+    // When chunk is loaded, force add the block. This will be valiated on the update check in the crop manager, but
+    // the assumption here is if the block was there to begin with, it's allowed.
+    public override void OnBlockLoaded(WorldBase _world, Vector3i _blockPos, BlockValue _blockValue)
+    {
+        base.OnBlockLoaded(_world, _blockPos, _blockValue);
+        CropManager.Instance.ForceAdd(_blockPos);
+    }
+
+    // Remove from the map when unloading
+    public override void OnBlockUnloaded(WorldBase _world, Vector3i _blockPos, BlockValue _blockValue)
+    {
+        base.OnBlockUnloaded(_world, _blockPos, _blockValue);
+        CropManager.Instance.Remove(_blockPos);
+    }
+
+    // When the block is added
+    public override void OnBlockAdded(WorldBase _world, Chunk _chunk, Vector3i _blockPos, BlockValue _blockValue,  PlatformUserIdentifierAbs _addedByPlayer)
+    {
+        base.OnBlockAdded(_world, _chunk, _blockPos, _blockValue, _addedByPlayer);
+        CropManager.Instance.Add(_blockPos, WaterRange);
+    }
+
+    public override bool UpdateTick(WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, bool _bRandomTick, ulong _ticksIfLoaded, GameRandom _rnd)
+    {
+        if (RequireWater && IsRootBlock(_world, _blockPos))
+        {
+            var plantData = CropManager.Instance.GetPlant(_blockPos);
+            if (plantData != null && plantData.CanStay() == false)
+            {
+                // This Removes unregistered the block if it cannot stay, such as if it can't find water, etc.
+                // It'll call CheckPlantAlive() and re-scan for water before it dies.
+                plantData.Remove();
+                return false;
+            }
+        }
+
+        return base.UpdateTick(_world, _blockPos, _blockValue, _bRandomTick, _ticksIfLoaded, _rnd);
+    }
+
+    public override bool CheckPlantAlive(WorldBase _world, Vector3i _blockPos, BlockValue _blockValue)
+    {
+        // Allow the plant to follow the basic rules.
+        var result = base.CheckPlantAlive(_world, _blockPos, _blockValue);
+        if (result == false) return false;
+
+        // Only the root block owns the water check — upper blocks of multi-block plants defer
+        // to the root so water is not consumed multiple times per tick.
+        if (!IsRootBlock(_world, _blockPos)) return true;
+
+        // check if we are near a water source.
+        if (CropManager.Instance.IsNearWater(_blockPos, WaterRange)) return true;
+
+        // Only wilt if the property is set.
+        if (willWilt)
+        {
+            Wilt(_world, _blockPos, _blockValue);
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Returns true if this block is the root of a plant — i.e. the block directly below is
+    /// NOT another BlockPlantGrowingSDX.  Upper segments of multi-block plants skip water
+    /// consumption so it is only charged once per plant per tick.
+    /// </summary>
+    private static bool IsRootBlock(WorldBase world, Vector3i blockPos)
+    {
+        return !(world.GetBlock(blockPos + Vector3i.down).Block is BlockPlantGrowingSDX);
+    }
+
+    public void Wilt(WorldBase _world, Vector3i _blockPos, BlockValue _blockValue)
+    {
+        // Handle wilting.
+        _blockValue.type = this.wiltedPlant.type;
+        BiomeDefinition biome = ((World)_world).GetBiome(_blockPos.x, _blockPos.z);
+        if (biome != null && biome.Replacements.ContainsKey(_blockValue.type))
+            _blockValue.type = biome.Replacements[_blockValue.type];
+        BlockValue blockValue = BlockPlaceholderMap.Instance.Replace(_blockValue, _world.GetGameRandom(), _blockPos.x, _blockPos.z, false);
+        blockValue.rotation = _blockValue.rotation;
+        blockValue.meta = _blockValue.meta;
+        blockValue.meta2 = 0;
+        _blockValue = blockValue;
+        _world.SetBlockRPC(new BlockValueRef(_blockPos), _blockValue);
+    }
+}
+

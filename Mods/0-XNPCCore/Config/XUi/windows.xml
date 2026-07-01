@@ -1,0 +1,7 @@
+<configs>
+	<!-- 3.0: the in-game NPC popup window definitions (hire/join popups, pathfinding
+	     keypad, lockpicking, character frame) and the windowRespondentName remove were
+	     moved to Config/XUi_InGame/windows.xml. In Config/XUi/ they only reach the menu
+	     tree and never load into the in-game window manager. Keep this file empty unless
+	     adding a genuine main-menu window. -->
+</configs>

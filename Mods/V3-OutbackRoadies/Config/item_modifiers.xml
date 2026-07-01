@@ -1,0 +1,262 @@
+﻿<configs>
+
+	<!-- Adding Vehicle Mods to Vehicle Adventures Crafting Skill -->
+	<append xpath="/item_modifiers/item_modifier[@name='modVehicleFuelSaver']/property[@name='UnlockedBy']/@value">,craftingVehicles</append>
+	<append xpath="/item_modifiers/item_modifier[@name='modVehicleOffRoadHeadlights']/property[@name='UnlockedBy']/@value">,craftingVehicles</append>
+	<append xpath="/item_modifiers/item_modifier[@name='modVehicleStorage']/property[@name='UnlockedBy']/@value">,craftingVehicles</append>
+	<append xpath="/item_modifiers/item_modifier[@name='modVehicleSuperCharger']/property[@name='UnlockedBy']/@value">,craftingVehicles</append>
+	<append xpath="/item_modifiers/item_modifier[@name='modVehicleExpandedSeat']/property[@name='UnlockedBy']/@value">,craftingVehicles</append>
+	<append xpath="/item_modifiers/item_modifier[@name='modVehicleReserveFuelTank']/property[@name='UnlockedBy']/@value">,craftingVehicles</append>
+	<append xpath="/item_modifiers/item_modifier[@name='modVehiclePlow']/property[@name='UnlockedBy']/@value">,craftingVehicles</append>
+	<append xpath="/item_modifiers/item_modifier[@name='modVehicleArmor']/property[@name='UnlockedBy']/@value">,craftingVehicles</append>
+
+<!-- Oakraven Can Can Bat -->
+
+   <append xpath="/item_modifiers/item_modifier[@name='modMeleeClubMetalSpikes']">
+        <item_property_overrides name="meleeWpnClubT1CanCanBat">
+            <property name="HandMeshfile" value="#@modfolder:Resources/BeanBat.unity3d?BeanBatbarbspike"/>
+        </item_property_overrides>        
+    </append>
+    
+    <append xpath="/item_modifiers/item_modifier[@name='modMeleeClubBarbedWire']">
+        <item_property_overrides name="meleeWpnClubT1CanCanBat">
+            <property name="HandMeshfile" value="#@modfolder:Resources/BeanBat.unity3d?BeanBatbarbwire"/>
+        </item_property_overrides>       
+    </append>
+	
+	<append xpath="/item_modifiers/item_modifier[@name='modMeleeClubMetalChain']">
+        <item_property_overrides name="meleeWpnClubT1CanCanBat">
+            <property name="HandMeshfile" value="#@modfolder:Resources/BeanBat.unity3d?BeanBatChain"/>
+        </item_property_overrides>     
+    </append>
+
+	<append xpath="/item_modifiers/item_modifier[@name='modMeleeClubBurningShaft']">
+       <item_property_overrides name="meleeWpnClubT1CanCanBat">
+            <property name="FlameEffect" value="#@modfolder:Resources/BeanBat.unity3d?flameoak"/>
+       </item_property_overrides>
+    </append>
+	
+   <!-- Old look Cricket Bat -->
+
+   <append xpath="/item_modifiers/item_modifier[@name='modMeleeClubMetalSpikes']">   
+		<item_property_overrides name="meleeWpnClubT3OldCricketBat">
+            <property name="HandMeshfile" value="#@modfolder:Resources/CricketBat.unity3d?CricketBatSpike"/>
+        </item_property_overrides>        
+    </append>
+    
+    <append xpath="/item_modifiers/item_modifier[@name='modMeleeClubBarbedWire']">			
+		<item_property_overrides name="meleeWpnClubT3OldCricketBat">
+            <property name="HandMeshfile" value="#@modfolder:Resources/CricketBat.unity3d?CricketBatWire"/>
+        </item_property_overrides>       
+    </append>
+	
+	<append xpath="/item_modifiers/item_modifier[@name='modMeleeClubMetalChain']">		
+		 <item_property_overrides name="meleeWpnClubT3OldCricketBat">
+            <property name="HandMeshfile" value="#@modfolder:Resources/CricketBat.unity3d?CricketBatChain"/>
+        </item_property_overrides>     
+    </append>
+
+	<append xpath="/item_modifiers/item_modifier[@name='modMeleeClubBurningShaft']">
+	   <item_property_overrides name="meleeWpnClubT3OldCricketBat">
+            <property name="FlameEffect" value="#@modfolder:Resources/CricketBat.unity3d?CricketBatFire"/>
+       </item_property_overrides>
+    </append>
+	
+	<!-- New look Cricket Bat -->
+	
+	 <append xpath="/item_modifiers/item_modifier[@name='modMeleeClubMetalSpikes']">   
+		<item_property_overrides name="meleeWpnClubT3NewCricketBat">
+            <property name="HandMeshfile" value="#@modfolder:Resources/Cricketbatz.unity3d?CricketbatzSpikes"/>
+        </item_property_overrides>        
+    </append>
+    
+    <append xpath="/item_modifiers/item_modifier[@name='modMeleeClubBarbedWire']">			
+		<item_property_overrides name="meleeWpnClubT3NewCricketBat">
+            <property name="HandMeshfile" value="#@modfolder:Resources/Cricketbatz.unity3d?CricketbatzWire"/>
+        </item_property_overrides>       
+    </append>
+	
+	<append xpath="/item_modifiers/item_modifier[@name='modMeleeClubMetalChain']">		
+		 <item_property_overrides name="meleeWpnClubT3NewCricketBat">
+            <property name="HandMeshfile" value="#@modfolder:Resources/Cricketbatz.unity3d?CricketbatzChain"/>
+        </item_property_overrides>     
+    </append>
+
+	<append xpath="/item_modifiers/item_modifier[@name='modMeleeClubBurningShaft']">
+	   <item_property_overrides name="meleeWpnClubT3NewCricketBat">
+            <property name="FlameEffect" value="#@modfolder:Resources/Cricketbatz.unity3d?CricketbatzFire"/>
+       </item_property_overrides>
+    </append>
+
+<append xpath="/item_modifiers">
+
+<!-- Running Shoes High Performance Mod -->
+
+  <item_modifier name="modArmorRunningShoesHP" installable_tags="armorFeet" modifier_tags="rare" blocked_tags="noMods" type="attachment">
+		<property name="Extends" value="modGeneralMaster"/>
+		<property name="UnlockedBy" value="modArmorRunningShoesHPSchematic"/>
+		<property name="TraderStageTemplate" value="modsTier1"/>		
+		<property name="CustomIcon" value="apparelRunningShoesRegular"/>
+		<property name="CustomIconTint" value="173,216,230"/>
+		<property name="EconomicValue" value="440"/>
+		<property name="DisplayType" value="modArmorSpeed"/>
+
+		<effect_group tiered="false">
+		<passive_effect name="RunSpeed" operation="perc_add" value=".1"/>
+		<display_value name="dRunSpeed" value=".1"/>
+		</effect_group>
+	</item_modifier>
+	
+<!-- Storm Breaker Mod -->
+	
+  <item_modifier name="modArmorStormBreaker" installable_tags="armor" modifier_tags="stormresistance" blocked_tags="noMods" type="attachment">
+		<property name="Extends" value="modGeneralMaster"/>
+		<property name="TraderStageTemplate" value="modsTier1"/>
+		<property name="EconomicValue" value="50"/>		
+		<property name="CustomIcon" value="modArmorStormBreaker"/>
+		<property name="Group" value="Clothing,Armor,Mods,Tool/Weapon Mods"/>
+
+		<effect_group tiered="false">
+			<triggered_effect trigger="onSelfEquipStart" action="AddBuff" buff="buffStormBreaker"/>
+			<triggered_effect trigger="onSelfEquipStop" action="RemoveBuff" buff="buffStormBreaker"/>
+		</effect_group>
+	</item_modifier>
+
+<!-- Bow Grip Entity Damage Mod -->
+
+	<item_modifier name="modGunBowArrowGrip" installable_tags="bow" modifier_tags="specialDamage" blocked_tags="noMods" type="attachment">
+		<property name="Extends" value="modGeneralMaster"/>
+		<property name="CustomIcon" value="modGunBowArrowGrip"/>
+		<property name="UnlockedBy" value="modGunBowArrowGripSchematic"/>
+		<property name="TraderStageTemplate" value="modsTier2"/>
+		<!--Do +10% damage to evil / undead-->
+		<effect_group tiered="false">
+			<requirement name="EntityTagCompare" target="other" tags="zombie"/>
+			<passive_effect name="EntityDamage" operation="perc_add" value="0.1"/>
+		</effect_group>
+	</item_modifier>
+	
+<!-- Archery Reload Speed Mod -->
+
+	<item_modifier name="modArcheryReloadSpeed" installable_tags="perkArchery" blocked_tags="noMods" type="attachment">
+		<property name="Extends" value="modGeneralMaster"/>
+		<property name="CustomIcon" value="modArcheryReloadSpeed"/>
+		<property name="UnlockedBy" value="modArcheryReloadSpeedSchematic"/>
+		<property name="TraderStageTemplate" value="modsTier2"/>
+		<property name="Material" value="Mcloth"/>
+		
+		<!-- Reload archery weapons 15% faster -->
+		<effect_group tiered="false">
+			<passive_effect name="ReloadSpeedMultiplier" operation="perc_add" value=".15"/>
+		</effect_group>
+	</item_modifier>
+	
+<!-- Weapon Maintenance Mod -->
+	
+	<item_modifier name="modWeaponMaintenance" installable_tags="weapon" modifier_tags="durability" blocked_tags="noMods" type="attachment">
+		<property name="Stacknumber" value="1"/> <property name="Group" value="Mods"/>
+		<property name="DescriptionKey" value="modWeaponMaintenanceDesc"/>
+		<property name="UnlockedBy" value="modWeaponMaintenanceSchematic"/>
+		<property name="TraderStageTemplate" value="modsTier1"/>
+		<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+		<property name="CustomIcon" value="modWeaponMaintenance"/>
+		
+		<!-- Increases durability, increases block efficiency, all weapons and melee -->
+		<effect_group tiered="false">
+			<passive_effect name="DegradationPerUse" operation="perc_add" value="-.5" tags="perkYeahScience,perkGunslinger,perkMachineGunner,perkBoomstick,perkDeadEye,perkSkullCrusher,perkDeepCuts,perkArchery,perkFlurryOfBlows,perkPummelPete,perkTheHuntsman,perkMiner69r,perkMotherLode,admin"/>
+		</effect_group>
+		<property name="PickupJournalEntry" value="augmentGunsTip"/>
+	</item_modifier>
+	
+<!-- Spartan Sledge Stamina Mod -->
+
+	<item_modifier name="modMeleeSpartanSledgeStamina" installable_tags="sledge" modifier_tags="health" blocked_tags="noMods" type="attachment">
+		<property name="Stacknumber" value="1"/> <property name="Group" value="Mods"/>
+		<property name="DescriptionKey" value="modMeleeSpartanSledgeStaminaDesc"/>
+		<property name="UnlockedBy" value="modMeleeSpartanSledgeStaminaSchematic"/>
+		<property name="TraderStageTemplate" value="modsTier1"/>
+		<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+		<property name="CustomIcon" value="modMeleeSpartanSledgeStamina"/>
+
+		<!-- Reduces Stamina usage on all sledge melee attacks -->
+		<effect_group tiered="false">
+			<requirement name="HoldingItemHasTags" tags="perkSkullCrusher"/>
+			<passive_effect name="StaminaLoss" operation="perc_add" value="-.15" tags="primary,secondary"/>
+		</effect_group>
+	</item_modifier>
+	
+<!-- Machete Armor Piercing Mod -->
+	
+	<item_modifier name="modMeleeMacheteArmorPiercing" installable_tags="machete" modifier_tags="damage" blocked_tags="noMods" type="attachment">
+		<property name="Extends" value="modGeneralMaster" param1="CustomIcon"/>
+		<property name="UnlockedBy" value="modMeleeMacheteArmorPiercingSchematic"/>
+		<property name="TraderStageTemplate" value="modsTier2"/>
+		
+		<effect_group name="armorpiercing" tiered="false">
+			<passive_effect name="TargetArmor" operation="perc_add" value="-1"/>
+		</effect_group>	
+	</item_modifier>
+	
+<!-- Magnum Magazine Extender Mod -->
+	
+	<item_modifier name="modGunMagnumMagazineExtender" installable_tags="magnummagazine" modifier_tags="magazine" blocked_tags="noMods" type="attachment">
+		<property name="Extends" value="modGeneralMaster" param1="CustomIcon"/>
+		<property name="UnlockedBy" value="modGunMagnumMagazineExtenderSchematic"/>
+		<property name="TraderStageTemplate" value="modsTier2"/>
+		
+		<effect_group tiered="false">
+			<passive_effect name="MagazineSize" operation="perc_add" value="1"/>
+		</effect_group>
+	</item_modifier>
+	
+<!-- Double Barrel Shotgun Speed Reload Mod -->
+	
+	<item_modifier name="modGunDoubleBarrelSpeedLoader" installable_tags="dBarrel" modifier_tags="magazine" blocked_tags="noMods" type="attachment">
+		<property name="Extends" value="modGeneralMaster" param1="CustomIcon"/>
+		<property name="UnlockedBy" value="modGunDoubleBarrelSpeedLoaderSchematic"/>
+		<property name="TraderStageTemplate" value="modsTier1"/>
+		
+		<effect_group tiered="false">
+			<passive_effect name="MagazineSize" operation="perc_add" value="1"/>
+		</effect_group>
+	</item_modifier>
+	
+<!-- Aussie Colours -->
+
+	<item_modifier name="modDyeAussieGreen" installable_tags="weapon,tool,vehicle,drone" modifier_tags="dye,modDyeAussieGreen" type="attachment" cosmetic_install_chance=".1">
+		<property name="Extends" value="modGeneralMaster"/>
+		<property name="DescriptionKey" value="modDyeGroupDesc"/>
+		<property name="CustomIcon" value="modDyeWhite"/>
+		<property name="CustomIconTint" value="0, 132, 61"/>
+		<property name="Material" value="Mpaint"/>
+		<property name="Weight" value="20"/>
+		<property name="EconomicValue" value="50"/>
+		<property name="SoundPickup" value="dye_grab"/>
+		<property name="SoundPlace" value="dye_place"/>
+		
+		<item_property_overrides name="*">
+			<property name="TintColor" value="0, 132, 61"/>
+			<property name="CustomIconTint" value="0, 132, 61"/>
+		</item_property_overrides>
+	</item_modifier>
+	
+	<item_modifier name="modDyeAussieGold" installable_tags="weapon,tool,vehicle,drone" modifier_tags="dye,modDyeAussieGold" type="attachment" cosmetic_install_chance=".1">
+		<property name="Extends" value="modGeneralMaster"/>
+		<property name="DescriptionKey" value="modDyeGroupDesc"/>
+		<property name="CustomIcon" value="modDyeWhite"/>
+		<property name="CustomIconTint" value="255, 205, 0"/>
+		<property name="Material" value="Mpaint"/>
+		<property name="Weight" value="20"/>
+		<property name="EconomicValue" value="50"/>
+		<property name="SoundPickup" value="dye_grab"/>
+		<property name="SoundPlace" value="dye_place"/>
+		
+		<item_property_overrides name="*">
+			<property name="TintColor" value="255, 205, 0"/>
+			<property name="CustomIconTint" value="255, 205, 0"/>
+		</item_property_overrides>
+	</item_modifier>
+
+</append>
+
+</configs>

@@ -1,0 +1,248 @@
+<configs>
+
+<!-- Vehicles -->
+	<set xpath="/quests/quest[@id='quest_tier1complete']/reward[@id='groupQuestBicycle']/@id">groupQuestMinibike</set>
+
+ 	<append xpath="/quests">
+	
+<!-- *** STARTER MESSAGE -->
+	
+	<!-- White River Citizen 0 - Start Point -->
+	<quest id="quest_whiteRiverCitizen0">
+		<property name="group_name_key" value="quest_WhiteRiverCitizen0"/>
+		<property name="name_key" value="quest_WhiteRiverCitizen0_name"/>
+		<property name="subtitle_key" value="quest_WhiteRiverCitizen0_subtitle"/>
+		<property name="description_key" value="quest_WhiteRiverCitizen0_description"/>
+		<property name="icon" value="ui_game_symbol_map_trader"/>
+		<property name="category_key" value="quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="shareable" value="false"/>
+		
+		<action type="ShowMessageWindow">
+			<property name="message" value="quest_WhiteRiverCitizen0_description"/>
+			<property name="title" value="quest_WhiteRiverCitizen0_description_title"/>
+			<property name="delay" value="3"/>
+		</action>
+	</quest>
+	
+	<!-- CUSTOM QUESTS -->
+    <!-- Rabbits -->
+	<quest id="quest_rabbits">
+		<property name="offer_key" value="quest_rabbits_offer"/>
+		<property name="name_key" value="quest_rabbits_name"/>
+		<property name="subtitle_key" value="quest_rabbits_subtitle"/>
+		<property name="description_key" value="quest_rabbits_description"/>
+		<property name="icon" value="ui_game_symbol_rabbit"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="Quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="difficulty" value="easy"/>
+		<property name="shareable" value="false"/>
+		
+		<objective type="EntityKill" id="animalRabbit" value="25"/>
+		
+		<reward type="Exp" value="5000"/>
+		<reward type="SkillPoints" value="1" chainreward="false"/>
+	</quest>
+	
+	<!-- Spiders -->
+	<quest id="quest_spiders">
+		<property name="offer_key" value="quest_spiders_offer"/>
+		<property name="name_key" value="quest_spiders_name"/>
+		<property name="subtitle_key" value="quest_spiders_subtitle"/>
+		<property name="description_key" value="quest_spiders_description"/>
+		<property name="icon" value="ui_game_symbol_spider"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="Quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="difficulty" value="hard"/>
+		<property name="shareable" value="false"/>
+		
+		<objective type="EntityKill" id="animalSpidersQuest,animalBloodMoonSpider01QueenFred,animalBloodMoonSpider02QueenFred,animalBloodMoonSpider03QueenFred,animalSpider01,animalSpider02,animalSpider03,animalSpider01Feral,animalSpider02Feral,animalSpider03Feral,animalSpider01Radiated,animalSpider02Radiated,animalSpider03Radiated,animalSpider01Mini,animalSpider02Mini,animalSpider03Mini,animalSpider01Queen,animalSpider02Queen,animalSpider03Queen,animalFlyingSpider01,animalFlyingSpider02,animalFlyingSpider03,animalBloodMoonSpider01,animalBloodMoonSpider02,animalBloodMoonSpider03,animalBloodMoonSpider01Feral,animalBloodMoonSpider02Feral,animalBloodMoonSpider03Feral,animalBloodMoonSpider01Radiated,animalBloodMoonSpider02Radiated,animalBloodMoonSpider03Radiated,animalBloodMoonSpider01Queen,animalBloodMoonSpider02Queen,animalBloodMoonSpider03Queen,animalBloodMoonFlyingSpider01Queen,animalBloodMoonFlyingSpider02Queen,animalBloodMoonFlyingSpider03Queen,animalBloodMoonSpider01Mini,animalBloodMoonSpider02Mini,animalBloodMoonSpider03Mini" value="100"/>
+		
+		<reward type="Exp" value="20000"/>
+		<reward type="SkillPoints" value="2" chainreward="false"/>
+	</quest>
+	
+	<!-- Animals -->
+	<quest id="quest_aussieanimals">
+		<property name="offer_key" value="quest_aussieanimals_offer"/>
+		<property name="name_key" value="quest_aussieanimals_name"/>
+		<property name="subtitle_key" value="quest_aussieanimals_subtitle"/>
+		<property name="description_key" value="quest_aussieanimals_description"/>
+		<property name="icon" value="ui_game_symbol_aussieanimal"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="Quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="difficulty" value="hard"/>
+		<property name="shareable" value="false"/>
+		
+		<objective type="EntityKill" id="animalAussieAnimalsQuest,animalBloodMoonKoala,animalBloodMoonKangaroo,animalBloodMoonBossKoala,animalBloodMoonBossKangaroo,animalCassowary,animalTassydevil,animalBigTassydevil,animalPlatypus,animalKoala,animalBigKoala,animalFrillneck,animalKangaroo,animalEagle,animalBat" value="100"/>
+		
+		<reward type="Exp" value="20000"/>
+		<reward type="SkillPoints" value="2" chainreward="false"/>
+	</quest>
+	
+	<!-- Mini Radiated Burnt -->
+	<quest id="quest_miniradiatedburnt">
+		<property name="offer_key" value="quest_miniradiatedburnt_offer"/>
+		<property name="name_key" value="quest_miniradiatedburnt_name"/>
+		<property name="subtitle_key" value="quest_miniradiatedburnt_subtitle"/>
+		<property name="description_key" value="quest_miniradiatedburnt_description"/>
+		<property name="icon" value="ui_game_symbol_miniradiatedburnt"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="Quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="difficulty" value="hard"/>
+		<property name="shareable" value="false"/>
+		
+		<objective type="EntityKill" id="zombieBurntRadiatedMini" value="25"/>
+		
+		<reward type="Exp" value="5000"/>
+		<reward type="SkillPoints" value="1" chainreward="false"/>
+	</quest>
+	
+	<!-- Head Hunters -->
+	<quest id="quest_headhunters">
+		<property name="offer_key" value="quest_headhunters_offer"/>
+		<property name="name_key" value="quest_headhunters_name"/>
+		<property name="subtitle_key" value="quest_headhunters_name"/>
+		<property name="description_key" value="quest_headhunters_description"/>
+		<property name="icon" value="ui_game_symbol_headhunter"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="Quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="difficulty" value="hard"/>
+		<property name="shareable" value="false"/>
+		
+		<objective type="EntityKill" id="zombieHeadHuntersQuest,zombieOakNurse,zombieOakFireNurse,zombieOakRadNurse,zombieOakChargedNurse,zombieOakInfernalNurse,zombieOakHeadHunter1,zombieOakHeadHunter2,zombieOakHeadHunter3,zombieOakHeadHunter4,zombieOakHeadHunter5,zombieOakHeadHunterCharged,zombieOakHeadHunterInfernal,zombieOakBossNurse,zombieOakBossFireNurse,zombieOakBossRadNurse,zombieOakBossChargedNurse,zombieOakBossInfernalNurse,zombieOakBossHeadHunter1,zombieOakBossHeadHunter2,zombieOakBossHeadHunter3,zombieOakBossHeadHunter4,zombieOakBossHeadHunter5,zombieOakBossHeadHunterCharged,zombieOakBossHeadHunterInfernal" value="100"/>
+		
+		<reward type="Exp" value="20000"/>
+		<reward type="SkillPoints" value="2" chainreward="false"/>
+	</quest>
+	
+    <!-- Chickens -->
+	<quest id="quest_chickens">
+		<property name="offer_key" value="quest_chickens_offer"/>
+		<property name="name_key" value="quest_chickens_name"/>
+		<property name="subtitle_key" value="quest_chickens_subtitle"/>
+		<property name="description_key" value="quest_chickens_description"/>
+		<property name="icon" value="ui_game_symbol_chicken"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="Quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="difficulty" value="easy"/>
+		<property name="shareable" value="false"/>
+		
+		<objective type="EntityKill" id="animalChicken" value="25"/>
+		
+		<reward type="Exp" value="5000"/>
+		<reward type="SkillPoints" value="1" chainreward="false"/>
+	</quest>
+	
+	<!-- Oak Siren Heads -->
+	<quest id="quest_oaksirenheads">
+		<property name="offer_key" value="quest_oaksirenheads_offer"/>
+		<property name="name_key" value="quest_oaksirenheads_name"/>
+		<property name="subtitle_key" value="quest_oaksirenheads_subtitle"/>
+		<property name="description_key" value="quest_oaksirenheads_description"/>
+		<property name="icon" value="ui_game_symbol_oaksirenhead"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="Quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="difficulty" value="hard"/>
+		<property name="shareable" value="false"/>
+		
+		<objective type="EntityKill" id="zombieOakSirenHead" value="50"/>
+		
+		<reward type="Exp" value="20000"/>
+		<reward type="SkillPoints" value="2" chainreward="false"/>
+	</quest>
+	
+	<!-- Magpies -->
+	<quest id="quest_magpies">
+		<property name="offer_key" value="quest_magpies_offer"/>
+		<property name="name_key" value="quest_magpies_name"/>
+		<property name="subtitle_key" value="quest_magpies_subtitle"/>
+		<property name="description_key" value="quest_magpies_description"/>
+		<property name="icon" value="ui_game_symbol_magpie"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="Quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="difficulty" value="hard"/>
+		<property name="shareable" value="false"/>
+		
+		<objective type="EntityKill" id="animalMagpie" value="50"/>
+		
+		<reward type="Exp" value="10000"/>
+		<reward type="SkillPoints" value="1" chainreward="false"/>
+	</quest>
+
+	<!-- Yowies -->
+	<quest id="quest_yowies">
+		<property name="offer_key" value="quest_yowies_offer"/>
+		<property name="name_key" value="quest_yowies_name"/>
+		<property name="subtitle_key" value="quest_yowies_subtitle"/>
+		<property name="description_key" value="quest_yowies_description"/>
+		<property name="icon" value="ui_game_symbol_yowie"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="Quest"/>
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="difficulty" value="hard"/>
+		<property name="shareable" value="false"/>
+		
+		<objective type="EntityKill" id="zombieOakBigFoot,zombieOakBigFootSnow,zombieOakBigFootInfernal,zombieOakBigFootCharged" value="50"/>
+		
+		<reward type="Exp" value="20000"/>
+		<reward type="SkillPoints" value="2" chainreward="false"/>
+	</quest>	
+	
+	<!-- NPC HELPERS -->	
+		<quest id="challenge_1-SummonFriendZ">
+			<property name="offer_key" value="challenge_1-SummonFriendZ_offer"/>
+			<property name="name_key" value="challenge_1-SummonFriendZ_name"/>
+			<property name="subtitle_key" value="challenge_1-SummonFriendZ_subtitle"/>
+			<property name="description_key" value="challenge_1-SummonFriendZ_description"/>
+			<property name="icon" value="ui_game_symbol_zombie"/>
+			<property name="repeatable" value="true"/>
+			<property name="category_key" value="challenge"/>
+			<property name="difficulty" value="easy"/>
+			<property name="add_to_tier_complete" value="false"/>
+				
+		<reward type="Exp" value="1500"/>
+		<action type="SpawnEnemy" id="npcTomClarkDPistol,npcDemolitionDaveM60,npcMommaAK47,npcBusinessManTRifle,npcMarleneSMG,npcBikerMagnumDPistol,npcBurntSRifle,npcMoeAShotgun" value="1"/>
+		</quest>
+		
+		<quest id="challenge_1-SummonAnimals">
+			<property name="offer_key" value="challenge_1-SummonAnimals_offer"/>
+			<property name="name_key" value="challenge_1-SummonAnimals_name"/>
+			<property name="subtitle_key" value="challenge_1-SummonAnimals_subtitle"/>
+			<property name="description_key" value="challenge_1-SummonAnimals_description"/>
+			<property name="icon" value="ui_game_symbol_summon_rabbit"/>
+			<property name="repeatable" value="true"/>
+			<property name="category_key" value="challenge"/>
+			<property name="difficulty" value="easy"/>
+			<property name="add_to_tier_complete" value="false"/>
+				
+		<reward type="Exp" value="1500"/>
+		<action type="SpawnEnemy" id="npcAnimalSummonzombieDog,npcAnimalSummonBoar,npcAnimalSummonDireWolf,npcAnimalSummonChicken,npcAnimalSummonRabbit,npcAnimalSummonSnake,npcAnimalSummonCoyote,npcAnimalSummonJeerkoa" value="1"/>
+		<reward type="Item" id="foodRawMeat" value="20"/>
+		</quest>
+		
+	<quest id="quest_1OldCashSkillPoint">
+		<property name="name_key" value="quest_1OldCashSkillPoint_name" />
+		<property name="subtitle_key" value="quest_1OldCashSkillPoint_subtitle" />
+		<property name="description_key" value="quest_1OldCashSkillPoint_description" />
+		<property name="icon" value="ui_game_symbol_skills" />
+		<property name="repeatable" value="true" />
+		<property name="add_to_tier_complete" value="false"/>
+		<property name="shareable" value="false"/>
+		<property name="category_key" value="challenge" />
+		<property name="offer_key" value="quest_1OldCashSkillPoint_offer" />
+		<property name="difficulty" value="easy" />
+		<reward type="SkillPoints" value="1" />
+	</quest>
+
+	</append>
+	
+</configs>

@@ -1,0 +1,17 @@
+<configs>
+
+	<!-- Country town expansion to Pine Forest, Burnt Forest, and Wasteland -->
+	<append xpath="/rwgmixer/township[@name='countrytown']/property[@name='biomes']/@value">,forest,burntforest,wasteland</append>
+	<!-- Town expansion to Pine Forest, Burnt Forest, and Wasteland -->
+	<append xpath="/rwgmixer/township[@name='town']/property[@name='biomes']/@value">,forest,burntforest,wasteland</append>
+	<!-- City expansion to Pine Forest, Burnt Forest, and Wasteland -->
+	<append xpath="/rwgmixer/township[@name='city']/property[@name='biomes']/@value">,forest,burntforest,wasteland</append>
+	<!-- Wasteland City expansion to Desert and Snow -->
+	<append xpath="/rwgmixer/township[@name='wasteland_city']/property[@name='biomes']/@value">,forest,burntforest,desert,snow</append>
+	<!-- Big City expansion to Desert and Snow -->
+	<append xpath="/rwgmixer/township[@name='citybig']/property[@name='biomes']/@value">,forest,burntforest,desert,snow</append>
+	<!-- Allow the Old West to appear inside the Big City at a regulated amount -->
+	<set xpath="/rwgmixer/district[@name='oldwest']/property[@name='spawn_weight']/@value">0.25</set>
+	<append xpath="/rwgmixer/district[@name='oldwest']/property[@name='required_township']/@value">,citybig</append>
+
+</configs>

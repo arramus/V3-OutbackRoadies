@@ -1,0 +1,2030 @@
+<configs>
+
+<!-- *** INTEGRATION FOR BIOME ZOMBIES -->
+
+	<!-- *** BIOME_ALL_ZOMBIES_GROUP -->
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesAll']">
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" p="0.25" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieOakNurse" p="0.05" />
+		<e n="zombieOakFireNurse" p="0.05" />
+		<e n="zombieOakRadNurse" p="0.05" />
+		<e n="zombieOakChargedNurse" p="0.05" />
+		<e n="zombieOakInfernalNurse" p="0.05" />
+		<e n="zombieOakHeadHunter1" p="0.05" />
+		<e n="zombieOakHeadHunter2" p="0.05" />
+		<e n="zombieOakHeadHunter3" p="0.05" />
+		<e n="zombieOakHeadHunter4" p="0.05" />
+		<e n="zombieOakHeadHunter5" p="0.05" />
+		<e n="zombieOakHeadHunterCharged" p="0.05" />
+		<e n="zombieOakHeadHunterInfernal" p="0.05" />
+		<e n="zombieBurntRadiatedMini" p="0.05" />
+		<e n="zombieOakSirenHead" p="0.025" />
+	</append>
+	
+	<!-- *** BIOME_ZOMBIES_NIGHT_GROUP -->
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesNight']">
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" p="0.35" />
+		<e n="zombieBurntRadiated" p="0.2" />
+		<e n="zombieOakNurse" p="0.15" />
+		<e n="zombieOakFireNurse" p="0.15" />
+		<e n="zombieOakRadNurse" p="0.15" />
+		<e n="zombieOakChargedNurse" p="0.15" />
+		<e n="zombieOakInfernalNurse" p="0.15" />
+		<e n="zombieOakHeadHunter1" p="0.15" />
+		<e n="zombieOakHeadHunter2" p="0.15" />
+		<e n="zombieOakHeadHunter3" p="0.15" />
+		<e n="zombieOakHeadHunter4" p="0.15" />
+		<e n="zombieOakHeadHunter5" p="0.15" />
+		<e n="zombieOakHeadHunterCharged" p="0.15" />
+		<e n="zombieOakHeadHunterInfernal" p="0.15" />
+		<e n="zombieBurntRadiatedMini" p="0.1" />
+		<e n="zombieOakSirenHead" p="0.05" />
+		<e n="zombieOakBigFoot" p="0.05" />
+	</append>
+
+<!-- *** BIOME_ZOMBIES_BURNT_FOREST_GROUP -->
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesBurntForest']">
+		<e n="zombieBurntRadiatedMini" p="0.75" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieOakNurse" p="0.15" />
+		<e n="zombieOakFireNurse" p="0.15" />
+		<e n="zombieOakRadNurse" p="0.15" />
+		<e n="zombieOakChargedNurse" p="0.15" />
+		<e n="zombieOakInfernalNurse" p="0.15" />
+		<e n="zombieOakHeadHunter1" p="0.15" />
+		<e n="zombieOakHeadHunter2" p="0.15" />
+		<e n="zombieOakHeadHunter3" p="0.15" />
+		<e n="zombieOakHeadHunter4" p="0.15" />
+		<e n="zombieOakHeadHunter5" p="0.15" />
+		<e n="zombieOakHeadHunterCharged" p="0.15" />
+		<e n="zombieOakHeadHunterInfernal" p="0.15" />
+		<e n="zombieOakSirenHead" p="0.15" />
+		<e n="zombieOakBigFoot" p="0.15" />
+		<e n="zombieOakBigFootInfernal" p="0.15" />
+	</append>
+	
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesBurntForestNight']">
+		<e n="zombieBurntRadiatedMini" p="0.75" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieOakNurse" p="0.15" />
+		<e n="zombieOakFireNurse" p="0.15" />
+		<e n="zombieOakRadNurse" p="0.15" />
+		<e n="zombieOakChargedNurse" p="0.15" />
+		<e n="zombieOakInfernalNurse" p="0.15" />
+		<e n="zombieOakHeadHunter1" p="0.15" />
+		<e n="zombieOakHeadHunter2" p="0.15" />
+		<e n="zombieOakHeadHunter3" p="0.15" />
+		<e n="zombieOakHeadHunter4" p="0.15" />
+		<e n="zombieOakHeadHunter5" p="0.15" />
+		<e n="zombieOakHeadHunterCharged" p="0.15" />
+		<e n="zombieOakHeadHunterInfernal" p="0.15" />
+		<e n="zombieOakSirenHead" p="0.15" />
+		<e n="zombieOakBigFoot" p="0.15" />
+		<e n="zombieOakBigFootInfernal" p="0.15" />
+	</append>
+	
+<!-- *** BIOME_ZOMBIES_DESERT_GROUP -->
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesDesert']">
+		<e n="zombieBurntRadiatedMini" p="0.75" />
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" p="0.1" />		
+		<e n="zombieBurntRadiated" p="0.1" />		
+		<e n="zombieOakNurse" p="0.15" />
+		<e n="zombieOakFireNurse" p="0.15" />
+		<e n="zombieOakRadNurse" p="0.15" />
+		<e n="zombieOakChargedNurse" p="0.15" />
+		<e n="zombieOakInfernalNurse" p="0.15" />
+		<e n="zombieOakHeadHunter1" p="0.15" />
+		<e n="zombieOakHeadHunter2" p="0.15" />
+		<e n="zombieOakHeadHunter3" p="0.15" />
+		<e n="zombieOakHeadHunter4" p="0.15" />
+		<e n="zombieOakHeadHunter5" p="0.15" />
+		<e n="zombieOakHeadHunterCharged" p="0.15" />
+		<e n="zombieOakHeadHunterInfernal" p="0.15" />
+		<e n="zombieOakSirenHead" p="0.15" />
+		<e n="zombieOakBigFootInfernal" p="0.15" />
+	</append>
+	
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesDesertNight']">
+		<e n="zombieBurntRadiatedMini" p="0.75" />
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" p="0.1" />		
+		<e n="zombieBurntRadiated" p="0.1" />		
+		<e n="zombieOakNurse" p="0.15" />
+		<e n="zombieOakFireNurse" p="0.15" />
+		<e n="zombieOakRadNurse" p="0.15" />
+		<e n="zombieOakChargedNurse" p="0.15" />
+		<e n="zombieOakInfernalNurse" p="0.15" />
+		<e n="zombieOakHeadHunter1" p="0.15" />
+		<e n="zombieOakHeadHunter2" p="0.15" />
+		<e n="zombieOakHeadHunter3" p="0.15" />
+		<e n="zombieOakHeadHunter4" p="0.15" />
+		<e n="zombieOakHeadHunter5" p="0.15" />
+		<e n="zombieOakHeadHunterCharged" p="0.15" />
+		<e n="zombieOakHeadHunterInfernal" p="0.15" />
+		<e n="zombieOakSirenHead" p="0.15" />
+		<e n="zombieOakBigFootInfernal" p="0.15" />
+	</append>
+	
+<!-- *** BIOME_ZOMBIES_SNOW_GROUP -->
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesSnow']">
+		<e n="zombieBurntRadiatedMini" p="0.75" />
+		<e n="zombieBurnt" />
+		<e n="zombieLumberjackFeral" p="0.1" />
+		<e n="zombieBurntFeral" p="0.1" />		
+		<e n="zombieBurntRadiated" p="0.1" />		
+		<e n="zombieOakNurse" p="0.15" />
+		<e n="zombieOakFireNurse" p="0.15" />
+		<e n="zombieOakRadNurse" p="0.15" />
+		<e n="zombieOakChargedNurse" p="0.15" />
+		<e n="zombieOakInfernalNurse" p="0.15" />
+		<e n="zombieOakHeadHunter1" p="0.15" />
+		<e n="zombieOakHeadHunter2" p="0.15" />
+		<e n="zombieOakHeadHunter3" p="0.15" />
+		<e n="zombieOakHeadHunter4" p="0.15" />
+		<e n="zombieOakHeadHunter5" p="0.15" />
+		<e n="zombieOakHeadHunterCharged" p="0.15" />
+		<e n="zombieOakHeadHunterInfernal" p="0.15" />
+		<e n="zombieOakSirenHead" p="0.15" />
+		<e n="zombieOakBigFootSnow" p="0.15" />
+	</append>
+	
+<!-- *** BIOME_ZOMBIES_SNOW_GROUP_NIGHT -->
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesSnowNight']">
+		<e n="zombieBurntRadiatedMini" p="0.75" />
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" p="0.1" />		
+		<e n="zombieBurntRadiated" p="0.1" />		
+		<e n="zombieOakNurse" p="0.15" />
+		<e n="zombieOakFireNurse" p="0.15" />
+		<e n="zombieOakRadNurse" p="0.15" />
+		<e n="zombieOakChargedNurse" p="0.15" />
+		<e n="zombieOakInfernalNurse" p="0.15" />
+		<e n="zombieOakHeadHunter1" p="0.15" />
+		<e n="zombieOakHeadHunter2" p="0.15" />
+		<e n="zombieOakHeadHunter3" p="0.15" />
+		<e n="zombieOakHeadHunter4" p="0.15" />
+		<e n="zombieOakHeadHunter5" p="0.15" />
+		<e n="zombieOakHeadHunterCharged" p="0.15" />
+		<e n="zombieOakHeadHunterInfernal" p="0.15" />
+		<e n="zombieOakSirenHead" p="0.15" />
+		<e n="zombieOakBigFootSnow" p="0.15" />
+	</append>
+	
+<!-- *** BIOME_ZOMBIES_WASTELAND_GROUP -->
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesAllWasteland']">
+		<e n="zombieBurntRadiatedMini" p="0.75" />
+		<e n="zombieBurntFeral" p="0.75" />		
+		<e n="zombieBurntRadiated" p="0.75" />		
+		<e n="zombieOakNurse" p="0.5" />
+		<e n="zombieOakFireNurse" p="0.5" />
+		<e n="zombieOakRadNurse" p="0.5" />
+		<e n="zombieOakChargedNurse" p="0.5" />
+		<e n="zombieOakInfernalNurse" p="0.5" />
+		<e n="zombieOakHeadHunter1" p="0.5" />
+		<e n="zombieOakHeadHunter2" p="0.5" />
+		<e n="zombieOakHeadHunter3" p="0.5" />
+		<e n="zombieOakHeadHunter4" p="0.5" />
+		<e n="zombieOakHeadHunter5" p="0.5" />
+		<e n="zombieOakHeadHunterCharged" p="0.5" />
+		<e n="zombieOakHeadHunterInfernal" p="0.5" />
+		<e n="zombieOakBossNurse" p="0.5" />
+		<e n="zombieOakBossFireNurse" p="0.5" />
+		<e n="zombieOakBossRadNurse" p="0.5" />
+		<e n="zombieOakBossChargedNurse" p="0.5" />
+		<e n="zombieOakBossInfernalNurse" p="0.5" />
+		<e n="zombieOakBossHeadHunter1" p="0.5" />
+		<e n="zombieOakBossHeadHunter2" p="0.5" />
+		<e n="zombieOakBossHeadHunter3" p="0.5" />
+		<e n="zombieOakBossHeadHunter4" p="0.5" />
+		<e n="zombieOakBossHeadHunter5" p="0.5" />
+		<e n="zombieOakBossHeadHunterCharged" p="0.5" />
+		<e n="zombieOakBossHeadHunterInfernal" p="0.5" />		
+		<e n="zombieOakSirenHead" p="0.5" />
+		<e n="zombieOakBigFoot" p="0.5" />		
+		<e n="zombieOakBigFootSnow" p="0.5" />		
+		<e n="zombieOakBigFootInfernal" p="0.5" />
+		<e n="zombieOakBigFootCharged" p="0.5" />
+	</append>
+	
+<!-- *** BIOME_ZOMBIES_WASTELAND_NIGHT_GROUP -->
+	<append xpath="/entitygroups/entitygroup[@name='ZombiesWastelandNight']">
+		<e n="zombieBurntRadiatedMini" p="0.75" />
+		<e n="zombieBurntFeral" p="0.75" />		
+		<e n="zombieBurntRadiated" p="0.75" />		
+		<e n="zombieOakNurse" p="0.5" />
+		<e n="zombieOakFireNurse" p="0.5" />
+		<e n="zombieOakRadNurse" p="0.5" />
+		<e n="zombieOakChargedNurse" p="0.5" />
+		<e n="zombieOakInfernalNurse" p="0.5" />
+		<e n="zombieOakHeadHunter1" p="0.5" />
+		<e n="zombieOakHeadHunter2" p="0.5" />
+		<e n="zombieOakHeadHunter3" p="0.5" />
+		<e n="zombieOakHeadHunter4" p="0.5" />
+		<e n="zombieOakHeadHunter5" p="0.5" />
+		<e n="zombieOakHeadHunterCharged" p="0.5" />
+		<e n="zombieOakHeadHunterInfernal" p="0.5" />
+		<e n="zombieOakBossNurse" p="0.5" />
+		<e n="zombieOakBossFireNurse" p="0.5" />
+		<e n="zombieOakBossRadNurse" p="0.5" />
+		<e n="zombieOakBossChargedNurse" p="0.5" />
+		<e n="zombieOakBossInfernalNurse" p="0.5" />
+		<e n="zombieOakBossHeadHunter1" p="0.5" />
+		<e n="zombieOakBossHeadHunter2" p="0.5" />
+		<e n="zombieOakBossHeadHunter3" p="0.5" />
+		<e n="zombieOakBossHeadHunter4" p="0.5" />
+		<e n="zombieOakBossHeadHunter5" p="0.5" />
+		<e n="zombieOakBossHeadHunterCharged" p="0.5" />
+		<e n="zombieOakBossHeadHunterInfernal" p="0.5" />		
+		<e n="zombieOakSirenHead" p="0.5" />
+		<e n="zombieOakBigFoot" p="0.5" />		
+		<e n="zombieOakBigFootSnow" p="0.5" />		
+		<e n="zombieOakBigFootInfernal" p="0.5" />
+		<e n="zombieOakBigFootCharged" p="0.5" />
+	</append>
+	
+	<append xpath="/entitygroups">
+	
+	<!-- Head Hunters for GS -->
+	
+	<entitygroup name="RoadiesHeadHuntersGroupGS01">
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" />
+		<e n="zombieBurntRadiatedMini" p="0.25" />		
+		<e n="zombieBurntRadiated" p="0.25" />	
+		<e n="zombieOakNurse" p="0.35" />
+		<e n="zombieOakFireNurse" p="0.35" />
+		<e n="zombieOakRadNurse" p="0.35" />
+		<e n="zombieOakChargedNurse" p="0.35" />
+		<e n="zombieOakInfernalNurse" p="0.35" />
+		<e n="zombieOakHeadHunter1" p="0.35" />
+		<e n="zombieOakHeadHunter2" p="0.35" />
+		<e n="zombieOakHeadHunter3" p="0.35" />
+		<e n="zombieOakHeadHunter4" p="0.35" />
+		<e n="zombieOakHeadHunter5" p="0.35" />
+		<e n="zombieOakHeadHunterCharged" p="0.35" />
+		<e n="zombieOakHeadHunterInfernal" p="0.35" />
+		<e n="zombieOakBossNurse" p="0.1" />
+		<e n="zombieOakBossFireNurse" p="0.1" />
+		<e n="zombieOakBossRadNurse" p="0.1" />
+		<e n="zombieOakBossChargedNurse" p="0.1" />
+		<e n="zombieOakBossInfernalNurse" p="0.1" />
+		<e n="zombieOakBossHeadHunter1" p="0.1" />
+		<e n="zombieOakBossHeadHunter2" p="0.1" />
+		<e n="zombieOakBossHeadHunter3" p="0.1" />
+		<e n="zombieOakBossHeadHunter4" p="0.1" />
+		<e n="zombieOakBossHeadHunter5" p="0.1" />
+		<e n="zombieOakBossHeadHunterCharged" p="0.1" />
+		<e n="zombieOakBossHeadHunterInfernal" p="0.1" />		
+		<e n="zombieOakSirenHead" p="0.05" />
+	</entitygroup>
+	<entitygroup name="RoadiesHeadHuntersGroupGS50">
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" />
+		<e n="zombieBurntRadiatedMini" p="0.35" />		
+		<e n="zombieBurntRadiated" p="0.35" />	
+		<e n="zombieOakNurse" p="0.5" />
+		<e n="zombieOakFireNurse" p="0.5" />
+		<e n="zombieOakRadNurse" p="0.5" />
+		<e n="zombieOakChargedNurse" p="0.5" />
+		<e n="zombieOakInfernalNurse" p="0.5" />
+		<e n="zombieOakHeadHunter1" p="0.5" />
+		<e n="zombieOakHeadHunter2" p="0.5" />
+		<e n="zombieOakHeadHunter3" p="0.5" />
+		<e n="zombieOakHeadHunter4" p="0.5" />
+		<e n="zombieOakHeadHunter5" p="0.5" />
+		<e n="zombieOakHeadHunterCharged" p="0.5" />
+		<e n="zombieOakHeadHunterInfernal" p="0.5" />
+		<e n="zombieOakBossNurse" p="0.25" />
+		<e n="zombieOakBossFireNurse" p="0.25" />
+		<e n="zombieOakBossRadNurse" p="0.25" />
+		<e n="zombieOakBossChargedNurse" p="0.25" />
+		<e n="zombieOakBossInfernalNurse" p="0.25" />
+		<e n="zombieOakBossHeadHunter1" p="0.25" />
+		<e n="zombieOakBossHeadHunter2" p="0.25" />
+		<e n="zombieOakBossHeadHunter3" p="0.25" />
+		<e n="zombieOakBossHeadHunter4" p="0.25" />
+		<e n="zombieOakBossHeadHunter5" p="0.25" />
+		<e n="zombieOakBossHeadHunterCharged" p="0.25" />
+		<e n="zombieOakBossHeadHunterInfernal" p="0.25" />		
+		<e n="zombieOakSirenHead" p="0.125" />
+	</entitygroup>
+	<entitygroup name="RoadiesHeadHuntersGroupGS100">
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" />
+		<e n="zombieBurntRadiatedMini" p="0.5" />		
+		<e n="zombieBurntRadiated" p="0.5" />	
+		<e n="zombieOakNurse" p="0.75" />
+		<e n="zombieOakFireNurse" p="0.75" />
+		<e n="zombieOakRadNurse" p="0.75" />
+		<e n="zombieOakChargedNurse" p="0.75" />
+		<e n="zombieOakInfernalNurse" p="0.75" />
+		<e n="zombieOakHeadHunter1" p="0.75" />
+		<e n="zombieOakHeadHunter2" p="0.75" />
+		<e n="zombieOakHeadHunter3" p="0.75" />
+		<e n="zombieOakHeadHunter4" p="0.75" />
+		<e n="zombieOakHeadHunter5" p="0.75" />
+		<e n="zombieOakHeadHunterCharged" p="0.75" />
+		<e n="zombieOakHeadHunterInfernal" p="0.75" />
+		<e n="zombieOakBossNurse" p="0.5" />
+		<e n="zombieOakBossFireNurse" p="0.5" />
+		<e n="zombieOakBossRadNurse" p="0.5" />
+		<e n="zombieOakBossChargedNurse" p="0.5" />
+		<e n="zombieOakBossInfernalNurse" p="0.5" />
+		<e n="zombieOakBossHeadHunter1" p="0.5" />
+		<e n="zombieOakBossHeadHunter2" p="0.5" />
+		<e n="zombieOakBossHeadHunter3" p="0.5" />
+		<e n="zombieOakBossHeadHunter4" p="0.5" />
+		<e n="zombieOakBossHeadHunter5" p="0.5" />
+		<e n="zombieOakBossHeadHunterCharged" p="0.5" />
+		<e n="zombieOakBossHeadHunterInfernal" p="0.5" />		
+		<e n="zombieOakSirenHead" p="0.25" />
+	</entitygroup>
+	<entitygroup name="RoadiesHeadHuntersGroupGS200">
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" />
+		<e n="zombieBurntRadiatedMini" p="0.75" />		
+		<e n="zombieBurntRadiated" p="0.75" />	
+		<e n="zombieOakNurse" />
+		<e n="zombieOakFireNurse" />
+		<e n="zombieOakRadNurse" />
+		<e n="zombieOakChargedNurse" />
+		<e n="zombieOakInfernalNurse" />
+		<e n="zombieOakHeadHunter1" />
+		<e n="zombieOakHeadHunter2" />
+		<e n="zombieOakHeadHunter3" />
+		<e n="zombieOakHeadHunter4" />
+		<e n="zombieOakHeadHunter5" />
+		<e n="zombieOakHeadHunterCharged" />
+		<e n="zombieOakHeadHunterInfernal" />
+		<e n="zombieOakBossNurse" p="0.75" />
+		<e n="zombieOakBossFireNurse" p="0.75" />
+		<e n="zombieOakBossRadNurse" p="0.75" />
+		<e n="zombieOakBossChargedNurse" p="0.75" />
+		<e n="zombieOakBossInfernalNurse" p="0.75" />
+		<e n="zombieOakBossHeadHunter1" p="0.75" />
+		<e n="zombieOakBossHeadHunter2" p="0.75" />
+		<e n="zombieOakBossHeadHunter3" p="0.75" />
+		<e n="zombieOakBossHeadHunter4" p="0.75" />
+		<e n="zombieOakBossHeadHunter5" p="0.75" />
+		<e n="zombieOakBossHeadHunterCharged" p="0.75" />
+		<e n="zombieOakBossHeadHunterInfernal" p="0.75" />		
+		<e n="zombieOakSirenHead" p="0.375" />
+	</entitygroup>
+	<entitygroup name="RoadiesHeadHuntersGroupGS400">
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" />
+		<e n="zombieBurntRadiatedMini" />		
+		<e n="zombieBurntRadiated" />	
+		<e n="zombieOakNurse" />
+		<e n="zombieOakFireNurse" />
+		<e n="zombieOakRadNurse" />
+		<e n="zombieOakChargedNurse" />
+		<e n="zombieOakInfernalNurse" />
+		<e n="zombieOakHeadHunter1" />
+		<e n="zombieOakHeadHunter2" />
+		<e n="zombieOakHeadHunter3" />
+		<e n="zombieOakHeadHunter4" />
+		<e n="zombieOakHeadHunter5" />
+		<e n="zombieOakHeadHunterCharged" />
+		<e n="zombieOakHeadHunterInfernal" />
+		<e n="zombieOakBossNurse" p="0.85" />
+		<e n="zombieOakBossFireNurse" p="0.85" />
+		<e n="zombieOakBossRadNurse" p="0.85" />
+		<e n="zombieOakBossChargedNurse" p="0.85" />
+		<e n="zombieOakBossInfernalNurse" p="0.85" />
+		<e n="zombieOakBossHeadHunter1" p="0.85" />
+		<e n="zombieOakBossHeadHunter2" p="0.85" />
+		<e n="zombieOakBossHeadHunter3" p="0.85" />
+		<e n="zombieOakBossHeadHunter4" p="0.85" />
+		<e n="zombieOakBossHeadHunter5" p="0.85" />
+		<e n="zombieOakBossHeadHunterCharged" p="0.85" />
+		<e n="zombieOakBossHeadHunterInfernal" p="0.85" />		
+		<e n="zombieOakSirenHead" p="0.425" />
+	</entitygroup>
+	<entitygroup name="RoadiesHeadHuntersGroupGS800">
+		<e n="zombieBurnt" />
+		<e n="zombieBurntFeral" />
+		<e n="zombieBurntRadiatedMini" />		
+		<e n="zombieBurntRadiated" />	
+		<e n="zombieOakNurse" />
+		<e n="zombieOakFireNurse" />
+		<e n="zombieOakRadNurse" />
+		<e n="zombieOakChargedNurse" />
+		<e n="zombieOakInfernalNurse" />
+		<e n="zombieOakHeadHunter1" />
+		<e n="zombieOakHeadHunter2" />
+		<e n="zombieOakHeadHunter3" />
+		<e n="zombieOakHeadHunter4" />
+		<e n="zombieOakHeadHunter5" />
+		<e n="zombieOakHeadHunterCharged" />
+		<e n="zombieOakHeadHunterInfernal" />
+		<e n="zombieOakBossNurse" />
+		<e n="zombieOakBossFireNurse" />
+		<e n="zombieOakBossRadNurse" />
+		<e n="zombieOakBossChargedNurse" />
+		<e n="zombieOakBossInfernalNurse" />
+		<e n="zombieOakBossHeadHunter1" />
+		<e n="zombieOakBossHeadHunter2" />
+		<e n="zombieOakBossHeadHunter3" />
+		<e n="zombieOakBossHeadHunter4" />
+		<e n="zombieOakBossHeadHunter5" />
+		<e n="zombieOakBossHeadHunterCharged" />
+		<e n="zombieOakBossHeadHunterInfernal" />		
+		<e n="zombieOakSirenHead" p="0.5" />
+	</entitygroup>
+	
+	</append>
+
+	<!-- *** INTEGRATION FOR BIOME ANIMALS -->
+
+	<!-- *** BIOME_ANIMAL_WILD_GAME_FOREST_GROUP --> <!-- ANY -->
+	<append xpath="/entitygroups/entitygroup[@name='WildGameForest']">
+		<e n="animalTassydevil" p="8" />
+		<e n="animalPlatypus" p="8" />		
+		<e n="animalKoala" p="8" />		
+		<e n="animalFrillneck" p="8" />
+		<e n="animalKangaroo" p="8" />
+		<e n="animalMagpie" p="4" />
+		<e n="animalBat" p="4" />
+		<e n="animalEagle" p="4" />
+		<e n="animalSpider01Mini" p="2" />
+		<e n="animalSpider02Mini" p="2" />
+		<e n="animalSpider03Mini" p="2" />
+		<e n="animalSpider01" p="1" />
+		<e n="animalSpider02" p="1" />
+		<e n="animalSpider03" p="1" />
+		<e n="animalSpider01Feral" p="0.75" />
+		<e n="animalSpider02Feral" p="0.75" />
+		<e n="animalSpider03Feral" p="0.75" />
+		<e n="animalSpider01Radiated" p="0.5" />
+		<e n="animalSpider02Radiated" p="0.5" />
+		<e n="animalSpider03Radiated" p="0.5" />		
+		<e n="animalBigKoala" p="0.5" />
+		<e n="animalBigTassydevil" p="0.5" />
+		<e n="animalSpider01Queen" p="0.25" />
+		<e n="animalSpider02Queen" p="0.25" />
+		<e n="animalSpider03Queen" p="0.25" />
+		<e n="animalFlyingSpider01" p="0.25" />
+		<e n="animalFlyingSpider02" p="0.25" />
+		<e n="animalFlyingSpider03" p="0.25" />
+	</append>
+	
+	<!-- *** BIOME_ENEMY_ANIMAL_FOREST_GROUP --> <!-- NIGHT -->
+	<append xpath="/entitygroups/entitygroup[@name='EnemyAnimalsForest']">
+		<e n="animalBat" p="15" />
+		<e n="animalTassydevil" p="10" />
+		<e n="animalSpider01Mini" p="5" />
+		<e n="animalSpider02Mini" p="5" />
+		<e n="animalSpider03Mini" p="5" />
+		<e n="animalSpider01" p="3" />
+		<e n="animalSpider02" p="3" />
+		<e n="animalSpider03" p="3" />
+		<e n="animalDireWolf" p="3" />
+		<e n="animalSpider01Feral" p="2" />
+		<e n="animalSpider02Feral" p="2" />
+		<e n="animalSpider03Feral" p="2" />
+		<e n="animalSpider01Radiated" p="1" />
+		<e n="animalSpider02Radiated" p="1" />
+		<e n="animalSpider03Radiated" p="1" />
+		<e n="animalBigKoala" p="1" />
+		<e n="animalBigTassydevil" p="1" />
+		<e n="animalSpider01Queen" p="0.75" />
+		<e n="animalSpider02Queen" p="0.75" />
+		<e n="animalSpider03Queen" p="0.75" />
+		<e n="animalFlyingSpider01" p="0.75" />
+		<e n="animalFlyingSpider02" p="0.75" />
+		<e n="animalFlyingSpider03" p="0.75" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.5" />
+	</append>
+
+	
+	<!-- *** BURNT_FOREST -->
+	<!-- *** ENEMY_ANIMAL_BURNT_FOREST_ANY -->
+	<append xpath="/entitygroups/entitygroup[@name='EnemyAnimalsBurntForestAny']">
+		<e n="animalBat" p="10" />
+		<e n="animalTassydevil" p="10" />
+		<e n="animalSpider01Mini" p="6" />
+		<e n="animalSpider02Mini" p="6" />
+		<e n="animalSpider03Mini" p="6" />
+		<e n="animalSpider01" p="4" />
+		<e n="animalSpider02" p="4" />
+		<e n="animalSpider03" p="4" />
+		<e n="animalDireWolf" p="4" />
+		<e n="animalSpider01Feral" p="3" />
+		<e n="animalSpider02Feral" p="3" />
+		<e n="animalSpider03Feral" p="3" />
+		<e n="animalSpider01Radiated" p="2" />
+		<e n="animalSpider02Radiated" p="2" />
+		<e n="animalSpider03Radiated" p="2" />
+		<e n="animalBigKoala" p="2" />
+		<e n="animalBigTassydevil" p="2" />
+		<e n="animalSpider01Queen" p="1" />
+		<e n="animalSpider02Queen" p="1" />
+		<e n="animalSpider03Queen" p="1" />
+		<e n="animalFlyingSpider01" p="1" />
+		<e n="animalFlyingSpider02" p="1" />
+		<e n="animalFlyingSpider03" p="1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="1" />
+	</append>
+
+
+	<!-- *** DESERT -->
+	<!-- *** ENEMY_ANIMAL_DESERT -->
+	<append xpath="/entitygroups/entitygroup[@name='EnemyAnimalsDesert']">
+		<e n="animalCassowary" p="30" />
+		<e n="animalTassydevil" p="30" />
+		<e n="animalPlatypus" p="30" />
+		<e n="animalKoala" p="30" />
+		<e n="animalFrillneck" p="30" />
+		<e n="animalKangaroo" p="40" />
+		<e n="animalMagpie" p="10" />	
+		<e n="animalBat" p="10" />
+		<e n="animalEagle" p="8" />
+		<e n="animalSpider01Mini" p="6" />
+		<e n="animalSpider02Mini" p="6" />
+		<e n="animalSpider03Mini" p="6" />
+		<e n="animalSpider01" p="4" />
+		<e n="animalSpider02" p="4" />
+		<e n="animalSpider03" p="4" />
+		<e n="animalDireWolf" p="4" />
+		<e n="animalSpider01Feral" p="3" />
+		<e n="animalSpider02Feral" p="3" />
+		<e n="animalSpider03Feral" p="3" />
+		<e n="animalSpider01Radiated" p="2" />
+		<e n="animalSpider02Radiated" p="2" />
+		<e n="animalSpider03Radiated" p="2" />
+		<e n="animalBigKoala" p="2" />
+		<e n="animalBigTassydevil" p="2" />
+		<e n="animalSpider01Queen" p="0.75" />
+		<e n="animalSpider02Queen" p="0.75" />
+		<e n="animalSpider03Queen" p="0.75" />
+		<e n="animalFlyingSpider01" p="0.75" />
+		<e n="animalFlyingSpider02" p="0.75" />
+		<e n="animalFlyingSpider03" p="0.75" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.5" />
+	</append>
+	
+	<!-- *** ENEMY_ANIMAL_DESERT_NIGHT-->
+	<append xpath="/entitygroups/entitygroup[@name='EnemyAnimalsDesertNight']">
+		<e n="animalCassowary" p="30" />
+		<e n="animalTassydevil" p="30" />
+		<e n="animalPlatypus" p="30" />
+		<e n="animalKoala" p="30" />
+		<e n="animalFrillneck" p="30" />
+		<e n="animalKangaroo" p="40" />
+		<e n="animalMagpie" p="10" />	
+		<e n="animalBat" p="10" />
+		<e n="animalEagle" p="8" />
+		<e n="animalSpider01Mini" p="6" />
+		<e n="animalSpider02Mini" p="6" />
+		<e n="animalSpider03Mini" p="6" />
+		<e n="animalSpider01" p="4" />
+		<e n="animalSpider02" p="4" />
+		<e n="animalSpider03" p="4" />
+		<e n="animalDireWolf" p="4" />
+		<e n="animalSpider01Feral" p="3" />
+		<e n="animalSpider02Feral" p="3" />
+		<e n="animalSpider03Feral" p="3" />
+		<e n="animalSpider01Radiated" p="2" />
+		<e n="animalSpider02Radiated" p="2" />
+		<e n="animalSpider03Radiated" p="2" />
+		<e n="animalBigKoala" p="2" />
+		<e n="animalBigTassydevil" p="2" />
+		<e n="animalSpider01Queen" p="0.75" />
+		<e n="animalSpider02Queen" p="0.75" />
+		<e n="animalSpider03Queen" p="0.75" />
+		<e n="animalFlyingSpider01" p="0.75" />
+		<e n="animalFlyingSpider02" p="0.75" />
+		<e n="animalFlyingSpider03" p="0.75" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.5" />
+	</append>
+	
+	<!-- *** SNOW -->
+	<!-- *** ENEMY_ANIMAL_SNOW-->
+	<append xpath="/entitygroups/entitygroup[@name='EnemyAnimalsSnow']">
+		<e n="animalMagpie" p="15" />
+		<e n="animalEagle" p="8" />
+		<e n="animalDireWolf" p="4" />
+		<e n="animalSpider01Mini" p="3" />
+		<e n="animalSpider02Mini" p="3" />
+		<e n="animalSpider03Mini" p="3" />
+		<e n="animalSpider01" p="2" />
+		<e n="animalSpider02" p="2" />
+		<e n="animalSpider03" p="2" />
+		<e n="animalSpider01Feral" p="1.5" />
+		<e n="animalSpider02Feral" p="1.5" />
+		<e n="animalSpider03Feral" p="1.5" />		
+		<e n="animalSpider01Radiated" p="1" />
+		<e n="animalSpider02Radiated" p="1" />
+		<e n="animalSpider03Radiated" p="1" />
+		<e n="animalSpider01Queen" p="0.75" />
+		<e n="animalSpider02Queen" p="0.75" />
+		<e n="animalSpider03Queen" p="0.75" />
+		<e n="animalFlyingSpider01" p="0.75" />
+		<e n="animalFlyingSpider02" p="0.75" />
+		<e n="animalFlyingSpider03" p="0.75" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.5" />
+	</append>
+	
+	<!-- *** ENEMY_ANIMAL_SNOW_NIGHT -->
+	<append xpath="/entitygroups/entitygroup[@name='EnemyAnimalsSnowNight']">
+		<e n="animalMagpie" p="15" />
+		<e n="animalEagle" p="8" />
+		<e n="animalSpider01Mini" p="3" />
+		<e n="animalSpider02Mini" p="3" />
+		<e n="animalSpider03Mini" p="3" />
+		<e n="animalSpider01" p="2" />
+		<e n="animalSpider02" p="2" />
+		<e n="animalSpider03" p="2" />
+		<e n="animalSpider01Feral" p="1.5" />
+		<e n="animalSpider02Feral" p="1.5" />
+		<e n="animalSpider03Feral" p="1.5" />		
+		<e n="animalSpider01Radiated" p="1" />
+		<e n="animalSpider02Radiated" p="1" />
+		<e n="animalSpider03Radiated" p="1" />
+		<e n="animalSpider01Queen" p="0.75" />
+		<e n="animalSpider02Queen" p="0.75" />
+		<e n="animalSpider03Queen" p="0.75" />
+		<e n="animalFlyingSpider01" p="0.75" />
+		<e n="animalFlyingSpider02" p="0.75" />
+		<e n="animalFlyingSpider03" p="0.75" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.5" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.5" />
+	</append>
+	
+	<!-- *** BIOME_ENEMY_ANIMAL_WASTELAND_GROUP --> <!-- ANY -->
+	
+	<append xpath="/entitygroups/entitygroup[@name='EnemyAnimalsWasteland']">
+		<e n="animalBat" p="10" />
+		<e n="animalTassydevil" p="10" />
+		<e n="animalSpider01Mini" p="6" />
+		<e n="animalSpider02Mini" p="6" />
+		<e n="animalSpider03Mini" p="6" />
+		<e n="animalSpider01" p="4" />
+		<e n="animalSpider02" p="4" />
+		<e n="animalSpider03" p="4" />
+		<e n="animalSpider01Feral" p="3" />
+		<e n="animalSpider02Feral" p="3" />
+		<e n="animalSpider03Feral" p="3" />		
+		<e n="animalSpider01Radiated" p="2" />
+		<e n="animalSpider02Radiated" p="2" />
+		<e n="animalSpider03Radiated" p="2" />		
+		<e n="animalBigKoala" p="2" />
+		<e n="animalBigTassydevil" p="2" />
+		<e n="animalSpider01Queen" p="1" />
+		<e n="animalSpider02Queen" p="1" />
+		<e n="animalSpider03Queen" p="1" />
+		<e n="animalFlyingSpider01" p="1" />
+		<e n="animalFlyingSpider02" p="1" />
+		<e n="animalFlyingSpider03" p="1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="1" />
+	</append>
+	
+	<!-- *** ENEMY_ANIMAL_WASTELAND_NIGHT -->
+	<append xpath="/entitygroups/entitygroup[@name='EnemyAnimalsWastelandNight']">
+		<e n="animalBat" p="10" />
+		<e n="animalTassydevil" p="10" />
+		<e n="animalSpider01Mini" p="6" />
+		<e n="animalSpider02Mini" p="6" />
+		<e n="animalSpider03Mini" p="6" />
+		<e n="animalSpider01" p="4" />
+		<e n="animalSpider02" p="4" />
+		<e n="animalSpider03" p="4" />
+		<e n="animalSpider01Feral" p="3" />
+		<e n="animalSpider02Feral" p="3" />
+		<e n="animalSpider03Feral" p="3" />		
+		<e n="animalSpider01Radiated" p="2" />
+		<e n="animalSpider02Radiated" p="2" />
+		<e n="animalSpider03Radiated" p="2" />		
+		<e n="animalBigKoala" p="2" />
+		<e n="animalBigTassydevil" p="2" />
+		<e n="animalSpider01Queen" p="1" />
+		<e n="animalSpider02Queen" p="1" />
+		<e n="animalSpider03Queen" p="1" />
+		<e n="animalFlyingSpider01" p="1" />
+		<e n="animalFlyingSpider02" p="1" />
+		<e n="animalFlyingSpider03" p="1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="1" />
+	</append>
+	
+	<!-- ZOMBIE HORDE NIGHT -->
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieNurseRadiated']">
+		<e n="zombieOakNurse" p="0.7" />
+		<e n="zombieOakFireNurse" p="0.7" />
+		<e n="zombieOakRadNurse" p="0.7" />	
+	</insertAfter>	
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieNurseCharged']">
+		<e n="zombieOakChargedNurse" p="0.7" />
+		<e n="zombieOakInfernalNurse" p="0.7" />
+	</insertAfter>
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieWightRadiated']">
+		<e n="zombieOakHeadHunter1" p="0.7" />
+		<e n="zombieOakHeadHunter2" p="0.7" />
+		<e n="zombieOakHeadHunter3" p="0.7" />
+		<e n="zombieOakHeadHunter4" p="0.7" />
+		<e n="zombieOakHeadHunter5" p="0.7" />
+	</insertAfter>	
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieWightCharged']">
+		<e n="zombieOakHeadHunterCharged" p="0.7" />
+	</insertAfter>
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieWightInfernal']">
+		<e n="zombieOakHeadHunterInfernal" p="0.7" />
+	</insertAfter>
+
+	<!-- GRUNT SPIDER HORDE NIGHT -->
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieArlene']">
+		<e n="animalBloodMoonSpider01" p="0.25" />
+	</insertAfter>
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieArlene']">
+		<e n="animalBloodMoonSpider02" p="0.25" />
+	</insertAfter>
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieBoe']">
+		<e n="animalBloodMoonSpider03" p="0.25" />
+	</insertAfter>
+	
+	<!-- FERAL SPIDER HORDE NIGHT -->
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieArleneFeral']">
+		<e n="animalBloodMoonSpider01Feral" p="0.25" />
+		<e n="animalFlyingSpider01" p="0.25" />
+	</insertAfter>
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieSteveFeral']">
+		<e n="animalBloodMoonSpider02Feral" p="0.25" />
+		<e n="animalFlyingSpider02" p="0.25" />
+	</insertAfter>
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieBoeFeral']">
+		<e n="animalBloodMoonSpider03Feral" p="0.25" />
+		<e n="animalFlyingSpider03" p="0.25" />
+	</insertAfter>
+	
+	<!-- QUEEN SPIDER HORDE NIGHT -->
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieArleneRadiated']">
+		<e n="animalBloodMoonSpider01Radiated" p="0.25" />
+	</insertAfter>
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieSteveRadiated']">
+		<e n="animalBloodMoonSpider02Radiated" p="0.25" />
+	</insertAfter>
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieBoeRadiated']">
+		<e n="animalBloodMoonSpider03Radiated" p="0.25" />
+	</insertAfter>
+
+	<insertAfter xpath="/entitygroups/entitygroup[starts-with(@name, 'feralHordeStageGS')]/e[@n='zombieDemolition']">
+		<e n="animalBloodMoonSpider01Queen" p="0.15" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.15" />
+		<e n="animalBloodMoonSpider02Queen" p="0.15" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.15" />
+		<e n="animalBloodMoonSpider03Queen" p="0.15" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.15" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.15" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.15" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.15" />
+		<e n="animalBloodMoonKoala" p="0.15" />
+		<e n="animalBloodMoonKangaroo" p="0.15" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />		
+		<e n="zombieOakBossNurse" p="0.15" />
+		<e n="zombieOakBossFireNurse" p="0.15" />
+		<e n="zombieOakBossRadNurse" p="0.15" />
+		<e n="zombieOakBossChargedNurse" p="0.15" />
+		<e n="zombieOakBossInfernalNurse" p="0.15" />
+		<e n="zombieOakBossHeadHunter1" p="0.15" />
+		<e n="zombieOakBossHeadHunter2" p="0.15" />
+		<e n="zombieOakBossHeadHunter3" p="0.15" />
+		<e n="zombieOakBossHeadHunter4" p="0.15" />
+		<e n="zombieOakBossHeadHunter5" p="0.15" />
+		<e n="zombieOakBossHeadHunterCharged" p="0.15" />
+		<e n="zombieOakBossHeadHunterInfernal" p="0.15" />		
+		<e n="zombieOakSirenHead" p="0.15" />
+		<e n="zombieOakBigFoot" p="0.15" />
+		<e n="zombieOakBigFootSnow" p="0.15" />
+		<e n="zombieOakBigFootInfernal" p="0.15" />		
+		<e n="zombieOakBigFootCharged" p="0.15" />
+	</insertAfter>
+
+	<!-- SPIDER ONLY HORDE NIGHT -->
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS40']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS80']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />	
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />	
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS121']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS153']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS195']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS255']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS304']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS354']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS407']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS453']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS501']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS550']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS600']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS651']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS704']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS758']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS802']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS858']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS904']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS951']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1010']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1106']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1206']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1308']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1412']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1506']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1601']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />		
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1712']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1811']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1911']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1999']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2102']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2207']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2314']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2407']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2501']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2612']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2708']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2805']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2903']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3003']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3103']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3204']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3306']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3410']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3514']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3601']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3707']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3814']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3904']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS4013']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS4086']">
+		<e n="animalBloodMoonSpider01Mini" />
+		<e n="animalBloodMoonSpider01" p="0.25" />
+		<e n="animalBloodMoonSpider01Feral" p="0.15" />
+		<e n="animalBloodMoonSpider01Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider01Queen" p="0.1" />
+		<e n="animalBloodMoonSpider02Mini" />
+		<e n="animalBloodMoonSpider02" p="0.25" />
+		<e n="animalBloodMoonSpider02Feral" p="0.15" />
+		<e n="animalBloodMoonSpider02Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider02Queen" p="0.1" />
+		<e n="animalBloodMoonSpider03Mini" />
+		<e n="animalBloodMoonSpider03" p="0.25" />
+		<e n="animalBloodMoonSpider03Feral" p="0.15" />
+		<e n="animalBloodMoonSpider03Radiated" p="0.1" />
+		<e n="animalBloodMoonFlyingSpider03Queen" p="0.1" />
+		<e n="animalBloodMoonSpider01QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider02QueenFred" p="0.1" />
+		<e n="animalBloodMoonSpider03QueenFred" p="0.1" />		
+		<e n="animalBloodMoonKoala" p="0.25" />
+		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="animalBloodMoonBossKoala" p="0.15" />
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+	</set>
+
+</configs>

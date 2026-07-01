@@ -1,0 +1,150 @@
+<configs>
+
+	<!-- TRADERS -->
+	<!-- *** TRADER JOEL ID:1 SPECIALTY: CLOTHES AND ARMOR -->
+	<setattribute xpath="/traders/trader_info[@id='1']" name="reset_interval">2</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='1']" name="open_time">0:00</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='1']" name="close_time">0:00</setattribute>
+	<!-- *** TRADER BOB ID:6 SPECIALTY: TOOLS AND VEHICLES -->
+	<setattribute xpath="/traders/trader_info[@id='6']" name="reset_interval">2</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='6']" name="open_time">0:00</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='6']" name="close_time">0:00</setattribute>
+	<!-- *** TRADER JEN ID:2 SPECIALTY: MEDICAL AND BOOKS -->
+	<setattribute xpath="/traders/trader_info[@id='2']" name="reset_interval">2</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='2']" name="open_time">0:00</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='2']" name="close_time">0:00</setattribute>
+	<!-- *** TRADER HUGH ID:7 SPECIALTY: GUNS & AMMO -->
+	<setattribute xpath="/traders/trader_info[@id='7']" name="reset_interval">2</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='7']" name="open_time">0:00</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='7']" name="close_time">0:00</setattribute>
+	<!-- *** TRADER REKT ID:8 SPECIALTY: FOOD & FARMING -->
+	<setattribute xpath="/traders/trader_info[@id='8']" name="reset_interval">2</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='8']" name="open_time">0:00</setattribute>
+	<setattribute xpath="/traders/trader_info[@id='8']" name="close_time">0:00</setattribute>
+	
+	<!-- Roadies Special Items -->
+	<insertAfter xpath="/traders/traderstage_templates/traderstage_template[@name='baseTier3']">
+		<traderstage_template name="baseTierRoadiesSpecialTier0"> <!-- Roadies Special Items -->
+			<entry min="1" max="999999" quality="0"/> <!-- Fallback for items without quality -->
+			<entry min="999999" max="999999" quality="1"/> <!-- Don't show Q1 items -->
+			<entry min="999999" max="999999" quality="2"/> <!-- Don't show Q2 items -->
+			<entry min="5" max="15" quality="3"/>
+			<entry min="10" max="20" quality="4"/>
+			<entry min="15" max="20" quality="5"/>
+			<entry min="20" max="999999" quality="6"/>
+		</traderstage_template>
+		<traderstage_template name="baseTierRoadiesSpecialTier1"> <!-- Roadies Special Items -->
+			<entry min="1" max="999999" quality="0"/> <!-- Fallback for items without quality -->
+			<entry min="999999" max="999999" quality="1"/> <!-- Don't show Q1 items -->
+			<entry min="999999" max="999999" quality="2"/> <!-- Don't show Q2 items -->
+			<entry min="999999" max="999999" quality="3"/> <!-- Don't show Q3 items -->
+			<entry min="50" max="70" quality="4"/>
+			<entry min="60" max="70" quality="5"/>
+			<entry min="70" max="999999" quality="6"/>
+		</traderstage_template>
+		<traderstage_template name="baseTierRoadiesSpecialTier2"> <!-- Roadies Special Items -->
+			<entry min="1" max="999999" quality="0"/> <!-- Fallback for items without quality -->
+			<entry min="999999" max="999999" quality="1"/> <!-- Don't show Q1 items -->
+			<entry min="999999" max="999999" quality="2"/> <!-- Don't show Q2 items -->
+			<entry min="999999" max="999999" quality="3"/> <!-- Don't show Q3 items -->
+			<entry min="999999" max="999999" quality="4"/> <!-- Don't show Q4 items -->
+			<entry min="50" max="999999" quality="5"/>
+			<entry min="60" max="999999" quality="6"/>
+		</traderstage_template>
+		<traderstage_template name="baseTierRoadiesSpecialTier3"> <!-- Roadies Special Items -->
+			<entry min="1" max="999999" quality="0"/> <!-- Fallback for items without quality -->
+			<entry min="999999" max="999999" quality="1"/> <!-- Don't show Q1 items -->
+			<entry min="999999" max="999999" quality="2"/> <!-- Don't show Q2 items -->
+			<entry min="999999" max="999999" quality="3"/> <!-- Don't show Q3 items -->
+			<entry min="999999" max="999999" quality="4"/> <!-- Don't show Q4 items -->
+			<entry min="100" max="999999" quality="5"/>
+			<entry min="110" max="999999" quality="6"/>
+		</traderstage_template>
+	</insertAfter>
+	
+	<!-- *** Ammo -->
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='ammoAll']">
+		<item name="ammoRocketFire" count="1,4"/>		
+	</append>
+
+	<!-- *** Raw_Ingredients -->
+	
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='foodSupplies']">
+		<item name="GrownChicken" count="1"/>
+		<item name="foodBillyTea" count="2,5"/>
+		<item name="foodBarramundi" count="1,3"/>		
+	</append>
+	
+		<!-- *** Canned_Food -->
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='cannedfood']">
+			<item name="foodFairyBread" count="1,3"/>
+			<item name="foodLamington" count="1,3"/>
+			<item name="foodStimStam" count="1,3"/>
+	</append>
+	
+		<!-- *** Prepared_Drinks -->
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='groupDrinks']">
+			<item name="drinkJarBillyTea" count="1,3"/>
+			<item name="drinkWombatChocoPoco" count="1,3"/>
+	</append>
+	
+	<!-- *** Melee_Weapons -->
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='groupMeleeAll']">
+		<item name="meleeWpnClubT1CanCanBat" prob="0.6" quality="4,6"/>
+		<item name="meleeWpnKnucklesT3SteelOakravenBristonKnuckles" prob="0.6" quality="5,6"/>
+		<item name="meleeWpnClubT3OldCricketBat" prob="0.6" quality="5,6"/>
+		<item name="meleeWpnClubT3NewCricketBat" prob="0.6" quality="5,6"/>
+	</append>
+	
+		<!-- *** T1_MELEE_MODS -->
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='groupMeleeMods']">
+		<item name="modMeleeSpartanSledgeStamina"/>
+		<!-- *** T2_MELEE_MODS -->
+		<item name="modMeleeMacheteArmorPiercing"/>
+	</append>
+	
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='groupRangedMods']">
+	<!-- *** T1_Ranged_Mods-->
+		<item name="modWeaponMaintenance"/>
+		<item name="modGunDoubleBarrelSpeedLoader"/>
+	<!-- *** T2_Ranged_Mods -->
+		<item name="modGunBowArrowGrip"/>
+		<item name="modArcheryReloadSpeed"/>
+		<item name="modGunMagnumMagazineExtender"/>		
+	</append>
+	
+	<!-- Group Armor Mods -->
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='groupArmorMods']">
+		<item name="modArmorRunningShoesHP"/>	
+	</append>
+	
+	<!-- schematicsModsCommon -->
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='schematicsModsCommon']">
+		<item name="modWeaponMaintenanceSchematic"/>
+		<item name="modMeleeSpartanSledgeStaminaSchematic"/>
+		<item name="modMeleeMacheteArmorPiercingSchematic"/>
+		<item name="modGunBowArrowGripSchematic"/>		
+		<item name="modArcheryReloadSpeedSchematic"/>
+		<item name="modArmorRunningShoesHPSchematic"/>
+		<item name="modGunMagnumMagazineExtenderSchematic"/>
+		<item name="modGunDoubleBarrelSpeedLoaderSchematic"/>		
+	</append>
+	
+	<!-- Summon FriendZ and Animals Note - Custom Group -->
+	
+	<insertBefore xpath="/traders/trader_item_groups/trader_item_group[@name='groupMeleeMods']">	
+		<trader_item_group name="FriendZ">
+			<item name="noteqc_1-SummonFriendZ"/>			
+		</trader_item_group>
+		
+		<trader_item_group name="SummonAnimals">
+			<item name="noteqc_1-SummonAnimals"/>			
+		</trader_item_group>		
+	</insertBefore>
+
+	<append xpath="/traders/trader_item_groups/trader_item_group[@name='traderAlways']">
+		<item group="FriendZ" count="1"/>
+		<item group="SummonAnimals" count="1"/>		
+	</append>
+
+</configs>
