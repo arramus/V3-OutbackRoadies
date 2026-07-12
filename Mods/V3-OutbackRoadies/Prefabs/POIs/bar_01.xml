@@ -35,15 +35,15 @@
   <property name="SleeperVolumeTriggeredBy" value=" # # # " />
   <property class="Stats">
     <property name="LightsVolume" value="5423.947" />
-    <property name="TotalVertices" value="439584" />
-    <property name="TotalTriangles" value="203748" />
+    <property name="TotalVertices" value="453540" />
+    <property name="TotalTriangles" value="211858" />
     <property class="BlockEntities">
-      <property name="Vertices" value="384386" />
-      <property name="Triangles" value="167064" />
+      <property name="Vertices" value="398376" />
+      <property name="Triangles" value="175964" />
     </property>
     <property class="ChunkMeshes0">
-      <property name="Vertices" value="50432" />
-      <property name="Triangles" value="29756" />
+      <property name="Vertices" value="50398" />
+      <property name="Triangles" value="28966" />
     </property>
     <property class="ChunkMeshes1">
       <property name="Vertices" value="0" />
@@ -70,17 +70,18 @@
     <property class="quest_wood_trees">
       <property name="0" value="14, 1, 40" />
     </property>
-    <property class="challenge_mech_parts">
-      <property name="0" value="20, 2, 19" />
-    </property>
     <property class="challenge_cars">
       <property name="0" value="12, 1, 27" />
+    </property>
+    <property class="challenge_mech_parts">
+      <property name="0" value="20, 2, 19" />
     </property>
     <property class="Rally">
       <property name="0" value="32, 1, 7" />
     </property>
     <property class="POILight">
-      <property name="0" value="39, 1, 29" />
+      <property name="0" value="37, 3, 27" />
+      <property name="1" value="39, 1, 29" />
     </property>
     <property class="challenge_polymers">
       <property name="0" value="34, 1, 22" />
@@ -93,6 +94,7 @@
     <property class="TraderOnOff">
       <property name="0" value="26, 1, 21" />
       <property name="1" value="24, 1, 30" />
+      <property name="2" value="32, 1, 31" />
     </property>
     <property class="challenge_steel">
       <property name="0" value="22, 1, 16" />

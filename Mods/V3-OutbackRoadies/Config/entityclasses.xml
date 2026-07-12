@@ -5367,18 +5367,8 @@
 	<property name="SizeScale" value="1"/>
 	<property name="ModelType" value="Standard"/>
 	<property name="WalkType" value="2"/>
-
-	<!-- Dismemberment -->
-	<property name ="DismemberTag_L_HeadGore" value=""/>
-	<property name ="DismemberTag_L_LeftLowerArmGore" value=""/>
-	<property name ="DismemberTag_L_LeftUpperArmGore" value=""/>
-	<property name ="DismemberTag_L_LeftUpperLegGore" value=""/>
-	<property name ="DismemberTag_L_RightLowerArmGore" value=""/>
-	<property name ="DismemberTag_L_RightUpperArmGore" value=""/>
-	<property name ="DismemberTag_L_RightUpperLegGore" value=""/>
-	<property name ="DismemberTag_L_LeftLowerLegGore" value=""/>
-	<property name ="DismemberTag_L_RightLowerLegGore" value=""/>
-
+    <property name="PhysicsBody" value="OakRoadiesBigFootConvertedStandard"/>
+	
 	<property name="AITask" value="
 	BreakBlock|
 	ApproachDistraction|
