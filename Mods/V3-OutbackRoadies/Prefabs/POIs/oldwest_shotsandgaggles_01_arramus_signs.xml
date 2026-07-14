@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<signs version="2">
+  <sign guid="647cb45c-3e37-4206-b1aa-6d08c364ff77" name="New Sign (1)" modified="2026-06-24 23:28:52Z" next_poly_id="4" next_text_id="3" next_noise_id="3" next_group_id="0">
+    <layer name="Poly 01" type="PolygonSignLayer" pos="0, 0" rot="0" scale="1, 0.3" color="#253425FF" mode="ColorOnly" sides="4" smoothness="0" starify="0" softness="0" dilate="0" frequency="5" shapeMode="Normal" />
+    <layer name="Noise 01" type="NoiseSignLayer" pos="0, 0" rot="0" scale="0.1621084, 0.1621084" color="#FFFFFFFF" mode="ColorOnly" seed="64" detail="4" softness="0" dilate="-0.1229565" fade="1" />
+    <layer name="Noise 03" type="NoiseSignLayer" pos="0, 0" rot="0" scale="0.1132061, 0.1132061" color="#454945FF" mode="ColorOnly" seed="0" detail="4" softness="0" dilate="0" fade="0" />
+    <layer name="Text 01" type="TextSignLayer" pos="-0.0279018, 0.2434599" rot="0" scale="0.2443519, 0.2443519" color="#D7B3B3FF" mode="ColorOnly" font="Stardos Stencil" text="SHOTS" direction="0" spacing="1" softness="0" dilate="0">
+      <warp type="ArcWarp" rotation="0" radius="15" width="0.01857151" />
+    </layer>
+    <layer name="Text 02" type="TextSignLayer" pos="2.123415E-07, 0.003024321" rot="0" scale="0.0857375, 0.0857375" color="#DBC4C4FF" mode="ColorOnly" font="LiberationSans" text="AND" direction="-0.2217112" spacing="1.260839" softness="0.9360342" dilate="0.5024878" />
+    <layer name="Text 03" type="TextSignLayer" pos="0.0004636263, -0.1539234" rot="0" scale="0.3, 0.3" color="#CDB4B4FF" mode="ColorOnly" font="Stardos Stencil" text="GAGGLES" direction="0" spacing="1.09" softness="0" dilate="0" />
+    <layer name="Poly 04" type="PolygonSignLayer" pos="-0.2955314, 0.0104632" rot="1" scale="0.055, 0.02" color="#D2A2A2FF" mode="ColorOnly" sides="4" smoothness="0" starify="0" softness="0" dilate="0" frequency="5" shapeMode="Normal">
+      <warp type="SkewWarp" amount="0.8678044, 0.3560772" rotation="-32.3667" />
+    </layer>
+    <layer name="Poly 03" type="PolygonSignLayer" pos="0.3234326, 0.006975031" rot="1" scale="0.095, 0.0135" color="#D2A2A2FF" mode="ColorOnly" sides="4" smoothness="0" starify="0" softness="0" dilate="0" frequency="5" shapeMode="Normal">
+      <warp type="SkewWarp" amount="-0.5820891, -0.1556497" rotation="3.454192" />
+    </layer>
+  </sign>
+</signs>
