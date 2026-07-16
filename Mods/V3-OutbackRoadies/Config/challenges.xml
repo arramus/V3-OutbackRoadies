@@ -1,5 +1,10 @@
 <configs>
 
+	<!-- *** HEALER_CHALLENGES -->
+	<append xpath="/challenges/challenge[@name='healerInfection']/objective/@item">,foodWitchettyGrub,foodWitchettyGrubSoupandSanga,foodPocoTucker,foodZombimiteToast,foodHordeGorge,foodSuperHoneyPopcorn,foodSuperCornFluffyOmelette,foodChickSticks,foodHoneyComb,foodHoneyPumpkinPie,foodBlueberryBreadPudding,foodHoneyGlazedDonuts,drinkHoneyBeer</append>
+
+	<!-- *** BURNT_FOREST_CHALLENGES -->
+	<append xpath="/challenges/challenge[@name='burntSurvivalKillZombie']/objective[@type='Kill']/@entity_names">,zombieBurntRadiatedMini</append>
 	<!-- *** DESERT_CHALLENGES -->	
 	<append xpath="/challenges/challenge[@name='desertSurvivalKillZombie']/objective[@type='Kill']/@entity_names">,zombieMiniRancher,zombieMiniRancherFeral,zombieMiniRancherRadiated,zombieMiniRancherCharged,zombieMiniRancherInfernal</append>
 	
