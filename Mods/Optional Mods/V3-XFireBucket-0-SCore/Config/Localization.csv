@@ -1,0 +1,7 @@
+Key,File,Type,UsedInMainMenu,NoTranslate,KeepLoaded,english,Context / Alternate Text,german,spanish,french,italian,japanese,koreana,polish,brazilian,russian,turkish,schinese,tchinese
+
+toolXFireBucketEmpty,items,Item,,,,Fire Bucket (Empty),,,,,,,,,,,,,
+toolXFireBucketEmptyDesc,items,Item,,,,"An empty fire bucket can be used to fill up and transport water to an active fire, and used in an attempt to extinguish it.",,,,,,,,,,,,,
+toolXFireBucket,items,Item,,,,Fire Bucket (Full),,,,,,,,,,,,,
+toolXFireBucketDesc,items,Item,,,,"Water from a fire bucket can be used on an active fire in an attempt to extinguish it. It has an active range of 8 blocks. It can also be can be dumped into an enclosed structure or hole in the ground to store it.",,,,,,,,,,,,,
+

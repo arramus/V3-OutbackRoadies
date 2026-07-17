@@ -1,0 +1,12 @@
+<configs>
+
+<append xpath="/recipes">
+
+	<!-- XFire Water Bucket -->	
+    <recipe name="toolXFireBucketEmpty" count="1" tags="workbenchCrafting,packMuleCrafting">
+      <ingredient name="resourceScrapIron" count="200"/>
+    </recipe>
+	
+</append>
+
+</configs>

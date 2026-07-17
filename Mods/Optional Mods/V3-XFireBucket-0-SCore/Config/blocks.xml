@@ -1,0 +1,5 @@
+<configs>
+	<!-- 0-SCore Changes -->
+	<set xpath="/blocks/block[@name='ConfigFeatureBlock']/property[@class='FireManagement']/property[@name='FireEnable']/@value">true</set>
+	<set xpath="/blocks/block[@name='ConfigFeatureBlock']/property[@class='FireManagement']/property[@name='ChanceToExtinguish']/@value">.15</set>
+</configs>

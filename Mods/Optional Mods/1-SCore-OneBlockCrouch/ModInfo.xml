@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xml>
+	<Name value="1-SCore_OneBlockCrouch" />
+	<DisplayName value="1-SCore One Block Crouch" />
+	<Description value="Allows players to crouch through a one block opening when using 0-SCore." />
+	<Author value="sphereii for 0-SCore, and arramus for functional additions" />
+	<Version value="3.0.0.0" />
+	<Website value="https://discord.gg/PFMY8rqQVs" />
+</xml>

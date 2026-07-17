@@ -1,0 +1,58 @@
+<configs>
+
+<append xpath="/items">
+
+<item name="toolXFireBucketEmpty">
+	<property name="HoldType" value="34"/>
+	<property name="Meshfile" value="@:Other/Items/Crafting/Metal/IronBucketEmptyPrefab.prefab"/>
+	<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+	<property name="Material" value="Mmetal"/>
+	<property name="Stacknumber" value="1"/>
+	<property name="EconomicValue" value="24"/>
+	<property name="Class" value="ItemClassWaterContainer"/>
+	<property name="WaterCapacity" value="1"/>
+	<property name="SoundPickup" value="bucket_grab"/>
+	<property name="SoundPlace" value="bucket_place"/>
+	<property class="Action0">
+		<property name="Class" value="BailLiquid"/>
+		<property name="Delay" value=".35"/>
+		<property name="Sound_start" value="bucketbail_water"/>
+	</property>
+	<property class="Action1"> <!-- UseAction -->
+		<property name="Class" value="CollectWater"/>
+		<property name="Delay" value=".35"/>
+		<property name="Change_item_to" value="toolXFireBucket"/>
+		<property name="ReduceWater" value="true"/>
+		<property name="Sound_start" value="bucketfill_water"/>
+	</property>
+	<property name="Group" value="Tools/Traps"/>
+</item>
+
+<item name="toolXFireBucket">
+	<property name="HoldType" value="34"/>
+	<property name="Meshfile" value="@:Other/Items/Crafting/Metal/IronBucketWaterPrefab.prefab"/>
+	<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+	<property name="Material" value="Mmetal"/>
+	<property name="Stacknumber" value="1"/>
+	<property name="EconomicValue" value="28"/>
+	<property name="Class" value="ItemClassWaterContainer"/>
+	<property name="WaterCapacity" value="1"/>
+	<property name="InitialFillRatio" value="1.0"/>
+	<property name="SoundPickup" value="bucket_water_grab"/>
+	<property name="SoundPlace" value="bucket_water_place"/>
+	<property class="Action1"> <!-- UseAction -->
+		<property name="Class" value="DumpWater"/>
+		<property name="Delay" value=".5"/>
+		<property name="Change_item_to" value="toolXFireBucketEmpty"/>
+		<property name="Sound_start" value="bucketplace_water"/>
+	</property>
+	<property name="Group" value="Tools/Traps"/>
+	<effect_group name="FireBucket">
+		<triggered_effect trigger="onSelfAttackedOther" action="RemoveBuff" target="other" buff="buffIsOnFire"/>
+		<triggered_effect trigger="onSelfPrimaryActionRayHit" action="RemoveFire, SCore" target="positionAOE" range="8"/>
+	</effect_group>
+</item>
+	
+</append>		
+	
+</configs>

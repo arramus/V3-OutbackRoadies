@@ -1,0 +1,47 @@
+<configs>
+	<append xpath="/templates">
+		<!-- Make cells not look like crap and item icons fit properly -->
+	<kh96_backpack_item_stack controller="ItemStack" on_scroll="false" allow_dropping="true" prefix_id="false" show_favorites="false">
+		<rect controller="${controller}" style="kh96_itemStack, hover" collider_scale="1.0" on_scroll="${on_scroll}" allow_dropping="${allow_dropping}" prefix_id="${prefix_id}" show_favorites="${show_favorites}" tooltip="{tooltip}" enabled="{# !defined('userlockmode') or !userlockmode}" >
+			<sprite depth="2" name="backgroundMain" sprite="menu_empty3px" pos="-3,3" color="[black]" type="sliced" fillcenter="false"
+				width="53" height="53" />
+			<sprite depth="3" name="background" sprite="menu_empty3px" color="{selectionbordercolor}" type="sliced" globalopacity="true" fillcenter="false"
+				width="48" height="48" />
+			<sprite depth="2" name="highlightOverlay" color="{backgroundcolor}" pos="0,0" type="sliced" globalopacity="true"
+				width="47" height="47" />
+
+			<texture depth="3" name="backgroundTexture" material="Materials/Transparent Colored" globalopacity="true"
+				size="48,48" />
+			<sprite depth="8" name="favoriteIcon" width="24" height="24" sprite="server_favorite" pos="2,-2" foregroundlayer="true" visible="{isfavorite}"/>
+			<sprite depth="6" name="itemIcon" width="40" height="40" atlas="ItemIconAtlas" sprite="{itemicon}" pivot="center" foregroundlayer="true" color="{iconcolor}"
+				pos="20,-25" />
+			<sprite depth="8" name="lockTypeIcon" width="7" height="7" sprite="{locktypeicon}" pos="2,-2" foregroundlayer="true"/>
+			<sprite depth="8" name="itemtypeicon" width="24" height="24" sprite="ui_game_symbol_{itemtypeicon}" pos="2,-2" foregroundlayer="true" visible="{hasitemtypeicon}" color="{itemtypeicontint}" />
+
+			<sprite depth="3" name="durabilityBackground" sprite="menu_empty3px" color="[darkGrey]" type="sliced" foregroundlayer="true" visible="{hasdurability}"
+				width="46" height="5" pos="1, -42" />
+			<filledsprite depth="4" name="durability" sprite="menu_empty2px" color="{durabilitycolor}" fill="{durabilityfill}" type="filled" foregroundlayer="true" visible="{hasdurability}"
+				width="46" height="5" pos="1, -42" />
+
+			<sprite depth="5" name="disabledOverlay" color="[darkGrey_half_alpha]" pos="1,-1" type="sliced" visible="false"
+				width="47" height="47" />
+
+			<label depth="7" name="stackValue" height="16" text="{itemcount}" font_size="16" effect="outline" justify="{#hasdurability ? 'Center' : 'Right'}"
+				pos="-2,-30" width="45" />
+			<label depth="7" name="timer" height="16" font_size="18" justify="center" pivot="center" color="[beige]" effect="outline"
+				pos="35,-33" width="45" />
+			<sprite depth="9" name="cancel" sprite="ui_game_symbol_x" color="255,0,0,255" type="sliced" visible="{# ishovered and islocked}" foregroundlayer="true"
+				width="45" height="45" />
+			<sprite depth="13" name="assembleIcon" sprite="{stacklockicon}" color="{stacklockcolor}" visible="{isassemblelocked}" pos="14,-14" foregroundlayer="true"
+				size="28,28" />
+
+			<sprite depth="14" name="quickswapIcon" size="30,30" sprite="server_refresh" pos="40,-2" foregroundlayer="true" visible="{isQuickSwap}" />
+
+			<button name="rectSlotLock" depth="15" style="press, hover" width="58" height="58" visible="{# defined('userlockmode') and userlockmode}" sprite="" hoverscale="1" use_selection_box="true">
+				<sprite depth="16" name="slotLockIcon" width="17" height="17" sprite="{# !defined('userlockmode') ? '' : (userlockedslot ? 'ui_game_symbol_lock' : 'ui_game_symbol_unlock') }" pos="40, -8" style="icon32px" pivot="center" color="{# !defined('userlockmode') ? '255,255,255,1' : (userlockedslot ? '222,206,163' : '255,255,255') }" />
+			</button>
+			<sprite depth="15" name="iconSlotLock" width="13" height="13" sprite="ui_game_symbol_lock" pos="42, -6" style="icon32px" pivot="center" visible="{# defined('userlockmode') and !userlockmode and userlockedslot }" color="[lightGrey]" />
+		</rect>
+	</kh96_backpack_item_stack>
+	</append>
+</configs>

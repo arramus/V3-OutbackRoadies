@@ -14,8 +14,9 @@ For Mod Launcher installation, simply follow the usual method of installing thro
 =======================================
 = 10K Australia Outback Roadies World =
 =======================================
-The 10K Australia Outback Roadies World by FluffyPanda is a big 10K one, and can be found on Nexus in the Optional Files. 
-https://www.nexusmods.com/7daystodie/mods/8029
+The 10K Australia Outback Roadies World Pack by FluffyPanda is a big 10K one, and can be found on Fluffy Panda's Discord.
+https://discord.gg/BsUtxGy8aq
+This World is a World Pack. It contains the World and some POIs and resources. These bring in a few new POIs to give extra immersion.
 It is a stand alone mod. Unzip and place in the Mods folder along with other mods, or Modlets folder for the Mod Launcher to stop it deleting during updates.
 When setting up a new game, you will find reference to 'Fluffy Panda Outback Australia 10k' in the world list.
 It follows the trader progression flow with the 'correct' trader in the 'correct' biome so it doesn't break stuff.
@@ -35,7 +36,7 @@ https://community.thefunpimps.com/threads/tfp-official-modding-forum-policy.4189
 = CREDITS =
 ===========
 EndZ Devs - Thee Legion and May Red for bringing the Poco Vehicles and Australian animals through the whole Unity process.
-FluffyPanda - Created and further customised the 10K Australia World for Outback Roadies.
+FluffyPanda - Created and further customised the 10K Australia World for Outback Roadies, along with some custom POIs and assets.
 SpecBytes Gaming - SpecBytes and Cemblack for the initial request, and content localisation advice.
 Life Is A Game & Patrol Nation - Cactus Dan and Patrol have really given us some great Roadies moments, and we look forward to that continuing.
 NPC Mod Team - Sphereii, Xyth, and the whole NPC Mod Team for 0-Score and 0-XNPCCore to help power the entities and other quality of life additions.
