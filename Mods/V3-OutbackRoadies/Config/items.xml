@@ -2731,7 +2731,7 @@
 	<property name="RepairExpMultiplier" value="5.5"/>
 	<property name="EconomicBundleSize" value="1"/>
 	<property name="EconomicValue" value="550"/> <!-- Default 500 -->
-	<property name="TraderStageTemplate" value="baseTierPreppoSpecialTier1"/> <!-- baseTier1 revision -->
+	<property name="TraderStageTemplate" value="baseTierRoadiesSpecialTier1"/> <!-- baseTier1 revision -->
 	<!--property name="UnlockedBy" value="craftingClubs"/--><!-- perkPummelPete,meleeWpnClubT1BaseballBatSchematic, -->
 	<property name="ShowQuality" value="true"/>
 	<property name="SoundUnholster" value="weapon_unholster"/>
@@ -2870,7 +2870,7 @@
 	<property name="Meshfile" value="#@modfolder:Resources/knucklesLeftRightBlade.unity3d?KnuckleBladesRight"/>
 	<property name="HoldType" value="61"/>
 	<property name="ScrapTimeOverride" value="10.0"/>
-	<property name="TraderStageTemplate" value="baseTierPreppoSpecialTier3"/> <!-- baseTier3 revision -->
+	<property name="TraderStageTemplate" value="baseTierRoadiesSpecialTier3"/> <!-- baseTier3 revision -->
 	<property name="EconomicValue" value="1210"/>	
 	<!--property name="UnlockedBy" value="craftingKnuckles"/--><!-- meleeWpnKnucklesT3SteelKnucklesSchematic, -->
 	<property name="SoundUnholster" value="weapon_unholster"/>
