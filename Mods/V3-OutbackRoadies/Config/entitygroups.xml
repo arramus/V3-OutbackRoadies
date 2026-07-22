@@ -248,7 +248,7 @@
 	
 	<append xpath="/entitygroups">
 	
-	<!-- Head Hunters for GS -->
+	<!-- Roadies Head Hunters for GS -->
 	
 	<entitygroup name="RoadiesHeadHuntersGroupGS01">
 		<e n="zombieBurnt" />
@@ -435,6 +435,90 @@
 		<e n="zombieOakBossHeadHunterCharged" />
 		<e n="zombieOakBossHeadHunterInfernal" />		
 		<e n="zombieOakSirenHead" p="0.5" />
+	</entitygroup>
+	
+	<!-- Roadies Koalas for GS -->
+	
+	<entitygroup name="RoadiesKoalasGroupGS01">
+		<e n="animalKoala" p="0.8" />		
+		<e n="animalBigKoala" p="0.2" />
+	</entitygroup>
+	<entitygroup name="RoadiesKoalasGroupGS50">
+		<e n="animalKoala" p="0.7" />		
+		<e n="animalBigKoala" p="0.3" />
+	</entitygroup>
+	<entitygroup name="RoadiesKoalasGroupGS100">
+		<e n="animalKoala" p="0.6" />		
+		<e n="animalBigKoala" p="0.4" />
+	</entitygroup>
+	<entitygroup name="RoadiesKoalasGroupGS200">
+		<e n="animalKoala" p="0.5" />		
+		<e n="animalBigKoala" p="0.5" />
+	</entitygroup>
+	<entitygroup name="RoadiesKoalasGroupGS400">
+		<e n="animalKoala" p="0.4" />		
+		<e n="animalBigKoala" p="0.6" />
+	</entitygroup>
+	<entitygroup name="RoadiesKoalasGroupGS800">
+		<e n="animalKoala" p="0.3" />		
+		<e n="animalBigKoala" p="0.7" />
+	</entitygroup>
+	
+	<!-- Roadies Aussie Animals for GS -->
+	
+	<entitygroup name="RoadiesAussieAnimalsGroupGS01">
+		<e n="animalTassydevil" />
+		<e n="animalPlatypus" />
+		<e n="animalKoala" />
+		<e n="animalFrillneck" />
+		<e n="animalKangaroo" />		
+		<e n="animalBigKoala" p="0.05" />
+		<e n="animalBigTassydevil" p="0.05" />
+	</entitygroup>
+	<entitygroup name="RoadiesAussieAnimalsGroupGS50">
+		<e n="animalTassydevil" />
+		<e n="animalPlatypus" />
+		<e n="animalKoala" />
+		<e n="animalFrillneck" />
+		<e n="animalKangaroo" />		
+		<e n="animalBigKoala" p="0.1" />
+		<e n="animalBigTassydevil" p="0.1" />
+	</entitygroup>
+	<entitygroup name="RoadiesAussieAnimalsGroupGS100">
+		<e n="animalTassydevil" />
+		<e n="animalPlatypus" />
+		<e n="animalKoala" />
+		<e n="animalFrillneck" />
+		<e n="animalKangaroo" />		
+		<e n="animalBigKoala" p="0.15" />
+		<e n="animalBigTassydevil" p="0.15" />
+	</entitygroup>
+	<entitygroup name="RoadiesAussieAnimalsGroupGS200">
+		<e n="animalTassydevil" />
+		<e n="animalPlatypus" />
+		<e n="animalKoala" />
+		<e n="animalFrillneck" />
+		<e n="animalKangaroo" />		
+		<e n="animalBigKoala" p="0.2" />
+		<e n="animalBigTassydevil" p="0.2" />
+	</entitygroup>
+	<entitygroup name="RoadiesAussieAnimalsGroupGS400">
+		<e n="animalTassydevil" />
+		<e n="animalPlatypus" />
+		<e n="animalKoala" />
+		<e n="animalFrillneck" />
+		<e n="animalKangaroo" />		
+		<e n="animalBigKoala" p="0.25" />
+		<e n="animalBigTassydevil" p="0.25" />
+	</entitygroup>
+	<entitygroup name="RoadiesAussieAnimalsGroupGS800">
+		<e n="animalTassydevil" />
+		<e n="animalPlatypus" />
+		<e n="animalKoala" />
+		<e n="animalFrillneck" />
+		<e n="animalKangaroo" />		
+		<e n="animalBigKoala" p="0.35" />
+		<e n="animalBigTassydevil" p="0.35" />
 	</entitygroup>
 	
 	</append>

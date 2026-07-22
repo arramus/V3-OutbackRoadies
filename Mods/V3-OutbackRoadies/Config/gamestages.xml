@@ -166,6 +166,10 @@
 	
 	<!-- Roadies Head Hunters -->
 	<group name="RoadiesHeadHunters" spawner="RoadiesHeadHuntersHorde"/>
+	<!-- Roadies Koalas -->
+	<group name="RoadiesKoalas" spawner="RoadiesKoalasHorde"/>
+	<!-- Roadies Koalas -->
+	<group name="RoadiesAussieAnimals" spawner="RoadiesAussieAnimalsHorde"/>
 	
 	<!-- Roadies Head Hunters for GS -->
 	<spawner name="RoadiesHeadHuntersHorde">
@@ -186,6 +190,50 @@
 		</gamestage>
 		<gamestage stage="800">
 			<spawn group="RoadiesHeadHuntersGroupGS800" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+	</spawner>
+	
+	<!-- Roadies Koalas for GS -->
+	<spawner name="RoadiesKoalasHorde">
+		<gamestage stage="1">
+			<spawn group="RoadiesKoalasGroupGS01" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="50">
+			<spawn group="RoadiesKoalasGroupGS50" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="100">
+			<spawn group="RoadiesKoalasGroupGS100" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="200">
+			<spawn group="RoadiesKoalasGroupGS200" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="400">
+			<spawn group="RoadiesKoalasGroupGS400" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="800">
+			<spawn group="RoadiesKoalasGroupGS800" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+	</spawner>
+	
+	<!-- Roadies Aussie Animals for GS -->
+	<spawner name="RoadiesAussieAnimalsHorde">
+		<gamestage stage="1">
+			<spawn group="RoadiesAussieAnimalsGroupGS01" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="50">
+			<spawn group="RoadiesAussieAnimalsGroupGS50" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="100">
+			<spawn group="RoadiesAussieAnimalsGroupGS100" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="200">
+			<spawn group="RoadiesAussieAnimalsGroupGS200" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="400">
+			<spawn group="RoadiesAussieAnimalsGroupGS400" num="1" maxAlive="1" duration="1" />
+		</gamestage>
+		<gamestage stage="800">
+			<spawn group="RoadiesAussieAnimalsGroupGS800" num="1" maxAlive="1" duration="1" />
 		</gamestage>
 	</spawner>
 	
