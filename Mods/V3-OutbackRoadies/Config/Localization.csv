@@ -552,8 +552,8 @@ challenge_1-SummonFriendZ_subtitle,Quest,Quest Info,,,,"Summon - FriendZ",,,,,,,
 challenge_1-SummonFriendZ_description,Quest,Quest Info,,,,"Move to an open area to allow a random FriendZ to be summoned.",,,,,,,,,,,,,
 
 noteqc_1-SummonAnimals,items,item,,,,Summon - Animals,,,,,,,,,,,,,
-noteqc_1-SummonAnimalsDesc,items,item,,,,"This quest allows a player to summon a random Animal Helper and also receive 20 meat to hire the new companion. There are 8 in total - Zombie Dog Helper, Boar Helper, Dire Wolf Helper, Chicken Helper, Rabbit Helper, Snake Helper, Coyote Helper, and Jeerkoa Helper.",,,,,,,,,,,,,
-challenge_1-SummonAnimals_offer,Quest,Quest Info,,,,"Accept this quest to take responsibility of a random Animal Helper. Move to an open area to allow an Animal Helper to be summoned. Feed 20 meat to hire. There are 8 in total - Zombie Dog Helper, Boar Helper, Dire Wolf Helper, Chicken Helper, Rabbit Helper, Snake Helper, Coyote Helper, and Jeerkoa Helper.",,,,,,,,,,,,,
+noteqc_1-SummonAnimalsDesc,items,item,,,,"This quest allows a player to summon a random Animal Helper and also receive 20 meat to hire the new companion. There are 9 in total - Zombie Dog Helper, Boar Helper, Dire Wolf Helper, Chicken Helper, Rabbit Helper, Snake Helper, Coyote Helper, Jeerkoa Helper, and Skippy Helper.",,,,,,,,,,,,,
+challenge_1-SummonAnimals_offer,Quest,Quest Info,,,,"Accept this quest to take responsibility of a random Animal Helper. Move to an open area to allow an Animal Helper to be summoned. Feed 20 meat to hire. There are 9 in total - Zombie Dog Helper, Boar Helper, Dire Wolf Helper, Chicken Helper, Rabbit Helper, Snake Helper, Coyote Helper, Jeerkoa Helper, and Skippy Helper.",,,,,,,,,,,,,
 challenge_1-SummonAnimals_name,Quest,Quest Info,,,,"Summon - Animals",,,,,,,,,,,,,
 challenge_1-SummonAnimals_subtitle,Quest,Quest Info,,,,"Summon - Animals",,,,,,,,,,,,,
 challenge_1-SummonAnimals_description,Quest,Quest Info,,,,"Move to an open area to allow a random Animal Helper to be summoned.",,,,,,,,,,,,,
@@ -589,6 +589,10 @@ SummonCoyotePickUpNPCDesc,items,item,,,,"You are carrying your coyote helper. Pu
 npcAnimalSummonJeerkoa,entityclasses,Entity,,,,Jeerkoa Helper,,,,,,,,,,,,,
 SummonJeerkoaPickUpNPC,items,item,,,,Jeerkoa Helper (Resting),,,,,,,,,,,,,
 SummonJeerkoaPickUpNPCDesc,items,item,,,,"You are carrying your jeerkoa helper. Put it in your active toolbelt slot to place it down with [action:local:Secondary].",,,,,,,,,,,,,
+
+npcAnimalSummonSkippy,entityclasses,Entity,,,,Skippy Helper,,,,,,,,,,,,,
+SummonSkippyPickUpNPC,items,item,,,,Skippy Helper (Resting),,,,,,,,,,,,,
+SummonSkippyPickUpNPCDesc,items,item,,,,"You are carrying your skippy helper. Put it in your active toolbelt slot to place it down with [action:local:Secondary].",,,,,,,,,,,,,
 
 TwitchAction_SpawnCassowary,twitch,Actions,,,,Cassowary,,,,,,,,,,,
 TwitchAction_SpawnCassowaryCommand,twitch,Actions,,,#spawn_cassowary,,,,,,,,,,,,

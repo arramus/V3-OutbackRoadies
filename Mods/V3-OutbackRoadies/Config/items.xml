@@ -65,6 +65,11 @@
 		  <property name="CustomIcon" value="SummonJeerkoaAnimal"/>
         </item>
 		
+		<item name="SummonSkippyPickUpNPC">
+			<property name="Extends" value="foxPickUpNPC" />
+		  <property name="CustomIcon" value="SummonSkippyAnimal"/>
+        </item>
+		
 	</append>
 	
 	<!-- VANILLA TWEAKS and TOGGLES -->

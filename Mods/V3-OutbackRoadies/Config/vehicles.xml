@@ -49,7 +49,7 @@
 		<property name="waterDrag_y_velScale_velMaxScale" value="1.5, .9, 1"/>
 		<property name="waterLift_y_depth_force" value="1, .5, .1"/>
 
-		<property name="hornSound" value="preppo_gyrocopter_horn"/>
+		<property name="hornSound" value="gyrocopter_horn"/>
 		
 		<property name="recipeName" value="vehicleGyrocopterPlaceable" />
 		
@@ -1845,7 +1845,7 @@
 		<property name="unstickForce" value="1"/>
 		<property name="waterDrag_y_velScale_velMaxScale" value="1.0, 0.5, .3"/>
 		<property name="wheelPtlScale" value=".6"/>
-		<property name="hornSound" value="demolitionzalert"/>		
+		<property name="hornSound" value="minibike_horn"/>		
 		<property name="recipeName" value="vehicleSpiderRiderPlaceable" />
 
 		<property class="chassis">

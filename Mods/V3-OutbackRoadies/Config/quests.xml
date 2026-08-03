@@ -225,7 +225,7 @@
 			<property name="add_to_tier_complete" value="false"/>
 				
 		<reward type="Exp" value="1500"/>
-		<action type="SpawnEnemy" id="npcAnimalSummonzombieDog,npcAnimalSummonBoar,npcAnimalSummonDireWolf,npcAnimalSummonChicken,npcAnimalSummonRabbit,npcAnimalSummonSnake,npcAnimalSummonCoyote,npcAnimalSummonJeerkoa" value="1"/>
+		<action type="SpawnEnemy" id="npcAnimalSummonzombieDog,npcAnimalSummonBoar,npcAnimalSummonDireWolf,npcAnimalSummonChicken,npcAnimalSummonRabbit,npcAnimalSummonSnake,npcAnimalSummonCoyote,npcAnimalSummonJeerkoa,npcAnimalSummonSkippy" value="1"/>
 		<reward type="Item" id="foodRawMeat" value="20"/>
 		</quest>
 		
