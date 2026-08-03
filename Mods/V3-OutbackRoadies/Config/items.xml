@@ -460,13 +460,16 @@
 	<!-- Magnum Tag for Mod Magazine Extender -->
 	<append xpath="/items/item[@name='gunHandgunT2Magnum44']/property[@name='Tags']/@value">,magnummagazine</append>
 	
-	<!-- Steel Spear Upgrade -->
+	<!-- Steel Shock Spear Upgrade -->
+	
 	<append xpath="/items/item[@name='meleeWpnSpearT3SteelSpear']/property[@name='Tags']/@value">,perkElectrocutioner</append><!-- Allows the repulsor mod to be attached as a mod -->	
 	<append xpath="/items/item[@name='meleeWpnSpearT3SteelSpear']">
 	<effect_group name="apply damage buff, meleeWpnSpearT3SteelSpear">
+
 		<triggered_effect trigger="onSelfEquipStart" action="AddPart" part="Sparks" prefab="@:ParticleEffects/p_electric_shock_small.prefab" parentTransform="Handle" localPos="0,0.5,0" localRot="0,0,0">
 			<requirement name="CompareItemMetaFloat" operation="GTE" value="4" key="charge"/></triggered_effect>
 		<triggered_effect trigger="onSelfEquipStop" action="RemovePart" part="Sparks"/>
+			<requirement name="HasBuff" buff="buffmodMeleeStunBatonRepulsor"/>
 
 		<!-- perkIntellectMastery level 4 allows only 2 hits to charge -->
 		<!--triggered_effect trigger="onSelfPrimaryActionRayHit" action="SetItemMetaFloat" change="3" relative="false" key="charge">
@@ -637,8 +640,10 @@
 		<!-- add electric effect to baton -->
 		<triggered_effect trigger="onSelfPrimaryActionRayHit" action="AddPart" part="Sparks" prefab="@:ParticleEffects/p_electric_shock_small.prefab" parentTransform="Handle" localPos="0,0.5,0" localRot="0,0,0">
 			<requirement name="CompareItemMetaFloat" operation="Equals" value="4" key="charge"/></triggered_effect>
+			<requirement name="HasBuff" buff="buffmodMeleeStunBatonRepulsor"/>
 		<triggered_effect trigger="onSelfSecondaryActionRayHit" action="AddPart" part="Sparks" prefab="@:ParticleEffects/p_electric_shock_small.prefab" parentTransform="Handle" localPos="0,0.5,0" localRot="0,0,0">
 			<requirement name="CompareItemMetaFloat" operation="Equals" value="4" key="charge"/></triggered_effect>
+			<requirement name="HasBuff" buff="buffmodMeleeStunBatonRepulsor"/>
 
 		<!-- add electric effect to baton with perkIntellectMastery level 5 -->
 		<!-- <triggered_effect trigger="onSelfEquipStart" action="AddPart" part="Sparks" prefab="@:ParticleEffects/p_electric_shock_small.prefab" parentTransform="Handle" localPos="0,0,0" localRot="0,0,0"> -->
