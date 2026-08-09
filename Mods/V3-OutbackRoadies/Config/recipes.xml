@@ -162,6 +162,58 @@
 		<ingredient name="resourceOilShale" count="1"/>
 	</recipe>
 	
+	<!-- Can Can Bat -->	
+	<recipe name="meleeWpnClubT1CanCanBat" count="1" tags="learnable,perkPummelPete,packMuleCrafting">
+		<ingredient name="resourceForgedIron" count="20"/>
+		<ingredient name="resourceWood" count="10"/>
+		<ingredient name="resourceLeather" count="1"/>
+		<ingredient name="resourceDuctTape" count="1"/>
+		<ingredient name="resourceLegendaryParts" count="0"/>
+		<effect_group>
+			<passive_effect name="CraftingIngredientCount" level="2,6" operation="perc_add" value=".5,2.5" tags="resourceForgedIron,resourceWood,resourceLeather,resourceDuctTape"/>
+			<passive_effect name="CraftingIngredientCount" level="6" operation="base_add" value="1" tags="resourceLegendaryParts"/>
+		</effect_group>
+	</recipe>
+	
+	<!-- Oakraven Briston's Pistons as Boomerang Brawlers -->
+	<recipe name="meleeWpnKnucklesT3SteelOakravenBristonKnuckles" count="1" craft_area="workbench" tags="learnable,perkBrawler,workbenchCrafting">
+		<ingredient name="meleeWpnKnucklesT3SteelKnucklesParts" count="1"/>
+		<ingredient name="resourceForgedSteel" count="10"/>
+		<ingredient name="resourceLeather" count="3"/>
+		<ingredient name="resourceDuctTape" count="3"/>
+		<ingredient name="resourceLegendaryParts" count="0"/>
+		<effect_group>
+			<passive_effect name="CraftingIngredientCount" level="2,6" operation="perc_add" value="1,5" tags="meleeWpnKnucklesT3SteelKnucklesParts,resourceForgedSteel,resourceWood,resourceLeather,resourceDuctTape"/>
+			<passive_effect name="CraftingIngredientCount" level="6" operation="base_add" value="1" tags="resourceLegendaryParts"/>
+		</effect_group>
+	</recipe>
+	
+	<!-- Oakraven Old Cricket Bat -->
+	<recipe name="meleeWpnClubT3OldCricketBat" count="1" craft_area="workbench" tags="learnable,perkPummelPete,workbenchCrafting">
+		<ingredient name="meleeWpnClubT3SteelClubParts" count="1"/>
+		<ingredient name="resourceForgedSteel" count="10"/>
+		<ingredient name="resourceWood" count="10"/>
+		<ingredient name="resourceDuctTape" count="3"/>
+		<ingredient name="resourceLegendaryParts" count="0"/>
+		<effect_group>
+			<passive_effect name="CraftingIngredientCount" level="2,6" operation="perc_add" value="1,5" tags="meleeWpnClubT3SteelClubParts,resourceForgedSteel,resourceWood,resourceDuctTape"/>
+			<passive_effect name="CraftingIngredientCount" level="6" operation="base_add" value="1" tags="resourceLegendaryParts"/>
+		</effect_group>
+	</recipe>
+	
+	<!-- Oakraven New Cricket Bat -->
+	<recipe name="meleeWpnClubT3NewCricketBat" count="1" craft_area="workbench" tags="learnable,perkPummelPete,workbenchCrafting">
+		<ingredient name="meleeWpnClubT3SteelClubParts" count="1"/>
+		<ingredient name="resourceForgedSteel" count="10"/>
+		<ingredient name="resourceWood" count="10"/>
+		<ingredient name="resourceDuctTape" count="3"/>
+		<ingredient name="resourceLegendaryParts" count="0"/>
+		<effect_group>
+			<passive_effect name="CraftingIngredientCount" level="2,6" operation="perc_add" value="1,5" tags="meleeWpnClubT3SteelClubParts,resourceForgedSteel,resourceWood,resourceDuctTape"/>
+			<passive_effect name="CraftingIngredientCount" level="6" operation="base_add" value="1" tags="resourceLegendaryParts"/>
+		</effect_group>
+	</recipe>
+	
 	<!-- High Performance Running Shoes Mod -->
 	
 		<recipe name="modArmorRunningShoesHP" count="1" craft_area="workbench" tags="learnable">

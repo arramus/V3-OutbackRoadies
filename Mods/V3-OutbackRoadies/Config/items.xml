@@ -2736,13 +2736,14 @@
 	<property name="Meshfile" value="#@modfolder:Resources/BeanBat.unity3d?BeanBat"/>
 	<property name="HoldType" value="65"/>
 	<property name="Material" value="Mwood"/>
+	<property name="ScrapTimeOverride" value="10.0"/>
 	<property name="RepairTools" value="resourceRepairKit"/>
 	<property name="SoundDestroy" value="wooddestroy1"/>
 	<property name="RepairExpMultiplier" value="5.5"/>
 	<property name="EconomicBundleSize" value="1"/>
 	<property name="EconomicValue" value="550"/> <!-- Default 500 -->
 	<property name="TraderStageTemplate" value="baseTierRoadiesSpecialTier1"/> <!-- baseTier1 revision -->
-	<!--property name="UnlockedBy" value="craftingClubs"/--><!-- perkPummelPete,meleeWpnClubT1BaseballBatSchematic, -->
+	<property name="UnlockedBy" value="craftingClubs"/><!-- perkPummelPete,meleeWpnClubT1BaseballBatSchematic, -->
 	<property name="ShowQuality" value="true"/>
 	<property name="SoundUnholster" value="weapon_unholster"/>
 	<property name="SoundHolster" value="weapon_holster"/>
@@ -2882,7 +2883,7 @@
 	<property name="ScrapTimeOverride" value="10.0"/>
 	<property name="TraderStageTemplate" value="baseTierRoadiesSpecialTier3"/> <!-- baseTier3 revision -->
 	<property name="EconomicValue" value="1210"/>	
-	<!--property name="UnlockedBy" value="craftingKnuckles"/--><!-- meleeWpnKnucklesT3SteelKnucklesSchematic, -->
+	<property name="UnlockedBy" value="craftingKnuckles"/><!-- meleeWpnKnucklesT3SteelKnucklesSchematic, -->
 	<property name="SoundUnholster" value="weapon_unholster"/>
 	<property name="SoundHolster" value="weapon_holster"/>
 	<property name="SoundPickup" value="machete_grab"/>
@@ -3004,15 +3005,16 @@
 	<property name="Group" value="Ammo/Weapons,Melee Weapons"/>
 	<property name="Meshfile" value="#@modfolder:Resources/CricketBat.unity3d?CricketBat"/>
 	<property name="HoldType" value="65"/>
-	<property name="Material" value="Mwood"/>
+	<property name="Material" value="MmeleeWpnClubParts"/>
 	<property name="Weight" value="1"/>
+	<property name="ScrapTimeOverride" value="10.0"/>
 	<property name="RepairTools" value="resourceRepairKit"/>
 	<property name="SoundDestroy" value="wooddestroy1"/>
 	<property name="RepairExpMultiplier" value="5.5"/>
 	<property name="EconomicBundleSize" value="1"/>
 	<property name="EconomicValue" value="1210"/> <!-- Default 1100 -->
 	<property name="TraderStageTemplate" value="baseTierRoadiesSpecialTier3"/>
-	<!--property name="UnlockedBy" value="craftingClubs"/--><!-- perkBatterUpBaseballBats, -->
+	<property name="UnlockedBy" value="craftingClubs"/><!-- perkBatterUpBaseballBats, -->
 	<property name="ShowQuality" value="true"/>
 	<property name="SoundUnholster" value="weapon_unholster"/>
 	<property name="SoundHolster" value="weapon_holster"/>
@@ -3148,15 +3150,16 @@
 	<property name="Group" value="Ammo/Weapons,Melee Weapons"/>
 	<property name="Meshfile" value="#@modfolder:Resources/Cricketbatz.unity3d?Cricketbatz"/>
 	<property name="HoldType" value="65"/>
-	<property name="Material" value="Mwood"/>
+	<property name="Material" value="MmeleeWpnClubParts"/>
 	<property name="Weight" value="1"/>
+	<property name="ScrapTimeOverride" value="10.0"/>
 	<property name="RepairTools" value="resourceRepairKit"/>
 	<property name="SoundDestroy" value="wooddestroy1"/>
 	<property name="RepairExpMultiplier" value="5.5"/>
 	<property name="EconomicBundleSize" value="1"/>
 	<property name="EconomicValue" value="1210"/> <!-- Default 1100 -->
 	<property name="TraderStageTemplate" value="baseTierRoadiesSpecialTier3"/>
-	<!--property name="UnlockedBy" value="craftingClubs"/--><!-- perkBatterUpBaseballBats, -->
+	<property name="UnlockedBy" value="craftingClubs"/><!-- perkBatterUpBaseballBats, -->
 	<property name="ShowQuality" value="true"/>
 	<property name="SoundUnholster" value="weapon_unholster"/>
 	<property name="SoundHolster" value="weapon_holster"/>

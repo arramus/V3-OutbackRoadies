@@ -290,6 +290,22 @@
                      prefabs load their signs/containers instead of dropping them. -->
                 <property name="FixLegacyTileEntityNullChunk" value="true"/>
 
+                <!-- Vanilla's "Dropping TE with unknown/outdated type: X" warning names no position, and
+                     because a dropped tile entity's payload is never consumed, the reader desyncs and
+                     every warning after the first in that chunk is misread data. This adds the chunk,
+                     POI, stream offset and (peeked from the unread payload) the tile entity's own block
+                     position and block name, and marks which warning is the real one. Diagnostics only;
+                     the tile entity is still dropped. Turn on when tracking down legacy TE spam. -->
+                <property name="LogDroppedTileEntityDetail" value="false"/>
+
+                <!-- Block.SpawnFX splits its effect name on a comma and indexes the second token without
+                     checking, so a block whose DestroyFX is a bare particle name (no sound) throws
+                     IndexOutOfRangeException. That happens before OnBlockDamaged clears the block to air,
+                     so the block survives its own destruction and errors on every further hit. This skips
+                     the malformed effect, lets the block be destroyed, and names the block and value once
+                     so the XML can be corrected. -->
+                <property name="FixMalformedDestroyFX" value="true"/>
+
 
             </property>
 

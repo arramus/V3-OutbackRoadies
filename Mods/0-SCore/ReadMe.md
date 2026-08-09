@@ -58,8 +58,193 @@ This release of 0-SCore introduces significant enhancements across several core 
 		  base they no longer stamp a phantom duplicate one cell above, so a
 		  cube declared "1,1,1" now genuinely occupies one cell.
 
+  
+Version: 3.1.20.1347
+	Game Version: v3.1.0 (b14)
+
+	[ TileEntities - AoE And Powered Portal Reads Corrupted The Chunk ]
+		- Field report from bdubyah: a brand new world spawned in fine, but
+		  reloading it threw a chunk load exception preceded by a run of
+		  "Dropping TE with unknown/outdated type", "chunk sleeper volumeId
+		  invalid", and an IndexOutOfRangeException that then spammed from
+		  EntityPlayerLocal.BlockRadiusEffectsTick until the save was
+		  reloaded. The POI being spawned into contained DecoAoE blocks.
+		- Root cause is SCore's own InstantiateFromRead prefix. Chunk.save
+		  writes each tile entity as its type followed by its payload, and
+		  InstantiateFromRead is contracted to construct the tile entity and
+		  read that payload back off the stream. The prefix constructed
+		  TileEntityAoE and TileEntityPoweredPortal and returned immediately,
+		  never calling read.
+		- The payload stayed in the stream, so the reader was left parked mid
+		  record and everything after it was interpreted at the wrong offset.
+		  The next tile entity's "type" was really payload bytes, and the
+		  sleeper and wall volume sections after the tile entity list desynced
+		  along with it. A single AoE block was enough: its inherited base
+		  payload is 22 bytes in Persistency mode.
+		- Nothing in the resulting log pointed back at the cause. The dropped
+		  type warnings, the invalid volume ids, the GetBlock failure with a
+		  nonsense y of 1179648, and the exception that made vanilla discard
+		  the chunk were all downstream of a tile entity that had loaded
+		  "successfully" and logged nothing.
+		- The prefix now calls read on the tile entity it builds, matching the
+		  branch of the vanilla method it replaces. Neither type is a
+		  TileEntityComposite, so the plain read overload is correct.
+		- A later report showed the same desync surfacing as "An item with the
+		  same key has already been added. Key: 0, 0, 0" from Chunk.read. That
+		  is triggerData.Add, the trigger section that follows the tile entity
+		  list, reading zeros out of misaligned data. Same fault, further
+		  downstream, not a separate bug.
+		- Region files written by a clean load are valid; the write side was
+		  always symmetric. But a chunk that desynced without throwing was
+		  held in memory with its tile entities collapsed onto local (0,0,0)
+		  and its trigger and volume data wrong, and Chunk.save would write
+		  that back. A world loaded and re-saved under the broken build can be
+		  damaged on disk. Test on a world created after this fix.
+		- Found with LogDroppedTileEntityDetail. Its "payload did not decode"
+		  line was the clue: it means the reader was already at the wrong
+		  offset on arrival, so the fault lay upstream of every block named.
+
+	[ ErrorHandling - A Bare DestroyFX Made Blocks Indestructible ]
+		- Follow up from the same report: after the chunk errors cleared,
+		  hitting a DecoAoE block threw a single IndexOutOfRangeException from
+		  Block.SpawnFX per swing, and the block never broke.
+		- Block.SpawnFX splits its effect name on a comma and indexes the
+		  second token without checking. Every vanilla DestroyFX value is a
+		  particle and a sound, so vanilla never trips it, but a modded block
+		  whose DestroyFX is a bare particle name throws.
+		- Not a cosmetic failure. Block.OnBlockDamaged fires the destroyed
+		  quest event, calls SpawnDestroyFX, and only then runs
+		  SetBlockRPC(_bvRef, BlockValue.Air). The throw lands between the
+		  last two, so the block absorbs the killing blow and is never
+		  cleared. To the player it is an indestructible block that errors on
+		  every hit, and its block-destroyed event has already fired.
+		- New FixMalformedDestroyFX flag, on by default, skips the malformed
+		  effect so destruction completes, and logs the block name, position
+		  and offending value once per bad string.
+		- This is a guard, not a fix for the block. The correct DestroyFX is
+		  "particleName,soundName" - for example
+		  "blockdestroy_wood,trapWoodDestroy". SCore's own DecoAoE test block
+		  does not set DestroyFX and was never affected; the value comes from
+		  the block's own XML or whatever it extends.
+
+	[ ErrorHandling - Dropped TE Warning Read As A Block Position ]
+		- Reworded the failed-peek line of LogDroppedTileEntityDetail after it
+		  misled its first reader. Each drop prints the chunk's block extent,
+		  and when the peek fails there is no position at all - but the two
+		  together read as a coordinate, and the extent's low corner got taken
+		  for the offending block's location. An afternoon went into
+		  inspecting an innocent door standing at that corner.
+		- The line now states outright that no block position is known, that
+		  the coordinates are the chunk's extent and not a location, and that
+		  the fault is upstream: something earlier in the chunk read fewer
+		  bytes than it wrote. It also names the shape of that fault, since it
+		  is invisible on its own - a tile entity that loads successfully
+		  without consuming its payload logs nothing at all.
+		- Features/ErrorChecks/ReadMe.md carries the same warning, and its
+		  "Acting on it" section now splits on whether the payload decoded.
+		  The AoE bug above is written up there as the worked example of a
+		  payload that did not.
+
+	[ Challenges - GatherTags Objective Used The Wrong Player UI ]
+		- ChallengeObjectiveGatherTags.HandleAddHooks resolved the inventory
+		  through LocalPlayerUI.GetUIForPlayer(Owner.Owner.Player). It now
+		  uses LocalPlayerUI.GetUIForPrimaryPlayer(), so the backpack and
+		  toolbelt change hooks bind to the primary local player's UI.
+
+Version: 3.1.15.1235
+	Game Version: v3.1.0 (b14)
+
+	[ Logo ]
+		- Added a new requires_score.png by Mumpfy
+
+	[ UtilityAI - Door Auto-Close Corrupted The SphereCache Dictionary ]
+		- Field report: an unhandled InvalidOperationException, "Operations
+		  that change non-concurrent collections must have exclusive access",
+		  thrown from SphereCache.AddDoor by way of SCoreUtils.IsBlocked
+		  during a wandering NPC's AI tick.
+		- Root cause: CheckForClosedDoor scheduled the door's automatic close
+		  with Task.Delay(2000).ContinueWith(...). ContinueWith with no
+		  scheduler argument runs on a thread pool thread, so CloseDoor - and
+		  the SphereCache.DoorCache.Remove inside it - ran off the main thread
+		  two seconds after every door an NPC opened, while the AI wrote that
+		  same dictionary from the main thread.
+		- The reported crash site is not where the damage was done. That
+		  exception comes from a collision-count guard in Dictionary.FindEntry
+		  which trips when the bucket chain has become a cycle. The cycle is
+		  created earlier by an interleaved write, and every later lookup on
+		  that bucket throws. This is why the error surfaced at moments
+		  unrelated to any door, and why it appeared that looting caused it.
+		- The dictionary was the lesser problem. CloseDoor also calls
+		  EntityUtilities.CloseDoor, which reads the world, resolves the chunk
+		  and calls Block.OnBlockActivated - a block state change with a
+		  network RPC - all from the pool thread.
+		- Both copies of the code, SCoreUtils.CheckForClosedDoor and the V4
+		  DoorUtils.CheckForClosedDoor, now queue the close back onto the main
+		  thread with ThreadManager.AddSingleTaskMainThread. The delay before
+		  the door shuts is unchanged.
+		- SphereCache's door and pathing accessors take a lock as defense in
+		  depth, and their ContainsKey-then-index pairs are collapsed into
+		  TryGetValue. GetPaths still returns the live list, so the lock
+		  covers the dictionary, not a caller's later iteration of that list.
+
+	[ ErrorHandling - LogDroppedTileEntityDetail For Legacy TE Spam ]
+		- New diagnostic, off by default. Vanilla's warning, "Dropping TE with
+		  unknown/outdated type: X", names no position, so a save full of
+		  legacy tile entities gives a wall of warnings and nowhere to look.
+		- The important part is that the type numbers in that wall are not
+		  real. Chunk.read reads a TE's type then calls InstantiateFromRead,
+		  which on an unrecognised type logs and returns null without
+		  consuming the record's payload. The reader is left parked mid
+		  record, so the next iteration reads payload bytes as a type. A
+		  single bad tile entity desyncs the rest of the chunk, and every
+		  warning after the first is shifted data. Only the first drop in a
+		  chunk is evidence.
+		- This is also where "Outdated loot data" comes from. Once desynced,
+		  a garbage type eventually matches a legacy loot type and
+		  TileEntityLegacyUtils parses the surrounding noise as a container.
+		  It is a symptom of the first drop, not a separate fault.
+		- With the flag on, each drop reports the chunk and its block range,
+		  the POI, the raw type value alongside the enum name (the name alone
+		  hides it, and "None" reads as "nothing there" when it means the
+		  field held 0), and the stream offset. The first drop in a chunk is
+		  labelled as the one to chase and the rest as cascade.
+		- Because the payload is still sitting unread in the stream, the first
+		  drop also peeks it. TileEntity.read starts with a version and the
+		  TE's chunk-local position, so when those bytes decode to a sane
+		  header the warning names the exact world position and the block
+		  standing there. The peek restores the stream position and is
+		  invisible to the caller. If it does not decode, that is reported
+		  too - it means the chunk was already out of sync before that entry.
+		- Exceptions escaping the read are logged with the same context before
+		  being allowed to propagate, so "Outdated loot data" now arrives with
+		  a chunk, a type and a drop count instead of only a chunk.
+		- Diagnostic only. The tile entity is still dropped and load behaviour
+		  is unchanged.
+		- Features/ErrorChecks/ReadMe.md is new and walks through turning the
+		  flag on, reading the output field by field, and what to do with the
+		  block it names. Point anyone chasing legacy TE spam at it.
+
+	[ FireV2 - AddFireDamage Ran Off The Main Thread ]
+		- MinEventActionAddFireDamage carried the identical pattern:
+		  Task.Delay(delayTime).ContinueWith(...) calling AddFire from a
+		  thread pool thread. It now queues onto the main thread as well.
+		- That path wrote FireHandler's _fireMap, a plain Dictionary, and sent
+		  SyncAddFire RPCs, neither of them guarded. It could corrupt the fire
+		  map exactly the way DoorCache was corrupted. FireManager.AddFire's
+		  try/catch turned the result into a Debug.LogError rather than a
+		  crash report, which is the likely reason it was never reported.
+		- Behaviour change to expect: delayed fires now show their particles.
+		  StartFireEffects skips particle spawning unless
+		  ThreadManager.IsMainThread(), and this MinEvent was the only
+		  off-thread caller in the fire system, so that check was false only
+		  for delayed fires. Any triggered_effect using AddFireDamage with a
+		  delayTime has been starting invisible fires until now.
+		- AddFire null-checks FireManager.Instance before running. Execute
+		  checks it before starting the timer, but with a configurable
+		  delayTime the world can be torn down in between.
+
 Version: 3.1.9.1528
-	Game Version: v3.1.0 (b13)
+	Game Version: v3.1.0 (b14)
 	[ EntitySyncUtils - ItemValue Stats And Mod Serialization ]
 		- ItemValue gained a Stats array (ItemValue.Stat[]) holding special
 		  modifiers. EntitySyncUtils serializes an NPC into the pickup item's

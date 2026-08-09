@@ -89,4 +89,23 @@
 		<passive_effect name="RecipeTagUnlocked" operation="base_set" level="100,100" value="1" tags=",modVehicleArmor,modVehiclePlow"/>
 	</append>
 	
+	<!-- Weapons -->
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingClubs']/display_entry[@item='meleeWpnClubT1BaseballBat']">
+		<unlock_entry item="meleeWpnClubT1CanCanBat" unlock_tier="1" tags="meleeWpnClubT1CanCanBat"/>
+	</append>
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingClubs']/display_entry[@item='meleeWpnClubT3SteelClub']">
+		<unlock_entry item="meleeWpnClubT3OldCricketBat,meleeWpnClubT3NewCricketBat" unlock_tier="1" tags="meleeWpnClubT3OldCricketBat,meleeWpnClubT3NewCricketBat"/>
+	</append>
+
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingClubs']/effect_group/passive_effect[@name='RecipeTagUnlocked'][contains(@tags, 'meleeWpnClubT1BaseballBat')]/@tags">,meleeWpnClubT1CanCanBat</append>
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingClubs']/effect_group/passive_effect[@name='CraftingTier'][@level='15,20,25,30,35,75']/@tags">,meleeWpnClubT1CanCanBat</append>
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingClubs']/effect_group/passive_effect[@name='RecipeTagUnlocked'][contains(@tags, 'meleeWpnClubT3SteelClub')]/@tags">,meleeWpnClubT3OldCricketBat,meleeWpnClubT3NewCricketBat</append>
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingClubs']/effect_group/passive_effect[@name='CraftingTier'][@level='43,51,59,67,75']/@tags">,meleeWpnClubT3OldCricketBat,meleeWpnClubT3NewCricketBat</append>
+
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingKnuckles']/display_entry[@item='meleeWpnKnucklesT3SteelKnuckles']">
+		<unlock_entry item="meleeWpnKnucklesT3SteelOakravenBristonKnuckles" unlock_tier="1" tags="meleeWpnKnucklesT3SteelOakravenBristonKnuckles"/>
+	</append>
+
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingKnuckles']/effect_group/passive_effect[@name='RecipeTagUnlocked'][contains(@tags, 'meleeWpnKnucklesT3SteelKnuckles')]/@tags">,meleeWpnKnucklesT3SteelOakravenBristonKnuckles</append>
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingKnuckles']/effect_group/passive_effect[@name='CraftingTier'][@level='43,51,59,67,75']/@tags">,meleeWpnKnucklesT3SteelOakravenBristonKnuckles</append>
 </configs>
