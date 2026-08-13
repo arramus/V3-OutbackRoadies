@@ -75,10 +75,12 @@
 	<append xpath="//crafting_skill[@name='craftingVehicles']/display_entry[@icon='vehicleMinibikePlaceable']/unlock_entry/@item">,modVehicleFuelSaver,modVehicleOffRoadHeadlights,modVehicleStorage</append>
 	<append xpath="//crafting_skill[@name='craftingVehicles']/effect_group">
 		<passive_effect name="RecipeTagUnlocked" operation="base_set" level="20,100" value="1" tags=",modVehicleFuelSaver,modVehicleOffRoadHeadlights,modVehicleStorage"/>
+		<passive_effect name="CraftingTier" operation="base_add" level="23,26,29,32,35,100" value="1,2,3,4,5,5" tags=",modVehicleFuelSaver"/>
 	</append>
 	<append xpath="//crafting_skill[@name='craftingVehicles']/display_entry[@icon='vehicleMotorcyclePlaceable']/unlock_entry/@item">,modVehicleExpandedSeat,modVehicleReserveFuelTank</append>
 	<append xpath="//crafting_skill[@name='craftingVehicles']/effect_group">
 		<passive_effect name="RecipeTagUnlocked" operation="base_set" level="45,100" value="1" tags=",modVehicleExpandedSeat,modVehicleReserveFuelTank"/>
+		<passive_effect name="CraftingTier" operation="base_add" level="49,53,57,61,64,100" value="1,2,3,4,5,5" tags=",modVehicleReserveFuelTank"/>
 	</append>
 	<append xpath="//crafting_skill[@name='craftingVehicles']/display_entry[@icon='vehicleTruck4x4Placeable']/unlock_entry/@item">,modVehicleSuperCharger</append>
 	<append xpath="//crafting_skill[@name='craftingVehicles']/effect_group">
