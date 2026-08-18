@@ -910,6 +910,7 @@
 		<e n="animalBloodMoonSpider03Mini" />
 		<e n="animalBloodMoonKoala" p="0.25" />
 		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="zombieBurnt" p="0.125" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS80']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -920,6 +921,7 @@
 		<e n="animalBloodMoonSpider03" p="0.25" />	
 		<e n="animalBloodMoonKoala" p="0.25" />
 		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="zombieBurnt" p="0.125" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS121']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -933,6 +935,8 @@
 		<e n="animalBloodMoonSpider03Feral" p="0.15" />
 		<e n="animalBloodMoonKoala" p="0.25" />
 		<e n="animalBloodMoonKangaroo" p="0.25" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS153']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -957,6 +961,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS195']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -981,6 +990,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS255']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1005,6 +1019,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS304']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1029,6 +1048,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS354']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1053,6 +1077,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS407']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1077,6 +1106,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS453']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1101,6 +1135,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS501']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1125,6 +1164,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS550']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1149,6 +1193,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS600']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1173,6 +1222,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS651']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1197,6 +1251,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS704']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1221,6 +1280,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS758']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1245,6 +1309,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS802']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1269,6 +1338,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS858']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1293,6 +1367,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS904']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1317,6 +1396,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS951']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1341,6 +1425,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1010']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1365,6 +1454,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1106']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1389,6 +1483,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1206']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1413,6 +1512,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1308']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1437,6 +1541,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1412']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1461,6 +1570,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1506']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1485,6 +1599,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1601']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1508,7 +1627,12 @@
 		<e n="animalBloodMoonKoala" p="0.25" />
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
-		<e n="animalBloodMoonBossKangaroo" p="0.15" />		
+		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />	
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1712']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1533,6 +1657,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1811']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1557,6 +1686,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1911']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1581,6 +1715,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS1999']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1605,6 +1744,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2102']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1629,6 +1773,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2207']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1653,6 +1802,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2314']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1677,6 +1831,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2407']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1701,6 +1860,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2501']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1725,6 +1889,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2612']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1749,6 +1918,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2708']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1773,6 +1947,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2805']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1797,6 +1976,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS2903']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1821,6 +2005,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3003']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1845,6 +2034,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3103']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1869,6 +2063,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3204']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1893,6 +2092,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3306']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1917,6 +2121,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3410']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1941,6 +2150,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3514']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1965,6 +2179,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3601']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -1989,6 +2208,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3707']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -2013,6 +2237,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3814']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -2037,6 +2266,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS3904']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -2061,6 +2295,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS4013']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -2085,6 +2324,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 	<set xpath="/entitygroups/entitygroup[@name='feralHordeStageGS4086']">
 		<e n="animalBloodMoonSpider01Mini" />
@@ -2109,6 +2353,11 @@
 		<e n="animalBloodMoonKangaroo" p="0.25" />
 		<e n="animalBloodMoonBossKoala" p="0.15" />
 		<e n="animalBloodMoonBossKangaroo" p="0.15" />
+		<e n="zombieBurnt" p="0.125" />
+		<e n="zombieBurntFeral" p="0.125" />
+		<e n="zombieBurntRadiated" p="0.1" />
+		<e n="zombieBurntCharged" p="0.1" />
+		<e n="zombieBurntInfernal" p="0.1" />
 	</set>
 
 </configs>
