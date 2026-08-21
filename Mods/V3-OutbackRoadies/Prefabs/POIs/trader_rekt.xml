@@ -33,17 +33,18 @@
   <property name="POIMarkerPartSpawnChance" value="1" />
   <property name="WallVolumeSize" value="5, 4, 3#5, 4, 3#1, 2, 3" />
   <property name="WallVolumeStart" value="23, 2, 47#29, 2, 47#28, 4, 47" />
+  <property name="AllowDecorations" value="True" />
   <property class="Stats">
-    <property name="LightsVolume" value="19530.75" />
-    <property name="TotalVertices" value="1609109" />
-    <property name="TotalTriangles" value="660520" />
+    <property name="LightsVolume" value="9083.906" />
+    <property name="TotalVertices" value="1617127" />
+    <property name="TotalTriangles" value="663190" />
     <property class="BlockEntities">
-      <property name="Vertices" value="1511455" />
-      <property name="Triangles" value="597952" />
+      <property name="Vertices" value="1519817" />
+      <property name="Triangles" value="600966" />
     </property>
     <property class="ChunkMeshes0">
-      <property name="Vertices" value="73582" />
-      <property name="Triangles" value="39946" />
+      <property name="Vertices" value="73238" />
+      <property name="Triangles" value="39602" />
     </property>
     <property class="ChunkMeshes1">
       <property name="Vertices" value="832" />

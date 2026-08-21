@@ -85,6 +85,11 @@ This release of 0-SCore introduces significant enhancements across several core 
 		  base they no longer stamp a phantom duplicate one cell above, so a
 		  cube declared "1,1,1" now genuinely occupies one cell.
 
+Version: 3.2.1.849 ( latest_experimental )
+	Game Version: v3.2
+
+	[ Item Degradation ]
+		- Base game changed an int to a bool; adjusted accordingly and rebuilt.
   
 Version: 3.1.30.743
 	Game Version: v3.1.0 (b14)
