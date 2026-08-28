@@ -23,6 +23,15 @@
 	<!-- Adding Rocket Fire variant for Rocket Launcher -->
 	<append xpath="//crafting_skill[@name='craftingExplosives']/display_entry[@icon='ammoRocketFrag']/unlock_entry/@item">,ammoRocketFire</append>
 	<append xpath="//crafting_skill[@name='craftingExplosives']/effect_group/passive_effect[@level='45,100']/@tags">,ammoRocketFire</append>
+	
+	<!-- Silences the sound for perkGrandSlam -->
+	<set xpath="/progression/perks/perk[@name='perkGrandSlam']/effect_group/triggered_effect[@sound='grandslam_perk']/@sound">silencefiller</set>
+
+	<!-- Silences the sound to absorb damage for perkPackMule -->
+	<set xpath="/progression/perks/perk[@name='perkPackMule']/effect_group/triggered_effect[@sound='twitch_bucket_hit']/@sound">silencefiller</set>
+	
+	<!-- Silences the sound for Graceful reflexes deflect the first blow for perkAgilityMastery -->
+	<set xpath="/progression/perks/perk[@name='perkAgilityMastery']/effect_group/triggered_effect[@sound='twitch_bucket_hit']/@sound">silencefiller</set>
 
 	<!-- Roadies Ammo Press -->
 	

@@ -4,6 +4,8 @@
 	<set xpath="/Sounds/SoundDataNode[@name='vehicle_turbo']/AudioClip/@ClipName">@:Sounds/Misc/silencefiller.wav</set>
 	<!-- And for the grinding wheel bounce -->	
 	<set xpath="/Sounds/SoundDataNode[@name='vwheel_bounce']/AudioClip/@ClipName">@:Sounds/Misc/silencefiller.wav</set>
+	<!-- Silencing Nerd Outfit and Intellect Mastery Point Chance -->
+	<set xpath="/Sounds/SoundDataNode[@name='nerd_outfit_perk']/AudioClip/@ClipName">@:Sounds/Misc/silencefiller.wav</set>
 
 	<append xpath="/Sounds">
 		<SoundDataNode name="animalspideralert"> <AudioSource name="@:Sounds/Prefabs/AudioSource_CreatureSenseAlert.prefab"/>
