@@ -113,7 +113,8 @@ namespace UAI
             if (lookEntity == null) return;
             context.Self.SetLookPosition(lookEntity.getHeadPosition());
             var rotatePos = lookEntity.position;
-            context.Self.RotateTo(rotatePos.x, rotatePos.y, rotatePos.z, 8f, 8f);
+            // V4 models show the stored body pitch as a whole-body lean, so don't pitch them.
+            context.Self.RotateTo(rotatePos.x, rotatePos.y, rotatePos.z, 8f, context.Self is EntityAliveSDXV4 ? 0f : 8f);
         }
 
         public static void HideWeapon(Context _context)
@@ -140,8 +141,19 @@ namespace UAI
             
             var transform = source.transform;
             var angleForFacing = 10;
-            var lookPos = source.GetLookVector();
-            var angle = Vector3.Angle(lookPos, targetPos - lookPos);
+            // GetLookVector() is a unit direction, not a position: the direction to the target has
+            // to be measured from the source's own position. Flattened to the XZ plane so a target
+            // above or below the source still counts as faced when horizontally in front.
+            var lookVector = source.GetLookVector();
+            var toTarget = targetPos - source.position;
+            lookVector.y = 0f;
+            toTarget.y = 0f;
+
+            // Vector3.Angle is undefined for a zero-length vector.
+            if (lookVector.sqrMagnitude < 1E-6f || toTarget.sqrMagnitude < 1E-6f)
+                return true;
+
+            var angle = Vector3.Angle(lookVector, toTarget);
             Debug.Log($"Angle: {angle}");
             if ( angle < angleForFacing)
             {
@@ -819,10 +831,25 @@ namespace UAI
             var blockPos = _context.Self.moveHelper.HitInfo.hit.blockPos;
             var block = GameManager.Instance.World.GetBlock(blockPos);
 
-            if (!Block.list[block.type].HasTag(BlockTags.Door) || (block.meta & 1) != 0) return false;
+            if (!Block.list[block.type].HasTag(BlockTags.Door)) return false;
+
+            var doorComposite = GameManager.Instance.World.GetTileEntity(blockPos) as TileEntityComposite;
+
+            // Read the door's real open state. Current doors keep it in TEFeatureDoor; only the
+            // legacy powered garage doors still use bit 0 of the block meta. Testing the meta on a
+            // composite door reads a byte nothing maintains for it, which reported every door as
+            // closed - including ones already standing open.
+            var door = doorComposite?.GetFeature<TEFeatureDoor>();
+            if (door != null)
+            {
+                if (door.IsOpen()) return false;
+            }
+            else if ((block.meta & 1) != 0)
+            {
+                return false;
+            }
 
             var canOpenDoor = true;
-            var doorComposite = GameManager.Instance.World.GetTileEntity(blockPos) as TileEntityComposite;
             var doorLockable = doorComposite?.GetFeature<TEFeatureLockable>();
             if (doorLockable != null && doorLockable.IsLocked())
             {

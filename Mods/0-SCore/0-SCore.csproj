@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -54,6 +54,7 @@
     <Compile Include="Features\Caves\Scripts\SCoreCavesUtils.cs" />
     <Compile Include="Features\Challenges\ChallengeTypeSCoreEnums.cs" />
     <Compile Include="Features\Challenges\Harmony\ChallengeReadObjective.cs" />
+    <Compile Include="Features\Challenges\Harmony\ChallengeObjectiveResetComplete.cs" />
     <Compile Include="Features\Challenges\Harmony\ChallengesFromXmlPatches.cs" />
     <Compile Include="Features\Challenges\Harmony\DebugChallenges.cs" />
     <Compile Include="Features\Challenges\ScriptsV2\ChallengeObjectiveCVarV2.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="Features\FlickeringLights\Harmony\DisableFlickeringLights.cs" />
     <Compile Include="Features\FoodSpoilageV2\Harmony\FoodSpoilagePatches.cs" />
     <Compile Include="Features\FoodSpoilageV2\Harmony\Freshness.cs" />
+    <Compile Include="Features\FoodSpoilageV2\Harmony\InventorySetItemSpoilage.cs" />
     <Compile Include="Features\FoodSpoilageV2\Harmony\XUiC_ItemInfoWindow.cs" />
     <Compile Include="Features\FoodSpoilageV2\Scripts\SpoilageConfig.cs" />
     <Compile Include="Features\FoodSpoilageV2\Scripts\SpoilageConstants.cs" />
@@ -356,6 +358,7 @@
     <Compile Include="Features\Quality\Harmony\XUiCCraftingInfoWindowSetRecipe.cs" />
     <Compile Include="Features\Quality\Harmony\XUiCRecipeStackOutputStack.cs" />
     <Compile Include="Features\Quality\Harmony\XUiCRecipeStackSetRecipe.cs" />
+    <Compile Include="Features\Quality\Harmony\XUiCSkillCraftingInfoEntryQuality.cs" />
     <Compile Include="Features\Quality\Harmony\XUiCWorkstationWindowGroupSyncTEFromUI.cs" />
     <Compile Include="Features\Quality\Harmony\XUiMItemStackGetCustomDisplayValueForItem.cs" />
     <Compile Include="Features\Quality\Harmony\XUiMTraderGetBuyPrice.cs" />
@@ -439,6 +442,8 @@
     <Compile Include="Harmony\ItemActions\AdvancedItems.cs" />
     <Compile Include="Harmony\ItemActions\DurabilityAffectsDamage.cs" />
     <Compile Include="Harmony\ItemActions\ItemActionRepairLimiter.cs" />
+    <Compile Include="Harmony\ItemActions\NpcEatActionNullUI.cs" />
+    <Compile Include="Harmony\ItemActions\ItemActionRangedHarvestAmmo.cs" />
     <Compile Include="Harmony\ItemActions\ItemClass.cs" />
     <Compile Include="Harmony\ItemActions\ItemClassUtils.cs" />
     <Compile Include="Harmony\Localization\IncludeFilename.cs" />
@@ -454,6 +459,7 @@
     <Compile Include="Harmony\NPCFeatures\EntityAlivePatcher.cs" />
     <Compile Include="Harmony\NPCFeatures\EntityAlivePatcherAwardKill.cs" />
     <Compile Include="Harmony\NPCFeatures\EntityAliveStartingEquipment.cs" />
+    <Compile Include="Harmony\NPCFeatures\ProjectileCollectStateCheck.cs" />
     <Compile Include="Harmony\NPCFeatures\SCoreEntityKilled.cs" />
     <Compile Include="Harmony\NPCFeatures\EntityNPCJumpHeight.cs" />
     <Compile Include="Harmony\NPCFeatures\EntityNPCMakeVulnerable.cs" />
@@ -686,6 +692,7 @@
     <Compile Include="Scripts\Managers\SCoreQuestEventManager.cs" />
     <Compile Include="Scripts\MinEvents\MinEventActionAddAdditionalOutput.cs" />
     <Compile Include="Scripts\MinEvents\MinEventActionAddBuffByFactionSDX.cs" />
+    <Compile Include="Scripts\MinEvents\MinEventActionConsumeItemByTagSDX.cs" />
     <Compile Include="Scripts\MinEvents\MinEventActionAddBuffToPrimaryPlayer.cs" />
     <Compile Include="Scripts\MinEvents\MinEventActionAddParticleToBlock.cs" />
     <Compile Include="Scripts\MinEvents\MinEventActionAddScriptToArmour.cs" />

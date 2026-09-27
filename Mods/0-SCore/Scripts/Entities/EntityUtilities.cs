@@ -361,39 +361,147 @@ public static class EntityUtilities
         return itemStack;
     }
 
+    public enum ItemStoreKind
+    {
+        Toolbelt,
+        Bag,
+        LootContainer,
+        Harvest
+    }
+
+    // One item store an entity can draw from. Stacks are the live slot arrays.
+    public sealed class EntityItemStore
+    {
+        public readonly ItemStoreKind Kind;
+        public readonly ItemStack[] Stacks;
+        private readonly EntityAlive _entity;
+        private readonly SCoreLootContainer _container;
+
+        public EntityItemStore(ItemStoreKind kind, ItemStack[] stacks, EntityAlive entity, SCoreLootContainer container)
+        {
+            Kind = kind;
+            Stacks = stacks;
+            _entity = entity;
+            _container = container;
+        }
+
+        public int DecItem(ItemValue itemValue, int count)
+        {
+            switch (Kind)
+            {
+                case ItemStoreKind.Toolbelt:
+                    return _entity.inventory.DecItem(itemValue, count);
+                case ItemStoreKind.Bag:
+                    return _entity.bag.DecItem(itemValue, count);
+                default:
+                    return DecItemFromLootContainer(_container, itemValue, count);
+            }
+        }
+    }
+
+    // The entity's item stores, in the order items are found and consumed:
+    // toolbelt, bag, the EntityAliveSDX loot container, then the player-facing harvest window.
+    // Lookups and decrements must both walk this list, or an item can be found in one store
+    // and "consumed" from another (the unlimited bandage bug).
+    public static IEnumerable<EntityItemStore> GetItemStores(EntityAlive myEntity)
+    {
+        if (myEntity == null)
+            yield break;
+
+        if (myEntity.inventory != null)
+            yield return new EntityItemStore(ItemStoreKind.Toolbelt, myEntity.inventory.GetSlots(), myEntity, null);
+
+        // NPC bags are null unless the entity class has a LootList or BagItems.
+        if (myEntity.bag != null)
+            yield return new EntityItemStore(ItemStoreKind.Bag, myEntity.bag.GetSlots(), myEntity, null);
+
+        var container = (myEntity as EntityAliveSDX)?.lootContainer;
+        if (container?.items != null)
+            yield return new EntityItemStore(ItemStoreKind.LootContainer, container.items, myEntity, container);
+
+        // Has() first: GetOrCreate() would create an empty container for every entity we look at.
+        if (HarvestManager.Has(myEntity.entityId))
+        {
+            var harvest = HarvestManager.GetOrCreate(myEntity.entityId);
+            if (harvest?.items != null)
+                yield return new EntityItemStore(ItemStoreKind.Harvest, harvest.items, myEntity, harvest);
+        }
+    }
+
+    public static ItemStack FindItemStack(EntityAlive myEntity, Predicate<ItemStack> match)
+    {
+        if (myEntity == null || match == null)
+            return ItemStack.Empty;
+
+        foreach (var store in GetItemStores(myEntity))
+        {
+            foreach (var stack in store.Stacks)
+            {
+                if (match(stack))
+                    return stack;
+            }
+        }
+
+        return ItemStack.Empty;
+    }
+
+    public static bool MatchesItem(ItemStack stack, ItemValue itemValue)
+    {
+        if (stack == null || stack.IsEmpty() || stack.itemValue == null || itemValue == null)
+            return false;
+        return stack.itemValue.type == itemValue.type;
+    }
+
     public static ItemStack GetItemStackByTag(int EntityID, string Tag)
     {
-        var itemStack = ItemStack.Empty;
         var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
         if (myEntity == null)
-            return itemStack;
+            return ItemStack.Empty;
 
         var tag = FastTags<TagGroup.Global>.Parse(Tag);
-        // Check for the items in the tool belt.
-        foreach (var stack in myEntity.inventory.GetSlots())
+        return FindItemStack(myEntity, stack => CheckItemStack(stack, tag));
+    }
+
+    // Removes up to count of the item, walking the stores in GetItemStores order.
+    // Returns the number actually removed. Inventory.DecItem skips the dummy slot, so the
+    // temporary copy SimulateActionExecution places there is never consumed instead of the real item.
+    public static int DecItemFromAnyStore(EntityAlive myEntity, ItemValue itemValue, int count)
+    {
+        if (myEntity == null || itemValue == null || itemValue.IsEmpty() || count <= 0)
+            return 0;
+
+        var removed = 0;
+        foreach (var store in GetItemStores(myEntity))
         {
-            if (CheckItemStack(stack, tag))
-                return stack;
+            if (removed >= count)
+                break;
+            removed += store.DecItem(itemValue, count - removed);
         }
 
-        // Check for the items in the inventory.
-        foreach (var stack in myEntity.bag.GetSlots())
+        return removed;
+    }
+
+    // In-memory decrement for SCoreLootContainer stores; no SetModified, no network packet,
+    // matching how HarvestManager.AddItem writes.
+    public static int DecItemFromLootContainer(SCoreLootContainer container, ItemValue itemValue, int count)
+    {
+        if (container?.items == null || itemValue == null || count <= 0)
+            return 0;
+
+        var removed = 0;
+        for (var i = 0; i < container.items.Length && removed < count; i++)
         {
-            if (CheckItemStack(stack, tag))
-                return stack;
+            var stack = container.items[i];
+            if (!MatchesItem(stack, itemValue))
+                continue;
+
+            var take = Math.Min(stack.count, count - removed);
+            stack.count -= take;
+            removed += take;
+            container.UpdateSlot(i, stack.count <= 0 ? ItemStack.Empty.Clone() : stack);
         }
 
-        // if there's no loot container, don't check it.
-        var sdxForTag = myEntity as EntityAliveSDX;
-        if (sdxForTag?.lootContainer == null) return itemStack;
-
-        foreach (var stack in sdxForTag.lootContainer.items)
-        {
-            if (CheckItemStack(stack, tag))
-                return stack;
-        }
-
-        return itemStack;
+        return removed;
     }
 
     public static int FindItemWithTag(int EntityID, string Tag)
@@ -623,6 +731,13 @@ public static class EntityUtilities
 
         myEntity.navigator?.clearPath();
         myEntity.moveHelper?.Stop();
+
+        // clearPath() leaves a finished-but-undelivered path in the pathfinder thread. The next
+        // updateTasks tick hands it to the navigator, which re-arms the move helper and makes the
+        // NPC twitch its yaw. Discard it so the stop sticks.
+        if (myEntity is EntityAliveSDXV4)
+            GamePath.PathFinderThread.Instance?.RemovePathsFor(entityID);
+
         myEntity.speedForward = 0;
         myEntity.speedStrafe = 0;
 
@@ -777,12 +892,17 @@ public static class EntityUtilities
                 if (leaderId > 0)
                     leader = GameManager.Instance.World.GetEntity(leaderId);
 
-                // Something happened to our leader.
-                if (leader == null)
-                {
+                // A leader we cannot resolve is not the same as no leader. The player may
+                // still be loading in, or on a dedicated server may simply be offline, and
+                // GetEntity returns null in both cases. Clearing the cvar here made that
+                // permanent: the NPC half of the link is what re-stamps the player half in
+                // LeaderUpdate, so once it was gone there was nothing left to reconcile
+                // against and the hire could not heal itself. Leave it and try again next tick.
+                //
+                // A zero or negative id is different - that is a dismissed hire, which is real
+                // evidence - so it is still cleared.
+                if (leader == null && leaderId <= 0)
                     currentEntity.Buffs.RemoveCustomVar("Leader");
-                    leader = null;
-                }
             }
         }
 
@@ -912,11 +1032,24 @@ public static class EntityUtilities
         foreach (var cvar in leader.Buffs.CVars)
         {
             if (!cvar.Key.StartsWith("hired_")) continue;
-            var entity = GameManager.Instance.World.GetEntity((int) cvar.Value) as EntityAlive;
-            if (entity == null)
+
+            // Dismiss zeroes the entry rather than removing it, so a non-positive id really is
+            // a dead link.
+            if ((int) cvar.Value <= 0)
             {
                 totalCleared++;
                 removeList.Add(cvar.Key);
+                continue;
+            }
+
+            var entity = GameManager.Instance.World.GetEntity((int) cvar.Value) as EntityAlive;
+            if (entity == null)
+            {
+                // Not loaded is not the same as not hired. A saved NPC lives in its chunk file,
+                // so GetEntity returns null for a perfectly good hire whose chunk simply is not
+                // loaded right now. Pruning on that deleted real companions on login, on
+                // dismounting a vehicle, and on every hire. Count it and leave the link alone.
+                totalHired++;
                 continue;
             }
 
@@ -928,8 +1061,13 @@ public static class EntityUtilities
                 continue;
             }
 
+            // The NPC is loaded and does not name this player as its leader. That is positive
+            // evidence, so this entry really is dangling.
             totalCleared++;
             removeList.Add(cvar.Key);
+            Log.Out(
+                $"SCore: pruning stale hire {cvar.Key} from player {leaderID} - entity {entity.entityId} is loaded but its leader is " +
+                (leader2 == null ? "none." : $"{leader2.entityId}."));
         }
 
         leader.Buffs.AddCustomVar("CurrentHireCount", totalHired);
@@ -937,7 +1075,10 @@ public static class EntityUtilities
         foreach (var cvar in removeList)
             leader.Buffs.CVars.Remove(cvar);
 
-        if (totalHired == totalCleared)
+        // Only drop the redundant EntityID cvar when no hires remain. Comparing the two
+        // counters cleared it whenever they happened to coincide - two valid hires alongside
+        // two stale entries removed it while the player still had companions.
+        if (totalHired == 0)
             leader.Buffs.RemoveCustomVar("EntityID");
     }
 
@@ -962,10 +1103,9 @@ public static class EntityUtilities
 
                     entity.ForceDespawn();
                 }
-                else // Clean up the invalid entries
-                {
-                    removeList.Add(cvar.Key);
-                }
+
+                // No else. An entity that is not loaded has nothing to despawn, and its absence
+                // says nothing about whether the hire is valid - it is saved in its chunk.
             }
         }
 
@@ -988,8 +1128,11 @@ public static class EntityUtilities
                     removeList.Add(cvar.Key);
                     continue;
                 }
-                var entity = GameManager.Instance.World.GetEntity((int) cvar.Value) as EntityAliveSDX;
-                if (entity)
+                // Both EntityAliveSDX and EntityAliveSDXV4 implement IEntityAliveSDX, but V4
+                // derives from EntityTrader rather than EntityAliveSDX - so the old cast to the
+                // concrete V1 class silently skipped every V4 hire.
+                var entity = GameManager.Instance.World.GetEntity((int) cvar.Value) as EntityAlive;
+                if (entity != null && entity is IEntityAliveSDX sdx)
                 {
                     if (entity.IsDead()) // Are they dead? Don't teleport their dead bodies
                     {
@@ -1003,6 +1146,23 @@ public static class EntityUtilities
                         continue;
                     }
 
+                    // Ask before acting. TeleportToPlayer refuses for a Stay or Guard NPC, for one
+                    // already within 20m, and for one mid-teleport - and this used to pull the
+                    // entity out of its chunk first regardless. That left it live and belonging to
+                    // no chunk, which is never a valid state: Chunk.write persists only the
+                    // entities in a chunk's own list, and entity stubs read from disk are never
+                    // written back, so a save in that window drops the NPC from the region file
+                    // permanently. Stay is exactly the order players use to park a companion
+                    // somewhere, which is the reported symptom.
+                    if (!sdx.CanTeleportToPlayer(leader))
+                    {
+                        if (entity.addedToChunk)
+                            Log.Out(
+                                $"SCore: Respawn skipping {entity.EntityName} ({entity.entityId}) - it would not " +
+                                $"teleport, so it keeps its chunk. Order: {GetCurrentOrder(entity.entityId)}.");
+                        continue;
+                    }
+
                     if (entity.addedToChunk)
                     {
                         Chunk chunk = (Chunk)GameManager.Instance.World.GetChunkSync(entity.chunkPosAddedEntityTo.x,
@@ -1010,12 +1170,13 @@ public static class EntityUtilities
                         chunk?.RemoveEntityFromChunk(entity);
                     }
 
-                    entity.TeleportToPlayer(leader, true);
+                    sdx.TeleportToPlayer(leader, true);
                 }
-                else // Clean up the invalid entries
-                {
-                    removeList.Add(cvar.Key);
-                }
+
+                // No else. Respawn's job is to gather hires to the player; one whose chunk is
+                // not loaded simply does not gather this time, which is correct. Deleting the
+                // link instead was how dismounting a vehicle, or logging in while chunks were
+                // still streaming, silently cost the player a companion.
             }
         }
 
@@ -1072,6 +1233,66 @@ public static class EntityUtilities
             SetCurrentOrder(EntityID, Orders.Follow);
 
         //  leaderEntity.AddOwnedEntity(myEntity);
+    }
+
+    /// <summary>
+    /// Supplies a spawner source for a freshly created entity without trampling one that has
+    /// already been set. Call this from PostInit instead of assigning a source directly.
+    /// <para>
+    /// PostInit runs on every entity creation, including every restore from a chunk file, and it
+    /// runs immediately after EntityCreationData.ApplyToEntity has restored the saved spawner
+    /// source. Assigning Biome there unconditionally threw that value away, which put hired NPCs
+    /// back on the Biome branch of EntityAlive's despawn switch - the branch that despawns an
+    /// entity once the player has been more than 128m away for 100 ticks, or 1800 ticks at any
+    /// distance. StaticSpawner is the only case that switch exempts, and SetLeader is what sets
+    /// it, so a hire lost its protection on every world load.
+    /// </para>
+    /// </summary>
+    public static void ApplySpawnerSourceOnPostInit(EntityAlive entity)
+    {
+        if (entity == null) return;
+
+        // Everything below is wrapped because of where it runs. EntityFactory assigns the create
+        // operation's output only AFTER PostInit returns:
+        //
+        //     entity.PostInit();
+        //     this.entity = entity;
+        //
+        // so anything thrown in here leaves the operation with no entity at all. The chunk's
+        // pending spawn never drains and a saved NPC silently fails to come back - no entity, no
+        // error. Losing the despawn exemption is recoverable; losing the entity is not, so this
+        // fails open and says so loudly.
+        try
+        {
+            if (entity.Buffs == null)
+            {
+                Log.Warning(
+                    $"SCore: ApplySpawnerSourceOnPostInit: entity {entity.entityId} has no Buffs yet; leaving its spawner source alone.");
+                return;
+            }
+
+            // Still hired: re-assert the exemption rather than trusting the restored value.
+            // Dismiss leaves the Leader cvar in place with a value of zero, so the value is what
+            // matters here, not whether the cvar exists.
+            if (entity.Buffs.GetCustomVar("Leader") > 0 || entity.Buffs.GetCustomVar("Owner") > 0)
+            {
+                entity.SetSpawnerSource(EnumSpawnerSource.StaticSpawner);
+                AdvLogging.DisplayLog(AdvFeatureClass,
+                    $"ApplySpawnerSourceOnPostInit: {entity.entityId} is hired; StaticSpawner re-asserted.");
+                return;
+            }
+
+            // Anything already claimed - by a spawner block, a quest, or a restore - is left
+            // alone. Only supply the Biome default when nothing has claimed the entity.
+            if (entity.GetSpawnerSource() == EnumSpawnerSource.Unknown)
+                entity.SetSpawnerSource(EnumSpawnerSource.Biome);
+        }
+        catch (Exception e)
+        {
+            Log.Error(
+                $"SCore: ApplySpawnerSourceOnPostInit failed for entity {entity.entityId}. The entity is kept and its " +
+                $"spawner source left as restored. {e}");
+        }
     }
 
     public static void SetOwner(int EntityID, int LeaderID)
@@ -1426,6 +1647,26 @@ public static class EntityUtilities
 
             case "Loot":
                 SetCurrentOrder(EntityID, Orders.Loot);
+
+                // DELIBERATE, and it looks like a bug twice over - it differs from Dismiss just
+                // below, which zeroes this cvar rather than removing it, and it appears to
+                // un-hire an NPC that is still meant to be hired. It is neither. Do not
+                // "correct" it to SetCustomVar("Leader", 0f) and do not delete it.
+                //
+                // The two cvars carry different meanings. Owner means hired; Leader means
+                // actively following. Hire sets both through SetLeaderAndOwner, so removing
+                // Leader alone leaves the NPC hired - GetLeaderOrOwner still resolves the player
+                // through Owner - while the follow behaviours stop, because
+                // EAIApproachAndFollowTargetSDX and EAIRunawayFromEntitySDX read this cvar
+                // directly rather than through GetLeaderOrOwner. That is the whole point of the
+                // order: the NPC stays with you and stays hired, but goes and loots nearby
+                // containers instead of tailing you.
+                //
+                // Anything that needs to know "is this NPC hired" must therefore test Owner, not
+                // Leader. DialogRequirementHiredSDX already does - it falls back to Owner, and to
+                // FarmOwnerEntityId for the FarmHere case - so a looting NPC still reads as hired
+                // in dialog. RewardReassignNPCSDX matches on Leader alone, so a looting NPC is
+                // skipped by reassignment; that is the one known rough edge.
                 entityAlive.Buffs.RemoveCustomVar("Leader");
                 break;
 
@@ -1435,6 +1676,11 @@ public static class EntityUtilities
                 entityAlive.Buffs.SetCustomVar("Owner", 0f);
                 // flag to disable respawning on server reload.
                 entityAlive.Buffs.SetCustomVar("Persist", 0f);
+                // Hand them back to ordinary despawn rules. SetLeader made this NPC a
+                // StaticSpawner, which the despawn switch exempts outright, so leaving it there
+                // would strand every dismissed companion in the world for good. FarmHere
+                // deliberately does not do this - a farmer is meant to stay put.
+                entityAlive.SetSpawnerSource(EnumSpawnerSource.Biome);
                 player.Companions?.Remove(entityAlive);
                 player.Buffs.SetCustomVar($"hired_{EntityID}", 0f);
                 CheckForDanglingHires(player.entityId);
@@ -1720,50 +1966,86 @@ public static class EntityUtilities
         //return result;
     }
 
+    /// <summary>
+    /// Returns the door feature for the block at <paramref name="blockPos"/>, or <c>null</c> when
+    /// the block is not a composite door.
+    /// <para>
+    /// Current doors are <c>BlockCompositeTileEntity</c> and hold their open state in a
+    /// <see cref="TEFeatureDoor"/>. Only the legacy <c>BlockPoweredDoor</c> blocks - the powered
+    /// garage doors - still track it in bit 0 of the block meta, so that test survives here purely
+    /// as the fallback for those and must not be used as a general "is this door open" check.
+    /// </para>
+    /// </summary>
+    public static TEFeatureDoor GetDoorFeature(Vector3i blockPos)
+    {
+        var doorComposite = GameManager.Instance.World.GetTileEntity(blockPos) as TileEntityComposite;
+        return doorComposite?.GetFeature<TEFeatureDoor>();
+    }
+
+    private static void UnlockDoor(Vector3i blockPos)
+    {
+        var doorComposite = GameManager.Instance.World.GetTileEntity(blockPos) as TileEntityComposite;
+        doorComposite?.GetFeature<TEFeatureLockable>()?.SetLocked(false);
+    }
+
     public static void OpenDoor(int EntityID, Vector3i blockPos, bool forceLock = false)
     {
         var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
-        if (myEntity)
-        {
-            var block = myEntity.world.GetBlock(blockPos);
-            if (Block.list[block.type].HasTag(BlockTags.Door) && (block.meta & 1) == 0)
-            {
-                var chunk = myEntity.world.GetChunkFromWorldPos(blockPos) as Chunk;
-                if (forceLock)
-                {
-                    var doorComposite = GameManager.Instance.World.GetTileEntity(blockPos) as TileEntityComposite;
-                    doorComposite?.GetFeature<TEFeatureLockable>()?.SetLocked(false);
-                }
+        if (!myEntity)
+            return;
 
-                block.Block.OnBlockActivated(myEntity.world, blockPos, block, myEntity as EntityPlayerLocal);
-            }
+        var block = myEntity.world.GetBlock(blockPos);
+        if (!Block.list[block.type].HasTag(BlockTags.Door))
+            return;
+
+        var door = GetDoorFeature(blockPos);
+        if (door != null)
+        {
+            if (door.IsOpen())
+                return;
+
+            if (forceLock)
+                UnlockDoor(blockPos);
+
+            // Matches vanilla EntityMoveHelper.CheckForDoorAndOpen. The OnBlockActivated call this
+            // replaces reached Block's four-argument default, which is the block pickup handler,
+            // and no door block sets CanPickup - so it opened nothing and returned false.
+            door.SetOpen(true, true);
+            return;
         }
+
+        // Legacy BlockPoweredDoor: bit 0 of the meta is the open state, and its own
+        // OnBlockActivated override toggles it.
+        if ((block.meta & 1) != 0)
+            return;
+
+        if (forceLock)
+            UnlockDoor(blockPos);
+
+        block.Block.OnBlockActivated(myEntity.world, blockPos, block, myEntity as EntityPlayerLocal);
     }
 
     public static void CloseDoor(int EntityID, Vector3i blockPos)
     {
         var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
-        if (myEntity)
+        if (!myEntity)
+            return;
+
+        var block = myEntity.world.GetBlock(blockPos);
+        if (!Block.list[block.type].HasTag(BlockTags.Door))
+            return;
+
+        var door = GetDoorFeature(blockPos);
+        if (door != null)
         {
-            var block = myEntity.world.GetBlock(blockPos);
-            if (Block.list[block.type].HasTag(BlockTags.Door) && (block.meta & 1) != 0)
-            {
-                var chunk = myEntity.world.GetChunkFromWorldPos(blockPos) as Chunk;
-                if (chunk == null)
-                    return;
-                /*
-                var flag = !BlockDoor.IsDoorOpen(block.meta);
-                ChunkCluster chunkCluster = myEntity.world.ChunkClusters[chunk.ClrIdx];
-                if (chunkCluster == null)
-                {
-                    return;
-                }
-                block.meta = (byte)((flag ? 1 : 0) | ((int)block.meta & -2)); 
-                myEntity.world.SetBlockRPC(chunk.ClrIdx, blockPos, block);
-                */
-                block.Block.OnBlockActivated(myEntity.world, blockPos, block, null);
-            }
+            if (door.IsOpen())
+                door.SetOpen(false, true);
+            return;
         }
+
+        // Legacy BlockPoweredDoor.
+        if ((block.meta & 1) != 0)
+            block.Block.OnBlockActivated(myEntity.world, blockPos, block, null);
     }
 
 

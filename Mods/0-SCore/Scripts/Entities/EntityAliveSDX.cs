@@ -577,7 +577,7 @@ public class EntityAliveSDX : EntityTrader, IEntityOrderReceiverSDX, IEntityAliv
         // EntityTraders turn off their physics transforms, but we want it on,
         // Otherwise NPCs won't collider with each other.
         this.PhysicsTransform.gameObject.SetActive(true);
-        SetSpawnerSource(EnumSpawnerSource.Biome);
+        EntityUtilities.ApplySpawnerSourceOnPostInit(this);
         enemyDistanceToTalk =
             StringParsers.ParseFloat(Configuration.GetPropertyValue("AdvancedNPCFeatures", "EnemyDistanceToTalk"));
         
@@ -1730,21 +1730,29 @@ public class EntityAliveSDX : EntityTrader, IEntityOrderReceiverSDX, IEntityAliv
         return base.IsAttackValid();
     }
 
-    public void TeleportToPlayer(EntityAlive target, bool randomPosition = false)
+    /// <summary>
+    /// Whether TeleportToPlayer would actually move this entity. Stay and Guard mean the NPC was
+    /// deliberately left somewhere, so they are never gathered.
+    /// </summary>
+    public bool CanTeleportToPlayer(EntityAlive target)
     {
-        if (target == null) return;
+        if (target == null) return false;
 
-        if (EntityUtilities.GetCurrentOrder(entityId) == EntityUtilities.Orders.Stay) return;
-        if (EntityUtilities.GetCurrentOrder(entityId) == EntityUtilities.Orders.Guard) return;
-
+        if (EntityUtilities.GetCurrentOrder(entityId) == EntityUtilities.Orders.Stay) return false;
+        if (EntityUtilities.GetCurrentOrder(entityId) == EntityUtilities.Orders.Guard) return false;
 
         var target2i = new Vector2(target.position.x, target.position.z);
         var mine2i = new Vector2(position.x, position.z);
-        var distance = Vector2.Distance(target2i, mine2i);
-        //var distance = GetDistance(target);
-        if (distance < 20) return;
+        if (Vector2.Distance(target2i, mine2i) < 20) return false;
 
-        if (isTeleporting) return;
+        if (isTeleporting) return false;
+
+        return true;
+    }
+
+    public void TeleportToPlayer(EntityAlive target, bool randomPosition = false)
+    {
+        if (!CanTeleportToPlayer(target)) return;
 
         var myPosition = target.position + Vector3.back;
         var player = target as EntityPlayer;
@@ -2073,8 +2081,27 @@ public class EntityAliveSDX : EntityTrader, IEntityOrderReceiverSDX, IEntityAliv
         // For NPC weapons that map to a player-held counterpart (via CompatibleWeapon property),
         // verify the player version is present in the accessible inventory.
         var currentWeapon = ItemClass.GetItem(weapon);
-        if (currentWeapon == null) return false;
-        if (!currentWeapon.ItemClass.Properties.Contains("CompatibleWeapon")) return false;
+        // IsEmpty as well as null: ItemClass.GetItem returns ItemValue.None for a name that does
+        // not resolve, whose ItemClass is null - the Properties deref below would throw on it.
+        if (currentWeapon == null || currentWeapon.IsEmpty()) return false;
+
+        // The NPC's own bag (BagItems) is an owned store. Same check as the V4 copy, which had it
+        // added earlier; without it a weapon the NPC is carrying in its own bag failed the
+        // ownership test and the swap fell through to _defaultWeapon.
+        if (bag != null && bag.GetItemCount(currentWeapon) > 0)
+            return true;
+
+        // No CompatibleWeapon bridge: the item itself must be in the accessible inventory.
+        // Covers player items handed over through the inventory window. Same shape as the V4
+        // copy; EntityAliveSDX extends EntityTrader directly, so the window branch is live here
+        // too. Previously this returned false outright and such a weapon could never be equipped.
+        if (!currentWeapon.ItemClass.Properties.Contains("CompatibleWeapon"))
+        {
+            if (this is EntityTrader && HarvestManager.Has(entityId))
+                return HarvestManager.GetOrCreate(entityId).HasItem(currentWeapon);
+            return lootContainer != null && lootContainer.HasItem(currentWeapon);
+        }
+
         var playerWeapon = currentWeapon.ItemClass.Properties.GetString("CompatibleWeapon");
         if (string.IsNullOrEmpty(playerWeapon)) return false;
         var playerWeaponItem = ItemClass.GetItem(playerWeapon);
@@ -2132,6 +2159,12 @@ public class EntityAliveSDX : EntityTrader, IEntityOrderReceiverSDX, IEntityAliv
         // new Bag(size) allocates the slot array so AddItem works.
         const int npcBagSlots = 45;
         if (bag == null) bag = new Bag(npcBagSlots);
+
+        // A restored NPC already has its saved bag; adding BagItems again would refill
+        // stackable items on every load. Same gate as the V4 copy, and safe at this point in
+        // the lifecycle: PostInit runs SetupBagItems, and the marker is not set until
+        // AddToInventory runs later from OnAddedToWorld - so a first-spawn NPC still seeds.
+        if (Buffs.GetCustomVar("InitialInventory") > 0) return;
 
         var items = _entityClass.Properties.Values["BagItems"];
         foreach (var item in items.Split(","))

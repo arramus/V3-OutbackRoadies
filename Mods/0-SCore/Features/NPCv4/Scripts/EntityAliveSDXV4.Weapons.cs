@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 public partial class EntityAliveSDXV4
@@ -65,8 +65,8 @@ public partial class EntityAliveSDXV4
     }
 
     /// <summary>
-    /// Returns true if <paramref name="weapon"/> is available to this NPC (loot container,
-    /// enter-game items, or current hand item).
+    /// Returns true if <paramref name="weapon"/> is available to this NPC (enter-game items,
+    /// current hand item, bare hand, bag, or accessible inventory).
     /// </summary>
     public bool FindWeapon(string weapon)
     {
@@ -83,11 +83,38 @@ public partial class EntityAliveSDXV4
                 .Equals(weapon, StringComparison.InvariantCultureIgnoreCase))
             return true;
 
+        // The entity's own bare hand is always available. It is the character's default hand item
+        // - the EntityClass "HandItem" property, or meleeHandPlayer when the class declares none -
+        // not something the NPC has to own. Without this check a swap to empty hands fails the
+        // ownership test and falls through to _defaultWeapon, silently re-arming the NPC with its
+        // spawn weapon.
+        //
+        // Usually this is the same item GetHandItem() returns just above: EntityAlive's init sets
+        // handItem and then hands it straight to Inventory.SetBareHandItem. The two can diverge,
+        // though, because SetBareHandItem rewrites the bare hand without touching the entity's
+        // handItem field - so check both rather than assuming they agree.
+        var bareHand = inventory?.GetBareHandItem();
+        if (bareHand != null &&
+            bareHand.GetItemName().Equals(weapon, StringComparison.InvariantCultureIgnoreCase))
+            return true;
+
         // For NPC weapons that map to a player-held counterpart (via CompatibleWeapon property),
         // verify the player version is present in the accessible inventory.
         var currentWeapon = ItemClass.GetItem(weapon);
-        if (currentWeapon == null) return false;
-        if (!currentWeapon.ItemClass.Properties.Contains("CompatibleWeapon")) return false;
+        if (currentWeapon == null || currentWeapon.IsEmpty()) return false;
+
+        // The NPC's own bag (BagItems) is an owned store.
+        if (bag != null && bag.GetItemCount(currentWeapon) > 0)
+            return true;
+
+        // No CompatibleWeapon bridge: the item itself must be in the accessible inventory.
+        // Covers player items handed over through the inventory window.
+        if (!currentWeapon.ItemClass.Properties.Contains("CompatibleWeapon"))
+        {
+            if (this is EntityTrader && HarvestManager.Has(entityId))
+                return HarvestManager.GetOrCreate(entityId).HasItem(currentWeapon);
+            return lootContainer != null && lootContainer.HasItem(currentWeapon);
+        }
         var playerWeapon = currentWeapon.ItemClass.Properties.GetString("CompatibleWeapon");
         if (string.IsNullOrEmpty(playerWeapon)) return false;
         var playerWeaponItem = ItemClass.GetItem(playerWeapon);
@@ -124,6 +151,16 @@ public partial class EntityAliveSDXV4
 
     public override void SetupStartingItems()
     {
+        // If InitialInventory is already set, this is a restored NPC. Skip overwriting their
+        // inventory with the default XML starting items, but still set _defaultWeapon so
+        // UpdateWeapon has a fallback when FindWeapon fails.
+        if (Buffs.GetCustomVar("InitialInventory") > 0)
+        {
+            if (itemsOnEnterGame.Count > 0 && string.IsNullOrEmpty(_defaultWeapon))
+                _defaultWeapon = ItemClass.GetForId(itemsOnEnterGame[0].itemValue.type).GetItemName();
+            return;
+        }
+
         for (int i = 0; i < itemsOnEnterGame.Count; i++)
         {
             var itemStack = itemsOnEnterGame[i];

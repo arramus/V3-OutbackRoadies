@@ -85,8 +85,644 @@ This release of 0-SCore introduces significant enhancements across several core 
 		  base they no longer stamp a phantom duplicate one cell above, so a
 		  cube declared "1,1,1" now genuinely occupies one cell.
 
+Version: 3.2.36.628
+	Game Version: v3.2.0 (b10)
+
+	[ Hired NPCs - A kill by a hired NPC awarded nothing and cost the player the kill ]
+		- The NPC kill-XP postfix called the game's AddLevelExpRecursive by
+		  reflection with two arguments. The method takes three -
+		  (int exp, string _cvarXPName, bool notifyUI = true) - and reflection
+		  does not fill in optional parameters, so every call threw
+		  TargetParameterCountException.
+		- The throw propagated out of SCoreEntityKilled.OnEntityKilled before it
+		  reached the leader, so the handler never ran its last step. On every
+		  kill by a hired NPC the NPC got no XP AND the owner silently lost the
+		  kill, along with party shares and quest/SharedKillServer credit.
+		- The call now passes the third argument, forwarded from the caller
+		  rather than hardcoded. It gates only a level-up tooltip that is itself
+		  guarded on the parent being an EntityPlayerLocal, so it cannot be
+		  observed through this postfix today - forwarding keeps that correct if
+		  the IEntityAliveSDX gate ever widens.
+		- No double award: stock AddLevelExp returns immediately when the parent
+		  is not an EntityPlayer, and an SDX NPC never is, so this postfix is the
+		  only thing that pays an NPC at all.
+
+	[ Hired NPCs - V4 FindWeapon accepts the entity's own bare hand ]
+		- FindWeapon checked enter-game items, the hand item, the bag and the
+		  accessible inventory, but not Inventory.GetBareHandItem(). The bare
+		  hand is the character's default hand item - the EntityClass "HandItem"
+		  property, or meleeHandPlayer when the class declares none - and is
+		  available by definition rather than owned, so a swap to empty hands
+		  could fail the ownership test and fall through to _defaultWeapon.
+		- Defensive rather than a fixed symptom, and recorded as such: today the
+		  entity's handItem and its bare hand are set from the same value in the
+		  same block of EntityAlive's init, and neither accessor is overridden
+		  anywhere, so on a V4 entity the two checks agree. Only a later
+		  SetBareHandItem call can separate them - which is what the fix below
+		  was doing on the legacy class.
+
+	[ Hired NPCs - A weapon in a legacy NPC's own bag was not found ]
+		- FindWeapon checked enter-game items, the hand item and the accessible
+		  inventory, but never the NPC's own bag. A weapon placed there through
+		  the class's BagItems is as owned as it gets, yet asking to swap to it
+		  failed the ownership test and fell through to _defaultWeapon.
+		- It now checks the bag, the same check the V4 copy received earlier
+		  this cycle, in the same position - after the item is resolved and
+		  before the CompatibleWeapon bridge is consulted.
+		- The resolved item is now rejected when empty as well as null.
+		  ItemClass.GetItem returns ItemValue.None for a name that does not
+		  resolve, and its ItemClass is null, so the Properties check on the
+		  next line threw for any weapon name with a typo in it.
+		- An item with no CompatibleWeapon property is no longer rejected out
+		  of hand. The legacy copy now does what V4 does and looks for the item
+		  itself: in the harvest window for an EntityTrader-based NPC, else in
+		  the loot container. That is what covers a player weapon handed to the
+		  NPC through its inventory window, which previously could never be
+		  equipped at all.
+		- The bare-hand check stays V4-only on purpose; the two copies are kept
+		  separate there.
+
+	[ Hired NPCs - A restored legacy NPC was handed its BagItems again on every load ]
+		- SetupBagItems re-seeded the bag from the class's "BagItems" property
+		  every time the NPC was constructed, so a restored NPC collected a
+		  fresh count of every stackable entry on each world entry. Unstackable
+		  items were unaffected, which is presumably why it went unnoticed.
+		- It now skips re-seeding when the InitialInventory cvar is already set,
+		  the same gate the V4 copy received earlier this cycle and the same
+		  gate legacy SetupStartingItems already had. The bag is still
+		  constructed first, since a restored NPC needs a non-null bag either
+		  way.
+		- Safe at this point in the lifecycle: PostInit runs SetupBagItems, and
+		  the marker is not set until AddToInventory runs later from
+		  OnAddedToWorld, so a first-spawn NPC still seeds normally.
+		- This closes a divergence rather than adding one: the two NPC
+		  generations behaved differently here until now.
+
+	[ NPCs - Eating left a legacy NPC's bare hand set to its weapon ]
+		- ModGeneralUtilities.ConsumeProduct swaps the bare hand to the food,
+		  runs the item's action, then restores. It saved the wrong thing to
+		  restore from: holdingItem, which is whatever the NPC is HOLDING, so an
+		  armed NPC came out of a meal with its weapon installed as its bare
+		  hand, permanently. Nothing resets it, and the entity's own handItem
+		  field is never touched, so GetHandItem() and GetBareHandItem()
+		  disagreed from then on. It now saves and restores
+		  GetBareHandItemValue().
+		- It also ran the wrong action. holdingItem and holdingItemData fall
+		  through to the bare hand only when the toolbelt slot is empty, so for
+		  an armed NPC the swap changed nothing they could see and the method
+		  executed the WEAPON's action instead of the food's - and the Attack()
+		  call ahead of it fired that weapon for real, a swing or a shot in the
+		  middle of eating. Both now address the bare-hand pair directly, and
+		  Attack() runs only when the NPC is genuinely bare-handed.
+		- The restore moved into a finally. If the action threw, the food was
+		  left installed as the bare hand - the same permanent corruption by a
+		  different route.
+		- Legacy only: the method casts to EntityAliveSDX and returns false for
+		  V4 entities.
+
+Version: 3.2.29.1709
+	Game Version: v3.2.0 (b10)
+
+	[ Hired NPCs - An NPC could consume items it did not actually have ]
+		- Lookups and decrements walked different stores. GetItemStackByTag
+		  searched the toolbelt, the bag and the EntityAliveSDX loot container,
+		  while the consuming side called inventory.DecItem, which only ever
+		  touches the toolbelt. An item found in the bag or a container was
+		  therefore "consumed" from a store that never held it, so it was never
+		  removed - unlimited bandages being the visible symptom.
+		- EntityUtilities now has one ordered list of an entity's stores -
+		  GetItemStores: toolbelt, bag, the EntityAliveSDX loot container, then
+		  the player-facing harvest window - and both sides walk it.
+		  FindItemStack searches it, DecItemFromAnyStore removes from it in the
+		  same order, and DecItemFromLootContainer handles the container stores
+		  in memory (items[] plus UpdateSlot, no SetModified and no network
+		  packet) the way HarvestManager.AddItem already wrote.
+		- This also removes a null reference: the old GetItemStackByTag
+		  dereferenced myEntity.bag unguarded, and an NPC bag is null unless
+		  the class has a LootList or BagItems.
+		- UAITaskHealSelf, both the legacy and the V4 copy, now decrements
+		  through DecItemFromAnyStore, so a bandage leaves the store it was
+		  found in. Changed in both because it is a public task other packs
+		  may already use.
+		- New MinEvent action for XML, ConsumeItemByTagSDX, removing one item
+		  carrying the given tag from whichever store holds it:
+		      <triggered_effect trigger="onSelfBuffStart"
+		          action="ConsumeItemByTagSDX, SCore" target="self" tag="medical" />
+
+	[ Hired NPCs - Ammunition handed over in the inventory window can now be reloaded ]
+		- A leader gives an NPC ammunition by dropping it into the NPC's
+		  inventory window, which is the HarvestManager container. Stock's
+		  reload path never looks there: ItemActionRanged.CanReload gates on
+		  the bag and toolbelt, and CompleteReload consumes from those two
+		  stores only. Ammunition handed over that way could not start a
+		  reload, let alone finish one.
+		- Two postfixes add the window as an additional source, consulted only
+		  after the stock stores. CanReload flips false to true when the window
+		  holds the selected ammo; CompleteReload takes the remaining deficit
+		  from the window and tops the magazine up the way stock does.
+		- Gated on EntityAliveSDXV4 with an already-existing container. A
+		  player, a zombie, a base trader and every other mod's entity fail the
+		  cast, so the stock path runs for them untouched. The gate also
+		  requires a non-null bag: stock CompleteReload dereferences
+		  holdingEntity.bag with no null check, so a bagless NPC must never be
+		  flipped to "can reload" or stock throws before the postfix runs.
+		  Window reload is simply unavailable to bagless classes, as in stock.
+		- Server-side in practice. The reload is driven by server AI and
+		  CompleteReload runs on the server, where the container dictionary is
+		  authoritative. A dedicated-server client's dictionary stays empty, so
+		  both postfixes are no-ops there.
+
+	[ Hired NPCs - Starting stock can be seeded into the inventory window ]
+		- New "HarvestItems" entityclass property on EntityAliveSDXV4, seeding
+		  the player-facing inventory window at PostInit. "name=count" entries
+		  seed at that count; a bare "name" seeds a full stack.
+		- Hired stock belongs in this window rather than the toolbelt because
+		  the window survives a pickup and the toolbelt does not. On pickup
+		  EntitySyncUtils.GetNPCItemValue serialises the window into the item's
+		  metadata before the container is released, and SetNPCItemValue
+		  restores it under the new entity id on deploy. V4 persistence keeps
+		  only the held weapon's name, so a restored NPC's toolbelt comes back
+		  empty.
+		- Seeded once per NPC lifetime, guarded by a cvar marker that rides
+		  along with the NPC on pickup. The window is persisted, so seeding on
+		  every PostInit would pile stock on top of whatever the player had
+		  left. A redeployed NPC keeps the window it had rather than starting
+		  empty or being seeded a second time.
+		- Server-only, checked before the marker is set, so a client cannot
+		  create a stray local container or burn the one-shot for nothing.
+		- Logs a warning naming the NPC, the item and the count when an entry
+		  does not fit. That only happens when a class declares more stacks
+		  than the window holds, which is a config error worth seeing.
+
+	[ Hired NPCs - A restored V4 NPC was re-equipped on every world load ]
+		- SetupStartingItems overwrote the inventory with the class's XML
+		  starting items, and SetupBagItems added BagItems again, every time
+		  the NPC was constructed. On a restored NPC that meant a fresh full
+		  stack of every stackable item on each world entry.
+		- Both now skip re-seeding when the InitialInventory cvar is already
+		  set, which marks an NPC that has been through this once.
+		  SetupStartingItems still records _defaultWeapon from the first
+		  starting item, so UpdateWeapon keeps a fallback when FindWeapon finds
+		  nothing.
+
+	[ Hired NPCs - Weapons handed to a V4 NPC were not found ]
+		- FindWeapon only accepted a weapon that declared a CompatibleWeapon
+		  property, and looked for the player-side counterpart in the loot
+		  container. An EntityTrader-based NPC keeps its player-accessible
+		  inventory in the harvest window instead, and a weapon with no
+		  CompatibleWeapon bridge was rejected outright.
+		- It now accepts the NPC's own bag (BagItems), and for an
+		  EntityTrader-based NPC searches the harvest window. A weapon with no
+		  CompatibleWeapon bridge is matched on the item itself, which covers
+		  player weapons handed over through the inventory window. It also
+		  guards an empty ItemValue, not just a null one.
+
+	[ NPCs - Eating threw on any NPC, leaving the item unconsumed ]
+		- The Eat branch of ItemClass.ExecuteAction looks up the holder's
+		  LocalPlayerUI and then sets xui.IsUsingItemActionEntryPromptComplete
+		  outside the UsePrompt check. An NPC has no UI, so xui is null and the
+		  press threw - which killed Inventory.SimulateActionExecution before
+		  its callback ran, so the item was never consumed and the held item
+		  was never restored.
+		- A prefix now steps in only when the original would throw: an Eat
+		  press, not yet executed, on a holder with no local player UI. It runs
+		  the original's press sequence without the prompt handling. Everything
+		  else goes to the original untouched.
+
+	[ NPCs - Bows fired at zero draw, so every arrow did 1 damage ]
+		- The attack task presses and releases in the same frame.
+		  ItemActionCatapult computes the draw at release as
+		  (Time.time - m_ActivateTime) / m_MaxStrainTime, so the draw came out
+		  at ~0% and the projectile's damage lerped to its minimum. Arrows flew
+		  normally and landed for 1 damage.
+		- The draw start is now back-dated by m_MaxStrainTime between the press
+		  and the release, so the release sees a full draw. Writing
+		  strainPercent directly does not work - the release recomputes it.
+		- Applied to both the legacy and the V4 copies of the task. Guns
+		  (ItemActionRanged) and plain launchers keep strainPercent at its
+		  default of 1 and are unaffected.
+
+	[ NPCs - V4 shots passed the aim point at a fixed offset ]
+		- EntityAliveSDXV4.GetLookRay, copied from EntityTrader, started the
+		  ray at eye height, while the inherited GetLookVector returns
+		  normalize(lookAtPosition - getHeadPosition()) whenever a look point
+		  is set. Origin and direction were anchored at different points, so
+		  every shot passed the aim point by a constant offset, a little low
+		  and to one side. Gun NPCs hit a zombie's shoulder every time and a
+		  bolt could miss outright.
+		- The ray now starts at getHeadPosition(), so it passes through the aim
+		  point. Direction is unchanged; the origin moves up by roughly the
+		  head-to-eye distance. V4 entities only.
+		- Note this also moves the origin for ItemActionMeleeSDX, which takes
+		  its ray from the same method.
+
+	[ NPCs - Facing a target passed the wrong coordinate ]
+		- The attack task called RotateTo with the target's y value in both the
+		  y and the z argument, so the NPC turned toward a point derived from
+		  its target's height rather than its position. Fixed in both the
+		  legacy and the V4 copies.
+
+	[ NPCs - V4 models leaned their whole body when looking up or down ]
+		- A V4 model renders the stored body pitch as a whole-body lean rather
+		  than a head tilt, so any RotateTo carrying a pitch made the NPC lean.
+		- The pitch argument is now zero for EntityAliveSDXV4 while following
+		  (UAITaskFollowSDX), guarding (UAITaskGuard) and looking at an entity
+		  (UAISCoreUtils). Yaw is unchanged, and legacy NPCs keep the pitch
+		  they always had.
+
+	[ NPCs - A V4 NPC twitched after being told to stop ]
+		- clearPath leaves a finished-but-undelivered path in the pathfinder
+		  thread. The next updateTasks tick handed it to the navigator, which
+		  re-armed the move helper and made the NPC twitch its yaw after it had
+		  been stopped.
+		- StopMoving now also discards that pending path, for V4 entities, so
+		  the stop sticks.
+
+	[ Projectiles - An NPC's nocked arrow could be taken with E ]
+		- ProjectileMoveScript.TryCollect checks only whether the ammo item
+		  IsSticky before handing the player an arrow and destroying the
+		  object. It never asks whether the projectile has actually been fired
+		  and come to rest.
+		- ItemActionLauncher.instantiateProjectile adds that script to the
+		  arrow model while the model is still parented to the holder's right
+		  hand, so a nocked arrow is a live, collectable projectile sitting in
+		  state Idle. A player's own is safe only because the player model sits
+		  on layer 24, outside the E raycast's mask; SetModelLayer is a no-op
+		  on both EntityAliveSDX and EntityAliveSDXV4, so an SDX NPC's in-hand
+		  arrow stayed reachable. Taking it gave the player an arrow while the
+		  NPC kept its loaded round - free, repeatable ammunition.
+		- TryCollect now requires the projectile to have stuck in the world and
+		  been registered with the ProjectileManager - state Sticky with a
+		  valid ProjectileID. Both are set together on the stick paths, so
+		  every legitimately collectable arrow still passes. This fixes it for
+		  both NPC generations, since it fixes the collection side rather than
+		  the entity side.
+		- The "press E to pick up" prompt is built independently of what
+		  TryCollect returns, so the prompt still appears on an NPC's nocked
+		  arrow; pressing E now simply does nothing.
+
+Version: 3.2.19.1009 
+	Game Version: v3.2.0 (b10)
+
+	[ Hired NPCs - Respawn no longer strands a companion outside its chunk ]
+		- Respawn pulled a hire out of its chunk and then called
+		  TeleportToPlayer, which declines for a Stay or Guard NPC, for one
+		  already within 20m, and for one mid-teleport. When it declined, the
+		  entity was left live and belonging to no chunk.
+		- That state is never valid. Chunk.write persists only the entities in
+		  a chunk's own list, and entity stubs read from disk are never written
+		  back, so a save taken in that window drops the NPC from the region
+		  file for good - no error, nothing in the log, and the hire link left
+		  intact in the player blob because that lives in a different file.
+		- Stay is the order players use to park a companion somewhere, which
+		  makes it the most likely to be caught. It matches the symptom that
+		  started this whole thread: leave an NPC at a base, come back, gone.
+		- The four bail conditions are now a CanTeleportToPlayer guard on
+		  IEntityAliveSDX, implemented in both the V1 and V4 entities, and
+		  TeleportToPlayer opens by calling it. Respawn asks before it removes
+		  anything. The seven other callers are untouched - they still call
+		  TeleportToPlayer and behave exactly as before.
+		- It also logs when it skips, naming the entity and its current order.
+		  That line marks the moment the old code created the bad state, so a
+		  session with it will show whether this really was the cause rather
+		  than merely a defect found on the way.
+		- This is a correctness fix, not a confirmed cause. It is worth making
+		  either way: there is no state in which a live entity should belong to
+		  no chunk.
+
+	[ Hired NPCs - V4 hires were invisible to Respawn ]
+		- Respawn cast the entity to the concrete EntityAliveSDX, and
+		  EntityAliveSDXV4 derives from EntityTrader rather than from it, so
+		  the cast returned null and every V4 hire was skipped outright. Before
+		  the null-lookup work they were pruned by the else branch; afterwards
+		  they were merely ignored.
+		- It now resolves EntityAlive plus the IEntityAliveSDX interface, which
+		  both entity types implement.
+		- Note this is new coverage rather than changed coverage: V4 hires will
+		  gather to the player on login and on dismounting a vehicle for the
+		  first time. Taken now because V4 is not in field use and carries no
+		  established behaviour to preserve.
+
+	[ Challenges - Auto Redeem crashed dedicated servers ]
+		- Opening a loot container could take down the server's package
+		  handler with a NullReferenceException inside Challenge.Redeem,
+		  reached from SCore's AutoRedeemChallenges postfix.
+		- Challenge.Redeem is client-side code. It builds an analytics event
+		  out of Owner.Player, and that field is typed EntityPlayerLocal - the
+		  LOCAL player. It reads Player.totalTimePlayed, gameStage and
+		  Progression.Level with no guard of its own, though vanilla does
+		  null-check the same field over in StartChallenges.
+		- ChallengeJournal.FireEvent also runs on the server. A client opening
+		  a container arrives as NetPackageLockRequest and goes through
+		  LockManager.LockRequestServer, TEFeatureStorage.PopulateTE and
+		  LootManager.LootContainerOpened before firing the event. There is no
+		  local player for a remote player's journal on that machine, so
+		  Player is null and vanilla throws. Vanilla never hits this itself
+		  because it only redeems through the UI, which is client-only.
+		- Confirmed against the IL rather than inferred: the reported offset
+		  0x00b5 sits immediately before
+		      ldfld class ChallengeJournal Challenges.Challenge::Owner
+		      ldfld class EntityPlayerLocal ChallengeJournal::Player
+		      ldfld float32 EntityPlayer::totalTimePlayed
+		- AutoRedeemChallenges now resolves the journal once and bails when it
+		  or its Player is null. No local player means there is nothing to
+		  redeem for on this machine. This also covers a listen host handling
+		  a remote client's packet, which is what the reported trace was.
+		- Not changed, but worth knowing: Challenge.ChallengeGroup is null for
+		  any challenge declared without a group attribute - it is optional,
+		  guarded by if (e.HasAttribute("group")) - and Redeem dereferences it
+		  three times for the same analytics object. Every challenge shipped
+		  here has a group, so nothing trips it, but a modlet adding a
+		  groupless challenge would crash the same way at a different offset.
+
+Version: 3.2.18.1421
+	Game Version: v3.2.0 (b10)
+
+	[ Hired NPCs - Stay and Guard reverted ]
+		- The bWillRespawn change for Stay and Guard is reverted, in both the
+		  V1 and V4 order switches. It stopped NPC respawning outright; rolling
+		  back to 3.2.15 confirmed it, and both switches are now back to their
+		  original shape.
+		- It should not have shipped. It was the belt-and-braces part of the
+		  despawn work, was noted at the time as the first thing to drop, and
+		  the line it overrode carried a comment saying the flag needs to be
+		  off for entities to despawn after being killed. The despawn-protection
+		  fix does not depend on it.
+		- A related correction to that entry: it said everything except Follow
+		  and Loot was left without the flag, implying Follow had none. Follow
+		  and Loot set bWillRespawn to true in their own branch - inline at
+		  EntityAliveSDX.cs:1341 in V1, and inside HandleFollowOrder in V4,
+		  where it is not visible in the switch at all. Follow is the best
+		  covered order, not the least.
+
+	[ Hired NPCs - PostInit hook now fails open ]
+		- ApplySpawnerSourceOnPostInit cannot abort entity creation any more.
+		  EntityFactory assigns the create operation's output only after
+		  PostInit returns, so anything thrown inside leaves the operation with
+		  no entity: the chunk's pending spawn never drains and a saved NPC
+		  quietly fails to come back, with no entity and no error.
+		- The body is wrapped in a try/catch that keeps the entity, leaves the
+		  restored spawner source alone and writes a Log.Error, with a null
+		  Buffs guard and an AdvLogging line on the hired branch. Worst case is
+		  now the original despawn bug rather than a lost NPC.
+		- This is also instrumentation. 3.2.17.2050 was reported as failing to
+		  restore hired NPCs with nothing in the log at all; the three possible
+		  outcomes here - an error naming the entity, the hired-branch line with
+		  no restore, or neither line - each narrow that down.
+		- The mechanism is still unexplained. SetSpawnerSource only assigns
+		  three fields, nothing in the creation path reads the spawner source,
+		  EntityUtilities has no static constructor, and Buffs is written
+		  earlier in both PostInit implementations. None of the obvious
+		  candidates hold up, which is why the next build is instrumented
+		  rather than confidently fixed.
+
+Version: 3.2.17.2050
+	Game Version: v3.2.0 (b10)
+	*** WITHDRAWN - superseded. The Stay and Guard change below stopped NPC
+	*** respawning, which is reason enough not to ship this build.
+	***
+	*** The second reason originally given here - that hired NPCs were not
+	*** restored from the save - has since been withdrawn by the reporters.
+	*** The same build produced the same NPC present and absent five minutes
+	*** apart, so that failure is state dependent, not version dependent.
+	*** The two fixes this build carries are sound.
+
+	[ Custom Quality Levels - Crafting and Skills ]
+		- The crafting window has its own ceiling, and raising QualityLevels
+		  never lifted it. XUiC_CraftingInfoWindow.SetRecipe clamps every
+		  recipe's tier to XUiM_Recipes.CraftingMaxTier, and the quality arrows
+		  are bounded by the same value, so a CraftingTier passive effect could
+		  resolve to 600 and the window would still hand the queue a 6.
+		- That ceiling is data, not code: it comes from the max_quality_tier
+		  attribute on the <items> root, which defaults to 6 when absent. The
+		  attribute is not in vanilla items.xml, so it has to be ADDED rather
+		  than set - a <set> on a missing attribute matches nothing and is
+		  skipped in silence, which is why this looked like a broken feature
+		  rather than a missing line:
+		
+		      <setattribute xpath="/items" name="max_quality_tier">600</setattribute>
+		
+		  The "Crafting Max Tier" sandbox option overrides it if a player sets
+		  it; the default of -1 means inherit. This is now written up in
+		  Config/ReadMe.md and commented in Config/blocks.xml, since nobody
+		  could reasonably have guessed it.
+		- The skills window no longer disagrees with the workbench. Its crafting
+		  entries showed ProgressionClass.DisplayData.GetQualityLevel, which
+		  counts how many unlock_level thresholds the player has passed and caps
+		  at the length of that list. In vanilla the count happens to equal the
+		  quality, and that coincidence was the whole display - it never read
+		  the CraftingTier effect, so it kept counting to 6 beside an axe that
+		  really was quality 300.
+		- XUiCSkillCraftingInfoEntryQuality rewrites the four quality bindings
+		  with the tier the recipe actually reports, resolved the same way the
+		  crafting window resolves it and clamped the same way. GetQualityLevel
+		  itself is left alone because it also drives the locked and available
+		  colours and the next-unlock points; a locked entry still reads zero,
+		  so locked styling is unchanged.
+		- Note "next quality" has no exact meaning on a continuous scale - the
+		  threshold list cannot say what the next unlock grants. It shows one
+		  band up from current, capped at the configured maximum.
+		- QualityPerTier and QualityTierOffset are declared in blocks.xml again.
+		  The code shipped in the previous build but the property declarations
+		  did not, so both were reachable only by adding them by hand. A stray
+		  line of text that had been saved into the AdvancedItemFeatures block
+		  is removed with them.
+		- Reported by bdubyah, who chased it from the crafting window through to
+		  the skills panel.
+
+	[ Hired NPCs - Despawn Protection ]
+		- Hired NPCs no longer lose their despawn protection on every world
+		  load. PostInit ended with an unconditional SetSpawnerSource(Biome),
+		  and PostInit runs on every entity creation - including every restore
+		  from a chunk file, immediately after EntityCreationData.ApplyToEntity
+		  has restored the saved source. The saved value was read and then
+		  thrown away.
+		- That matters because StaticSpawner is the only case EntityAlive's
+		  despawn switch exempts, and SetLeader is what sets it. Back on Biome,
+		  the game despawns an entity once the player has been more than 128m
+		  away for 100 ticks, or 1800 ticks at any distance - so a companion
+		  left at a base was one long absence from being deleted. IsSavedToFile
+		  does not help: the despawn path removes the entity from its chunk
+		  before the chunk is ever written.
+		- EntityUtilities.ApplySpawnerSourceOnPostInit replaces the assignment
+		  in both the V1 and V4 paths. A still-hired NPC gets StaticSpawner
+		  re-asserted; anything already claimed by a spawner block, a quest or
+		  a restore is left alone; only a genuinely unclaimed entity gets the
+		  Biome default. Leader and Owner are tested by value rather than by
+		  presence, because Dismiss leaves both cvars in place set to zero.
+		- Dismiss now hands the NPC back to Biome. Without that, the fix above
+		  would have traded vanishing companions for immortal ones, since
+		  StaticSpawner is exempt from despawn outright and every dismissed
+		  companion would have stayed in the world for good. FarmHere
+		  deliberately does not reset it - a farmer is meant to stay put.
+
+	[ Hired NPCs - Stay and Guard ]
+		- Stay and Guard now set bWillRespawn, the flag that parks an
+		  unload-marked entity instead of letting the removal proceed. Both
+		  order switches sent everything except Follow and Loot to
+		  bWillRespawn = false, so the NPCs most likely to be left somewhere on
+		  their own were the ones with no backstop - which is exactly the
+		  reported symptom.
+		- Applied to the V1 switch in EntityAliveSDX and the V4 switch in
+		  NPCLeaderComponent. Guard was not listed in the V1 switch at all and
+		  fell through to the default, so it moves too. Companion handling is
+		  unchanged in both.
+		- Note this parks those NPCs in memory rather than letting them unload
+		  with their chunk. With the spawner source fixed they already survive
+		  without it, so this is a backstop - and the first part of the change
+		  to drop if resident entity counts become a concern.
+
+
+	[ Hired NPCs - Hire Links ]
+		- Hire links are no longer deleted just because the NPC is not loaded.
+		  Four places treated "GetEntity returned null" as "this link is
+		  invalid, delete it", but a saved NPC lives in its chunk file, so the
+		  lookup also returns null for a perfectly good hire whose chunk is
+		  simply cold. The link was fine; only the lookup was premature.
+		- Absence is no longer evidence. Every remaining prune needs something
+		  positive: the entry is zeroed, which is what Dismiss does; or the NPC
+		  is loaded and names a different leader; or it is loaded and dead.
+		  CheckForDanglingHires, Respawn and Despawn all follow that rule now,
+		  and an unloaded hire counts as hired rather than being cleared.
+		- GetLeader mattered most. It cleared the NPC's own Leader cvar when
+		  the player entity could not be resolved - during a load, or on a
+		  dedicated server between sessions. That cvar is what LeaderUpdate
+		  re-stamps the player half from, so losing it turned a self-healing
+		  problem into a permanent one. It now only clears on a zero or
+		  negative id, which is a genuine dismissal.
+		- Prunes are logged. The one judgement-based removal left writes a line
+		  naming the hire, the player and the leader the NPC actually claims,
+		  so a loss is something a player can report rather than a silence.
+		- The V4 path needed no separate change: NPCFrameCache resolves through
+		  GetLeaderOrOwner, so it inherits the GetLeader fix.
+		- Also fixed alongside: CheckForDanglingHires dropped the player's
+		  EntityID cvar when totalHired == totalCleared, which is true whenever
+		  the two coincide - two valid hires next to two stale entries cleared
+		  it while the player still had companions. It now checks for no hires.
+		- Note CurrentHireCount now counts hires whose chunks are not loaded,
+		  where before it counted only the loaded ones. Nothing in SCore reads
+		  the cvar, but a modlet gating on it will see larger numbers.
+
+		- Both defects were reported by xyth, with reproduction steps and a
+		  console command that reads the hire link and spawner source directly.
+
+Version: 3.2.17.927 
+	Game Version: v3.2.0 (b10)
+
+	[ Food Spoilage - Held Items ]
+		- A spoilable item held in the hand no longer holsters and re-draws
+		  itself as it ages, which on screen looked like the item reloading.
+		- Inventory.SetItem opens by re-showing the held item whenever the
+		  incoming value is not EqualsExceptUseTimesAndAmmo to the current
+		  one, and that comparison includes the metadata dictionary. All of
+		  spoilage lives in metadata - NextSpoilageTick, SpoilageValue and
+		  Freshness - so every tick counted as a change to a different item.
+		- The toolbelt widened it past the one slot. A slot-changed event
+		  pushes the whole belt back through Inventory.SetSlots, which calls
+		  SetItem for every slot, so a stack spoiling anywhere on the belt
+		  dragged the held slot through the comparison as well.
+		- InventorySetItemSpoilage copies just those three keys onto the
+		  outgoing value before the comparison runs, so they stop counting as
+		  a change. It is confined to the held slot, to items whose type is
+		  unchanged, and to items marked Spoilable, so a genuine swap still
+		  re-shows exactly as vanilla intends. The value it writes to is
+		  replaced by _itemValue.Clone() a few lines later either way.
+
+	[ Custom Quality Levels - Colour Banding ]
+		- The colour band width is configurable now. Two new properties under
+		  AdvancedItemFeatures in blocks.xml: QualityPerTier (default 100) is
+		  how many quality points make up one colour band, and
+		  QualityTierOffset (default 0) is the band the lowest slice of
+		  quality lands on. Tier is quality / QualityPerTier +
+		  QualityTierOffset, clamped into the seven colours that
+		  qualityinfo.xml defines.
+		- The defaults reproduce the previous behaviour exactly. On a
+		  QualityLevels of 0,600 that is 100-199 brown, 200-299 orange,
+		  300-399 yellow, 400-499 green, 500-599 blue and 600+ purple, with
+		  anything under 100 left grey.
+		- A 1-100 quality scale works as a result. QualityLevels 1,100 with
+		  QualityPerTier 20 and QualityTierOffset 1 gives 1-19 brown, 20-39
+		  orange, 40-59 yellow, 60-79 green, 80-99 blue and 100 purple. The
+		  offset is what makes that reachable - a band width on its own puts
+		  1-19 on grey and quality 100 on blue, every band one place out.
+		- QualityInfoGetQualityLevelName carried its own hardcoded /100
+		  instead of calling QualityUtils, so under any banding other than
+		  the default the quality name and the quality colour could disagree.
+		  Both read the same calculation now.
+		- CalculateTierHex was a byte-identical copy of CalculateTier and is
+		  gone; GetColor and GetColorHex share the one path. The tier clamp
+		  was written against the quality range (0 to 700) rather than the
+		  colour array, so it never clamped anything - it clamps to the array
+		  now. A zero or negative QualityPerTier falls back to 100 rather
+		  than dividing by zero.
+		- None of this turns itself on: CustomQualityLevels is still false by
+		  default, and the Harmony prefixes pass straight through to vanilla
+		  until it is set true.
+
+Version: 3.2.15.1547
+	Game Version: v3.2.0 (b10)
+
+	[ NPC Doors ]
+		- NPCs can open ordinary doors again. Every door in the shipped game
+		  data except the powered garage doors is a CompositeTileEntity that
+		  keeps its open state in a TEFeatureDoor, while SCore was still
+		  reading bit 0 of the block meta - a bit only the legacy
+		  BlockPoweredDoor blocks maintain. That is 537 of the 613
+		  door-tagged blocks being misread.
+		- The open attempt was a no-op as well. OpenDoor called the
+		  four-argument Block.OnBlockActivated, which
+		  BlockCompositeTileEntity does not override, so it landed on
+		  Block's default - the block pickup handler - and no door block
+		  sets CanPickup. It now calls TEFeatureDoor.SetOpen, the same call
+		  vanilla's EntityMoveHelper.CheckForDoorAndOpen makes.
+		- The failure cost more than the door. Because CheckForClosedDoor
+		  believed it had opened something, it called
+		  moveHelper.ClearBlocked() and returned true, so IsBlocked then
+		  reported the NPC as unblocked and UAITaskBreakBlocks took its
+		  early return. An NPC could stand at a closed door indefinitely
+		  with no fallback behaviour firing at all.
+		- Touches EntityUtilities.OpenDoor / CloseDoor and both copies of
+		  CheckForClosedDoor - SCoreUtils and the v4 DoorUtils. The meta
+		  test is kept as the fallback for BlockPoweredDoor, whose own
+		  OnBlockActivated override does still toggle it, so the powered
+		  garage doors behave as before.
+
+	[ Challenges - HUD Counters ]
+		- A challenge objective that resets its count no longer leaves a
+		  stale number on the HUD tracker.
+		  BaseChallengeObjective.ResetComplete writes the 'current' backing
+		  field directly, so the Current property setter never runs and
+		  ValueChanged never fires - and that event is the only thing
+		  XUiC_QuestTrackerObjectiveEntry listens to. The challenge journal
+		  rebuilds when opened and read correctly, so only the HUD held the
+		  pre-reset count, until the save was reloaded.
+		- StealthKillStreak now resets through the properties instead of
+		  calling ResetComplete. A broken streak updates the HUD at once
+		  rather than appearing to stick at its old value.
+		- ChallengeObjectiveResetComplete patches ResetComplete for the
+		  callers SCore does not own - RequirementGroupPhase and
+		  BaseRequirementObjectiveGroup reach it for requirement groups. It
+		  raises the change event once afterwards when the count was
+		  non-zero. This also covers the already-complete case, where the
+		  event did fire but fired before the count was cleared, leaving the
+		  HUD redrawn with the old number.
+
+	[ Utility AI - IsFacing ]
+		- SCoreUtils.IsFacing and VisionUtils.IsFacing compared the source's
+		  look vector against 'targetPos - lookVector'. GetLookVector returns
+		  a unit direction, not a position, so subtracting it from a world
+		  position left roughly targetPos itself - the test measured the
+		  angle from the world origin to the target, and the source's own
+		  position never entered it. A target directly behind the source
+		  could report as faced.
+		- Now measured from source.position, flattened onto the XZ plane so
+		  a target on a step or a floor above still counts as in front, and
+		  guarded against a zero-length vector. Neither copy has a caller
+		  inside SCore, so none of SCore's own AI changes - the fix is for
+		  mods using the helper.
+
 Version: 3.2.7.728 
-	Game Version: v3.2.0 (b9)
+	Game Version: v3.2.0 (b10)
 
 	[ ESC Menu ]
 		- SCore Utilities and NPC Settings now sit in the vanilla ESC menu

@@ -165,17 +165,28 @@ public partial class EntityAliveSDXV4
         return y + 1;
     }
 
-    public void TeleportToPlayer(EntityAlive target, bool randomPosition = false)
+    /// <summary>
+    /// Whether TeleportToPlayer would actually move this entity. Stay and Guard mean the NPC was
+    /// deliberately left somewhere, so they are never gathered.
+    /// </summary>
+    public bool CanTeleportToPlayer(EntityAlive target)
     {
-        if (target == null) return;
-        if (EntityUtilities.GetCurrentOrder(entityId) == EntityUtilities.Orders.Stay)  return;
-        if (EntityUtilities.GetCurrentOrder(entityId) == EntityUtilities.Orders.Guard) return;
+        if (target == null) return false;
+        if (EntityUtilities.GetCurrentOrder(entityId) == EntityUtilities.Orders.Stay)  return false;
+        if (EntityUtilities.GetCurrentOrder(entityId) == EntityUtilities.Orders.Guard) return false;
 
         var dist2D = Vector2.Distance(
             new Vector2(target.position.x, target.position.z),
             new Vector2(position.x, position.z));
-        if (dist2D < 20f) return;
-        if (isTeleporting) return;
+        if (dist2D < 20f) return false;
+        if (isTeleporting) return false;
+
+        return true;
+    }
+
+    public void TeleportToPlayer(EntityAlive target, bool randomPosition = false)
+    {
+        if (!CanTeleportToPlayer(target)) return;
 
         var myPosition = target.position + Vector3.back;
         var player     = target as EntityPlayer;
@@ -258,8 +269,13 @@ public partial class EntityAliveSDXV4
         return IsCrouching ? base.height * 0.5f : base.height * 0.8f;
     }
 
+    // EntityTrader.GetLookVector() returns normalize(lookAtPosition - getHeadPosition()) whenever a
+    // look point is set, so the ray must start at the head too. Stock's copy of this method starts
+    // it at eye height instead, which anchors origin and direction at different points and makes
+    // every shot pass the aim point by a constant offset - low and to one side. Originating at the
+    // head keeps the direction unchanged and makes the ray actually pass through the aim point.
     public override Ray GetLookRay()
-        => new Ray(position + new Vector3(0f, GetEyeHeight() * eyeHeightHackMod, 0f), GetLookVector());
+        => new Ray(getHeadPosition(), GetLookVector());
 
     public override bool CanBePushed() => true;
 
