@@ -177,11 +177,11 @@ public static class EntityUtilities
                 QuestJournal questJournal = null;
                 if (entitiesInBounds[i] is EntityAliveSDX v3) questJournal = v3.questJournal;
                 else if (entitiesInBounds[i] is EntityAliveSDXV4 v4) questJournal = v4.questJournal;
-                questJournal?.AddQuest(QuestClass.CreateQuest(strQuest));
+                questJournal?.AddQuest(QuestClass.CreateQuest(strQuest), Quest.QuestSource.QuestSystem);
 
                 var player = entitiesInBounds[i] as EntityPlayerLocal;
                 if (player != null)
-                    player.QuestJournal.AddQuest(QuestClass.CreateQuest(strQuest));
+                    player.QuestJournal.AddQuest(QuestClass.CreateQuest(strQuest), Quest.QuestSource.QuestSystem);
             }
     }
 
@@ -218,12 +218,8 @@ public static class EntityUtilities
 
         myEntity.inventory.SetHoldingItemIdxNoHolsterTime(index);
 
-        // Forcing the show items
-        myEntity.inventory.ShowHeldItem(0f,false);
-        myEntity.inventory.ShowHeldItem(0f,true);
-
         //myEntity.inventory.SetHoldingItemIdx(index);
-        myEntity.inventory.ForceHoldingItemUpdate();
+        myEntity.inventory.ReconcileHeldItem();
         //  myEntity.emodel.SwitchModelAndView(myEntity.emodel.IsFPV, myEntity.IsMale);
         return index;
     }
@@ -264,14 +260,14 @@ public static class EntityUtilities
             return itemStack;
 
         // Check for the items in the tool belt.
-        foreach (var stack in myEntity.inventory.GetSlots())
+        foreach (var stack in myEntity.inventory.ItemGrid.items)
         {
             if (CheckItemStack(stack, property))
                 return stack;
         }
 
         // Check for the items in the inventory.
-        foreach (var stack in myEntity.bag.GetSlots())
+        foreach (var stack in myEntity.bag.ItemGrid.items)
         {
             if (CheckItemStack(stack, property))
                 return stack;
@@ -298,14 +294,14 @@ public static class EntityUtilities
             return itemStack;
 
         // Check for the items in the tool belt.
-        foreach (var stack in myEntity.inventory.GetSlots())
+        foreach (var stack in myEntity.inventory.ItemGrid.items)
         {
             if (CheckItemStack(stack, findAction))
                 return stack;
         }
 
         // Check for the items in the inventory.
-        foreach (var stack in myEntity.bag.GetSlots())
+        foreach (var stack in myEntity.bag.ItemGrid.items)
         {
             if (CheckItemStack(stack, findAction))
                 return stack;
@@ -337,7 +333,7 @@ public static class EntityUtilities
             var item = ItemClass.GetItem(ID);
             if (item != null)
             {
-                foreach (var stack in myEntity.inventory.GetSlots())
+                foreach (var stack in myEntity.inventory.ItemGrid.items)
                 {
                     if (CheckItemStackByName(stack, ID))
                         return stack;
@@ -350,7 +346,7 @@ public static class EntityUtilities
                 }
 
                 // Check for the items in the inventory.
-                foreach (var stack in myEntity.bag.GetSlots())
+                foreach (var stack in myEntity.bag.ItemGrid.items)
                 {
                     if (CheckItemStackByName(stack, ID))
                         return stack;
@@ -409,11 +405,11 @@ public static class EntityUtilities
             yield break;
 
         if (myEntity.inventory != null)
-            yield return new EntityItemStore(ItemStoreKind.Toolbelt, myEntity.inventory.GetSlots(), myEntity, null);
+            yield return new EntityItemStore(ItemStoreKind.Toolbelt, myEntity.inventory.ItemGrid.items, myEntity, null);
 
         // NPC bags are null unless the entity class has a LootList or BagItems.
         if (myEntity.bag != null)
-            yield return new EntityItemStore(ItemStoreKind.Bag, myEntity.bag.GetSlots(), myEntity, null);
+            yield return new EntityItemStore(ItemStoreKind.Bag, myEntity.bag.ItemGrid.items, myEntity, null);
 
         var container = (myEntity as EntityAliveSDX)?.lootContainer;
         if (container?.items != null)
@@ -443,6 +439,51 @@ public static class EntityUtilities
         }
 
         return ItemStack.Empty;
+    }
+
+    // v3.3: Hand.SimulateActionExecution drives the transient hold slot from a live ItemStackGrid
+    // plus an index, not a detached ItemStack, so callers that want to "use" an item have to say
+    // which grid slot it really lives in. Only the toolbelt and bag are grid-backed; the loot and
+    // harvest containers in GetItemStores are not, so they cannot be simulated from.
+    public static bool TryFindItemGridSlot(EntityAlive myEntity, Predicate<ItemStack> match,
+        out ItemStackGrid grid, out int index)
+    {
+        grid = null;
+        index = -1;
+        if (myEntity == null || match == null)
+            return false;
+
+        var candidates = new[] { myEntity.inventory?.ItemGrid, myEntity.bag?.ItemGrid };
+        foreach (var candidate in candidates)
+        {
+            var stacks = candidate?.items;
+            if (stacks == null)
+                continue;
+
+            for (var i = 0; i < stacks.Length; i++)
+            {
+                if (!match(stacks[i]))
+                    continue;
+                grid = candidate;
+                index = i;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool TryFindItemGridSlotByTag(int EntityID, string Tag, out ItemStackGrid grid, out int index)
+    {
+        grid = null;
+        index = -1;
+
+        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
+        if (myEntity == null)
+            return false;
+
+        var tag = FastTags<TagGroup.Global>.Parse(Tag);
+        return TryFindItemGridSlot(myEntity, stack => CheckItemStack(stack, tag), out grid, out index);
     }
 
     public static bool MatchesItem(ItemStack stack, ItemValue itemValue)
@@ -514,7 +555,7 @@ public static class EntityUtilities
         var counter = -1;
 
         // Check for the items in the tool belt.
-        foreach (var stack in myEntity.inventory.GetSlots())
+        foreach (var stack in myEntity.inventory.ItemGrid.items)
         {
             counter++;
             if (CheckItemStack(stack, tag))
@@ -525,7 +566,7 @@ public static class EntityUtilities
         counter = -1;
 
         // Check for the items in the inventory.
-        foreach (var stack in myEntity.bag.GetSlots())
+        foreach (var stack in myEntity.bag.ItemGrid.items)
         {
             counter++;
             if (CheckItemStack(stack, tag))
@@ -2133,14 +2174,14 @@ public static class EntityUtilities
         return TempList;
     }
 
-    private static void lootContainerOpened(ITileEntityLootable _te, LocalPlayerUI _playerUI,
+    private static void lootContainerOpened(SCoreLootContainer _te, LocalPlayerUI _playerUI,
         int _entityIdThatOpenedIt)
     {
         // GameManager.lootContainerOpened and TileEntityComposite.entityId were removed in new game version.
         // Container opening is handled via OpenContainer().
     }
 
-    public static void OpenContainer(EntityPlayerLocal playerLocal, ITileEntityLootable _te)
+    public static void OpenContainer(EntityPlayerLocal playerLocal, SCoreLootContainer _te)
     {
         LocalPlayerUI uiforPlayer = LocalPlayerUI.GetUIForPrimaryPlayer();
         uiforPlayer.windowManager.CloseAllOpenModalWindows();
@@ -2149,10 +2190,10 @@ public static class EntityUtilities
         // untouched containers and returns immediately. Forcing Open("looting") afterward
         // then opened the loot window before 'te' was bound, so XUiC_ContainerStandardControls
         // .OnOpen -> get_LockedSlots (and later XUiC_LootWindow.OnClose) NRE on a null te.
-        // Marking the container touched routes OpenLooting through openContainer(), which
-        // binds te on both the group and the loot window and opens the window itself.
-        _te.bWasTouched = true;
-        ((XUiC_LootWindowGroup)((XUiWindowGroup)window).Controller).OpenLooting(_te.lootListName, _te);
+        // 3.3: the timer is now gated on the _firstTimeTouched argument instead of the
+        // container's touched flag, so pass false to route straight through openContainer(),
+        // which binds te on both the group and the loot window and opens the window itself.
+        ((XUiC_LootWindowGroup)((XUiWindowGroup)window).Controller).OpenLooting(_te.lootListName, _te, false);
     }
     public static bool CheckFaction(int EntityID, EntityAlive entity)
     {

@@ -53,8 +53,4 @@ public class NetPackageWeaponSwap : NetPackage
         }
     }
 
-    public override int GetLength()
-    {
-        return 20;
-    }
 }

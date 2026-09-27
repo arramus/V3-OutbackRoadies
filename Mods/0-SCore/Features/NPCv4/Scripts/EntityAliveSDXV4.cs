@@ -329,7 +329,8 @@ public partial class EntityAliveSDXV4 : EntityTrader, IEntityOrderReceiverSDX, I
         // CarryCapacity); EntityNPC/EntityTrader never do. Construct WITH a slot count --
         // new Bag() leaves items null and Bag.AddItem -> AddToItemStackArray(items) NREs.
         const int npcBagSlots = 45;
-        if (bag == null) bag = new Bag(npcBagSlots);
+        if (bag == null)
+            bag = new Bag(new Vector2i(npcBagSlots, 1), XUiC_ItemStack.StackLocationTypes.Backpack, this);
 
         // A restored NPC already has its saved bag; adding BagItems again would refill
         // stackable items on every load.

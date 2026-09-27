@@ -41,7 +41,7 @@ SpecBytes Gaming - SpecBytes and Cemblack for the initial request, and content l
 Life Is A Game & Patrol Nation - Cactus Dan and Patrol have really given us some great Roadies moments, and we look forward to that continuing.
 NPC Mod Team - Sphereii, Xyth, and the whole NPC Mod Team for 0-Score and 0-XNPCCore to help power the entities and other quality of life additions.
 Oakraven - Quality of Life additions from Oakraven Collection assets.
-KhaineGB - Quality of Life additions with multiple integrated modlets.
+KhaineGB - Quality of Life additions with integrated modlets.
 Darkstardragon - Comprehensive one on one support.
 bdubyah - Template code advice and support.
 arramus - Taking guardianship of integration and hooking it all up.

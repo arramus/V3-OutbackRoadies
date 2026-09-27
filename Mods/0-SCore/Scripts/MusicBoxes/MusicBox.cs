@@ -88,7 +88,7 @@ public class BlockMusicBox : BlockCompositeTileEntity
             var TileEntityComposite = new TileEntityComposite(_chunk);
             TileEntityComposite.localChunkPos = World.toBlock(_blockPos);
             var teStorage = TileEntityComposite.GetFeature<TEFeatureStorage>();
-            if (teStorage != null) { teStorage.lootListName = "cntDropBag"; teStorage.SetContainerSize(vLootContainerSize); }
+            if (teStorage != null) { teStorage.lootListName = "cntDropBag"; teStorage.ItemGrid.Resize(vLootContainerSize); }
             _chunk.AddTileEntity(TileEntityComposite);
         }
 
@@ -255,9 +255,9 @@ public class BlockMusicBox : BlockCompositeTileEntity
             var tileLootContainer = _world.GetTileEntity(_blockPos) as TileEntityComposite;
             var tileLootStorage = tileLootContainer?.GetFeature<TEFeatureStorage>();
 
-            if (tileLootStorage?.items != null)
+            if (tileLootStorage?.ItemGrid?.items != null)
             {
-                var array = tileLootStorage.items;
+                var array = tileLootStorage.ItemGrid.items;
                 for (var i = 0; i < array.Length; i++)
                 {
                     if (array[i].IsEmpty())
@@ -276,7 +276,7 @@ public class BlockMusicBox : BlockCompositeTileEntity
                         {
                             var myQuest = QuestClass.CreateQuest(Quest);
                             if (myQuest != null)
-                                (_player as EntityPlayerLocal).QuestJournal.AddQuest(myQuest);
+                                (_player as EntityPlayerLocal).QuestJournal.AddQuest(myQuest, global::Quest.QuestSource.QuestSystem);
                         }
                     }
 

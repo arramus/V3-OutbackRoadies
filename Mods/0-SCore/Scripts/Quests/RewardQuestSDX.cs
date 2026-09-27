@@ -30,7 +30,7 @@
             var questEntity = GameManager.Instance.World.Entities.dict[OwnerQuest.SharedOwnerID] as EntityAliveSDX;
             if (questEntity == null)
                 return;
-            questEntity.questJournal.AddQuest(quest);
+            questEntity.questJournal.AddQuest(quest, Quest.QuestSource.QuestSystem);
         }
     }
 }

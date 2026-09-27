@@ -1,12 +1,9 @@
 <configs>
 
 	<!-- *** THE_FIREMAN'S_ALMANAC_VOLUME_07_EQUIPMENT -->
-	<set xpath="/progression/perks/book[@name='perkFiremansAlmanacEquipment']/effect_group/passive_effect[@name='VehicleSelfDamage']/@value">-.8</set> <!-- Default is -.25 -->
+	<set xpath="/progression/perks/book[@name='perkFiremansAlmanacEquipment']/effect_group/passive_effect[@name='VehicleSelfDamage']/@value">-.65</set> <!-- Default is -.25 -->
 	<!-- *** ART_OF_MINING_VOLUME_05_BUNDLES -->
 	<append xpath="/progression/perks/book[@name='perkArtOfMiningPallets']/effect_group/passive_effect/@tags">,resourceClayLumpBundle</append>
-
-	<!-- Change Pack Mule Perk to unlock all slots -->
-	<set xpath="/progression/perks/perk[@name='perkPackMule']/effect_group/passive_effect[@name='CarryCapacity'][@value='3,6,10,14,18']/@value">4,8,12,16,20</set>
 
 	<!-- Max player level -->
 	<set xpath="/progression/level/@max_level">400</set> <!-- Default max level is 300 and 400 more than covers extras -->
