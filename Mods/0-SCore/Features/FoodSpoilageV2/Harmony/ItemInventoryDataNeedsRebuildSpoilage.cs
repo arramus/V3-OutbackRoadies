@@ -47,7 +47,7 @@ namespace SphereII.FoodSpoilage.HarmonyPatches
         {
             if (!SpoilageConfig.IsFoodSpoilageEnabled) return;
 
-            var cached = __instance.cachedItemValue;
+            var cached = __instance.itemValue;
             if (cached == null) return;
 
             var live = __instance.stack?.itemValue;

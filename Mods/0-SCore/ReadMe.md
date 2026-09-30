@@ -85,8 +85,12 @@ This release of 0-SCore introduces significant enhancements across several core 
 		  base they no longer stamp a phantom duplicate one cell above, so a
 		  cube declared "1,1,1" now genuinely occupies one cell.
 
-Version: 3.3.2.826
-	Game Version: v3.3.0 (b14) (latest_experimental)
+
+Version: 3.3.7.635
+	Game Version: v3.3.0 (b17) (b)
+
+Version: 3.3.6.1413
+	Game Version: v3.3.0 (b17) (latest_experimental)
 
 	*** GAME VERSION NOTICE - v3.3 ONLY ***
 
@@ -96,6 +100,9 @@ Version: 3.3.2.826
 	containers all changed shape - so SCore was ported across roughly 110
 	files. Any modlet that ships its own DLL, or copies SCore code, needs the
 	same port before it will run on v3.3.
+
+	[ v3.3 Port - Food Spoilage ]
+		- Fixed a changed value from cachedItemValue to just itemValue.
 
 	[ v3.3 Port - Item storage now goes through ItemStackGrid ]
 		- Bag, Inventory (toolbelt), Equipment and TEFeatureStorage all moved
@@ -201,6 +208,67 @@ Version: 3.3.2.826
 		  cleanly when the slot is empty.
 		- XUiC_DragAndDropWindow.itemStack became CurrentStack.
 		- TileEntity.StreamModeRead became the top-level StreamModeRead.
+
+	[ V4 NPCs - Features that only recognised legacy NPCs ]
+		- EntityAliveSDX and EntityAliveSDXV4 are siblings under EntityTrader,
+		  not parent and child. Code that cast to EntityAliveSDX got null for
+		  every V4 NPC and quietly skipped it. The checks below now accept
+		  anything implementing IEntityAliveSDX, which both classes do. They
+		  still exclude vanilla traders and SCore's other entity types, so
+		  nothing new picks up Owner or hire pricing.
+		- New helpers EntityUtilities.GetSDXLootContainer and
+		  GetSDXQuestJournal return either class's loot container and quest
+		  journal, so call sites no longer need a pair of casts.
+
+	[ V4 NPCs - The Loot order un-hired them ]
+		- Hiring sets Leader (following) and Owner (hired). SetOwner, the only
+		  writer of Owner, skipped V4 NPCs. The Loot order deliberately removes
+		  Leader and relies on Owner to keep the NPC hired, so a looting V4 NPC
+		  dropped out of the companion list, offered to be hired again, and
+		  lost its despawn protection on reload.
+		- SetOwner now covers V4. A one-time repair on load copies Leader into
+		  Owner for V4 NPCs hired before this fix, and logs
+		  "restored missing Owner cvar from Leader". An NPC that was already
+		  sent looting on an older build has lost Leader too, so it has nothing
+		  to repair from and needs re-hiring.
+
+	[ V4 NPCs - Companion list showed only legacy NPCs ]
+		- The in-game NPC menu filtered the player's hired_ cvars with a legacy
+		  cast, so hired V4 NPCs never appeared. It now lists both.
+
+	[ V4 NPCs - Weapon swaps were not seen by other players ]
+		- UpdateHandItem returned early for V4 NPCs, so NetPackageWeaponSwap was
+		  never sent, and the receiving side dropped V4 NPCs as well. In
+		  multiplayer, other players kept seeing the old weapon.
+		- Both ends now handle V4. The receiver calls the ItemValue overload of
+		  UpdateWeapon, which does not re-send, so a swap cannot bounce between
+		  server and clients. The SwapWeapon MinEvent covers V4 too.
+
+	[ V4 NPCs - Hire price ignored the entity class ]
+		- GetHireCost / GetHireCurrency skipped V4 NPCs, so every V4 hire fell
+		  back to 1000 casino coins. HireCost and HireCurrency are now honoured.
+
+	[ V4 NPCs - Pathing code window crashed ]
+		- Entering a pathing code on a V4 NPC dereferenced a null entity. It
+		  now works for both classes, and closes safely if no NPC is set.
+
+	[ V4 NPCs - Other gaps closed ]
+		- Party orders: the NotifyTeamTeleport and TeamTeleportNow buff actions,
+		  and HideNPCSDX.
+		- Quests: GiveQuestSDX, PumpQuestSDX, and the RewardQuestSDX,
+		  RewardGiveNPCSDX and RewardReassignNPCSDX quest rewards. Reassignment
+		  now searches for EntityTrader, the common base of both NPC classes.
+		- NPC inventory: RandomLootSDX, and six EntityUtilities item lookups
+		  that ignored a V4 NPC's loot container. The container is also part of
+		  GetItemStores, so items found there are consumed from there.
+		- Windows: the NPC stats window (it closed immediately on a V4 NPC),
+		  the character frame window and the NPC information panel.
+		- The remote-crafting broadcast button no longer shows on a V4 NPC's
+		  inventory window, matching legacy NPCs.
+		- Event-spawner herd leaders and the AnimatorSDX MinEvent.
+		- Left as legacy-only on purpose: the old EAI tasks and legacy Utility
+		  AI tasks (V4 has its own), NetPackageEntityAliveSDXDataSync (V4 has
+		  its own package), and the unused Maslow food/water helpers.
 
 Version: 3.2.36.628
 	Game Version: v3.2.0 (b10)

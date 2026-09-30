@@ -479,6 +479,27 @@ public partial class EntityAliveSDXV4 : EntityTrader, IEntityOrderReceiverSDX, I
         GameManager.Instance.World.ChunkCache.OnChunkVisibleDelegates += _chunkClusterVisibleDelegate;
         base.OnAddedToWorld();
         AddToInventory();
+        RepairMissingOwner();
+    }
+
+    /// <summary>
+    /// One-time repair for V4 NPCs hired before EntityUtilities.SetOwner accepted V4. Hire never
+    /// wrote Owner for them, so the Loot order (which removes Leader and relies on Owner to keep
+    /// the NPC hired) un-hired them. Owner and Leader are the same player at hire, so a
+    /// following NPC with no Owner gets its Leader copied across. Runs once per load and is a
+    /// no-op once Owner is set; dismissed and FarmHere NPCs have Leader zeroed, so they are left
+    /// alone.
+    /// </summary>
+    private void RepairMissingOwner()
+    {
+        if (isEntityRemote) return;
+        if (Buffs.GetCustomVar("Owner") > 0) return;
+
+        var leaderId = Buffs.GetCustomVar("Leader");
+        if (leaderId <= 0) return;
+
+        Buffs.SetCustomVar("Owner", leaderId);
+        Log.Out($"[0-SCore] {EntityName} ({entityId}): restored missing Owner cvar from Leader ({(int)leaderId}).");
     }
 
     public void OnChunkDisplayed(long _key, bool _bDisplayed)

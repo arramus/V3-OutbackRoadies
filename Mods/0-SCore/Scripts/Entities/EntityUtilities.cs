@@ -274,10 +274,10 @@ public static class EntityUtilities
         }
 
         // if there's no loot container, don't check it.
-        var sdxForProp = myEntity as EntityAliveSDX;
-        if (sdxForProp?.lootContainer == null) return itemStack;
+        var sdxForProp = GetSDXLootContainer(myEntity);
+        if (sdxForProp?.items == null) return itemStack;
 
-        foreach (var stack in sdxForProp.lootContainer.items)
+        foreach (var stack in sdxForProp.items)
         {
             if (CheckItemStack(stack, property))
                 return stack;
@@ -308,10 +308,10 @@ public static class EntityUtilities
         }
 
         // if there's no loot container, don't check it.
-        var sdxForAction = myEntity as EntityAliveSDX;
-        if (sdxForAction?.lootContainer == null) return itemStack;
+        var sdxForAction = GetSDXLootContainer(myEntity);
+        if (sdxForAction?.items == null) return itemStack;
 
-        foreach (var stack in sdxForAction.lootContainer.items)
+        foreach (var stack in sdxForAction.items)
         {
             if (CheckItemStack(stack, findAction))
                 return stack;
@@ -339,7 +339,7 @@ public static class EntityUtilities
                         return stack;
                 }
 
-                foreach (var stack in (myEntity as EntityAliveSDX)?.lootContainer?.items ?? System.Array.Empty<ItemStack>())
+                foreach (var stack in GetSDXLootContainer(myEntity)?.items ?? System.Array.Empty<ItemStack>())
                 {
                     if (CheckItemStackByName(stack, ID))
                         return stack;
@@ -395,8 +395,25 @@ public static class EntityUtilities
         }
     }
 
+    // EntityAliveSDX and EntityAliveSDXV4 are siblings under EntityTrader, not parent and child,
+    // so a cast to EntityAliveSDX alone silently skips every V4 NPC. These resolve the members
+    // both classes carry but IEntityAliveSDX does not expose.
+    public static SCoreLootContainer GetSDXLootContainer(Entity entity)
+    {
+        if (entity is EntityAliveSDX v3) return v3.lootContainer;
+        if (entity is EntityAliveSDXV4 v4) return v4.lootContainer;
+        return null;
+    }
+
+    public static QuestJournal GetSDXQuestJournal(Entity entity)
+    {
+        if (entity is EntityAliveSDX v3) return v3.questJournal;
+        if (entity is EntityAliveSDXV4 v4) return v4.questJournal;
+        return null;
+    }
+
     // The entity's item stores, in the order items are found and consumed:
-    // toolbelt, bag, the EntityAliveSDX loot container, then the player-facing harvest window.
+    // toolbelt, bag, the SDX loot container, then the player-facing harvest window.
     // Lookups and decrements must both walk this list, or an item can be found in one store
     // and "consumed" from another (the unlimited bandage bug).
     public static IEnumerable<EntityItemStore> GetItemStores(EntityAlive myEntity)
@@ -411,7 +428,7 @@ public static class EntityUtilities
         if (myEntity.bag != null)
             yield return new EntityItemStore(ItemStoreKind.Bag, myEntity.bag.ItemGrid.items, myEntity, null);
 
-        var container = (myEntity as EntityAliveSDX)?.lootContainer;
+        var container = GetSDXLootContainer(myEntity);
         if (container?.items != null)
             yield return new EntityItemStore(ItemStoreKind.LootContainer, container.items, myEntity, container);
 
@@ -576,10 +593,10 @@ public static class EntityUtilities
         // Reset counter.
         counter = -1;
 
-        var sdxForFindTag = myEntity as EntityAliveSDX;
-        if (sdxForFindTag?.lootContainer != null)
+        var sdxForFindTag = GetSDXLootContainer(myEntity);
+        if (sdxForFindTag?.items != null)
         {
-            foreach (var stack in sdxForFindTag.lootContainer.items)
+            foreach (var stack in sdxForFindTag.items)
             {
                 counter++;
                 if (CheckItemStack(stack, tag))
@@ -670,9 +687,9 @@ public static class EntityUtilities
         if (!string.IsNullOrEmpty(tags))
             fastTags = FastTags<TagGroup.Global>.Parse(tags);
 
-        var sdxForFindAction = myEntity as EntityAliveSDX;
+        var sdxForFindAction = GetSDXLootContainer(myEntity);
         var counter = -1;
-        foreach (var stack in sdxForFindAction?.lootContainer?.items ?? System.Array.Empty<ItemStack>())
+        foreach (var stack in sdxForFindAction?.items ?? System.Array.Empty<ItemStack>())
         {
             counter++;
             if (Equals(stack, ItemStack.Empty))
@@ -1338,9 +1355,11 @@ public static class EntityUtilities
 
     public static void SetOwner(int EntityID, int LeaderID)
     {
-        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAliveSDX;
+        // IEntityAliveSDX, not EntityAliveSDX: this is the only writer of Owner, and a V4 NPC
+        // without it drops out of "hired" the moment Leader is cleared (the Loot order).
+        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
         var leaderEntity = GameManager.Instance.World.GetEntity(LeaderID) as EntityAlive;
-        if (myEntity != null && leaderEntity != null)
+        if (myEntity is IEntityAliveSDX && leaderEntity != null)
         {
             myEntity.Buffs.SetCustomVar("Owner", LeaderID);
             leaderEntity.Buffs.SetCustomVar("EntityID", LeaderID);
@@ -1904,8 +1923,8 @@ public static class EntityUtilities
     public static int GetHireCost(int EntityID)
     {
         var result = -1;
-        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAliveSDX;
-        if (myEntity)
+        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
+        if (myEntity is IEntityAliveSDX)
             result = GetIntValue(EntityID, "HireCost");
 
         if (result == -1)
@@ -1916,8 +1935,8 @@ public static class EntityUtilities
     public static ItemValue GetHireCurrency(int EntityID)
     {
         var result = ItemClass.GetItem("casinoCoin");
-        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAliveSDX;
-        if (myEntity)
+        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
+        if (myEntity is IEntityAliveSDX)
             result = GetItemValue(EntityID, "HireCurrency");
 
         if (result.IsEmpty())
@@ -1928,8 +1947,8 @@ public static class EntityUtilities
     public static ItemValue GetItemValue(int EntityID, string strProperty)
     {
         var result = ItemClass.GetItem("casinoCoin");
-        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAliveSDX;
-        if (myEntity)
+        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
+        if (myEntity is IEntityAliveSDX)
         {
             var entityClass = EntityClass.list[myEntity.entityClass];
             if (entityClass.Properties.Values.ContainsKey(strProperty))
@@ -1945,8 +1964,8 @@ public static class EntityUtilities
     {
         var result = -1;
 
-        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAliveSDX;
-        if (myEntity)
+        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
+        if (myEntity is IEntityAliveSDX)
         {
             var entityClass = EntityClass.list[myEntity.entityClass];
             if (entityClass.Properties.Values.ContainsKey(strProperty))
@@ -2309,8 +2328,8 @@ public static class EntityUtilities
 
     public static string DisplayEntityStats(int EntityID)
     {
-        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAliveSDX;
-        if (myEntity == null)
+        var myEntity = GameManager.Instance.World.GetEntity(EntityID) as EntityAlive;
+        if (myEntity is not IEntityAliveSDX)
             return "";
 
         var FoodAmount = Mathf.RoundToInt(myEntity.Stats.Stamina.ModifiedMax + GetCVarValue(EntityID, "foodAmount"))
@@ -2353,11 +2372,11 @@ public static class EntityUtilities
         foreach (var myCvar in myEntity.Buffs.CVars)
             strOutput += "\n\t" + myCvar.Key + " : " + myCvar.Value;
         strOutput += "\n Active Quests: ";
-        foreach (var quest in myEntity.questJournal.quests)
+        foreach (var quest in GetSDXQuestJournal(myEntity)?.quests ?? new List<Quest>())
             strOutput += "\n\t" + quest.ID + " Current State: " + quest.CurrentState + " Current Phase: " +
                          quest.CurrentPhase;
         strOutput += "\n Patrol Points: ";
-        foreach (var vec in myEntity.patrolCoordinates)
+        foreach (var vec in (myEntity as IEntityOrderReceiverSDX)?.PatrolCoordinates ?? new List<Vector3>())
             strOutput += "\n\t" + vec;
         strOutput += "\n\nCurrency: " + GetHireCurrency(EntityID) + " Faction: " + myEntity.factionId;
 
@@ -2427,12 +2446,10 @@ public static class EntityUtilities
             }
         }
     }
-    // TODO: NetPackageWeaponSwap.Setup currently requires EntityAliveSDX.
-    // Update that net package to accept IEntityAliveSDX so V4 entities are supported.
     public static void UpdateHandItem(int entityId, string item)
     {
-        var entity = GameManager.Instance.World.GetEntity(entityId) as EntityAliveSDX;
-        if (entity == null)
+        var entity = GameManager.Instance.World.GetEntity(entityId) as EntityAlive;
+        if (entity is not IEntityAliveSDX)
         {
             return;
         }
