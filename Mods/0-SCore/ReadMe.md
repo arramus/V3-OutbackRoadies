@@ -86,11 +86,37 @@ This release of 0-SCore introduces significant enhancements across several core 
 		  cube declared "1,1,1" now genuinely occupies one cell.
 
 
-Version: 3.3.7.635
-	Game Version: v3.3.0 (b17) (b)
-
-Version: 3.3.6.1413
+Version: 3.3.7.933
 	Game Version: v3.3.0 (b17) (latest_experimental)
+
+	Hotfix for 3.3.7.636. Two crashes that survived the v3.3 port, both from
+	the same cause: a TileEntityComposite built with the bare (Chunk)
+	constructor never gets its feature table, so the first GetFeature call on
+	it throws.
+
+	[ NPCs - Opening any NPC's inventory threw a NullReferenceException ]
+		- SCoreLootContainer (the NPC inventory / harvest window) sits on a
+		  detached composite parent that is never registered with the world.
+		  v3.3's loot window asks the container for a sign feature, the
+		  container passes the question to that parent, and the parent had no
+		  feature table to look in, so TileEntityComposite.GetFeature threw.
+		- The parent now gets an empty feature table, so every lookup answers
+		  "no such feature". It is built by hand because the only
+		  TileEntityCompositeData constructor needs a composite block and
+		  throws without one.
+
+	[ Music Box - Placing one threw a NullReferenceException ]
+		- BlockMusicBox built its tile entity with the bare TileEntityComposite(Chunk)
+		  constructor, which leaves the feature table null, so the GetFeature call
+		  that follows threw. It now uses the (Chunk, BlockValue) constructor, which
+		  builds the block's CompositeFeatures, and calls OnBlockAdded so the owner
+		  is recorded and each feature's OnAdded runs, as BlockCompositeTileEntity
+		  does.
+		- The container is sized through ItemGrid.Resize, and a music box that
+		  hands out a quest passes QuestSource.QuestSystem.
+
+Version: 3.3.7.636
+	Game Version: v3.3.0 (b17) (b)
 
 	*** GAME VERSION NOTICE - v3.3 ONLY ***
 
@@ -160,6 +186,8 @@ Version: 3.3.6.1413
 		  send a tile-entity network packet. It carries a public empty
 		  constructor purely so the game's composite feature scan does not log
 		  "has no parameterless constructor".
+		- Known issue in this build: opening any NPC's inventory throws a
+		  NullReferenceException. Fixed in 3.3.7.933.
 		- Opening an NPC's container passes _firstTimeTouched: false to
 		  OpenLooting, which is how v3.3 skips the scavenge timer. The old trick
 		  of marking the container touched first no longer works.

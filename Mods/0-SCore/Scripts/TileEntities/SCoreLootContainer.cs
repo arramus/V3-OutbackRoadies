@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.Serialization;
+using UnityEngine;
 
 /// <summary>
 /// Minimal in-memory loot container for NPCs (HarvestManager).
@@ -41,10 +45,37 @@ public class SCoreLootContainer : TEFeatureStorage
         // Nothing about this container belongs to the world: suppress the modified/network path
         // rather than relying on every caller to avoid SetModified().
         parent.SetDisableModifiedCheck(true);
+        GiveEmptyFeatureTable(parent);
         Parent = parent;
 
         SetContainerSize(Vector2i.zero);
     }
+
+    /// <summary>
+    /// A composite built with TileEntityComposite(Chunk) never gets its feature table (teData), so any
+    /// feature lookup through it - e.g. XUiC_LootWindow.SetTileEntityChest's
+    /// GetSelfOrFeature&lt;ITileEntitySignable&gt;(), which a feature answers by asking its Parent - threw
+    /// a NullReferenceException in TileEntityComposite.GetFeature. The only TileEntityCompositeData
+    /// constructor needs a composite block and throws without one, so build an empty table by hand:
+    /// every lookup then answers "no such feature".
+    /// </summary>
+    private static void GiveEmptyFeatureTable(TileEntityComposite parent)
+    {
+        var data = (TileEntityCompositeData)FormatterServices.GetUninitializedObject(typeof(TileEntityCompositeData));
+        SetReadOnlyField(data, nameof(TileEntityCompositeData.Features), new List<TileEntityFeatureData>());
+        SetReadOnlyField(data, nameof(TileEntityCompositeData.featureIndexByType), new Dictionary<Type, int>());
+        SetReadOnlyField(data, nameof(TileEntityCompositeData.featureIndexByName),
+            new Dictionary<ReadOnlyMemory<char>, int>(TileEntityCompositeData.MemStringEqualityComparer.Instance));
+        SetReadOnlyField(data, nameof(TileEntityCompositeData.featureIndexByHash), new Dictionary<int, int>());
+
+        parent.teData = data;
+        parent.modulesCustomOrder = Array.Empty<ITileEntityFeature>();
+        parent.modulesInternalOrder = Array.Empty<ITileEntityFeature>();
+    }
+
+    private static void SetReadOnlyField(object target, string name, object value) =>
+        typeof(TileEntityCompositeData).GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            .SetValue(target, value);
 
     // ItemStackGrid is the v3.3 backing store; keep the old array-shaped surface SCore callers use.
     public ItemStack[] items => ItemGrid?.items;

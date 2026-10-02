@@ -85,8 +85,12 @@ public class BlockMusicBox : BlockCompositeTileEntity
 
         if (!(world.GetTileEntity(_blockPos) is TileEntityComposite))
         {
-            var TileEntityComposite = new TileEntityComposite(_chunk);
+            // The (Chunk, BlockValue) constructor builds the features from the block's CompositeFeatures; the
+            // bare (Chunk) one leaves the feature table null, so GetFeature below threw a NullReferenceException.
+            // OnBlockAdded then records the owner and runs each feature's OnAdded, as BlockCompositeTileEntity does.
+            var TileEntityComposite = new TileEntityComposite(_chunk, _blockValue);
             TileEntityComposite.localChunkPos = World.toBlock(_blockPos);
+            TileEntityComposite.OnBlockAdded(_blockPos, _blockValue, _addedByPlayer);
             var teStorage = TileEntityComposite.GetFeature<TEFeatureStorage>();
             if (teStorage != null) { teStorage.lootListName = "cntDropBag"; teStorage.ItemGrid.Resize(vLootContainerSize); }
             _chunk.AddTileEntity(TileEntityComposite);
