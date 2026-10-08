@@ -39,7 +39,7 @@
 		<property name="difficulty" value="easy"/>
 		<property name="shareable" value="false"/>
 		
-		<objective type="EntityKill" id="animalRabbit" value="25"/>
+		<objective type="EntityKill" id="animalRabbit,stringfiller" value="25"/>
 		
 		<reward type="Exp" value="5000"/>
 		<reward type="SkillPoints" value="1" chainreward="false"/>
@@ -96,7 +96,7 @@
 		<property name="difficulty" value="hard"/>
 		<property name="shareable" value="false"/>
 		
-		<objective type="EntityKill" id="zombieBurntRadiatedMini" value="25"/>
+		<objective type="EntityKill" id="zombieBurntRadiatedMini,stringfiller" value="25"/>
 		
 		<reward type="Exp" value="5000"/>
 		<reward type="SkillPoints" value="1" chainreward="false"/>
@@ -134,7 +134,7 @@
 		<property name="difficulty" value="easy"/>
 		<property name="shareable" value="false"/>
 		
-		<objective type="EntityKill" id="animalChicken" value="25"/>
+		<objective type="EntityKill" id="animalChicken,stringfiller" value="25"/>
 		
 		<reward type="Exp" value="5000"/>
 		<reward type="SkillPoints" value="1" chainreward="false"/>
@@ -153,7 +153,7 @@
 		<property name="difficulty" value="hard"/>
 		<property name="shareable" value="false"/>
 		
-		<objective type="EntityKill" id="zombieOakSirenHead" value="50"/>
+		<objective type="EntityKill" id="zombieOakSirenHead,stringfiller" value="50"/>
 		
 		<reward type="Exp" value="20000"/>
 		<reward type="SkillPoints" value="2" chainreward="false"/>
@@ -172,7 +172,7 @@
 		<property name="difficulty" value="hard"/>
 		<property name="shareable" value="false"/>
 		
-		<objective type="EntityKill" id="animalMagpie" value="50"/>
+		<objective type="EntityKill" id="animalMagpie,stringfiller" value="50"/>
 		
 		<reward type="Exp" value="10000"/>
 		<reward type="SkillPoints" value="1" chainreward="false"/>
