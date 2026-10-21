@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<!-- Read by NPCSdcsCharacters (AvatarSdcsNpcController.SdcsLoadVerboseLogging,
+     SdcsLoadJitterWindow and SdcsLoadPlayerCtrlOwnController). VerboseLogging
+     gates the per-second diagnostic tags:
+     GATE, YAW, ROOTMOTION, SPEED, RELOAD, READBACK, HOLD, AIMPITCH, CRAWLHIT,
+     NAME (the frozen-name roll/restore line), and CVARIO (the re-place cvar
+     save/restore/apply lines). Each of these sits behind the switch at its emit
+     site: AvatarSdcsNpcController.cs, CrawlerAimPatches.cs and
+     MinEventActionSdcsApplyLook.cs [SDCS-NAME]. The remaining animation-facing
+     tags (ANIMDUMP, ANIMINV, WEAPON, HIT, UAI) are always on.
+     JitterWindow gates the per-frame
+     [SDCS-JIT] high-rate window: 5 s of per-frame upper-body layer hashes and
+     normalizedTimes every 20 s, plus 3 s windows when a watched state changes.
+     Turn it on for ONE fight, then back off. Defaults are false for
+     VerboseLogging/JitterWindow.
+     SdcsPitchPin is the per-frame entity.rotation.x pin for SDCS V4
+     NPCs that kills the melee head-shake (the task's RotateTo thrashes the
+     field 0.2 to 29 deg; the pin restores the physics-body pitch before the
+     base pass reads it). DEFAULT TRUE; set false to A/B the old behaviour in
+     the field without a rebuild. The once-per-entity clamp line is [SDCS-PITCHPIN].
+     Progression (NPC progression Phase 1) is read by the controller's
+     [SDCS-LEVEL] block: the per-level rates and the level cap behind the
+     hidden level buff (SdcsNpcLevelBonus in Config/buffs.xml). HealthPerLevel
+     and DamagePerLevel are perc_add per level; SpreadPerLevel is a negative
+     SpreadMultiplierHip tightener per level above 1 (0 at level 1, so the
+     spawn spread is untouched); MaxLevel is this mod's own level clamp. The
+     HealthRegenPerSecond is the slow natural regen on the same buff, in HP per
+     SECOND (the engine multiplies by the 0.5 s stat tick), so 0.2 is 1 HP every
+     5 s: an NPC tops itself off while it wanders instead of being healed
+     instantly on a level-up. KillXpWorkaround (default true) is the
+     kill switch for the workaround around SCore's broken kill XP postfix
+     (stock SCore 3.2.29.1709 throws "Number of parameters specified does not
+     match the expected number" on every kill by an NPC that has a Progression,
+     and the throw also costs the PLAYER that kill's XP and quest credit). It
+     gates BOTH halves at once: while true, this mod suppresses SCore's broken
+     postfix (the player's credit comes back through SCore's own step 4) and
+     pays the hired NPC its kill XP itself; while false, both stay out and
+     SCore runs as-is. To spot SCore shipping its own fix: set this to false,
+     get a hired NPC a kill, and check Player.log. Their fix is present when
+     the "Error while executing ModEvent "EntityKilled" on mod "0-SCore""
+     line no longer appears with the workaround off. The
+     EFFECTIVE values print unconditionally at boot as the [SDCS-LEVEL] line,
+     so a missing node shows up in the log, not just in the file.
+     NoWear (default true) is the stopgap kill switch for NPC item wear:
+     while true, every live SDCS role NPC carries the hidden buff SdcsNoWear
+     (Config/buffs.xml), whose DegradationPerUse -1.0 passive makes armor hits,
+     melee swings and gunshots do zero new durability damage to its gear; while
+     false, the controller removes it and normal wear resumes. NPCs have no
+     repair path yet, so all wear is a one-way loss; this stops the ratchet
+     until the repair system exists (which retires the feature through this
+     same key). To A/B in the field: keep VerboseLogging on, fight a hired NPC
+     with NoWear true and expect ZERO [SDCS-WEAR] delta lines; flip to false,
+     reload, and the probe logs wear deltas within a minute of fighting. The
+     EFFECTIVE value prints unconditionally at boot as part of the [SDCS-LEVEL]
+     line (NoWear=...), so a missing node shows up in the log, not just in the file. -->
+<Settings>
+    <VerboseLogging>false</VerboseLogging>
+    <!-- [PLAYERCTRL] own-controller switch (PlayerHumanoidOverride). The
+         default is ON since release 3.3.01: Humanoid NPCs get the mod's OWN
+         full player controller assets (PlayerHumanoidMale /
+         PlayerHumanoidFemale, built into
+         Resources/PlayerHumanoidClips.unity3d) instead of the runtime
+         AnimatorOverrideController that wraps the game's controller and swaps
+         its clips. Set false to fall back to that override path. The
+         asset-missing fallback still applies: if the asset is missing from
+         the bundle the mod warns once and falls back to the override path. -->
+    <PlayerCtrlOwnController>true</PlayerCtrlOwnController>
+    <JitterWindow>false</JitterWindow>
+    <SdcsPitchPin>true</SdcsPitchPin>
+    <NoWear>true</NoWear>
+    <!-- [SDCS-SLEEPER] An SDCS survivor standing in a sleeper volume's trigger box makes
+         the volume spawn/wake the way a player at that position would (the check mirrors
+         the game's own SleeperVolume.CheckTouching with the survivor's position, once per
+         second, only while a real player is within 96 m). While false the check never runs
+         and a lone survivor in a house stays asleep-safe. The EFFECTIVE value is read with the
+         same lazy, warn-once, ParseBool shape as the other keys here; a
+         missing node on an old install warns once and keeps the default
+         (true). Log tag: [SDCS-SLEEPER]. -->
+    <SleeperTrigger>true</SleeperTrigger>
+    <!-- [SDCS-MEASURED] The local NPC's Locomotion-tree feed. While true, a LOCAL
+         entity's Forward/Strafe floats are driven by the body's measured horizontal
+         travel (a 0.2 s window projected on facing and right, smoothed with a
+         0.15 s lag); the commanded value stands for the first frames, a teleport
+         and a bad frame. While false the animator is fed the commanded value
+         directly, exactly the pre-measured behaviour, for an install where the
+         smoothed measured feed still reads as jittery (a raw per-frame measured
+         speed is far noisier than a player's and jitters visibly). The value is
+         read once per process with the same lazy, warn-once, ParseBool shape as
+         the other keys here; a missing node on an old install warns once and
+         keeps the default (true). Log tag: [SDCS-MEASURED]. -->
+    <AnimFromMeasuredSpeed>true</AnimFromMeasuredSpeed>
+    <!-- [SDCS-BURST] The gun burst gate. npcSdcsBase
+         sets AttackTimeoutDay/Night to 0.05, so the SCore attack task attempts every
+         tick and each gun's own Delay (60 / RoundsPerMinute) sets its cadence.
+         Unpaced, that multiplies gun DPS 2 to 5x and empties the 60-round spawn
+         grant in seconds, so the gate fires in BURSTS at the weapon's rate, then
+         pauses, and the AVERAGE rate lands on a tunable target:
+         GunBurstTargetRpsAuto: average rounds per second for fully-automatic guns
+             (burst count 0, the game's own GetBurstCount == 0 test). Raise for
+             more fire, lower for less.
+         GunBurstTargetRpsSemi: average rounds per second for everything else
+             (pistols, semi rifles, bows). Raise for more fire, lower for less.
+         GunBurstWindow: the burst LENGTH in seconds; an automatic's burst size
+             is round(RPS x window), clamped to 2 to 10 rounds; a non-automatic
+             fires one round per burst. A bigger window means longer bursts and
+             longer pauses. A gun not faster than its target keeps its own
+             rhythm (no pacing at all).
+         GunBurstEnabled: the whole gate. While false, the gate never skips
+             anything and every gun just fires at its own weapon rate. -->
+    <GunBurstEnabled>true</GunBurstEnabled>
+    <GunBurstTargetRpsAuto>2.0</GunBurstTargetRpsAuto>
+    <GunBurstTargetRpsSemi>1.5</GunBurstTargetRpsSemi>
+    <GunBurstWindow>0.5</GunBurstWindow>
+    <!-- [SDCS-HEAL] The heal roll and bandage timing. The clip at its own pace covers
+         5.02 m in 2.4 s, about a zombie's walking pace, followed by 2.5 s of standing
+         bandage, so a patient zombie reaches the survivor mid-heal; these settings are
+         the fix (Core/Pure/HealTimingRules clamps both).
+         HealRollSpeed: how fast the roll plays; a multiplier on the clip,
+             1.0 = the clip's own 2.37 s. The commanded move speed scales up with it,
+             so the same 5 m is still covered. Clamped 0.5 to 3.0; a missing or corrupt
+             node plays the clip at its own pace (1.0).
+         HealBandageSeconds: how long she holds the bandage before the health is applied;
+             the shipped default is 2.5. Clamped 0.8 to 5.0; a missing or corrupt node
+             keeps 2.5. -->
+    <HealRollSpeed>1.6</HealRollSpeed>
+    <HealBandageSeconds>1.5</HealBandageSeconds>
+    <!-- [SDCS-ANYWEAPON] The backpack watch. A HIRED
+         SDCS NPC switches to a weapon when one is put into (or taken out of) its
+         backpack - never continuously. What counts as a weapon is the item's own
+         data (Core/Pure/AnyWeaponRules), so any player weapon from any mod
+         qualifies. The watch polls the player-writable store at 1 Hz and acts
+         only once the contents have been unchanged for the settle time, so
+         nothing happens while the player is still moving items around. The most
+         recently given usable weapon wins; a ranged one needs its own ammo.
+         AnyWeaponEnabled: the whole feature. While false, the backpack is not
+             even polled.
+         AnyWeaponSettleSeconds: how long the changed backpack must sit unchanged
+             before the NPC equips. Raise it to make the NPC more deliberate, lower
+             it (minimum ~1, the poll cadence) for a snappier response. -->
+    <AnyWeaponEnabled>true</AnyWeaponEnabled>
+    <AnyWeaponSettleSeconds>2.0</AnyWeaponSettleSeconds>
+    <!-- [PLAYERCTRL] What a player-controller NPC does with its held weapon the first
+         time it is dead. The item
+         hangs on the hand frame (Origin/IKWeapon/IKHandR), under no bone, so
+         when the ragdoll drops the bones the weapon otherwise freezes in the
+         air until the corpse is removed. Values: vanish (default) unseats the
+         held item the way the game does on an inventory change (park on the
+         entity's inactive-item transform, deactivate) plus the left-hand
+         item parts; fall re-parents the held item onto the right-hand BONE
+         (worldPositionStays) so it keeps its death pose and rides the
+         ragdoll down, and the left parts onto the left-hand bone. An unknown
+         value warns once and means vanish. Only the player-controller line
+         (AvatarMixamoPlayerController) is affected; the player-built
+         npcSdcs* line already rides the hand bone. One line per death in
+         Player.log: [PLAYERCTRL] death <id> weapon='<item>' mode=... -->
+    <PlayerCtrlDeathWeapon>vanish</PlayerCtrlDeathWeapon>
+    <!-- SdcsModelYOffset: the lift (metres) applied to the SDCS survivor's
+         model rig at spawn - the rig is placed at local (0, this, 0) under
+         the model parent instead of the stock (0, 0, 0). The stock
+         third-person SDCS rig rests about 8 cm below its origin, so the
+         default 0.08 lifts it until the soles sit on the ground. Set 0 to
+         return to the stock placement; the value is clamped to -1.0 to
+         1.0 so a centimetre/metres typo cannot float the rig. Takes effect
+         for NPCs spawned after a restart. -->
+    <SdcsModelYOffset>0.08</SdcsModelYOffset>
+    <Progression>
+        <HealthPerLevel>0.03</HealthPerLevel>
+        <DamagePerLevel>0.02</DamagePerLevel>
+        <SpreadPerLevel>0.02</SpreadPerLevel>
+        <MaxLevel>10</MaxLevel>
+        <HealthRegenPerSecond>0.2</HealthRegenPerSecond>
+        <KillXpWorkaround>true</KillXpWorkaround>
+    </Progression>
+</Settings>

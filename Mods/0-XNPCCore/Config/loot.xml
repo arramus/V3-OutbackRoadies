@@ -351,6 +351,23 @@
 		Custom NPC loot containers.
 	-->
 	<append xpath="/lootcontainers">
+		<!--  The ROLLED STARTING STOCK for a wild SDCS survivor. Drawn 3 to 5 times from vanilla
+		    general-goods groups only: food and drink, medical, small ammo, common
+		    resources, T0 tools. No weapons, no armour, no quest or schematic items
+		    (survivalMedical's skill magazine is a book, not a schematic). Rolled
+		    at stage 1 with the NPC's own rand (see AvatarSdcsNpcController.Stock.cs),
+		    so ignore_loot_prob is off: the groups' own probabilities decide what
+		    lands.  -->
+		<lootcontainer name="sdcsSurvivorStock" count="3,5" size="5,5" destroy_on_close="false" ignore_loot_prob="false" unique_items="true">
+			<item group="cannedfood"/>
+			<item group="rareFoodDrink"/>
+			<item group="survivalMedical"/>
+			<item group="group9mmSmall"/>
+			<item group="groupShotgunShellSmall"/>
+			<item group="groupScrapCommon"/>
+			<item group="groupCraftingCommon"/>
+			<item group="groupToolsT0"/>
+		</lootcontainer>
 		<lootcontainer name="cntNPCEmptyHand" count="1" size="6,3" destroy_on_close="false" sound_open="UseActions/open_backpack" sound_close="UseActions/close_backpack" loot_quality_template="qualBaseTemplate">
 			<item group="groupNPCBackpacks" />
 		</lootcontainer>

@@ -1,0 +1,451 @@
+<title>NPC Voice Control — Command Card</title>
+
+<style>
+  :root {
+    --paper:  #FAF9F6;
+    --panel:  #F2F1EC;
+    --ink:    #16181A;
+    --ink-2:  #4A4E4C;
+    --muted:  #7C7F7A;
+    --rule:   #D4D2CA;
+    --accent: #2F4858;
+    --flag:   #8A4B23;
+
+    --fs-mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+    --fs-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:  #14161A;
+      --panel:  #1C1F24;
+      --ink:    #E8E9E6;
+      --ink-2:  #B4B8B5;
+      --muted:  #868B88;
+      --rule:   #2E333A;
+      --accent: #8FB4C9;
+      --flag:   #D08A55;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:  #14161A;
+    --panel:  #1C1F24;
+    --ink:    #E8E9E6;
+    --ink-2:  #B4B8B5;
+    --muted:  #868B88;
+    --rule:   #2E333A;
+    --accent: #8FB4C9;
+    --flag:   #D08A55;
+  }
+  :root[data-theme="light"] {
+    --paper:  #FAF9F6;
+    --panel:  #F2F1EC;
+    --ink:    #16181A;
+    --ink-2:  #4A4E4C;
+    --muted:  #7C7F7A;
+    --rule:   #D4D2CA;
+    --accent: #2F4858;
+    --flag:   #8A4B23;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--fs-sans);
+    font-size: 13px;
+    line-height: 1.35;
+    margin: 0;
+    padding: 22px 24px 30px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet { max-width: 1180px; margin: 0 auto; }
+
+  /* ---------- masthead ---------- */
+  .head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 4px;
+  }
+  .title { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  h1 {
+    font-size: 21px; margin: 0; letter-spacing: .01em; font-weight: 700;
+    text-wrap: balance;
+  }
+  .sub {
+    font-family: var(--fs-mono); font-size: 10.5px; color: var(--accent);
+    text-transform: uppercase; letter-spacing: .14em;
+  }
+  .legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    font-size: 10.5px; color: var(--ink-2);
+  }
+  .legend b { color: var(--flag); font-weight: 700; }
+
+  .note {
+    font-size: 11px; color: var(--ink-2); margin: 8px 0 14px;
+    padding-left: 10px; border-left: 2px solid var(--rule);
+  }
+  .note code { font-family: var(--fs-mono); color: var(--ink); }
+
+  /* ---------- columns ---------- */
+  .cols { column-count: 3; column-gap: 22px; }
+  @media (max-width: 900px) { .cols { column-count: 2; } }
+  @media (max-width: 620px) { .cols { column-count: 1; } }
+
+  section {
+    break-inside: avoid; page-break-inside: avoid;
+    margin: 0 0 14px; padding: 0;
+  }
+  h2 {
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: .16em;
+    color: var(--accent); font-weight: 700;
+    margin: 0 0 5px; padding-bottom: 3px;
+    border-bottom: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  }
+  h2 span { color: var(--muted); font-weight: 500; letter-spacing: .06em; }
+
+  .row { margin: 0 0 5px; }
+  .say {
+    font-family: var(--fs-mono); font-size: 12px; font-weight: 600;
+    color: var(--ink);
+  }
+  .say .req { color: var(--flag); font-weight: 700; }
+  .say .na { color: var(--muted); font-weight: 700; }
+  .does { color: var(--ink-2); font-size: 11px; }
+  .does .dflt {
+    font-family: var(--fs-mono); font-size: 9.5px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+  .hint { font-size: 10px; color: var(--muted); margin: -4px 0 7px; }
+  .alt {
+    font-family: var(--fs-mono); font-size: 10px; color: var(--muted);
+    display: block; margin-top: 1px;
+  }
+
+  /* pattern rows: one command shape + its interchangeable words */
+  .pat { background: var(--panel); border-radius: 2px; padding: 5px 7px; margin: 0 0 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 3px 5px; margin-top: 4px; }
+  .chip {
+    font-family: var(--fs-mono); font-size: 10px; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--rule);
+    border-radius: 2px; padding: 1px 4px; white-space: nowrap;
+  }
+
+  .foot {
+    margin-top: 14px; padding-top: 7px; border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    font-size: 10px; color: var(--muted);
+  }
+  .foot code { font-family: var(--fs-mono); }
+
+  /* ---------- print: one page ---------- */
+  @media print {
+    @page { size: A4 landscape; margin: 9mm; }
+    :root {
+      --paper: #fff; --panel: #F1F0EB; --ink: #000; --ink-2: #333;
+      --muted: #666; --rule: #BBB; --accent: #24404F; --flag: #7A3E17;
+    }
+    body {
+      padding: 0; font-size: 8.4px; line-height: 1.28;
+      print-color-adjust: exact; -webkit-print-color-adjust: exact;
+    }
+    .cols { column-count: 4; column-gap: 12px; }
+    h1 { font-size: 15px; }
+    .sub, .legend, .note { font-size: 7.6px; }
+    h2 { font-size: 8px; margin-bottom: 3px; }
+    .say { font-size: 8.4px; }
+    .does, .alt, .chip { font-size: 7.4px; }
+    .note { margin: 5px 0 8px; }
+    .foot { font-size: 7px; }
+  }
+</style>
+
+<div class="sheet">
+
+  <header class="head">
+    <div class="title">
+      <h1>NPC Voice Control — Command Card</h1>
+      <span class="sub">79 phrases · v3.1</span>
+    </div>
+    <div class="legend">
+      <span><b>▲</b> must be your hired NPC</span>
+      <span><b>✕</b> not working yet</span>
+      <span>Say it, or use the order wheel</span>
+    </div>
+  </header>
+
+  <p class="note">
+    Phrases are matched as <b>substrings</b>, so surrounding words are fine — “hey Brody, <code>follow me</code> would you” works.
+    Longest match wins. Grey lines are alternates for the same command.
+  </p>
+
+  <div class="cols">
+
+    <section>
+      <h2>Follow &amp; position <span>7</span></h2>
+      <div class="row">
+        <span class="say">follow me <span class="req">▲</span></span> <span class="does">— sticks close</span>
+        <span class="alt">come with me · stick with me · follow</span>
+      </div>
+      <div class="row">
+        <span class="say">stay here <span class="req">▲</span></span> <span class="does">— holds position</span>
+        <span class="alt">wait here · hold position · stay · wait</span>
+      </div>
+      <div class="row">
+        <span class="say">go there <span class="req">▲</span></span> <span class="does">— walks to what you’re looking at</span>
+        <span class="alt">go to that · move to that · get to that</span>
+      </div>
+      <div class="row">
+        <span class="say">come closer <span class="req">▲</span></span> <span class="does">— 1 m spacing</span>
+        <span class="alt">get closer · move in tighter</span>
+      </div>
+      <div class="row">
+        <span class="say">back off <span class="req">▲</span></span> <span class="does">— 5 m spacing</span>
+        <span class="alt">give me space · spread out · fan out</span>
+      </div>
+      <div class="row">
+        <span class="say">normal distance <span class="req">▲</span></span> <span class="does">— back to 2.5 m <span class="dflt">default</span></span>
+      </div>
+      <div class="row">
+        <span class="say">pick me up <span class="req">▲</span></span> <span class="does">— carries you</span>
+        <span class="alt">pickup · get on</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Formation — compass <span>8</span></h2>
+      <div class="pat">
+        <span class="say">cover <em>&lt;direction&gt;</em> <span class="req">▲</span></span>
+        <span class="does">— holds a map-fixed post</span>
+        <div class="chips">
+          <span class="chip">north</span><span class="chip">northeast</span><span class="chip">east</span><span class="chip">southeast</span>
+          <span class="chip">south</span><span class="chip">southwest</span><span class="chip">west</span><span class="chip">northwest</span>
+        </div>
+        <span class="alt">hold &lt;dir&gt; · watch &lt;dir&gt;</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Formation — relative <span>11</span></h2>
+      <div class="pat">
+        <span class="say">cover the <em>&lt;side&gt;</em> <span class="req">▲</span></span>
+        <span class="does">— post relative to your facing</span>
+        <div class="chips">
+          <span class="chip">front</span><span class="chip">left</span><span class="chip">rear</span><span class="chip">right</span>
+        </div>
+        <span class="alt">watch the &lt;side&gt; · hold the &lt;side&gt;</span>
+      </div>
+      <div class="pat">
+        <span class="say">shield the <em>&lt;side&gt;</em> <span class="req">▲</span></span>
+        <span class="does">— fills that arc with the squad</span>
+        <div class="chips">
+          <span class="chip">front</span><span class="chip">left</span><span class="chip">rear</span><span class="chip">right</span>
+        </div>
+        <span class="alt">shield wall · form a shield</span>
+      </div>
+      <div class="row">
+        <span class="say">full shield <span class="req">▲</span></span> <span class="does">— all round</span>
+        <span class="alt">shield all around · shield everywhere</span>
+      </div>
+      <div class="row">
+        <span class="say">take point <span class="req">▲</span></span> <span class="does">— moves ahead of you</span>
+      </div>
+      <div class="row">
+        <span class="say">on me <span class="req">▲</span></span> <span class="does">— cancels formation</span>
+        <span class="alt">stay close · cancel formation · break formation</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Order wheel <span>hold ;</span></h2>
+      <p class="hint">Hold the radial key (default <b>;</b>, remappable in <code>modconfig.xml</code> &lt;FormationRadial&gt;) to open the multi-page order wheel. Target: whoever you are looking at, else the last ordered, else the nearest - their name sits in the middle, mouse wheel cycles your hires.</p>
+      <div class="row">
+        <span class="say">page 0</span> <span class="does">— follow · stay · guard · jump down · crouch · <em>stance</em> · <em>distance</em> · <em>formation</em></span>
+      </div>
+      <div class="row">
+        <span class="say">release the key</span> <span class="does">— orders the targeted companion</span>
+      </div>
+      <div class="row">
+        <span class="say">click while holding</span> <span class="does">— same order for the whole squad</span>
+      </div>
+      <div class="row">
+        <span class="say">submenus (chevron + tinted border)</span> <span class="does">— click, or rest the cursor on one for a beat, to open</span>
+      </div>
+      <div class="row">
+        <span class="say">rest on the centre</span> <span class="does">— back to page 0</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Combat <span>9</span></h2>
+      <div class="row">
+        <span class="say">weapons free <span class="req">▲</span></span> <span class="does">— hunts and attacks on sight</span>
+        <span class="alt">attack · engage · fight them · hunting mode</span>
+      </div>
+      <div class="row">
+        <span class="say">cover me <span class="req">▲</span></span> <span class="does">— defends you, holds position <span class="dflt">default</span></span>
+        <span class="alt">defend only · normal engagement</span>
+      </div>
+      <div class="row">
+        <span class="say">hold fire <span class="req">▲</span></span> <span class="does">— self-defense only</span>
+        <span class="alt">stand down · weapons tight · leave it · leave them · ignore them</span>
+      </div>
+      <div class="row">
+        <span class="say">disengage <span class="req">▲</span></span> <span class="does">— break off and come back</span>
+        <span class="alt">break off · fall back · retreat · back off</span>
+      </div>
+      <div class="row">
+        <span class="say">kneel <span class="req">▲</span></span> <span class="does">— crouch</span>
+        <span class="alt">get down · take cover</span>
+      </div>
+      <div class="row">
+        <span class="say">stand up <span class="req">▲</span></span> <span class="does">— stop crouching</span>
+        <span class="alt">on your feet</span>
+      </div>
+      <div class="row">
+        <span class="say">follow my lead <span class="req">▲</span></span> <span class="does">— mirror your stance</span>
+        <span class="alt">as you were</span>
+      </div>
+      <div class="row">
+        <span class="say">go tactical <span class="req">▲</span></span> <span class="does">— commands only, no chat</span>
+        <span class="alt">lock in · tactical mode · command mode</span>
+      </div>
+      <div class="row">
+        <span class="say">at ease <span class="req">▲</span></span> <span class="does">— chat + commands <span class="dflt">default</span></span>
+        <span class="alt">stand down · normal mode</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Weapons <span>44</span></h2>
+      <div class="pat">
+        <span class="say">use your <em>&lt;weapon&gt;</em> <span class="req">▲</span></span>
+        <span class="does">— swaps to it</span>
+        <div class="chips">
+          <span class="chip">knife</span><span class="chip">machete</span><span class="chip">club</span><span class="chip">bat</span>
+          <span class="chip">axe</span><span class="chip">spear</span><span class="chip">bare hands</span>
+          <span class="chip">pistol</span><span class="chip">desert eagle</span><span class="chip">smg</span><span class="chip">ak47</span>
+          <span class="chip">pipe pistol</span><span class="chip">pipe shotgun</span><span class="chip">pipe rifle</span>
+          <span class="chip">pipe machine gun</span><span class="chip">m 60</span>
+          <span class="chip">tactical assault rifle</span><span class="chip">hunting rifle</span><span class="chip">sniper rifle</span>
+          <span class="chip">bow</span><span class="chip">crossbow</span>
+          <span class="chip">pump action shotgun</span><span class="chip">auto shotgun</span><span class="chip">rocket launcher</span>
+          <span class="chip">bone knife</span><span class="chip">steel club</span><span class="chip">pipe baton</span><span class="chip">stun baton</span>
+          <span class="chip">leather knuckles</span><span class="chip">iron knuckles</span><span class="chip">steel knuckles</span>
+          <span class="chip">steel axe</span><span class="chip">chainsaw</span>
+          <span class="chip">stone sledgehammer</span><span class="chip">iron sledgehammer</span><span class="chip">steel sledgehammer</span>
+          <span class="chip">stone spear</span><span class="chip">steel spear</span>
+          <span class="chip">magnum</span><span class="chip">lever action rifle</span><span class="chip">double barrel</span>
+          <span class="chip">primitive bow</span><span class="chip">compound bow</span><span class="chip">compound crossbow</span>
+        </div>
+        <span class="alt">draw your … · grab your … · use …</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Tasks <span>5</span></h2>
+      <div class="row">
+        <span class="say">guard this area <span class="req">▲</span></span> <span class="does">— holds and defends</span>
+        <span class="alt">watch my back · guard here · guard · protect</span>
+      </div>
+      <div class="row">
+        <span class="say">guard and come back <span class="req">▲</span></span> <span class="does">— guards, then returns</span>
+        <span class="alt">patrol and return</span>
+      </div>
+      <div class="row">
+        <span class="say">scout around here <span class="req">▲</span></span> <span class="does">— wanders nearby</span>
+        <span class="alt">wander around · look around · scout</span>
+      </div>
+      <div class="row">
+        <span class="say">loot around here <span class="req">▲</span><span class="na">✕</span></span> <span class="does">— hired NPCs have no loot AI</span>
+        <span class="alt">scavenge here · loot</span>
+      </div>
+      <div class="row">
+        <span class="say">jump down <span class="req">▲</span></span> <span class="does">— drops off a ledge</span>
+        <span class="alt">jump off the ledge · drop down</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Patrol <span>3</span></h2>
+      <div class="row">
+        <span class="say">set patrol <span class="req">▲</span></span> <span class="does">— starts recording your path</span>
+        <span class="alt">here’s your path · show me the way</span>
+      </div>
+      <div class="row">
+        <span class="say">begin patrol <span class="req">▲</span></span> <span class="does">— walks the recorded route</span>
+        <span class="alt">start patrol · do the route</span>
+      </div>
+      <div class="row">
+        <span class="say">cancel patrol <span class="req">▲</span></span> <span class="does">— discards the recording</span>
+        <span class="alt">cancel route · cancel recording · never mind</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ask for items <span>6</span></h2>
+      <p class="hint">Each hands over one exact item, and only if you have put it in their inventory first — companions carry nothing spare of their own.</p>
+      <div class="row">
+        <span class="say">i’m hungry <span class="req">▲</span></span> <span class="does">— 1 × corn meal</span>
+        <span class="alt">got any food · do you have any food · share some food</span>
+      </div>
+      <div class="row">
+        <span class="say">i’m thirsty <span class="req">▲</span></span> <span class="does">— 1 × jar of boiled water</span>
+        <span class="alt">got any water</span>
+      </div>
+      <div class="row">
+        <span class="say">i need healing <span class="req">▲</span></span> <span class="does">— 1 × first aid bandage</span>
+        <span class="alt">patch me up</span>
+      </div>
+      <div class="row">
+        <span class="say">i need ammo <span class="req">▲</span></span> <span class="does">— 5 × 9mm ball</span>
+        <span class="alt">give me ammo</span>
+      </div>
+      <div class="row">
+        <span class="say">i need an axe <span class="req">▲</span></span> <span class="does">— 1 × stone axe</span>
+        <span class="alt">give me an axe</span>
+      </div>
+      <div class="row">
+        <span class="say">give me a weapon <span class="req">▲</span></span> <span class="does">— 1 × pipe pistol</span>
+        <span class="alt">i need a weapon</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Inventory &amp; trade <span>2</span></h2>
+      <div class="row">
+        <span class="say">show me what you have <span class="req">▲</span></span> <span class="does">— opens their pack</span>
+        <span class="alt">open your inventory · backpack · gear · bag</span>
+      </div>
+      <div class="row">
+        <span class="say">let’s trade</span> <span class="does">— opens trader dialog</span>
+        <span class="alt">open trade · trade with me · trade · shop · buy · sell</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Crew &amp; talk <span>3</span></h2>
+      <div class="row">
+        <span class="say">hire me</span> <span class="does">— recruits them</span>
+        <span class="alt">i want to hire you · hire · join me · work with me</span>
+      </div>
+      <div class="row">
+        <span class="say">you’re fired <span class="req">▲</span></span> <span class="does">— dismisses them</span>
+        <span class="alt">dismiss · dismissed · fired · go away · leave</span>
+      </div>
+      <div class="row">
+        <span class="say">tell me a story</span> <span class="does">— a story from their past</span>
+        <span class="alt">tell me something · what was it like before · story</span>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="foot">
+    <span>Anything not matched here goes to the NPC’s conversational AI — just talk normally.</span>
+    <span><code>Config/phrasetriggers.xml</code> is the source of truth · 79 enabled triggers</span>
+  </footer>
+
+</div>

@@ -20,5 +20,29 @@
     <window_group name="SetCode">
       <window name="windowPathFindingKeypad"/>
     </window_group>
+
   </append>
+
+    <!-- Register config UI window group -->
+    <append xpath="/xui">
+        <window_group name="XNPCVoiceControlConfigGroup" close_compass_on_open="true">
+            <window name="windowXNPCVoiceControlConfig"/>
+        </window_group>
+    </append>
+
+    <!-- Register subtitle overlay window group -->
+    <append xpath="/xui">
+        <window_group name="NPCSubtitlesGroup" close_compass_on_open="false" actionset="false">
+            <window name="windowNPCSubtitles"/>
+        </window_group>
+    </append>
+
+    <!-- Register the order wheel: page 0 = core orders, drill-down pages include the 8-socket formation -->
+    <append xpath="/xui">
+        <window_group name="VCFormationRadialGroup" actionset="keyboard" always_update="true"
+                      controller="XUiC_VCFormationRadial, 1-XNPCVoiceControl">
+            <window name="windowVCFormationRadial"/>
+        </window_group>
+    </append>
+
 </configs>

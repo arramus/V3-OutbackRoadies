@@ -4052,6 +4052,16 @@
 			<property name="PickUpItem" value="bakerPickUpNPC" />
 		</entity_class> 
 		
+		<!-- Mixamo player-controller test entity. Same legacy Baker as npcBakerEmptyHand (EntityAliveSDX, ModelType Standard, Baker_X mesh),
+		     but animated by the game 3P PLAYER controller via the new variant. RootMotion is off so the rm-off move helper drives the body.
+		     Speed check: EntityAliveSDX.GetMoveSpeed / GetMoveSpeedAggro / GetMoveSpeedPanic read the WalkSpeed / RunSpeed effect, NOT the
+		     MoveSpeed* fields (SCore 3.3 Scripts/Entities/EntityAliveSDX.cs:1892-1910), so the inherited npcMeleeTemplate base_set passives
+		     (WalkSpeed 0.5, RunSpeed 1.0) would pin the effective walk at 0.5 and aggro at 1.0 and the aggro would
+		     never run. The two base_set passives below override them: a child base_set for an effect+modifier strips the ancestor base_set for the
+		     same pair (MinEffectController.AddEffectGroup, 3.3 export :119-139) and the child groups apply last, so 2.0 / 4.0 win. In-file
+		     precedent: npcAnimalFox raises RunSpeed to 1.2 over the template 1.0 (:4250). Note: on EntityAliveSDX both aggro and panic read
+		     RunSpeed, so the effective panic is 4.0, not the 5.5 MoveSpeedPanic property (kept for parity with npcSdcsBase). -->
+		
 		<!-- <entity_class name="npcJenKnife" extends="npcAdvancedKnifeTemplate"> 
 			<property name="UserSpawnType" value="Menu"/> 
  			<property name="Tags" value="entity,female,npc,walker,melee,DRMid,Knife,Machete,ClubWood,BatWood,Axe,Spear,SMG,PipePistol,PipeShotgun,PipeRifle,PipeMG,M60,Pistol,DPistol,Ak47,TRifle,HRifle,SRifle,LBow,XBow,PShotgun,AShotgun,RocketL"/>
@@ -4644,6 +4654,805 @@
 	
 	<append xpath="/entity_classes/entity_class[@name='npcMechMeleeTemplate']">
         <property name="AIPackages" value="NPCModMechCoreNoChat, NPCModHostileMeleeBasic"/>
-    </append>			
-	
+    </append>
+
+
+	<append xpath="/entity_classes">
+		<!-- the body of the old npcSdcsTest, renamed npcSdcsBase. It is the shared base of every SDCS character class. It is not itself
+			spawnable (UserSpawnType None) and carries no Starting Gear, so each child decides its own outfit -->
+		<entity_class name="npcSdcsBase">
+			<!-- SCore's NPC entity, so UAI, orders and hiring work. -->
+			<property name="Class" value="EntityAliveSDXV4, SCore"/>
+			<!-- Must match an npc_info id in Config/npc.xml. EntityAliveSDX NREs without it. -->
+			<property name="NPCID" value="npcSdcsTest"/>
+			<!-- Our own SdcsNpcRangedAdvanced replaces the NPCModNPCRangedAdvanced equivalent (Config/utilityai.xml). -->
+			<!-- SdcsNpcLoot: the owned loot package (task in the
+			     base assembly, package defined in the voice utilityai.xml, merged at build). It only
+			     scores on the leader-gated Loot order, so nothing changes until someone says the
+			     Loot line in the dialog. -->
+			<!-- SdcsNpcLeave: the leave package (task in the
+			     base assembly, package defined in the voice utilityai.xml, merged at build).
+			     It only scores on the SdcsLeavingArea buff the sleeper detection adds to a
+			     WILD survivor, so nothing changes until a wild one is detected in a
+			     grown sleeper volume. -->
+			<property name="AIPackages" value="NPCModCore, SdcsNpcRangedAdvanced, NPCModNPCHired, SdcsNpcLoot, SdcsNpcLeave"/>
+			<property name="Hirable" value="true"/>
+			<!-- RestoreSpeed and the UAI movement tasks read these.  THESE ARE NOW LITERAL METRES PER SECOND. -->
+			<property name="MoveSpeed" value="1.5"/>
+			<property name="MoveSpeedAggro" value="4.0, 4.0"/>
+			<property name="MoveSpeedPanic" value="5.5"/>
+			<property name="MoveSpeedRand" value="-.2, .2"/>
+			<property name="MaxTurnSpeed" value="300"/>
+			<property name="RootMotion" value="false"/>
+			<property name="ModelType" value="SdcsNpc, NPCSdcsCharacters"/>
+			<property name="AvatarController" value="AvatarSdcsNpcController, NPCSdcsCharacters"/>
+			<property name="PhysicsBody" value="PlayerSDCS"/>
+			<property name="Archetype" value="npcSdcsTest"/>
+			<!-- The SCore attack task only attempts every
+			     AttackTimeout x 20 ticks (GetAttackTimeoutTicks). At the game default 1.0 s the grid
+			     itself made every gun fire exactly one round per second, regardless of the weapon.
+			     At 0.05 (one tick) each gun's own Delay (60 / RoundsPerMinute) sets its cadence,
+			     and the [SDCS-BURST] gate (Settings.xml GunBurst* keys) paces the average rate
+			     into bursts: machine guns visibly out-fire pistols. The two playerctrl bases keep
+			     their own copies of these two properties and are untouched. -->
+			<property name="AttackTimeoutDay" value="0.05"/>
+			<property name="AttackTimeoutNight" value="0.05"/>
+			<!-- ACCURACY. The NPC never aims, IsAiming is false by design.  Tuning knob: raise the values toward 1.0 to make the NPC less accurate. -->
+			<effect_group name="SdcsNpcAccuracy">
+				<passive_effect name="SpreadDegreesHorizontal" operation="perc_set" value="0.35"/>
+				<passive_effect name="SpreadDegreesVertical" operation="perc_set" value="0.35"/>
+				<passive_effect name="SpreadMultiplierIdle" operation="perc_set" value="0.5"/>
+				<passive_effect name="SpreadMultiplierWalking" operation="perc_set" value="0.5"/>
+				<passive_effect name="SpreadMultiplierRunning" operation="perc_set" value="0.5"/>
+				<passive_effect name="WeaponHandling" operation="perc_add" value="0.5"/>
+			</effect_group>
+			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub"/>
+			</property>
+			<!-- Prefab is mandatory. Player is the stock value of the only SDCS class in the
+				game, and the SDCS model plus physics body are built separately from the prefab,
+				so the prefab only supplies the root and the model mount. -->
+			<property name="Prefab" value="Player"/>
+			<property name="UserSpawnType" value="None"/>
+			<property name="EntityFlags" value="edible"/>
+			<property name="EntityType" value="Player"/>
+			<!-- WEAPON CAPABILITY TAGS. The SwapWeapon voice commands gate on
+				NpcHasTag before they equip anything: every weapon trigger carries the tag in
+				ActionParam2 and refuses with "I can't use that kind of weapon" when the entity
+				does not have it. -->
+			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow"/>
+			<property name="Parent" value="Players"/>
+			<property name="Faction" value="whiteriver"/>
+			<property name="IsMale" value="true"/>
+			<property name="Mass" value="180"/>
+			<property name="Weight" value="70"/>
+			<property name="HasRagdoll" value="true"/>
+			<property name="RagdollOnDeathChance" value="0"/>
+			<property name="HasDeathAnim" value="false"/>
+			<property name="SurfaceCategory" value="organic"/>
+			<property name="WalkType" value="7"/>
+			<property name="MaxHealth" value="150"/>
+			<property name="TimeStayAfterDeath" value="30"/>
+			<property name="IsEnemyEntity" value="false"/>
+			<property name="ParticleOnDeath" value="blood_death"/>
+			<property name="SoundHurt" value="player1painlg"/>
+			<property name="SoundHurtSmall" value="player1painsm"/>
+			<property name="SoundDeath" value="player1death"/>
+			<property name="SoundStamina" value="player1stamina"/>
+			<property name="SoundDrownPain" value="player1drownpain"/>
+			<property name="SoundWaterSurface" value="player1drownsurface"/>
+			<property name="SoundDrownDeath" value="player1drowndeath"/>
+			<property name="SoundJump" value="player1Jump"/>
+			<property name="SoundLandSoft" value="player1LandSoft"/>
+			<property name="SoundLandHard" value="player1LandHard"/>
+			<property name="SoundPlayerLandThump" value="PlayerLandThump"/>
+			<!-- Parity with the legacy npcMeleeTemplate chain, which npcSdcsBase
+			     does not extend. Each value keeps its verified consumer.
+			     Knockdowns and map display are deliberately separate tasks. -->
+			<property name="CanClimbLadders" value="true"/>
+			<property name="SleeperInstantAwake" value="true"/>
+			<property name="NeverScaleAI" value="true"/>
+			<property name="SightRange" value="60"/>
+			<property name="MaxViewAngle" value="360"/>
+			<property name="AINoiseSeekDist" value="30"/>
+			<property name="ExperienceGain" value="500"/>
+			<!-- Entity PROPERTY, not a passive: V4 evaluates the LootDropProb passive on the KILLER
+			     (EntityAliveSDXV4.Lifecycle.cs:187) and uses this property as the base value. A passive
+			     here would do nothing on this NPC's own death and would clobber the killer's loot rate. -->
+			<property name="LootDropProb" value="0.2"/>
+			<property name="DismemberMultiplierArms" value="0"/>
+			<property name="DismemberMultiplierLegs" value="0"/>
+			<property name="LegCrippleScale" value="0"/>
+			<property name="LegCrawlerThreshold" value="0"/>
+			<property name="LegsExplosionDamageMultiplier" value="0"/>
+			<property name="ArmsExplosionDamageMultiplier" value="0"/>
+			<property name="HeadExplosionDamageMultiplier" value="1"/>
+			<property name="ChestExplosionDamageMultiplier" value="1"/>
+			<effect_group name="Base Effects">
+				<passive_effect name="HealthMax" operation="base_set" value="150"/>
+				<passive_effect name="ProjectileStickChance" operation="perc_set" value="0"/>
+				<passive_effect name="BuffResistance" operation="base_set" value="200" tags="buffInfectionCatch,buffFatiguedTrigger,buffArmSprainedCHTrigger,buffLegSprainedCHTrigger,buffLaceration,buffInfectionCatch,buffAbrasionCatch,buffInjuryStunned01CHTrigger,buffInjuryBleedingTwo,buffInjuryBleedingBarbedWire,buffInjuryConcussion,buffArmBroken,buffInjuryUnconscious,buffStayDownKO,buffRadiationCatch,buffRadiation03,buffRadiationNew,buffRadiationNew2,buffRadiationWeak,buffRadiationStrong,buffBurningEnvironment,buffBurningEnvironmentHack,buffInjuryBleeding,buffInjuryBleedingZombie,buffPlayerFallingDamage,buffLegBroken,buffArmSprained"/>
+				<passive_effect name="LandMineImmunity" operation="base_set" value="1"/>
+				<passive_effect name="DismemberChance" operation="base_set" value=".05"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="AddBuff" target="self" buff="buffEntitySpawnHeal"/>
+			</effect_group>
+			<!-- Do NOT key NPC HP off GameDifficulty or the legacy _difficulty groups. In 3.2 the sandbox
+			     presets never set a GameDifficulty value (the stat stays a stale global pref, verified in the
+			     3.2 export), and vanilla scales player-vs-NPC damage through the preset Entity Incoming
+			     Damage slider (ItemActionAttack.difficultyModifier) instead. No SdcsGameDifficulty groups
+			     are used: every spawn measured at the difficulty-0 curve on every world. -->
+			<property name="Buffs" value="SdcsStatusCheck"/>
+		</entity_class>
+
+		<entity_class name="npcSdcsBaseFemale" extends="npcSdcsBase">
+			<!-- Shared base of every female SDCS class. Carries the female
+			     tags, mass and the player2 sound bank so the five children do not duplicate twelve
+			     identical lines each. The five children's former Tags lists were byte-identical (48 tags).
+			     CrouchYOffsetFP is deliberately not ported (first-person only). -->
+			<property name="IsMale" value="false"/>
+			<property name="Mass" value="130"/>
+			<property name="SoundHurt" value="player2painlg"/>
+			<property name="SoundHurtSmall" value="player2painsm"/>
+			<property name="SoundDeath" value="player2death"/>
+			<property name="SoundStamina" value="player2stamina"/>
+			<property name="SoundDrownPain" value="player2drownpain"/>
+			<property name="SoundWaterSurface" value="player2drownsurface"/>
+			<property name="SoundDrownDeath" value="player2drowndeath"/>
+			<property name="SoundJump" value="player2Jump"/>
+			<property name="SoundLandSoft" value="player2LandSoft"/>
+			<property name="SoundLandHard" value="player2LandHard"/>
+			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow"/>
+		</entity_class>
+
+		<entity_class name="npcSdcsTest" extends="npcSdcsBase">
+			<property name="UserSpawnType" value="Menu"/>
+			<!-- Starting gear. SDCSUtils.setupEquipment builds the visible gear from the
+				ENTITY's equipment slots, not from the archetype's equipment entries: it clears
+				the archetype list and rebuilds it from what the entity is wearing. So an NPC
+				with empty slots renders as a bare base body no matter what the archetype says.
+				SetItemInSlot is the game's own mechanism and needs no code. It requires an
+				ItemClassArmor whose own EquipSlot matches, so the item and slot must agree.
+				Our own equipment OnChanged handler restitches the model when these land. -->
+			<effect_group name="Starting Gear">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorLumberjackHelmet" equip_slot="Head"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorLumberjackOutfit" equip_slot="Chest"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorLumberjackGloves" equip_slot="Hands"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorLumberjackBoots" equip_slot="Feet"/>
+			</effect_group>
+		</entity_class>
+
+		<entity_class name="npcSdcsFemaleAK47" extends="npcSdcsBaseFemale">
+			<property name="UserSpawnType" value="Menu"/>
+			<effect_group name="Starting Gear">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorCommandoHelmet" equip_slot="Head"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorCommandoOutfit" equip_slot="Chest"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorCommandoGloves" equip_slot="Hands"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorCommandoBoots" equip_slot="Feet"/>
+			</effect_group>
+			<property name="Archetype" value="npcSdcsFemaleAK47"/>
+			<property name="BagItems" value="gunMGT1AK47,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
+			</property>
+		</entity_class>
+
+		<entity_class name="npcSdcsSurvivorFemaleT1" extends="npcSdcsBaseFemale">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Archetype" value="Anne"/>
+			<!-- The look roll. Static per class, so a 1-based index in it is stable.
+				SdcsArmorTier drives the vanilla set gate (1 = light/cosmetic only). -->
+			<property name="SdcsLookArchetypes" value="Anne,Megan,Jane,Betty,Lexi,Allie,Christa,Gayle,Rachonne,Nia,Tracy,Olivia,Dora,Jade,Evelyn,Kiri,Anne B,Anne C,Megan B,Megan C,Jane B,Jane C,Betty B,Betty C,Lexi B,Lexi C,Allie B,Allie C,Christa B,Christa C,Gayle B,Gayle C,Rachonne B,Rachonne C,Nia B,Nia C,Tracy B,Tracy C,Olivia B,Olivia C,Dora B,Dora C,Jade B,Jade C,Evelyn B,Evelyn C,Kiri B,Kiri C"/>
+			<property name="SdcsArmorTier" value="1"/>
+			<property name="Names" value="Alice,Angela,Ashley,Audrey,Bianca,Celeste,Crystal,Daisy,Diana,Emily,Erica,Evelyn"/>
+			<!-- The pool above is ROLLED, not carried. The SdcsWeapon
+				cvar freezes the roll (a 1-based index into SdcsWeapons, so the pool ORDER is
+				part of the roll and must not be reordered), and SdcsLookApplier seeds ONE copy
+				of the rolled weapon into the NPC's own bag at first spawn: the bag is the store
+				BagItems seeds and the store SCore's FindWeapon/UpdateWeapon resolves the hand
+				from, so the roll re-applies after any swap away for the NPC's whole life.
+				BagItems therefore carries the SPAWN KIT only, not the pool: the pool in the
+				bag is what made every survivor "carry" all of its weapons on a dedicated server.
+				Guard: BagPoolFixTests X1 (tests) fails if a BagItems entry of any SdcsWeapons
+				class is not also in that class's ItemsOnEnterGame, so the pool cannot creep
+				back in. -->
+			<property name="SdcsWeapons" value="meleeWpnClubT0WoodenClub,meleeWpnBladeT0BoneKnife,meleeWpnSpearT0StoneSpear,meleeWpnSledgeT0StoneSledgehammer,meleeWpnKnucklesT0LeatherKnuckles,meleeWpnBatonT0PipeBaton,meleeWpnBladeT1HuntingKnife,meleeWpnClubT1BaseballBat,meleeWpnSpearT1IronSpear,meleeWpnKnucklesT1IronKnuckles,meleeWpnSledgeT1IronSledgehammer,meleeToolAxeT1IronFireaxe"/>
+			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			</property>
+			<!-- Melee-only is a STATE, not a class shape. The dry gunHandgunT0PipePistol sits in the spawn kit
+				(BagItems + ItemsOnEnterGame) and never in SdcsWeapons: the held weapon always comes
+				from the melee roll, and the pistol never fires until the player hands it ammo.
+				SdcsSpawnAmmo below keeps it dry at roll time. T2/T3 are untouched. -->
+			<property name="SdcsSpawnAmmo" value="false"/>
+			<!-- Server/SP rolls and freezes SdcsLookArch / SdcsArmorSet cvars; every machine
+				applies them. Re-fires on every world entry and no-ops when the look already
+				matches -->
+			<effect_group name="SDCS Look">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
+			</effect_group>
+		</entity_class>
+
+		<entity_class name="npcSdcsSurvivorMaleT1" extends="npcSdcsBase">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Archetype" value="Clark"/>
+			<property name="SdcsLookArchetypes" value="Clark,Ricky Bobby,Hank,Jesse,Ray,Curtis,Manny,Yuma,Lenny,James,Denzel,Reggie,Daniel,Ren,Chong,Hiro,Clark B,Clark C,Ricky Bobby B,Ricky Bobby C,Hank B,Hank C,Jesse B,Jesse C,Ray B,Ray C,Curtis B,Curtis C,Manny B,Manny C,Yuma B,Yuma C,Lenny B,Lenny C,James B,James C,Denzel B,Denzel C,Reggie B,Reggie C,Daniel B,Daniel C,Ren B,Ren C,Chong B,Chong C,Hiro B,Hiro C"/>
+			<property name="SdcsArmorTier" value="1"/>
+			<property name="Names" value="Austin,Bradley,Caleb,Cedric,Charles,Daniel,David,Dylan,Edward,Eric,Evan,Felix,Gavin"/>
+			<property name="SdcsWeapons" value="meleeWpnClubT0WoodenClub,meleeWpnBladeT0BoneKnife,meleeWpnSpearT0StoneSpear,meleeWpnSledgeT0StoneSledgehammer,meleeWpnKnucklesT0LeatherKnuckles,meleeWpnBatonT0PipeBaton,meleeWpnBladeT1HuntingKnife,meleeWpnClubT1BaseballBat,meleeWpnSpearT1IronSpear,meleeWpnKnucklesT1IronKnuckles,meleeWpnSledgeT1IronSledgehammer,meleeToolAxeT1IronFireaxe"/>
+			<!-- Spawn kit only; the rolled weapon is seeded into the bag at first
+				spawn by SdcsLookApplier. See the block comment on npcSdcsSurvivorFemaleT1. -->
+			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			</property>
+			<property name="SdcsSpawnAmmo" value="false"/>
+			<effect_group name="SDCS Look">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
+			</effect_group>
+		</entity_class>
+
+		<entity_class name="npcSdcsSurvivorMaleT2" extends="npcSdcsBase">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Archetype" value="Clark"/>
+			<property name="SdcsLookArchetypes" value="Clark,Ricky Bobby,Hank,Jesse,Ray,Curtis,Manny,Yuma,Lenny,James,Denzel,Reggie,Daniel,Ren,Chong,Hiro,Clark B,Clark C,Ricky Bobby B,Ricky Bobby C,Hank B,Hank C,Jesse B,Jesse C,Ray B,Ray C,Curtis B,Curtis C,Manny B,Manny C,Yuma B,Yuma C,Lenny B,Lenny C,James B,James C,Denzel B,Denzel C,Reggie B,Reggie C,Daniel B,Daniel C,Ren B,Ren C,Chong B,Chong C,Hiro B,Hiro C"/>
+			<property name="SdcsArmorTier" value="2"/>
+			<property name="Names" value="Graham,Harrison,Henry,Howard,Hunter,Jacob,Jeffrey,Jordan,Joseph,Joshua,Julian,Kevin,Kyle"/>
+			<property name="SdcsWeapons" value="meleeWpnBladeT1HuntingKnife,meleeWpnClubT1BaseballBat,meleeWpnSpearT1IronSpear,meleeWpnKnucklesT1IronKnuckles,meleeWpnSledgeT1IronSledgehammer,meleeToolAxeT1IronFireaxe,gunHandgunT0PipePistol,gunShotgunT0PipeShotgun,gunRifleT0PipeRifle,gunMGT0PipeMachineGun,gunHandgunT1Pistol,gunBowT0PrimitiveBow,gunBowT1WoodenBow,gunBowT1IronCrossbow"/>
+			<!-- Spawn kit only; the rolled weapon is seeded into the bag at first
+				spawn by SdcsLookApplier. The kit below is INHERITED from npcSdcsBase (this class
+				declares no ItemsOnEnterGame of its own); see the block comment on
+				npcSdcsSurvivorFemaleT1. -->
+			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<effect_group name="SDCS Look">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
+			</effect_group>
+		</entity_class>
+
+		<!-- c209a (P2a): male tier 3. -->
+		<entity_class name="npcSdcsSurvivorMaleT3" extends="npcSdcsBase">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Archetype" value="Clark"/>
+			<property name="SdcsLookArchetypes" value="Clark,Ricky Bobby,Hank,Jesse,Ray,Curtis,Manny,Yuma,Lenny,James,Denzel,Reggie,Daniel,Ren,Chong,Hiro,Clark B,Clark C,Ricky Bobby B,Ricky Bobby C,Hank B,Hank C,Jesse B,Jesse C,Ray B,Ray C,Curtis B,Curtis C,Manny B,Manny C,Yuma B,Yuma C,Lenny B,Lenny C,James B,James C,Denzel B,Denzel C,Reggie B,Reggie C,Daniel B,Daniel C,Ren B,Ren C,Chong B,Chong C,Hiro B,Hiro C"/>
+			<property name="SdcsArmorTier" value="3"/>
+			<property name="Names" value="Lawrence,Miles,Nathan,Patrick,Quentin,Raymond,Ronald,Sebastian,Simon,Spencer,Stanley,Vernon"/>
+			<property name="SdcsWeapons" value="meleeWpnBatonT2StunBaton,meleeToolAxeT2SteelAxe,meleeWpnBladeT3Machete,meleeWpnClubT3SteelClub,meleeWpnKnucklesT3SteelKnuckles,meleeWpnSledgeT3SteelSledgehammer,meleeWpnSpearT3SteelSpear,gunMGT1AK47,gunRifleT1HuntingRifle,gunShotgunT1DoubleBarrel,gunHandgunT2Magnum44,gunRifleT2LeverActionRifle,gunShotgunT2PumpShotgun,gunMGT2TacticalAR,gunHandgunT3SMG5,gunHandgunT3DesertVulture,gunRifleT3SniperRifle,gunShotgunT3AutoShotgun,gunMGT3M60,gunBowT3CompoundBow,gunBowT3CompoundCrossbow"/>
+			<!-- Spawn kit only; the rolled weapon is seeded into the bag at first
+				spawn by SdcsLookApplier. The kit is INHERITED from npcSdcsBase (this class declares
+				no ItemsOnEnterGame of its own); see the block comment on npcSdcsSurvivorFemaleT1. -->
+			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<effect_group name="SDCS Look">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
+			</effect_group>
+		</entity_class>
+
+		<entity_class name="npcSdcsSurvivorFemaleT2" extends="npcSdcsBaseFemale">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Archetype" value="Anne"/>
+			<property name="SdcsLookArchetypes" value="Anne,Megan,Jane,Betty,Lexi,Allie,Christa,Gayle,Rachonne,Nia,Tracy,Olivia,Dora,Jade,Evelyn,Kiri,Anne B,Anne C,Megan B,Megan C,Jane B,Jane C,Betty B,Betty C,Lexi B,Lexi C,Allie B,Allie C,Christa B,Christa C,Gayle B,Gayle C,Rachonne B,Rachonne C,Nia B,Nia C,Tracy B,Tracy C,Olivia B,Olivia C,Dora B,Dora C,Jade B,Jade C,Evelyn B,Evelyn C,Kiri B,Kiri C"/>
+			<property name="SdcsArmorTier" value="2"/>
+			<property name="Names" value="Fiona,Holly,Jennifer,Julia,Kelly,Kendra,Kennedy,Layla,Lisa,Marina,Megan,Melissa"/>
+			<property name="SdcsWeapons" value="meleeWpnBladeT1HuntingKnife,meleeWpnClubT1BaseballBat,meleeWpnSpearT1IronSpear,meleeWpnKnucklesT1IronKnuckles,meleeWpnSledgeT1IronSledgehammer,meleeToolAxeT1IronFireaxe,gunHandgunT0PipePistol,gunShotgunT0PipeShotgun,gunRifleT0PipeRifle,gunMGT0PipeMachineGun,gunHandgunT1Pistol,gunBowT0PrimitiveBow,gunBowT1WoodenBow,gunBowT1IronCrossbow"/>
+			<!-- Spawn kit only; the rolled weapon is seeded into the bag at first
+				spawn by SdcsLookApplier. The kit is INHERITED from npcSdcsBase (this class declares
+				no ItemsOnEnterGame of its own); see the block comment on npcSdcsSurvivorFemaleT1. -->
+			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<effect_group name="SDCS Look">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
+			</effect_group>
+		</entity_class>
+
+		<entity_class name="npcSdcsSurvivorFemaleT3" extends="npcSdcsBaseFemale">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Archetype" value="Anne"/>
+			<property name="SdcsLookArchetypes" value="Anne,Megan,Jane,Betty,Lexi,Allie,Christa,Gayle,Rachonne,Nia,Tracy,Olivia,Dora,Jade,Evelyn,Kiri,Anne B,Anne C,Megan B,Megan C,Jane B,Jane C,Betty B,Betty C,Lexi B,Lexi C,Allie B,Allie C,Christa B,Christa C,Gayle B,Gayle C,Rachonne B,Rachonne C,Nia B,Nia C,Tracy B,Tracy C,Olivia B,Olivia C,Dora B,Dora C,Jade B,Jade C,Evelyn B,Evelyn C,Kiri B,Kiri C"/>
+			<property name="SdcsArmorTier" value="3"/>
+			<property name="Names" value="Nancy,Natasha,Pamela,Penny,Rachel,Rebecca,Susan,Sylvia,Vanessa,Virginia,Vivian,Whitney"/>
+			<property name="SdcsWeapons" value="meleeWpnBatonT2StunBaton,meleeToolAxeT2SteelAxe,meleeWpnBladeT3Machete,meleeWpnClubT3SteelClub,meleeWpnKnucklesT3SteelKnuckles,meleeWpnSledgeT3SteelSledgehammer,meleeWpnSpearT3SteelSpear,gunMGT1AK47,gunRifleT1HuntingRifle,gunShotgunT1DoubleBarrel,gunHandgunT2Magnum44,gunRifleT2LeverActionRifle,gunShotgunT2PumpShotgun,gunMGT2TacticalAR,gunHandgunT3SMG5,gunHandgunT3DesertVulture,gunRifleT3SniperRifle,gunShotgunT3AutoShotgun,gunMGT3M60,gunBowT3CompoundBow,gunBowT3CompoundCrossbow"/>
+			<!-- Spawn kit only; the rolled weapon is seeded into the bag at first
+				spawn by SdcsLookApplier. The kit is INHERITED from npcSdcsBase (this class declares
+				no ItemsOnEnterGame of its own); see the block comment on npcSdcsSurvivorFemaleT1. -->
+			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<effect_group name="SDCS Look">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
+			</effect_group>
+		</entity_class>
+
+		<entity_class name="npcSdcsMaleM60" extends="npcSdcsBase">
+			<property name="UserSpawnType" value="Menu"/>
+			<effect_group name="Starting Gear">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRaiderHelmet" equip_slot="Head"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRaiderOutfit" equip_slot="Chest"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRaiderGloves" equip_slot="Hands"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRaiderBoots" equip_slot="Feet"/>
+			</effect_group>
+			<property name="Archetype" value="npcSdcsMaleM60"/>
+			<property name="BagItems" value="gunMGT3M60,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunMGT3M60,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunMGT3M60,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunMGT3M60,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
+			</property>
+		</entity_class>
+
+		<entity_class name="npcSdcsFemaleBow" extends="npcSdcsBaseFemale">
+			<property name="UserSpawnType" value="Menu"/>
+			<effect_group name="Starting Gear">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRangerHelmet" equip_slot="Head"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRangerOutfit" equip_slot="Chest"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRangerGloves" equip_slot="Hands"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRangerBoots" equip_slot="Feet"/>
+			</effect_group>
+			<property name="Archetype" value="npcSdcsFemaleBow"/>
+			<property name="BagItems" value="gunBowT3CompoundBow,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammoArrowIron=40,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunBowT3CompoundBow,ammoArrowIron,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunBowT3CompoundBow,ammoArrowIron,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunBowT3CompoundBow,ammoArrowIron,meleeWpnClubT0WoodenClub"/>
+			</property>
+		</entity_class>
+
+		<entity_class name="npcSdcsMaleXBow" extends="npcSdcsBase">
+			<property name="UserSpawnType" value="Menu"/>
+			<effect_group name="Starting Gear">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNomadHelmet" equip_slot="Head"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNomadOutfit" equip_slot="Chest"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNomadGloves" equip_slot="Hands"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNomadBoots" equip_slot="Feet"/>
+			</effect_group>
+			<property name="Archetype" value="npcSdcsMaleXBow"/>
+			<property name="BagItems" value="gunBowT1IronCrossbow,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammoCrossbowBoltIron=40,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunBowT1IronCrossbow,ammoCrossbowBoltIron,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunBowT1IronCrossbow,ammoCrossbowBoltIron,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunBowT1IronCrossbow,ammoCrossbowBoltIron,meleeWpnClubT0WoodenClub"/>
+			</property>
+		</entity_class>
+
+		<!-- male test rig from Dave's Xyth character profile, Nerd set, AK47 and stun baton. -->
+		<entity_class name="npcSdcsXyth" extends="npcSdcsBase">
+			<property name="UserSpawnType" value="Menu"/>
+			<effect_group name="Starting Gear">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNerdHelmet" equip_slot="Head"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNerdOutfit" equip_slot="Chest"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNerdGloves" equip_slot="Hands"/>
+				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNerdBoots" equip_slot="Feet"/>
+			</effect_group>
+			<property name="Archetype" value="npcSdcsXyth"/>
+			<property name="BagItems" value="gunMGT1AK47,meleeWpnBatonT2StunBaton"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton"/>
+				<property name="GameModeSurvivalSP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton"/>
+				<property name="GameModeSurvivalMP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton"/>
+			</property>
+		</entity_class>
+
+		<!-- The shared base for Humanoid player-controller
+		     characters. Extend one of these and set only Mesh, Names, PhysicsBody (if the
+		     rig is not the Mixamo default) and gear. The model must carry a Humanoid
+		     avatar; a non-Humanoid model falls back to its own avatar controller. UserSpawnType
+		     None: a base class is never spawned itself. Sits after the last npcSdcs* class
+		     because a class must parse after its parent. -->
+		<entity_class name="npcHumanoidPlayerCtrl" extends="npcSdcsBase">
+			<property name="ModelType" value="Standard"/>
+			<property name="AvatarController" value="AvatarMixamoPlayerController, NPCSdcsCharacters"/>
+			<property name="RootMotion" value="false"/>
+			<property name="Prefab" value="NPC"/>
+			<property name="PhysicsBody" value="mixamoConvertedStandard"/>
+			<property name="UserSpawnType" value="None"/>
+			<!-- AttackTimeoutDay and AttackTimeoutNight
+			     are 0.05, so GetAttackTimeoutTicks (value x 20, EntityAlive.cs:369) is 1:
+			     the UAI attack task attempts once per tick instead of the game default
+			     once per second, and the held weapon's own cooldown sets the real swing
+			     pace (the bat was measured swinging every 2.0 s, not the 1.25 s its
+			     attack rate allows). -->
+			<property name="AttackTimeoutDay" value="0.05"/>
+			<property name="AttackTimeoutNight" value="0.05"/>
+		</entity_class>
+
+		<entity_class name="npcHumanoidPlayerCtrlFemale" extends="npcSdcsBaseFemale">
+			<property name="ModelType" value="Standard"/>
+			<property name="AvatarController" value="AvatarMixamoPlayerController, NPCSdcsCharacters"/>
+			<property name="RootMotion" value="false"/>
+			<property name="Prefab" value="NPC"/>
+			<property name="PhysicsBody" value="mixamoConvertedStandard"/>
+			<property name="UserSpawnType" value="None"/>
+			<!-- Same 1 tick attack attempt cadence as
+			     the male base; see the comment on npcHumanoidPlayerCtrl above. -->
+			<property name="AttackTimeoutDay" value="0.05"/>
+			<property name="AttackTimeoutNight" value="0.05"/>
+		</entity_class>
+
+		<!-- The five test classes are rebased onto the SDCS character
+		     base so they run the V4 entity and the SDCS
+		     functionality instead of the legacy EntityAliveSDX class whose guns spawned dry.
+		     Each keeps only the model-bound overrides (ModelType Standard, the
+		     player-controller avatar, the physics body, the prefab, the mesh, the names) and
+		     drops what npcSdcsBase supplies. Ammo goes in HarvestItems only: V4 seeds that
+		     window (EntityAliveSDXV4.SetupHarvestItems, SCore 3.3) and the reload consumes it,
+		     while the single-slot toolbelt silently drops any ItemsOnEnterGame ammo entry
+		     (EntityAlive.cs:274 one-slot inventory). These classes sit after the SDCS block
+		     because a class must parse after its parent. -->
+
+		<!-- The EmptyHand test class (rebased onto npcHumanoidPlayerCtrl): the held
+		     weapon comes from the SDCS weapon ROLL. SdcsWeapons is the verbatim list of
+		     the first SDCS role class carrying one (npcSdcsSurvivorFemaleT1, all melee)
+		     and the SdcsApplyLook effect_group is that class's verbatim.
+		     The rolled weapon must be in its STORES: the T1 roll picks e.g. the hunting
+		     knife but the class carried only the inherited dry pipe pistol plus bandages,
+		     so the rearm could not equip the rolled weapon and failovered to the club.
+		     BagItems is not a copy of the pool: SdcsLookApplier seeds ONE copy of the
+		     rolled weapon into the NPC's own bag at first spawn
+		     (WeaponRollRules.ShouldSeedRolledWeapon), so BagItems carries the spawn kit
+		     only: the dry gunHandgunT0PipePistol plus the club, verbatim the
+		     ItemsOnEnterGame below and never the pool. SdcsSpawnAmmo stays false, and the
+		     roll can always be equipped from the bag. -->
+		<entity_class name="npcBakerPlayerCtrlTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="SdcsWeapons" value="meleeWpnClubT0WoodenClub,meleeWpnBladeT0BoneKnife,meleeWpnSpearT0StoneSpear,meleeWpnSledgeT0StoneSledgehammer,meleeWpnKnucklesT0LeatherKnuckles,meleeWpnBatonT0PipeBaton,meleeWpnBladeT1HuntingKnife,meleeWpnClubT1BaseballBat,meleeWpnSpearT1IronSpear,meleeWpnKnucklesT1IronKnuckles,meleeWpnSledgeT1IronSledgehammer,meleeToolAxeT1IronFireaxe"/>
+			<!-- Spawn kit only; the rolled weapon is seeded into the bag at first
+				spawn by SdcsLookApplier (see the block comment on npcSdcsSurvivorFemaleT1). -->
+			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+			</property>
+			<property name="SdcsSpawnAmmo" value="false"/>
+			<effect_group name="SDCS Look">
+				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
+			</effect_group>
+		</entity_class>
+
+		<entity_class name="npcBakerPlayerCtrlClubTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnClubT0WoodenClub"/>
+			</property>
+		</entity_class>
+
+		<!-- One test character per melee hold type, for judging the swing of each
+		     animation family. Each class carries its weapon in BagItems and
+		     ItemsOnEnterGame. The club (hold 2) is npcBakerPlayerCtrlClubTest above.
+		     HoldType numbers verified against the game items.xml:
+		     npcBakerPlayerCtrlBatTest = meleeWpnClubT1BaseballBat (hold 65)
+		     npcBakerPlayerCtrlSledgeTest = meleeWpnSledgeT0StoneSledgehammer (hold 33)
+		     npcBakerPlayerCtrlKnifeTest = meleeWpnBladeT0BoneKnife (hold 36)
+		     npcBakerPlayerCtrlMacheteTest = meleeWpnBladeT3Machete (hold 47)
+		     npcBakerPlayerCtrlSpearTest = meleeWpnSpearT0StoneSpear (hold 59)
+		     npcBakerPlayerCtrlPipeBatonTest = meleeWpnBatonT0PipeBaton (hold 80)
+		     npcBakerPlayerCtrlStunBatonTest = meleeWpnBatonT2StunBaton (hold 58)
+		     npcBakerPlayerCtrlLeatherKnucklesTest = meleeWpnKnucklesT0LeatherKnuckles (hold 70)
+		     npcBakerPlayerCtrlIronKnucklesTest = meleeWpnKnucklesT1IronKnuckles (hold 61)
+		     npcBakerPlayerCtrlSteelKnucklesTest = meleeWpnKnucklesT3SteelKnuckles (hold 79)
+		     meleeWpnBatonT3PlasmaBaton is fully commented out in the game items.xml (no item,
+		     no HoldType): no class for it. -->
+		<entity_class name="npcBakerPlayerCtrlBatTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnClubT1BaseballBat"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnClubT1BaseballBat"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnClubT1BaseballBat"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnClubT1BaseballBat"/>
+			</property>
+		</entity_class>
+		<entity_class name="npcBakerPlayerCtrlSledgeTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnSledgeT0StoneSledgehammer"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnSledgeT0StoneSledgehammer"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnSledgeT0StoneSledgehammer"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnSledgeT0StoneSledgehammer"/>
+			</property>
+		</entity_class>
+		<entity_class name="npcBakerPlayerCtrlKnifeTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnBladeT0BoneKnife"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnBladeT0BoneKnife"/>
+			</property>
+		</entity_class>
+		<entity_class name="npcBakerPlayerCtrlMacheteTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnBladeT3Machete"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnBladeT3Machete"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnBladeT3Machete"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnBladeT3Machete"/>
+			</property>
+		</entity_class>
+		<entity_class name="npcBakerPlayerCtrlSpearTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnSpearT0StoneSpear"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnSpearT0StoneSpear"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnSpearT0StoneSpear"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnSpearT0StoneSpear"/>
+			</property>
+		</entity_class>
+		<entity_class name="npcBakerPlayerCtrlPipeBatonTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnBatonT0PipeBaton"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnBatonT0PipeBaton"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnBatonT0PipeBaton"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnBatonT0PipeBaton"/>
+			</property>
+		</entity_class>
+		<entity_class name="npcBakerPlayerCtrlStunBatonTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnBatonT2StunBaton"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnBatonT2StunBaton"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnBatonT2StunBaton"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnBatonT2StunBaton"/>
+			</property>
+		</entity_class>
+		<entity_class name="npcBakerPlayerCtrlLeatherKnucklesTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnKnucklesT0LeatherKnuckles"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnKnucklesT0LeatherKnuckles"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnKnucklesT0LeatherKnuckles"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnKnucklesT0LeatherKnuckles"/>
+			</property>
+		</entity_class>
+		<entity_class name="npcBakerPlayerCtrlIronKnucklesTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnKnucklesT1IronKnuckles"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnKnucklesT1IronKnuckles"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnKnucklesT1IronKnuckles"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnKnucklesT1IronKnuckles"/>
+			</property>
+		</entity_class>
+		<entity_class name="npcBakerPlayerCtrlSteelKnucklesTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="meleeWpnKnucklesT3SteelKnuckles"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnKnucklesT3SteelKnuckles"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnKnucklesT3SteelKnuckles"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnKnucklesT3SteelKnuckles"/>
+			</property>
+		</entity_class>
+
+		<!-- The club is in the spawn kit as well as
+		     the bag because the close range melee fallback (SdcsChooseMeleeFallback)
+		     reads the spawn kit only. -->
+		<entity_class name="npcBakerPlayerCtrlPistolTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<!-- gunHandgunT1Pistol Magazine_items: game items.xml:5881 ammo9mmBulletBall -->
+			<property name="BagItems" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
+			</property>
+		</entity_class>
+
+		<entity_class name="npcBakerPlayerCtrlPipeRifleTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<!-- gunRifleT0PipeRifle Magazine_items: game items.xml:6998 ammo762mmBulletBall -->
+			<property name="BagItems" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
+			</property>
+		</entity_class>
+
+		<!-- Test class for a third-party weapon. The disc
+		     cannon class needs the third-party mod V3-OakravenDiscCannon installed; without it the
+		     class spawns with the club only. The crossbow class is its vanilla control (same
+		     HoldType 69 and Launcher action), so it can tell a broken mod gun from a
+		     broken launcher hold. -->
+		<entity_class name="npcBakerPlayerCtrlDiscCannonTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="gunBowT3OakDiscCannon,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammoOakDisc=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunBowT3OakDiscCannon,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunBowT3OakDiscCannon,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunBowT3OakDiscCannon,meleeWpnClubT0WoodenClub"/>
+			</property>
+		</entity_class>
+
+		<entity_class name="npcBakerPlayerCtrlCrossbowTest" extends="npcHumanoidPlayerCtrl">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
+			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
+			<property name="BagItems" value="gunBowT3CompoundCrossbow,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammoCrossbowBoltStone=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunBowT3CompoundCrossbow,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunBowT3CompoundCrossbow,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunBowT3CompoundCrossbow,meleeWpnClubT0WoodenClub"/>
+			</property>
+		</entity_class>
+
+		<!-- The standard Nurse (NurseNancy_X) on the
+		     Humanoid player-controller female base, one class per weapon family to
+		     validate the rig against the same standard that works for the mixamo rigged
+		     characters like baker and nurse. Gear is the verbatim copy of the matching Baker
+		     test class (bat, pistol, pipe rifle); the sixteen sound lines are copied from
+		     npcNurseEmptyHand so she does not sound like the male base. -->
+		<entity_class name="npcNursePlayerCtrlBatTest" extends="npcHumanoidPlayerCtrlFemale">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?NurseNancy_X"/>
+			<property name="Names" value="Nancy,Nan,Nanny,Nanna,Ratchet,Nightingale"/>
+			<property name="BagItems" value="meleeWpnClubT1BaseballBat"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnClubT1BaseballBat"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnClubT1BaseballBat"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnClubT1BaseballBat"/>
+			</property>
+			<property name="SoundHurt" value="player2painlg"/>
+			<property name="SoundHurtSmall" value="player2painsm"/>
+			<property name="SoundDeath" value="player2death"/>
+			<property name="SoundStamina" value="player2stamina"/>
+			<property name="SoundDrownPain" value="player2drownpain"/>
+			<property name="SoundWaterSurface" value="player2drownsurface"/>
+			<property name="SoundDrownDeath" value="player2drowndeath"/>
+			<property name="SoundJump" value="player2Jump"/>
+			<property name="SoundLandSoft" value="player2LandSoft"/>
+			<property name="SoundLandHard" value="player2LandHard"/>
+			<property name="SoundPlayerLandThump" value="PlayerLandThump"/>
+			<property name="SoundRandom" value="player2stamina"/>
+			<property name="SoundRandomTime" value="60"/>
+			<property name="SoundAlert" value="player2stamina"/>
+			<property name="SoundAttack" value="player2stamina"/>
+			<property name="SoundSense" value="player2stamina"/>
+		</entity_class>
+		<entity_class name="npcNursePlayerCtrlPistolTest" extends="npcHumanoidPlayerCtrlFemale">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?NurseNancy_X"/>
+			<property name="Names" value="Nancy,Nan,Nanny,Nanna,Ratchet,Nightingale"/>
+			<property name="BagItems" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
+			</property>
+			<property name="SoundHurt" value="player2painlg"/>
+			<property name="SoundHurtSmall" value="player2painsm"/>
+			<property name="SoundDeath" value="player2death"/>
+			<property name="SoundStamina" value="player2stamina"/>
+			<property name="SoundDrownPain" value="player2drownpain"/>
+			<property name="SoundWaterSurface" value="player2drownsurface"/>
+			<property name="SoundDrownDeath" value="player2drowndeath"/>
+			<property name="SoundJump" value="player2Jump"/>
+			<property name="SoundLandSoft" value="player2LandSoft"/>
+			<property name="SoundLandHard" value="player2LandHard"/>
+			<property name="SoundPlayerLandThump" value="PlayerLandThump"/>
+			<property name="SoundRandom" value="player2stamina"/>
+			<property name="SoundRandomTime" value="60"/>
+			<property name="SoundAlert" value="player2stamina"/>
+			<property name="SoundAttack" value="player2stamina"/>
+			<property name="SoundSense" value="player2stamina"/>
+		</entity_class>
+		<entity_class name="npcNursePlayerCtrlPipeRifleTest" extends="npcHumanoidPlayerCtrlFemale">
+			<property name="UserSpawnType" value="Menu"/>
+			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?NurseNancy_X"/>
+			<property name="Names" value="Nancy,Nan,Nanny,Nanna,Ratchet,Nightingale"/>
+			<property name="BagItems" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalSP" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvivalMP" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
+			</property>
+			<property name="SoundHurt" value="player2painlg"/>
+			<property name="SoundHurtSmall" value="player2painsm"/>
+			<property name="SoundDeath" value="player2death"/>
+			<property name="SoundStamina" value="player2stamina"/>
+			<property name="SoundDrownPain" value="player2drownpain"/>
+			<property name="SoundWaterSurface" value="player2drownsurface"/>
+			<property name="SoundDrownDeath" value="player2drowndeath"/>
+			<property name="SoundJump" value="player2Jump"/>
+			<property name="SoundLandSoft" value="player2LandSoft"/>
+			<property name="SoundLandHard" value="player2LandHard"/>
+			<property name="SoundPlayerLandThump" value="PlayerLandThump"/>
+			<property name="SoundRandom" value="player2stamina"/>
+			<property name="SoundRandomTime" value="60"/>
+			<property name="SoundAlert" value="player2stamina"/>
+			<property name="SoundAttack" value="player2stamina"/>
+			<property name="SoundSense" value="player2stamina"/>
+		</entity_class>
+
+
+	</append>
+
+    <!-- NPCs inherit CrouchType 1 from zombieRegularTemplate, so the game auto ducks them to
+         fit under railings, deck slabs and porch overhangs. The path grid probes only 0.1 to
+         0.3m above a node and never sees those overhangs, so it routes an NPC UNDER geometry a
+         player cannot enter, and the NPC then crawls there and stays. CrouchType 0 turns the
+         auto duck off, holding NPCs to the same clearance a player has.
+         This lives HERE rather than as a hand edit to NPCCore for two reasons: an edit to
+         NPCCore's own file changes behaviour for every mod sharing that install, and it is
+         lost on the next NPCCore update. -->
+    <!-- WARNING: do not raise MoveSpeedAggro or MoveSpeedPanic here to close the sprint
+         catch-up gap. The follow servo is leaderSpeed + error * CatchupGain clamped to
+         runSpeed * 1.25, so raising MoveSpeedAggro lifts that ceiling and stops clipping the
+         catch-up term at short range; the ceiling is masking an aggressive gain, and the NPCs
+         run while in CLOSE formation. Also unresolved: the field log reported speed=1.0 for
+         GetMoveSpeedPanic on npcBakerKnife, which sits several templates below npcMeleeTemplate,
+         so the patch may only reach part of the tree (entityclasses loads with NO xpath warning,
+         so the instruction itself is well formed). If the gap is revisited: fix the servo's
+         clamp, or target the template the NPC actually uses, and verify the value is live
+         before drawing a conclusion. -->
+    <append xpath="/entity_classes/entity_class[@name='npcMeleeTemplate']">
+        <property name="CrouchType" value="0"/>
+    </append>
 </configs>

@@ -3911,11 +3911,34 @@
 				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" target="selfAOE" range="15" buff="NPCChesty" duration="2"/>	
 			</effect_group>
 		</item>
+
+		<!-- The display-only bandage prop the heal sequence holds in
+		     the hand. It looks and holds exactly like the vanilla bandage but is
+		     standalone: no Extends, so the medical tag, the Eat/UseOther actions
+		     and the heal effect_groups do not come along. The SdcsIsHealing
+		     ConsumeItemByTagSDX must take a REAL medical item from her stores, and
+		     the prop must never run a second heal of its own. Nothing adds it to
+		     loot, traders or recipes.
+		     It carries ONE inert action (ItemActionSdcsProp,
+		     Scripts/ItemActionSdcsProp.cs) because SCore's weapon-range UAI
+		     considerations index Actions[0] of whatever is held; a null
+		     Actions[0] threw a NullReferenceException on every UAI tick while
+		     the bandage played. The action does nothing (no consume, no
+		     events) and defines no Range, so the consideration's 1.5 m
+		     default range applies. -->
+		<item name="sdcsDisplayBandage">
+			<property name="CreativeMode" value="None"/>
+			<property name="HoldType" value="64"/>
+			<property name="Meshfile" value="@:Other/Items/Health/bandage.FBX"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mcloth"/>
+			<property name="Stacknumber" value="1"/>
+			<property name="EconomicValue" value="0"/>
+			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
+		</item>
+
 	</append>
 	
-	<!-- 2022-03-23 OPTIMIZATION CHANGES -->
-	<!-- 2022-03-23 OPTIMIZATION CHANGES -->
-	<!-- 2022-03-23 OPTIMIZATION CHANGES -->
 	
 	<set xpath="/items/item[@name='itemNPCModMode']/effect_group[@name='itemNPCModMode']">
 		<triggered_effect trigger="onSelfPrimaryActionStart" action="AddBuff" buff="buffNPCModModeChange2">

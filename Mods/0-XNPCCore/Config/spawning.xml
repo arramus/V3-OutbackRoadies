@@ -132,12 +132,24 @@ Refer to the default spawning.xml and entitygroups.xml for further explanations 
 		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
 		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
 		
-		<spawn id="dnFriendlyCore01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
+		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
+		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
+		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
+		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
+		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+
+		<!-- SDCS survivor tier spawns in this biome: T1 (day and night) -->
+
+		<spawn id="dnSdcs01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcs01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
+
+		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
+
+		<spawn id="opt01" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" notags="commercial,industrial,downtown"/>
+		<spawn id="opt02" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="commercial,industrial" notags="downtown"/>
+		<spawn id="opt03" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="downtown"/>
+
 		<!-- <spawn maxcount="1" respawndelay="3.2" time="Any" entitygroup="EnemyAnimalsForest" spawnDeadChance="0" /> -->
 	</append>
 	
@@ -149,12 +161,26 @@ Refer to the default spawning.xml and entitygroups.xml for further explanations 
 		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
 		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
 		
-		<spawn id="dnFriendlyCore01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
+		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
+		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
+		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
+		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
+		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+
+		<!-- SDCS survivor tier spawns in this biome: T1 and T2 (day and night) -->
+
+		<spawn id="dnSdcs01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcs01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="dnSdcs02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcs02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+
+		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
+
+		<spawn id="opt01" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" notags="commercial,industrial,downtown"/>
+		<spawn id="opt02" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="commercial,industrial" notags="downtown"/>
+		<spawn id="opt03" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="downtown"/>
+
 	</append>
 	
 	<append xpath="/spawning/biome[@name='desert']">
@@ -165,12 +191,26 @@ Refer to the default spawning.xml and entitygroups.xml for further explanations 
 		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
 		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
 		
-		<spawn id="dnFriendlyCore01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
+		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
+		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
+		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
+		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
+		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+
+		<!-- SDCS survivor tier spawns in this biome: T1 and T2 (day and night) -->
+
+		<spawn id="dnSdcs01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcs01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="dnSdcs02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcs02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+
+		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
+
+		<spawn id="opt01" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" notags="commercial,industrial,downtown"/>
+		<spawn id="opt02" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="commercial,industrial" notags="downtown"/>
+		<spawn id="opt03" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="downtown"/>
+
 	</append>	
 	
 	<append xpath="/spawning/biome[@name='snow']">
@@ -181,12 +221,26 @@ Refer to the default spawning.xml and entitygroups.xml for further explanations 
 		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
 		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
 		
-		<spawn id="dnFriendlyCore01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
+		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
+		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
+		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
+		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
+		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+
+		<!-- SDCS survivor tier spawns in this biome: T2 and T3 (day and night) -->
+
+		<spawn id="dnSdcs02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcs02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="dnSdcs03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT3" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcs03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT3" notags="commercial,industrial,downtown" />
+
+		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
+
+		<spawn id="opt01" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" notags="commercial,industrial,downtown"/>
+		<spawn id="opt02" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="commercial,industrial" notags="downtown"/>
+		<spawn id="opt03" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="downtown"/>
+
 	</append>	
 	
 	<append xpath="/spawning/biome[@name='wasteland']">
@@ -197,12 +251,26 @@ Refer to the default spawning.xml and entitygroups.xml for further explanations 
 		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
 		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
 		
-		<spawn id="dnFriendlyCore01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
+		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
+		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
+		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
+		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
+		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+
+		<!-- SDCS survivor tier spawns in this biome: T2 and T3 (day and night) -->
+
+		<spawn id="dnSdcs02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcs02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="dnSdcs03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT3" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcs03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT3" notags="commercial,industrial,downtown" />
+
+		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
+
+		<spawn id="opt01" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" notags="commercial,industrial,downtown"/>
+		<spawn id="opt02" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="commercial,industrial" notags="downtown"/>
+		<spawn id="opt03" maxcount="1" respawndelay="1" time="Any" entitygroup="npcAnimalsAny" tags="downtown"/>
+
 	</append>	
 	
 </configs>

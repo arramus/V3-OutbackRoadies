@@ -152,6 +152,8 @@
 			<e n="npcHarleyMachete" p="0.1"/>
 			<e n="npcHarleySpear" p="0.1"/>
 			<e n="none" p="99.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.0"/>
 		</entitygroup>
 		<entitygroup name="npcHarleyGroupGS50">
 			<e n="npcHarleyAxe" p="0.25"/>
@@ -165,6 +167,8 @@
 			<e n="npcHarleySpear" p="0.25"/>
 			<e n="npcHarleyXBow" p="0.25"/>
 			<e n="none" p="97.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="99.75"/>
 		</entitygroup>
 		<entitygroup name="npcHarleyGroupGS100">
 			<e n="npcHarleyAK47" p="0.25"/>
@@ -182,6 +186,8 @@
 			<e n="npcHarleyTRifle" p="0.25"/>
 			<e n="npcHarleyXBow" p="0.25"/>
 			<e n="none" p="96.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="99.75"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyCoreGroupGS01">
 			<e n="npcBakerAxe" p="0.2"/>
@@ -201,6 +207,8 @@
 			<e n="npcAnimalFox" p="0.3"/>
 			<e n="animalFox" p="0.4"/>
 			<e n="none" p="97.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.0"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyCoreGroupGS50">
 			<e n="npcBakerAxe" p="0.2"/>
@@ -225,6 +233,8 @@
 			<e n="npcNurseXBow" p="0.1"/>
 			<e n="npcAnimalFox" p="0.4"/>
 			<e n="none" p="97.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.0"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyCoreGroupGS100">
 			<e n="npcBakerAK47" p="0.1"/>
@@ -259,6 +269,41 @@
 			<e n="npcNurseXBow" p="0.1"/>
 			<e n="animalJeerkoa" p="0.3"/>
 			<e n="none" p="97.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.1"/>
+		</entitygroup>
+
+		<!-- SDCS survivor tier groups: equal male/female weight per tier -->
+		
+		<entitygroup name="npcSdcsSurvivorGroupT1">
+			<e n="npcSdcsSurvivorMaleT1" p="1.5"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="1.5"/>
+			<e n="none" p="97.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.0"/>
+		</entitygroup>
+		<entitygroup name="npcSdcsSurvivorGroupT2">
+			<e n="npcSdcsSurvivorMaleT2" p="1.5"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="1.5"/>
+			<e n="none" p="97.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.0"/>
+		</entitygroup>
+		<entitygroup name="npcSdcsSurvivorGroupT3">
+			<e n="npcSdcsSurvivorMaleT3" p="1.5"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="1.5"/>
+			<e n="none" p="97.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.0"/>
+		</entitygroup>
+
+		<!-- Merged from option pack 1-XNPCCore-NoCoreHumanNPCs: animals only -->
+		
+		<entitygroup name="npcAnimalsAny">
+			<e n="npcAnimalFox" p="0.3"/>
+			<e n="animalFox" p="0.4"/>
+			<e n="animalJeerkoa" p="0.3"/>
+			<e n="none" p="99.0"/>
 		</entitygroup>
 		
 		<!-- Bandits NPC entity groups -->	
@@ -3446,760 +3491,106 @@
 
 		<!-- Friendly NPC entity groups -->
 		<entitygroup name="npcFriendlyAllGroupGS01">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcBakerPipePistol" p="0.0005"/>
-			<e n="npcBakerPipeRifle" p="0.0005"/>
-			<e n="npcBakerPipeMG" p="0.0005"/>
-			<e n="npcBakerPipeShotgun" p="0.0005"/>
-			<e n="npcBakerSMG" p="0.0005"/>
-			<e n="npcBakerM60" p="0.0005"/>
-			<e n="npcBakerPistol" p="0.0005"/>
-			<e n="npcBakerDPistol" p="0.0005"/>			
-			<e n="npcBakerAK47" p="0.0005"/>
-			<e n="npcBakerTRifle" p="0.0005"/>
-			<e n="npcBakerHRifle" p="0.0005"/>
-			<e n="npcBakerSRifle" p="0.0005"/>
-			<e n="npcBakerPShotgun" p="0.0005"/>			
-			<e n="npcBakerAShotgun" p="0.0005"/>
-			<e n="npcBakerLBow" p="0.0005"/>
-			<e n="npcBakerXBow" p="0.0005"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
-			<e n="npcNurseSMG" p="0.0005"/>
-			<e n="npcNurseM60" p="0.0005"/>
-			<e n="npcNursePipePistol" p="0.0005"/>
-			<e n="npcNursePistol" p="0.0005"/>
-			<e n="npcNurseDPistol" p="0.0005"/>
-			<e n="npcNursePipeMG" p="0.0005"/>			
-			<e n="npcNurseAK47" p="0.0005"/>
-			<e n="npcNurseTRifle" p="0.0005"/>
-			<e n="npcNursePipeRifle" p="0.0005"/>
-			<e n="npcNurseHRifle" p="0.0005"/>
-			<e n="npcNurseSRifle" p="0.0005"/>
-			<e n="npcNursePipeShotgun" p="0.0005"/>
-			<e n="npcNursePShotgun" p="0.0005"/>			
-			<e n="npcNurseAShotgun" p="0.0005"/>
-			<e n="npcNurseXBow" p="0.0005"/>
-			<e n="npcNurseLBow" p="0.0005"/>
+			<e n="npcSdcsSurvivorMaleT1" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyAllGroupGS50">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcBakerPipePistol" p="0.0005"/>
-			<e n="npcBakerPipeRifle" p="0.0005"/>
-			<e n="npcBakerPipeMG" p="0.0005"/>
-			<e n="npcBakerPipeShotgun" p="0.0005"/>
-			<e n="npcBakerSMG" p="0.0005"/>
-			<e n="npcBakerM60" p="0.0005"/>
-			<e n="npcBakerPistol" p="0.0005"/>
-			<e n="npcBakerDPistol" p="0.0005"/>			
-			<e n="npcBakerAK47" p="0.0005"/>
-			<e n="npcBakerTRifle" p="0.0005"/>
-			<e n="npcBakerHRifle" p="0.0005"/>
-			<e n="npcBakerSRifle" p="0.0005"/>
-			<e n="npcBakerPShotgun" p="0.0005"/>			
-			<e n="npcBakerAShotgun" p="0.0005"/>
-			<e n="npcBakerLBow" p="0.0005"/>
-			<e n="npcBakerXBow" p="0.0005"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
-			<e n="npcNurseSMG" p="0.0005"/>
-			<e n="npcNurseM60" p="0.0005"/>
-			<e n="npcNursePipePistol" p="0.0005"/>
-			<e n="npcNursePistol" p="0.0005"/>
-			<e n="npcNurseDPistol" p="0.0005"/>
-			<e n="npcNursePipeMG" p="0.0005"/>			
-			<e n="npcNurseAK47" p="0.0005"/>
-			<e n="npcNurseTRifle" p="0.0005"/>
-			<e n="npcNursePipeRifle" p="0.0005"/>
-			<e n="npcNurseHRifle" p="0.0005"/>
-			<e n="npcNurseSRifle" p="0.0005"/>
-			<e n="npcNursePipeShotgun" p="0.0005"/>
-			<e n="npcNursePShotgun" p="0.0005"/>			
-			<e n="npcNurseAShotgun" p="0.0005"/>
-			<e n="npcNurseXBow" p="0.0005"/>
-			<e n="npcNurseLBow" p="0.0005"/>
+			<e n="npcSdcsSurvivorMaleT1" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT2" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyAllGroupGS100">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcBakerPipePistol" p="0.0005"/>
-			<e n="npcBakerPipeRifle" p="0.0005"/>
-			<e n="npcBakerPipeMG" p="0.0005"/>
-			<e n="npcBakerPipeShotgun" p="0.0005"/>
-			<e n="npcBakerSMG" p="0.0005"/>
-			<e n="npcBakerM60" p="0.0005"/>
-			<e n="npcBakerPistol" p="0.0005"/>
-			<e n="npcBakerDPistol" p="0.0005"/>			
-			<e n="npcBakerAK47" p="0.0005"/>
-			<e n="npcBakerTRifle" p="0.0005"/>
-			<e n="npcBakerHRifle" p="0.0005"/>
-			<e n="npcBakerSRifle" p="0.0005"/>
-			<e n="npcBakerPShotgun" p="0.0005"/>			
-			<e n="npcBakerAShotgun" p="0.0005"/>
-			<e n="npcBakerLBow" p="0.0005"/>
-			<e n="npcBakerXBow" p="0.0005"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
-			<e n="npcNurseSMG" p="0.0005"/>
-			<e n="npcNurseM60" p="0.0005"/>
-			<e n="npcNursePipePistol" p="0.0005"/>
-			<e n="npcNursePistol" p="0.0005"/>
-			<e n="npcNurseDPistol" p="0.0005"/>
-			<e n="npcNursePipeMG" p="0.0005"/>			
-			<e n="npcNurseAK47" p="0.0005"/>
-			<e n="npcNurseTRifle" p="0.0005"/>
-			<e n="npcNursePipeRifle" p="0.0005"/>
-			<e n="npcNurseHRifle" p="0.0005"/>
-			<e n="npcNurseSRifle" p="0.0005"/>
-			<e n="npcNursePipeShotgun" p="0.0005"/>
-			<e n="npcNursePShotgun" p="0.0005"/>			
-			<e n="npcNurseAShotgun" p="0.0005"/>
-			<e n="npcNurseXBow" p="0.0005"/>
-			<e n="npcNurseLBow" p="0.0005"/>
+			<e n="npcSdcsSurvivorMaleT2" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyAllGroupGS200">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcBakerPipePistol" p="0.001"/>
-			<e n="npcBakerPipeRifle" p="0.001"/>
-			<e n="npcBakerPipeMG" p="0.001"/>
-			<e n="npcBakerPipeShotgun" p="0.001"/>
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePipePistol" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>
-			<e n="npcNursePipeMG" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNursePipeRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePipeShotgun" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT2" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyAllGroupGS400">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcBakerPipePistol" p="0.001"/>
-			<e n="npcBakerPipeRifle" p="0.001"/>
-			<e n="npcBakerPipeMG" p="0.001"/>
-			<e n="npcBakerPipeShotgun" p="0.001"/>
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePipePistol" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>
-			<e n="npcNursePipeMG" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNursePipeRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePipeShotgun" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyAllGroupGS800">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcBakerPipePistol" p="0.001"/>
-			<e n="npcBakerPipeRifle" p="0.001"/>
-			<e n="npcBakerPipeMG" p="0.001"/>
-			<e n="npcBakerPipeShotgun" p="0.001"/>
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePipePistol" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>
-			<e n="npcNursePipeMG" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNursePipeRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePipeShotgun" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyMeleeGroupGS01">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT1" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyMeleeGroupGS50">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT1" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyMeleeGroupGS100">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT1" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyMeleeGroupGS200">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT1" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyMeleeGroupGS400">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT1" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyMeleeGroupGS800">
-			<e n="npcBakerEmptyHand" p="0.001"/>
-			<e n="npcBakerClub" p="0.001"/>
-			<e n="npcBakerKnife" p="0.001"/>
-			<e n="npcBakerBat" p="0.001"/>
-			<e n="npcBakerMachete" p="0.001"/>
-			<e n="npcBakerAxe" p="0.001"/>
-			<e n="npcBakerSpear" p="0.001"/>
-			<e n="npcNurseEmptyHand" p="0.001"/>
-			<e n="npcNurseClub" p="0.001"/>
-			<e n="npcNurseKnife" p="0.001"/>
-			<e n="npcNurseAxe" p="0.001"/>
-			<e n="npcNurseSpear" p="0.001"/>
-			<e n="npcNurseBat" p="0.001"/>
-			<e n="npcNurseMachete" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT1" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyRangedGroupGS01">
-			<e n="npcBakerPipePistol" p="0.001"/>
-			<e n="npcBakerPipeRifle" p="0.001"/>
-			<e n="npcBakerPipeMG" p="0.001"/>
-			<e n="npcBakerPipeShotgun" p="0.001"/>
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePipePistol" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>
-			<e n="npcNursePipeMG" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNursePipeRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePipeShotgun" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT2" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyRangedGroupGS50">
-			<e n="npcBakerPipePistol" p="0.001"/>
-			<e n="npcBakerPipeRifle" p="0.001"/>
-			<e n="npcBakerPipeMG" p="0.001"/>
-			<e n="npcBakerPipeShotgun" p="0.001"/>
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePipePistol" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>
-			<e n="npcNursePipeMG" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNursePipeRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePipeShotgun" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT2" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyRangedGroupGS100">
-			<e n="npcBakerPipePistol" p="0.001"/>
-			<e n="npcBakerPipeRifle" p="0.001"/>
-			<e n="npcBakerPipeMG" p="0.001"/>
-			<e n="npcBakerPipeShotgun" p="0.001"/>
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePipePistol" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>
-			<e n="npcNursePipeMG" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNursePipeRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePipeShotgun" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT2" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyRangedGroupGS200">
-			<e n="npcBakerPipePistol" p="0.001"/>
-			<e n="npcBakerPipeRifle" p="0.001"/>
-			<e n="npcBakerPipeMG" p="0.001"/>
-			<e n="npcBakerPipeShotgun" p="0.001"/>
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePipePistol" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>
-			<e n="npcNursePipeMG" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNursePipeRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePipeShotgun" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT2" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyRangedGroupGS400">
-			<e n="npcBakerPipePistol" p="0.001"/>
-			<e n="npcBakerPipeRifle" p="0.001"/>
-			<e n="npcBakerPipeMG" p="0.001"/>
-			<e n="npcBakerPipeShotgun" p="0.001"/>
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePipePistol" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>
-			<e n="npcNursePipeMG" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNursePipeRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePipeShotgun" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyRangedGroupGS800">
-			<e n="npcBakerPipePistol" p="0.001"/>
-			<e n="npcBakerPipeRifle" p="0.001"/>
-			<e n="npcBakerPipeMG" p="0.001"/>
-			<e n="npcBakerPipeShotgun" p="0.001"/>
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePipePistol" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>
-			<e n="npcNursePipeMG" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNursePipeRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePipeShotgun" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyBossGroupGS01">
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcBakerRocketL" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
-			<e n="npcNurseRocketL" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyBossGroupGS50">
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcBakerRocketL" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
-			<e n="npcNurseRocketL" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyBossGroupGS100">
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcBakerRocketL" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
-			<e n="npcNurseRocketL" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyBossGroupGS200">
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcBakerRocketL" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
-			<e n="npcNurseRocketL" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyBossGroupGS400">
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcBakerRocketL" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
-			<e n="npcNurseRocketL" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 		<entitygroup name="npcFriendlyBossGroupGS800">
-			<e n="npcBakerSMG" p="0.001"/>
-			<e n="npcBakerM60" p="0.001"/>
-			<e n="npcBakerPistol" p="0.001"/>
-			<e n="npcBakerDPistol" p="0.001"/>			
-			<e n="npcBakerAK47" p="0.001"/>
-			<e n="npcBakerTRifle" p="0.001"/>
-			<e n="npcBakerHRifle" p="0.001"/>
-			<e n="npcBakerSRifle" p="0.001"/>
-			<e n="npcBakerPShotgun" p="0.001"/>			
-			<e n="npcBakerAShotgun" p="0.001"/>
-			<e n="npcBakerLBow" p="0.001"/>
-			<e n="npcBakerXBow" p="0.001"/>
-			<e n="npcBakerRocketL" p="0.001"/>
-			<e n="npcNurseSMG" p="0.001"/>
-			<e n="npcNurseM60" p="0.001"/>
-			<e n="npcNursePistol" p="0.001"/>
-			<e n="npcNurseDPistol" p="0.001"/>			
-			<e n="npcNurseAK47" p="0.001"/>
-			<e n="npcNurseTRifle" p="0.001"/>
-			<e n="npcNurseHRifle" p="0.001"/>
-			<e n="npcNurseSRifle" p="0.001"/>
-			<e n="npcNursePShotgun" p="0.001"/>			
-			<e n="npcNurseAShotgun" p="0.001"/>
-			<e n="npcNurseXBow" p="0.001"/>
-			<e n="npcNurseLBow" p="0.001"/>
-			<e n="npcNurseRocketL" p="0.001"/>
+			<e n="npcSdcsSurvivorMaleT3" p="0.001"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.001"/>
 		</entitygroup>
 
 		<!-- Mech NPC entity groups -->

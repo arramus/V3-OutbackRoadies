@@ -194,4 +194,24 @@
 			</tier_items>
 		</trader_info>			
 	</insertAfter>	-->
+
+	<!-- The SDCS survivor trade id.
+	     Shared by every SDCS survivor class (npcSdcsTest, Config/npc.xml) - the live stock
+	     list is per NPC (TraderData is an instance field), only this template is shared.
+	     - reset_interval="-1": TraderManager.TraderInventoryRequested bails on
+	       ResetInterval < 1 (3.3 TraderManager.cs), so the game NEVER restocks this id
+	       (the same idiom the game's own stash trader id 3 uses).
+	     - allow_sell="false": XUiC_ItemActionList never creates the sell action for this id
+	       (sell only - the player buys, never sells).
+	     - NO trader_items: an empty item list parses and spawns an empty list without
+	       throwing (TradersFromXml.cs / TraderInfo.Spawn), and the stock is filled at open
+	       from the NPC's harvest window by the base mod's SdcsTradePatches.
+	     - NO markup overrides: the default OverrideBuyMarkup = -1 inherits the global
+	       buy_markup / sell_markdown, which is exactly what trader_info id="1" does
+	       (the game's id 1 carries no override attributes either).
+	     NOTE: do not ship the allow_buy attribute - in the 3.3 parser it writes AllowSell
+	       (TradersFromXml.cs), a landmine. -->
+	<append xpath="/traders">
+		<trader_info id="64" reset_interval="-1" allow_sell="false"/>
+	</append>
 </configs>

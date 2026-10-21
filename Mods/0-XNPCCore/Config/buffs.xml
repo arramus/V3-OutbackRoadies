@@ -1192,6 +1192,22 @@
 			<stack_type value="ignore"/>
 			<duration value="20"/>
 		</buff>
+		<buff name="SdcsLootWildCooldown" hidden="true"> <!--  the wild survivor looting rate cap: one container per 60 s. Does nothing but score 0 in the wild loot action while present.  -->
+			<stack_type value="ignore"/>
+			<duration value="60"/>
+		</buff>
+		<buff name="SdcsSleeperDetected" hidden="true"> <!--  The flag that an enemy has this survivor as its attack target while she is in a grown sleeper volume. No effects; it re-arms sleeper detection when it expires and the leave action in the SdcsNpcLeave package scores on it.  -->
+			<stack_type value="ignore"/>
+			<duration value="20"/>
+		</buff>
+		<buff name="SdcsLeavingArea" hidden="true"> <!--  The flag that a WILD survivor is on her way out of a detected sleeper volume. No effects; while present the SdcsNpcLeave package's LeaveAreaSdcs action scores (its only consideration) and the leave task runs. The task's every exit removes it; the 45 s duration is the backstop for a stop UAI never delivers.  -->
+			<stack_type value="ignore"/>
+			<duration value="45"/>
+		</buff>
+		<buff name="SdcsLeaveFailed" hidden="true"> <!--  The flag that the leave walk just gave up (cornered: no path, or the 30 s budget). No effects; while present the detection's MayStartLeave refuses a new leave, so the attack actions win and she fights instead of re-running at a house that just cornered her.  -->
+			<stack_type value="ignore"/>
+			<duration value="20"/>
+		</buff>
 		<buff name="ActivityBuff"> 
 			<stack_type value="ignore"/>
 			<duration value="6"/>
@@ -1586,7 +1602,179 @@
 			</effect_group>
 		</buff>		
 
+		<buff name="SdcsStatusCheck" hidden="true" remove_on_death="true">
+			<stack_type value="ignore"/>
+			<update_rate value="2"/>
+			<!-- UNHIRED: free heal. No item is required and nothing is consumed. -->
+			<effect_group name="SdcsHealingUnhired">
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="SdcsIsHealing">
+					<requirement name="CVarCompare" cvar="Leader" operation="LTE" value="0"/>
+					<requirement name="StatComparePercCurrentToMax" stat="health" operation="LTE" value=".7"/>
+					<requirement name="!HasBuff" buff="SdcsIsHealing"/>
+					<requirement name="CVarCompare" cvar="$SdcsHealingCooldown" operation="LTE" value="0"/>
+				</triggered_effect>
+			</effect_group>
+			<!-- HIRED: heal costs a bandage. The has-medical gate is the player's resupply
+			     loop; the consume happens in SdcsIsHealing below. -->
+			<effect_group name="SdcsHealingHired">
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="SdcsIsHealing">
+					<requirement name="CVarCompare" cvar="Leader" operation="GT" value="0"/>
+					<requirement name="CVarCompare" cvar="SdcsHasMedical" operation="Equals" value="1"/>
+					<requirement name="StatComparePercCurrentToMax" stat="health" operation="LTE" value=".7"/>
+					<requirement name="!HasBuff" buff="SdcsIsHealing"/>
+					<requirement name="CVarCompare" cvar="$SdcsHealingCooldown" operation="LTE" value="0"/>
+				</triggered_effect>
+			</effect_group>
+			<!-- Cooldown tick: one unit per update while counting, same shape as
+			     NPCCore's NPCHealing group. 15 units at rate 2 is a 30-second cadence. -->
+			<effect_group name="SdcsHealingCooldown">
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$SdcsHealingCooldown" operation="add" value="-1">
+					<requirement name="CVarCompare" cvar="$SdcsHealingCooldown" operation="GT" value="0"/>
+				</triggered_effect>
+			</effect_group>
+		</buff>
+
+		<!-- The heal's START. Everything is onSelfBuffStart at t=0: the bandage is
+		     spent, the bleeding is cleared and the cooldown is armed. The HEALTH part
+		     (the three medical lines) is in SdcsHealApply below: the heal sequence
+		     (AvatarSdcsNpcController.HealSeq) adds it when the bandage animation ends,
+		     or at once as the fallback when the sequence cannot run, so the trickle
+		     now starts at the END of the bandage instead of t=0. The duration is
+		     therefore ONLY the combat-mute window: while this buff is present, every
+		     SdcsNpcRangedAdvanced action fails its SelfNotHasBuff SdcsIsHealing gate
+		     and UAI falls back to DynamicFollow (the NPC turns to its leader and
+		     walks - visible in the field as "heals by strolling away"). The 3 s
+		     NPCCore IsHealing length reads as dead air, so the duration is 1 s; the
+		     heal sequence's SdcsHealSeq cvar carries the busy state past the buff's
+		     expiry. -->
+		<buff name="SdcsIsHealing">
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<update_rate value="1"/>
+			<effect_group name="SdcsIsHealing">
+				<!-- The safety net's acknowledgement. This heal
+				     starts UNSEEN; the avatar controller sets SdcsHealSeqSeen to 1
+				     the moment it takes the heal, so the end effect below fires
+				     only when no controller saw this buff. -->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsHealSeqSeen" operation="set" value="0"/>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleeding"/>
+				<!-- Any heal clears ALL bleeding. The laceration chain (game buffs.xml
+				     5701-5743) re-adds buffInjuryBleeding via buffInjuryBleedingOne, so the wound,
+				     its one/two/barbedwire carriers and internal bleeding all go too. -->
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffLaceration"/>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleedingOne"/>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleedingTwo"/>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleedingBarbedWire"/>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInternalBleeding"/>
+				<!-- Mirror the vanilla laceration end (game buffs.xml 5728 and 5743): clear the
+				     wound counter, health blockage and display so no leftover re-adds the bleed. -->
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveCVar" cvar="$lacerationCounter,.lacerationHealthBlockage,.lacerationDurationDisplay"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$SdcsHealingCooldown" operation="set" value="15"/>
+				<!-- Hired only: the heal consumes a medical item from whichever store holds
+				     one (toolbelt, bag, loot container, then the player-facing harvest
+				     container - the EntityUtilities search order). Unhired heals free.
+				     The hand holds the display item (sdcsDisplayBandage), so the
+				     consume takes a real medical item from her stores. -->
+				<triggered_effect trigger="onSelfBuffStart" action="ConsumeItemByTagSDX, SCore" tag="medical">
+					<requirement name="CVarCompare" cvar="Leader" operation="GT" value="0"/>
+				</triggered_effect>
+				<!-- The safety net for the health. If the avatar
+				     controller's per-frame code never saw this buff (component not
+				     ticking, a class without the controller), the health still
+				     arrives when the 1 s buff ends: the pre-sequence behaviour.
+				     onSelfBuffRemove fires on a normal expiry (vanilla
+				     buffs.xml uses it on the duration-limited
+				     buffDeathFoodDrinkAdjust). A present controller sets Seen
+				     first, so this can never double-apply. -->
+				<triggered_effect trigger="onSelfBuffRemove" action="AddBuff" target="self" buff="SdcsHealApply">
+					<requirement name="CVarCompare" cvar="SdcsHealSeqSeen" operation="LT" value="1"/>
+				</triggered_effect>
+			</effect_group>
+		</buff>
+
+		<!-- The heal's HEALTH, at the END. The three lines live in SdcsIsHealing above;
+		     the heal sequence adds this buff when the bandage
+		     animation ends (or at once, as the fallback, when the sequence cannot
+		     run). On start it queues the same +30 / 2 per s trickle the in-place heal
+		     queued: buffProcessConsumables reads medicalRegHealthAmount and
+		     adds the game's buffHealHealth (the visible Heal icon rides it). Hidden:
+		     nothing of its own displays. -->
+		<buff name="SdcsHealApply" hidden="true">
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<update_rate value="1"/>
+			<effect_group name="SdcsHealApply">
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="medicalRegHealthAmount" operation="add" value="30"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="medRegHealthIncSpeed" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="AddBuff" target="self" buff="buffProcessConsumables"/>
+			</effect_group>
+		</buff>
+
+		<!-- NPC progression Phase 1: the hidden level buff.
+		     ⛔ The cvar reference is "@Name", NOT "@$Name": PassiveEffect strips the
+		     leading @ and uses THE REST as the cvar name (PassiveEffect.cs),
+		     so "@$X" looks up a cvar literally called "$X". Vanilla writes "@$PlayerLevelBonus"
+		     because ITS cvar really is named "$PlayerLevelBonus"; ours are plain names
+		     (same as our own "@EntityID" usage). With "@$" the
+		     buff is ON the entity but the cvar holds 0.06 and HealthMax never moves. The passive effects
+			     read the $-cvars the controller writes (SdcsLevelHealth /
+			     SdcsLevelDamage / SdcsLevelSpread), and the engine re-reads them
+			     live on every passive-effect evaluation, so a cvar refresh on a
+			     level-up changes the effect in place (no buff re-add). No
+			     duration (permanent) and NO remove_on_death on purpose: the level
+			     cvars persist through death, and the start-apply is cvar-
+			     idempotent, so a buff that came off on death would never be
+			     re-added and the level bonus would be lost for good.
+			     The controller writes the cvars BEFORE adding this buff (an
+			     unset @cvar reads 0). -->
+		<buff name="SdcsNpcLevelBonus" hidden="true">
+			<stack_type value="ignore"/>
+			<effect_group name="SdcsNpcLevelBonus">
+				<passive_effect name="HealthMax" operation="perc_add" value="@SdcsLevelHealth"/>
+				<passive_effect name="DamageModifier" operation="perc_add" value="@SdcsLevelDamage"/>
+				<passive_effect name="SpreadMultiplierHip" operation="perc_add" value="@SdcsLevelSpread"/>
+				<!-- Slow natural regen: the NPC tops itself off while it
+				     wanders instead of being healed instantly on a level-up (which would have
+				     full-healed a companion mid-fight). Small enough not to matter in combat. -->
+				<passive_effect name="HealthChangeOT" operation="base_add" value="@SdcsLevelRegen"/>
+			</effect_group>
+		</buff>
+
+		<!-- No-wear STOPGAP: NPCs have no repair path, so every
+		     wear write is a one-way ratchet; this stops it until the repair system exists.
+		     DegradationPerUse -1.0 exactly: zero new wear from armor hits, melee swings and
+		     gunshots (all three funnel through EffectManager with calcBuffs on the holding
+		     entity). Past -1.0 the value would go negative and HEAL durability. Same shape
+		     as SdcsNpcLevelBonus: no duration (permanent), re-asserted by the controller's
+		     1 Hz pass, hidden, stack_type ignore. Scope: EVERY live SDCS
+		     role NPC - an unhired NPC that has already worn gear would carry that wear into
+		     hire forever, so the gate is not worth it. The player's own items are untouched
+		     (entity-scoped buff). Config/Settings.xml NoWear=false removes it again for A/B.
+		     This blocks, it does not repair: existing wear stays, UseTimes just stops growing. -->
+		<buff name="SdcsNoWear" hidden="true">
+			<stack_type value="ignore"/>
+			<effect_group name="SdcsNoWear">
+				<passive_effect name="DegradationPerUse" operation="perc_add" value="-1.0"/>
+			</effect_group>
+		</buff>
 
 	</append>
 	
+
+	<!-- Cap RandomIdle cvar to 0-5 so it never rolls the gesture values (9 or 10) -->
+	<set xpath="/buffs/buff[@name='RandomIdle']/effect_group[@name='RandomIdle']/triggered_effect[@trigger='onSelfBuffUpdate'][@action='ModifyCVar'][@cvar='RandomIdle']/@value">randomint(0,5)</set>
+
+	<!-- Remove the effect_groups that would set IdleVar=1 or IdleVar=2 randomly.
+	     The mod owns these values for meaningful head gestures (nod/shake on command). -->
+	<remove xpath="/buffs/buff[@name='RandomIdle2']/effect_group[requirement[@name='CVarCompare'][@cvar='RandomIdle'][@operation='Equals'][@value='9']]"/>
+	<remove xpath="/buffs/buff[@name='RandomIdle2']/effect_group[requirement[@name='CVarCompare'][@cvar='RandomIdle'][@operation='Equals'][@value='10']]"/>
+
+	<!-- Jump command cooldown buff - applied declaratively via OnStartAddBuffs on the task tag.
+	     Blocks re-selection of JumpUp/JumpDown for 2 seconds after any exit (success or failure). -->
+	<append xpath="/buffs">
+		<buff name="XVC_JumpCooldown">
+			<stack_type value="ignore"/>
+			<duration value="2"/>
+		</buff>
+	</append>
 </configs>

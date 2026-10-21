@@ -1,0 +1,728 @@
+<?xml version="1.0"?>
+<!--
+    NPCVoiceControl - Unified Configuration
+
+    All engine/runtime settings in one file.
+    User-facing configs (personalities.xml, phrasetriggers.xml) remain separate.
+
+    === TTS Section ===
+      Controls text-to-speech. Two engines, same Supertonic 3 model:
+        audiocpp (DEFAULT)   - audio.cpp server, GGUF, Vulkan (CPU fallback), port 5057
+        supertonic           - supertonic-server, ONNX, CPU, port 5054
+      Enabled: turn TTS on/off globally.
+      TtsEngine: "audiocpp" (default since 3.2.00) or "supertonic". Anything else (e.g. the
+                 retired "sherpa") logs a warning and falls back to the default. Switching is
+                 one line + restart; both payloads ship, so it is a one-line rollback.
+      ServerUrl: defaults to the engine's local port (5054 / 5057). Set this only for a
+                 custom/remote endpoint.
+      TimeoutSeconds: how long to wait for a response before giving up.
+      UseGpu: legacy flag, no longer used. Kept so old configs load cleanly.
+
+    === STT Section ===
+      Controls the Whisper speech-to-text engine via whisper-server.
+      Enabled: turn STT on/off globally.
+      ServerUrl: must match whisper-server port (default 5052).
+      BeamSize: higher = more accurate but slower (1-5 recommended).
+      LanguageLocked: legacy flag, superseded by Language below.
+      Language: ISO 639-1 code passed to whisper-server as the language flag.
+                Default "en" forces English transcription (most reliable for short clips).
+                Use "ja" for Japanese, "zh" for Chinese, "fr" for French, etc.
+                Set to "auto" for auto-detection (less reliable on short/noisy clips).
+      Model: the whisper model filename in bin/WhisperServer/.
+             ONE model ships: ggml-small-q8_0.bin (252 MiB, near-lossless).
+             The ggml-base.en.bin "Fast" tier (141 MiB) and the f16 ggml-small.bin
+             (465 MiB) and ggml-small-q5_1.bin (181 MiB) no longer ship (q5 saved only
+             71 MiB over q8, not worth any accuracy risk on commands). Re-fetch any of
+             them from
+             huggingface.co/ggerganov/whisper.cpp if ever needed, drop the file into
+             bin/WhisperServer/ and point this ONE line at it + restart (no rebuild).
+             ⛔ The two platforms use DIFFERENT owners. Do NOT
+             "tidy" them to match:
+               GitHub  = ggml-org/whisper.cpp   (ggerganov/... is a 301 redirect)
+               HF      = ggerganov/whisper.cpp  (ggml-org/... returns 401, does not exist)
+             Leave empty to auto-detect ggml-*.bin: autodetect prefers the shipped
+             ggml-small-q8_0.bin and only then falls back to any ggml-*.bin, so
+             blanking is safe. It is still better to keep the explicit filename.
+      WakeWordModel: which wake-word model to load (hey_marvin_v0.1 is default).
+      WakeWordThreshold: sensitivity 0-1 (higher = less false triggers).
+      VadSilenceMs: milliseconds of silence before recording stops. 400 (default) - it is
+                 pure tail latency on the WAKE WORD path, paid after you
+                 stop speaking. Measured with the [CAPTURE] line: at 800 a wake command took
+                 2196-2303 ms total of which only ~670 ms was speech; at 400 the same commands
+                 took 1052-1108 ms. Push-to-talk is unaffected either way - it does not run VAD,
+                 which is why its deadAir/vadTail print n/a. Raise it towards 600-800 if a
+                 natural mid-sentence pause starts cutting you off.
+
+    === FormationRadial Section ===
+      Controls the formation radial (the order wheel), a menu feature that works with
+      STT/TTS/LLM off. Page 0 carries the core orders; Formation is one drill-down page
+      with the 8 compass bearings.
+      Key: key that opens the radial (a Unity KeyCode name, default Semicolon).
+           Every letter A-Z has a vanilla default binding, so a letter key collides;
+           Semicolon does not. Free keys: Semicolon, Quote, Comma, Period, Slash,
+           RightBracket, Backslash. An empty value disables the radial.
+           Legacy: an old <STT><FormationRadialKey> is still read as a fallback, so a
+           key set under <STT> is not lost.
+      Dwell: seconds the cursor must stay on a navigation socket (or the wheel's
+           centre) before it navigates. A transit shorter than this never
+           flips the page, so 0.4 (default) sits above any accidental sweep while
+           a deliberate park still reads as "a short hover". 0 makes hover
+           navigate on the first frame (the transit hazard returns); use 0.3-1.0.
+      NavBorderColor / CommandBorderColor: border ring tints (r,g,b,a) for the
+           navigation sockets (the ones with the chevron) and the command sockets.
+           The command default matches the window XML, so sockets look as
+           before unless you set one.
+
+    === LLM Section ===
+      Controls the local language model via llama-server.
+      Enabled: turn the LLM on/off globally. When off, llama-server is not started,
+               not port-probed, and free-form chat falls back to canned responses
+               (phrase trigger commands still execute).
+      Endpoint: URL for the OpenAI-compatible chat completions API.
+      ModelFilename: leave empty to use default model from llama-server config.
+      Model: name of the model for an EXTERNAL API endpoint (used verbatim in requests). When Endpoint is the local llama-server default, a .gguf discovered in Resources/ overrides this value, so it only matters for external endpoints and as the printed fallback when no model file is found.
+      MaxTokens: maximum response length in tokens (64-2048).
+      Temperature: randomness 0-1 (higher = more creative, lower = more focused).
+      SystemPrompt: the base personality injected into every NPC conversation.
+      ContextMemory: how many recent exchanges to keep in context (3-20).
+      ShowTypingIndicator: show a "typing..." tooltip while waiting for response.
+      TypingDelayMs: per-character delay for the typewriter effect in milliseconds (50=fast, 75=natural, 150=dramatic).
+      MaxResponseLength: hard cap on response characters (prevents very long speeches).
+      WildCombatChatCooldownSeconds: seconds a wild NPC stays uninterruptible after its last combat target dies (default 5).
+      ContextSize: llama-server KV cache window in tokens. 8192 = default (8 GB+ VRAM). 4096 = low-VRAM (6 GB cards, use with IQ4_NL model). See inline comment for full range.
+
+    === Prompt Section ===
+      BasePrompt: fallback system prompt if SystemPrompt above is empty.
+      TtsRule: injected into the prompt when TTSLanguage is Japanese (j).
+               Forces the LLM to output Kanji/Hiragana/Katakana for proper TTS.
+      ChineseTtsRule: same as TtsRule but for Simplified Chinese (z).
+
+    === RAG Section ===
+      Enabled: turn memory (embed server + fact extraction) on/off globally.
+               When off, the embed server is not started and nothing is extracted or retrieved.
+      ExtractionPrompt: system prompt sent to the LLM to extract player facts from conversations.
+      ExtractionUserPrefix: prepended to the transcript before sending to the extractor.
+      ExtractionTemperature: 0.0 = deterministic, higher = more creative (0.0-2.0).
+      MaxExtractedFacts: cap on facts per extraction to prevent LLM hallucination bloat (min 1).
+      MinFlushMessages: skip flush if buffer has fewer messages than this (prevents 2-message NONE flushes).
+      ExtractionIdleSeconds: idle time before extraction fires (default 100s). Higher = fewer extractions.
+-->
+<XNPCVoiceControl>
+    <Profile lock="core" />
+
+    <!-- ================================================================ -->
+    <!-- TTS: Text-to-Speech                                              -->
+    <!-- TtsEngine: "audiocpp" (DEFAULT since 3.2.00, port 5057, Vulkan   -->
+    <!-- with CPU fallback) or "supertonic" (port 5054). Old values such  -->
+    <!-- as "sherpa" load cleanly: they warn and fall back to the default -->
+    <!-- Measured: audiocpp synthesises a command reply in 85 to 177 ms,  -->
+    <!-- and the whole speech to first audio path lands at 124 to 199 ms  -->
+    <!-- on both singleplayer and a dedicated server.                     -->
+    <!-- ServerUrl: optional override for a REMOTE/custom TTS server;     -->
+    <!--              leave unset to use the engine's local port.         -->
+    <!-- ================================================================ -->
+    <TTS>
+        <Enabled>false</Enabled>
+        <TtsEngine>audiocpp</TtsEngine>
+        <TimeoutSeconds>30</TimeoutSeconds>
+        <UseGpu>false</UseGpu>
+
+        <!-- Audio Playback -->
+        <Volume>0.8</Volume>
+        <MaxDistance>40</MaxDistance>
+        <MinDistance>2</MinDistance>
+        <SpeechRate>1.0</SpeechRate>
+
+        <!-- Voice Defaults (overridden per-NPC by personalities.xml) -->
+        <DefaultVoice>F4</DefaultVoice>
+        <TraderVoice>M1</TraderVoice>
+        <CompanionVoice>F5</CompanionVoice>
+        <BanditVoice>M3</BanditVoice>
+
+        <!-- Ack Cache: caches synthesized audio for REPEATED closed-vocabulary lines
+             (radial/command acks, phrase responses, greetings, story pool) in the
+             TTS_Cache/ folder under the mod root, so they play instantly after first
+             use and survive restarts. LLM chat and story replies are never cached.
+             Set CacheEnabled to false to force live synthesis for every line. -->
+        <CacheEnabled>true</CacheEnabled>
+        <CacheMaxEntries>200</CacheMaxEntries>
+        <CacheMaxEntryBytes>1048576</CacheMaxEntryBytes>
+
+        <!-- Face Lip-Sync (blendshape driver) -->
+        <FaceLipSyncEnabled>true</FaceLipSyncEnabled>
+        <FaceLipSyncGain>7</FaceLipSyncGain>
+        <FaceLipSyncAttack>35</FaceLipSyncAttack>
+        <FaceLipSyncRelease>12</FaceLipSyncRelease>
+        <FaceLipSyncNoiseGate>0.015</FaceLipSyncNoiseGate>
+        <FaceLipSyncMaxWeight>100</FaceLipSyncMaxWeight>
+        <FaceLipSyncBlinkEnabled>true</FaceLipSyncBlinkEnabled>
+        <FaceLipSyncBlinkIntervalMin>2.0</FaceLipSyncBlinkIntervalMin>
+        <FaceLipSyncBlinkIntervalMax>6.0</FaceLipSyncBlinkIntervalMax>
+        <FaceLipSyncBlinkDurationMs>120</FaceLipSyncBlinkDurationMs>
+
+        <!-- Mode: auto | off | blendshape | animator | procedural | bone (bone is for SDCS rigs only; it rotates the rig's Jaw bone) -->
+        <FaceLipSyncMode>auto</FaceLipSyncMode>
+        <!-- Animator Float parameter name (default "IsTalking") -->
+        <FaceLipSyncAnimParam>IsTalking</FaceLipSyncAnimParam>
+        <!-- Vroid face family detection: bind Japanese-named Vroid shapes by name. Set false to restore the pre-Vroid behaviour -->
+        <FaceLipSyncVroidDetect>true</FaceLipSyncVroidDetect>
+
+        <!-- Bone jaw (SDCS rigs only): rotation axis of the rig's Jaw bone, x | y | z.
+             The correct axis is unknown for this rig family; if the mouth opens sideways or inward,
+             change this to another axis first. If it opens INWARD on the right axis, flip the
+             direction with a NEGATIVE FaceLipSyncBoneOpenAngle below (sign fix, not an axis change).
+             This axis and angle affect bone mode ONLY: procedural lip sync on legacy NPCs is
+             untouched, so tuning a SDCS jaw can never move every other NPC's mouth. -->
+        <FaceLipSyncBoneJawAxis>x</FaceLipSyncBoneJawAxis>
+        <!-- Bone open angle in degrees (bone mode only). The shipped 10 is a GUESS: the procedural
+             default of 6 was never validated on this rig family, so expect to tune it. A negative
+             value flips the opening direction. Does NOT affect FaceLipSyncProcOpenAngle below. -->
+        <FaceLipSyncBoneOpenAngle>6</FaceLipSyncBoneOpenAngle>
+
+        <!-- Procedural jaw (tier 3) - runtime blendshape from head-weighted chin verts.
+             Its open angle drives legacy NPC procedural lip sync only, NOT bone mode. -->
+        <!-- Position knobs are fractions of head-local bbox range (0-1), mapped at bake time -->
+        <FaceLipSyncProcOpenAngle>6</FaceLipSyncProcOpenAngle>
+        <FaceLipSyncProcLowerMaxFrac>0.40</FaceLipSyncProcLowerMaxFrac>
+        <FaceLipSyncProcForwardMinFrac>0.61</FaceLipSyncProcForwardMinFrac>
+        <FaceLipSyncProcHingeYFrac>0.21</FaceLipSyncProcHingeYFrac>
+        <FaceLipSyncProcHingeZFrac>0.36</FaceLipSyncProcHingeZFrac>
+        <FaceLipSyncProcTestHold>false</FaceLipSyncProcTestHold>
+
+        <!-- Procedural blink/wink (tier 3 fallback) - runtime blendshape from head-weighted eye verts.
+             Baked in the same pass as ProcJawOpen. Used only when no artist "blink" blendshape exists. -->
+        <FaceLipSyncProcBlinkEyeYFrac>0.31</FaceLipSyncProcBlinkEyeYFrac>
+        <FaceLipSyncProcBlinkBandHeightFrac>0.05</FaceLipSyncProcBlinkBandHeightFrac>
+        <FaceLipSyncProcBlinkBandWidthFrac>0.1</FaceLipSyncProcBlinkBandWidthFrac>
+        <FaceLipSyncProcBlinkCloseAmount>0.95</FaceLipSyncProcBlinkCloseAmount>
+        <FaceLipSyncProcBlinkForwardMinFrac>0.7</FaceLipSyncProcBlinkForwardMinFrac>
+        <FaceLipSyncProcBlinkWinkMode>off</FaceLipSyncProcBlinkWinkMode>
+        <FaceLipSyncProcBlinkWinkChance>0.2</FaceLipSyncProcBlinkWinkChance>
+
+        <!-- Head Gestures (nod on accept, shake on reject) -->
+        <HeadGesturesEnabled>true</HeadGesturesEnabled>
+        <HeadGestureParam>IdleVar</HeadGestureParam>
+        <HeadGestureNodValue>1</HeadGestureNodValue>
+        <HeadGestureShakeValue>2</HeadGestureShakeValue>
+        <HeadGestureNeutralValue>0</HeadGestureNeutralValue>
+        <HeadGestureHoldSeconds>1.5</HeadGestureHoldSeconds>
+    </TTS>
+
+    <!-- ================================================================ -->
+    <!-- STT: Speech-to-Text (Whisper + whisper-server)                   -->
+    <!-- ================================================================ -->
+    <STT>
+        <Enabled>false</Enabled>
+        <ServerUrl>http://127.0.0.1:5052</ServerUrl>
+        <TimeoutSeconds>60</TimeoutSeconds>
+        <BeamSize>1</BeamSize>
+        <LanguageLocked>false</LanguageLocked>
+        <Language>en</Language>
+        <Model>ggml-small-q8_0.bin</Model>
+        <UseGpu>true</UseGpu>
+        <Translate>false</Translate>
+
+        <!-- Phonetic NPC-name matching (Soundex). Gates tier 3 of the name resolver only.
+             Tiers 0-2 (exact, prefix, fuzzy) always run. Turn off if phonetics misfire.
+             Default true so real usage generates data. -->
+        <NameMatchPhonetic>true</NameMatchPhonetic>
+
+        <Prompt>machete, zombie, horde, trader, inventory, follow, guard, loot, knife, axe, pistol, rifle, shotgun, bandage, food, water, ammo, weapon, dismiss, hire, pickup, convertible, truck, gasoline, engine, workbench, blueprint, scrap, components, outpost, camp, safehouse, infected, symptoms, medicine, antibiotic, north, south, east, west, northeast, northwest, southeast, southwest, socket, formation, flank, take point, hold position, squad, spread out, tighten up, come closer, back off, baton, knuckles, sledgehammer, chainsaw, magnum, crossbow, compound bow</Prompt>
+
+        <!-- Audio Recording -->
+        <SampleRate>16000</SampleRate>
+        <MaxRecordingSeconds>15</MaxRecordingSeconds>
+
+        <!-- Input -->
+        <PushToTalkKey>V</PushToTalkKey>
+
+        <!-- Microphone device name. Empty = use first available device.
+             If voice is not working, set this to your mic's exact name from the
+             boot log (e.g. <MicrophoneDevice>Microphone (Realtek Audio)</MicrophoneDevice>).
+             ASCII hyphens only in device names; Unity Mono rejects UTF-8 chars here. -->
+        <MicrophoneDevice></MicrophoneDevice>
+
+        <!-- Wake Word (hands-free) -->
+        <WakeWordEnabled>false</WakeWordEnabled>
+        <WakeWordModel>hey_marvin_v0.1</WakeWordModel>
+        <WakeWordThreshold>0.5</WakeWordThreshold>
+        <VadSilenceMs>400</VadSilenceMs>
+
+        <!-- Wake word inference thread priority.
+             Higher (AboveNormal) = snappier wake-word detection but starves CPU TTS.
+             Lower (Normal/BelowNormal) = faster TTS synth, wake-word slightly less responsive.
+             Allowed: AboveNormal, Normal, BelowNormal, Lowest. Default: Normal. -->
+        <WakeWordThreadPriority>Normal</WakeWordThreadPriority>
+
+        <!-- Max ONNX inference chunks per signal burst.
+             Under CPU contention, the ring buffer can pile up many 1280-sample chunks.
+             Draining them all at once starves TTS. This cap limits how many chunks
+             are processed per signal, leaving the rest for the next tick.
+             Do not lower the cap: at 2 it broke wake-word detection without fixing TTS
+             starvation; PTT-default is the real contention fix, so 4 keeps detection
+             reliable when wake-word is opt-in.
+             Default: 4 (process up to 4 chunks then yield). Range: 1-8. -->
+        <WakeWordMaxChunksPerSignal>4</WakeWordMaxChunksPerSignal>
+
+        <!-- GPU device index for whisper-server (Vulkan). Empty = use default (device 0).
+             Set to the discrete GPU's index if an iGPU is detected first.
+             Check [whisper-server] log lines at boot to see available devices. -->
+        <WhisperGpuDevice></WhisperGpuDevice>
+    </STT>
+
+    <!-- ================================================================ -->
+    <!-- FormationRadial: the order wheel (multi-page radial; the 8-socket -->
+    <!-- formation page is one of its drill-downs). A menu feature, so it  -->
+    <!-- works with STT/TTS/LLM off. The key lives here, but an old        -->
+    <!-- <STT><FormationRadialKey> is still read as a fallback so a key    -->
+    <!-- set under <STT> is not lost.                                      -->
+    <!-- ================================================================ -->
+    <FormationRadial>
+        <!-- Key that opens the radial (a Unity KeyCode name). Every letter A-Z has a
+             vanilla default binding, so a letter key collides; Semicolon does not.
+             Free keys: Semicolon, Quote, Comma, Period, Slash, RightBracket, Backslash.
+             Empty value disables the radial. -->
+        <Key>Semicolon</Key>
+        <!-- Dwell in seconds: hover on a navigation socket (or the centre) this
+             long and it navigates (to that page / back to page 0). A faster transit
+             over a socket never flips the page. -->
+        <Dwell>0.4</Dwell>
+        <!-- Border tints (r,g,b,a). NavBorderColor rings the navigation sockets
+             (the ones carrying the chevron); CommandBorderColor rings the rest.
+             The command value matches the window XML default, so command sockets
+             look exactly as before unless set. -->
+        <NavBorderColor>80,180,255,255</NavBorderColor>
+        <CommandBorderColor>0,0,0,128</CommandBorderColor>
+    </FormationRadial>
+
+    <!-- ================================================================ -->
+    <!-- LLM: Local Language Model (llama-server)                         -->
+    <!-- ================================================================ -->
+    <LLM>
+        <Enabled>false</Enabled>
+        <Endpoint>http://127.0.0.1:5055/v1/chat/completions</Endpoint>
+        <ModelFilename></ModelFilename>
+        <!-- Name of the model. For an external API endpoint this is sent verbatim in
+             requests. For the local llama-server default, autodetect overrides it with
+             the .gguf found in Resources/ (no extension), so this value only shows up
+             in the log when no model file is present. -->
+        <Model>Qwen3-4B-Instruct-2507-Q4_K_M</Model>
+        <TimeoutSeconds>30</TimeoutSeconds>
+        <MaxTokens>200</MaxTokens>
+        <Temperature>0.8</Temperature>
+
+        <!-- NPC Personality Defaults -->
+        <SystemPrompt>You are a survivor in post-apocalyptic Arizona, about seven years after the outbreak. Stay fully in character: weary from years of survival, but still capable of hope, warmth, and dark humor. You have your own goals, fears, and opinions. React to what the survivor says and to anything you remember about them. Never break character or mention being an AI. Keep replies SHORT: one or two sentences, three at the very most. Your words are spoken aloud, not read, so a long answer makes the player wait. Do not use markdown, bullet lists or stage directions.</SystemPrompt>
+        <ContextMemory>5</ContextMemory>
+
+        <!-- Response Handling -->
+        <ShowTypingIndicator>true</ShowTypingIndicator>
+        <TypingDelayMs>75</TypingDelayMs>
+        <MaxResponseLength>300</MaxResponseLength>
+
+        <!-- Chat Inactivity Timeout (seconds) -->
+        <ChatTimeout>30</ChatTimeout>
+
+        <!-- Wild NPC combat chat cooldown (seconds) - uninterruptible after last target dies -->
+        <WildCombatChatCooldownSeconds>5</WildCombatChatCooldownSeconds>
+
+        <!-- KV Cache / Context Window Size
+             Sets the llama-server ctx-size argument (KV cache is allocated at startup).
+             Suggested range: 2048-32768.
+               2048 (~224 MB) >>> bare minimum, very limited conversation memory
+               4096 (~448 MB) >>> 6 GB VRAM cards; use with IQ4_NL model
+               8192 (~896 MB) >>> DEFAULT; recommended for 8 GB+ VRAM
+              16384 (~1.75 GB) >>> 12 GB+ cards (RTX 3080 / 4070 Ti class)
+              32768 (~3.5 GB) >>> 16 GB+ cards (RTX 3090 / 4090 class)
+             Values above 32768 waste VRAM with no gameplay benefit for NPC dialog. -->
+        <ContextSize>8192</ContextSize>
+    </LLM>
+
+    <!-- ================================================================ -->
+    <!-- RAG: Memory extraction from conversations                        -->
+    <!-- ================================================================ -->
+    <RAG>
+        <Enabled>false</Enabled>
+        <ExtractionPrompt>You are a game lore archivist. Analyze the transcript between the SURVIVOR (player) and an NPC. Write one fact per line using one of these two prefixes:
+
+[SURVIVOR] (a fact about the player, quoted from the transcript)
+[NPC] (a fact about the NPC, quoted from the transcript)
+
+The lines above show the FORMAT ONLY - they are placeholders, not real facts. Never copy them into
+your output. Only write facts that are explicitly stated in the transcript below.
+
+ONLY extract facts in these categories:
+1. Alliances and Roles (hired, bodyguard, companion, dismissed, freed)
+2. Relationship Changes (befriending, hostility, trust)
+3. Long-term Preferences (always use melee, never loot cars)
+4. Possessions and Assets (vehicles, weapons, base locations)
+5. Significant Locations (destinations, travel routes, places of interest)
+6. Threats and Dangers (enemy positions, hazards, warnings)
+7. Plans and Orders (stay here, guard base, meet at hospital)
+
+Extract each fact once, attributed to the correct subject exactly as stated in the transcript; never mirror a fact onto the other party.
+Do not extract greetings, questions, or trivial small talk.
+Do not extract routine movement or combat commands (follow, wait, stay, come here, guard) unless they represent a permanent standing order or a strategic decision with lasting significance.
+Never extract the player's own name or what they want to be called. It is captured separately.
+Quote facts literally from the transcript — do not interpret or infer actions not stated.
+If a prefix has no applicable fact, omit that line entirely — do not write NONE for it.
+If the entire transcript contains no extractable facts, write only: NONE</ExtractionPrompt>
+        <ExtractionUserPrefix>Here is the transcript to extract:\n\n</ExtractionUserPrefix>
+
+        <!-- Extraction tuning knobs (optional - defaults shown below) -->
+        <!-- Temperature: 0.0 = deterministic, higher = more creative (0.0-2.0) -->
+        <ExtractionTemperature>0.0</ExtractionTemperature>
+        <!-- MaxExtractedFacts: cap on facts per extraction to prevent LLM hallucination bloat (min 1) -->
+        <MaxExtractedFacts>10</MaxExtractedFacts>
+
+        <!-- MinFlushMessages: skip flush if buffer has fewer messages than this (prevents 2-message NONE flushes). -->
+        <!-- Flush still fires at the 20-message cap regardless. -->
+        <MinFlushMessages>4</MinFlushMessages>
+
+        <!-- ExtractionIdleSeconds: idle time before extraction fires (default 100s). -->
+        <!-- Higher = fewer extractions during active play, lower = faster memory capture. -->
+        <!-- Extraction runs to completion - conversation serializes behind it if player speaks mid-extraction. -->
+        <ExtractionIdleSeconds>100</ExtractionIdleSeconds>
+
+        <!-- EmbeddingEndpoint: dedicated embedding server (nomic-embed-text, CPU-only, port 5056) -->
+        <!-- Ships separately from the chat model - place nomic-embed-text-v1.5.Q8_0.gguf in Resources/Models/Embed/ -->
+        <!-- If the embed server fails to start, the mod falls back to the chat server on port 5055 -->
+        <EmbeddingEndpoint>http://127.0.0.1:5056/v1/embeddings</EmbeddingEndpoint>
+    </RAG>
+
+    <!-- ================================================================ -->
+    <!-- NPCToNPC: Ambient NPC-to-NPC idle chatter                        -->
+    <!-- ================================================================ -->
+    <NPCToNPC>
+        <Enabled>true</Enabled>
+        <Range>5</Range>
+        <ScanIntervalSeconds>30</ScanIntervalSeconds>
+        <Chance>0.25</Chance>
+        <MaxLinesPerNPC>2</MaxLinesPerNPC>
+        <GlobalCooldownMinutes>5</GlobalCooldownMinutes>
+        <PairCooldownMinutes>15</PairCooldownMinutes>
+    </NPCToNPC>
+
+    <!-- ================================================================ -->
+    <!-- Billing: Weekly hire billing (buff/cvar-driven)                  -->
+    <!-- GrowthRate: cost multiplier per week (1.2 = 20% increase).       -->
+    <!-- MaxWeeks: exponent cap so cost plateaus after this many weeks.   -->
+    <!-- GraceDays: days after missed payment before auto-dismiss.        -->
+    <!-- ApprovalTimeoutDays: days with no response before grace fallback. -->
+    <!-- ================================================================ -->
+    <Billing>
+        <GrowthRate>1.2</GrowthRate>
+        <MaxWeeks>12</MaxWeeks>
+        <GraceDays>2</GraceDays>
+        <ApprovalTimeoutDays>3</ApprovalTimeoutDays>
+    </Billing>
+
+    <!-- ================================================================ -->
+    <!-- FormationDistances: slot distances keyed by vcFormationDistance  -->
+    <!-- index. Add tiers later with no code change (just XML + phrase).  -->
+    <!--   1 = tight (~2m), 2 = wide (~5m). Defaults match shipped values. -->
+    <!-- ================================================================ -->
+    <!-- Personal-space floor for the follow servo (Phase 1 yield). -->
+    <!-- When leader closes within this distance, the NPC actively backs off. -->
+    <FollowMinSeparation>1.0</FollowMinSeparation>
+
+    <!-- Below this horizontal distance to its target, an NPC never hands movement to A* -->
+    <!-- (default 1.5m). Measured: most A* recovery runs were for moves under 1.5m, and some -->
+    <!-- under 0.1m - the NPC pathfinding to travel ten centimetres. Each entry counts -->
+    <!-- toward the teleport escalation, so that churn alone produced repeated teleports and -->
+    <!-- read in game as constant jumping. Being blocked half a metre from a formation slot -->
+    <!-- is crowding, not a pathing problem. -->
+    <!-- Does NOT apply to the airborne entry: a falling NPC always gets recovery. -->
+    <!-- Watch rsup= on [FOLLOW-DBG] for how often this is refusing an entry. -->
+    <RecoveryMinDist>1.5</RecoveryMinDist>
+
+    <!-- Trail following: beyond this distance from the leader, a plain-following NPC walks   -->
+    <!-- the player's breadcrumb trail instead of aiming at a computed point (default 4.0m).  -->
+    <!-- Inside it, normal follow behaviour resumes. Roughly "one flight of stairs away".     -->
+    <!-- Raise it if the NPC retraces your route when it could simply walk to you; lower it   -->
+    <!-- if it straight-lines into obstacles that the trail would have routed around.         -->
+    <!-- ⛔ MUST STAY COMFORTABLY ABOVE FollowMinSeparation (1.0). The personal-space yield -  -->
+    <!-- the anti-pushing mechanism - is skipped while on a trail target, which is only safe  -->
+    <!-- because trail following happens well outside the range where the yield fires.        -->
+    <!-- Watch [FOLLOW-TRAIL] in the log: crumbDist should fall toward 0.35 then jump as the  -->
+    <!-- NPC steps onto each crumb. No lines at all means it never engaged.                   -->
+    <!-- This value also feeds PathHandoverDist (the A*-first TRAVEL handover), derived at   -->
+    <!-- load, so the two handovers move together.                                          -->
+    <TrailHandoverDist>4.0</TrailHandoverDist>
+
+    <!-- A*-leads-follow switch. In plain follow, false (the shipping value):               -->
+    <!-- the A* travel leg paths to the station beside the leader, and the Station-only      -->
+    <!-- edge pull-in protects it. true: legacy behaviour, the travel leg chases a trail     -->
+    <!-- crumb. The close-range trail servo is unaffected by this key. Rollback is setting  -->
+    <!-- this to true; no rebuild needed.                                                    -->
+    <FollowUseTrail>false</FollowUseTrail>
+
+    <!-- Trail following vertical trigger (default 2.0m).                                  -->
+    <!-- When the NPC is this far above/below the leader, use breadcrumb trail targets      -->
+    <!-- even if horizontal distance is small. Catches switchback stairs where the NPC is   -->
+    <!-- a flight below the leader at almost zero horizontal offset.                        -->
+    <!-- Keep this below a full storey height so ordinary kerbs and slopes do not trigger.  -->
+    <TrailVerticalDist>2.0</TrailVerticalDist>
+
+    <!-- Catch up speed ceiling, as a MULTIPLE of the NPC's run speed (default 2.0).             -->
+    <!-- Applies ONLY beyond 8m from the leader (code constant CatchupCeilingDist; there is no   -->
+    <!-- 5m gate anywhere in the movement code), so close formation keeps its normal pace.       -->
+    <!-- It also saturates the A* path ramp, which reaches this value at 30m.                    -->
+    <!-- Speeds here are 7DTD speed units, NOT m/s: a commanded S units travels at about 5*S m/s  -->
+    <!-- (1.0 = the entity's MoveSpeedAggro). So 2.0 here is 2.0x run speed, roughly 10 m/s at    -->
+    <!-- the authored MoveSpeedAggro 1.0. Size changes against that conversion, not m/s.          -->
+    <!-- Raising this makes the walk animation skate; raise it until that becomes visible.       -->
+    <!-- Do NOT instead raise MoveSpeedAggro in entityclasses.xml. See the reverted note there.  -->
+    <FollowCatchupCeiling>2.0</FollowCatchupCeiling>
+
+    <!-- Near-range ceiling for the DIRECT SERVO, as a MULTIPLE of run speed (default 1.0). -->
+    <!-- Governs close range AND FORMATION SLOTS. 1.0 is what the leader actually walked, so -->
+    <!-- legacy follows at his pace; 1.25 read as a jog. Raising it makes NPCs visibly faster -->
+    <!-- in close formation, so raise it only if you mean it. A harness test guards the       -->
+    <!-- formation case.                                                                      -->
+    <FollowServoNearCeiling>1.0</FollowServoNearCeiling>
+
+    <!-- Near-range ceiling for the A* PATH band, below 8m.                                      -->
+    <!-- Beyond 8m the ceiling ramps to FollowCatchupCeiling by 30m. The ramp START is 1.6 while  -->
+    <!-- the leader RUNS (player sprint, the deliberate catch-up step) and THIS value while he    -->
+    <!-- stands, so the curve is continuous in the stationary case. Without this value the       -->
+    <!-- stationary ceiling would sit below the 1.6 ramp start and the NPC would lose ground      -->
+    <!-- from 3m out. Field-tuned: the repo carries the live value so a deploy PRESERVES it       -->
+    <!-- instead of overwriting it. NEVER 1.25: that re-breaks catch-up.                          -->
+    <FollowPathNearCeiling>1.4</FollowPathNearCeiling>
+
+    <!-- Rescue teleport: minimum distance from the leader a rescue may land (default 2.0m). -->
+    <!-- HARD FLOOR. Without it the rescue picked the crumb closest to the leader, which is the -->
+    <!-- one they dropped a moment ago - their own feet - so every rescue landed on the player -->
+    <!-- and shoved them. -->
+    <!-- Raise if NPCs still arrive too close; lower if they arrive uselessly far away. -->
+    <!-- Watch for branch=crumb-tooclose in the log: it means no crumb cleared this floor. -->
+    <RescueMinSeparation>2.0</RescueMinSeparation>
+
+    <!-- Vertical arrival threshold for leader-relative follow (default 3.0m). -->
+    <!-- An NPC this far above/below the leader still counts as "arrived" horizontally. -->
+    <!-- Measured: legitimate holds max 2.0m, strands start at 5.1m. -->
+    <FollowArriveY>3.0</FollowArriveY>
+
+    <!-- Vertical strand trigger: seconds of no |dy| improvement before rescue (default 6). -->
+    <!-- When an NPC is stranded above or below the leader (|dy| > FollowArriveY) and makes -->
+    <!-- no vertical progress for this many seconds, it is rescued via SafeTeleport. -->
+    <!-- 6s is conservative - a stair detour of 12m at walking speed takes ~6s. -->
+    <VerticalStrandSeconds>6</VerticalStrandSeconds>
+
+    <!-- Drop-ahead check: metres forward from the NPC to probe for ground (default 1.0). -->
+    <!-- Before each SetMoveTo, the NPC scans this far ahead along its direction of travel. -->
+    <!-- If no solid block is found within DropCheckDepth below the look-ahead point, the NPC -->
+    <!-- hands off to A* recovery instead of walking into the drop. -->
+    <DropCheckAhead>1.0</DropCheckAhead>
+
+    <!-- Drop-ahead check: the MAXIMUM DROP IN BLOCKS the NPC will ever CHOOSE to walk into (default 1). -->
+    <!-- A drop of this many blocks or fewer is a step: the NPC walks it and can step back up, -->
+    <!-- so it covers stairs and terrain. Anything deeper is a drop, and the NPC hands off to A* -->
+    <!-- recovery to route around the hole instead. -->
+    <!-- The rule is STRANDING, not damage: a 1-block step stays walkable, but                    -->
+    <!-- a drop of 2 or more blocks is never something the NPC picks on its own. Following the -->
+    <!-- leader down up to 5 blocks is covered separately by MaxFollowDrop. -->
+    <!-- NOTE: the code scans this value plus 2 blocks, because the first scanned block is -->
+    <!-- the NPC's own feet space and the second is the floor. Do not "fix" that. -->
+    <DropCheckDepth>1</DropCheckDepth>
+
+    <!-- Follow-drop allowance: when the LEADER just dropped (jumped, fell), the NPC may follow
+         down up to this many blocks, even though it would never choose that drop itself.
+         This is the ONLY exception to the "NPC should never drop" rule. Default 5 blocks
+         (a 5-block drop does not damage the NPC, so the follower can take it right after
+         the leader's drop). Uses a 2s high-water mark on the leader's Y:
+         a gradual descent (staircase, ladder) does NOT trigger this because the high-water mark
+         follows the leader down. Only a sudden drop creates a gap large enough to fire. The
+         grace window does not re-arm on the same descent.
+    -->
+    <MaxFollowDrop>5</MaxFollowDrop>
+
+    <!-- Follow-drop grace: how long the MaxFollowDrop allowance stays active after the leader's
+         descent is detected. Default 5 seconds. After this window the NPC reverts to DropCheckDepth.
+    -->
+    <LeaderDropGraceSeconds>5</LeaderDropGraceSeconds>
+
+    <!-- Hire-roster diagnostic: the server keeps a snapshot of each
+         player's hired NPCs (Hire_Roster_Snapshot.xml beside the mod DLL) and reconciles it
+         after player re-entry, so a restart that drops a hire is NAMED in the log as a
+         WARNING (visible with debug logging off) instead of vanishing silently.
+         Set to false to disable the whole tracker. -->
+    <HireRosterTracking>true</HireRosterTracking>
+
+    <!-- Trail hop budget: when the trail leads to a crumb the NPC cannot WALK to (a gap or a step),
+         it hops (short teleport) to that crumb if within these limits, instead of stranding. A crumb
+         is a spot the leader stood, so it is standable. Horiz ~2 blocks (a running player clears it);
+         up ~1.5 blocks (a jump). Beyond these, recovery/rescue takes over.
+         There is NO down-budget key: the down budget is derived from MaxFollowDrop at load
+         (the NPC must not HOP a fall it would refuse to WALK), so MaxFollowDrop is the knob -
+         raise or lower it and the hop down budget moves with it. An old <TrailHopMaxDrop> key in a
+         user config is silently ignored (the key was removed).
+    -->
+    <TrailHopMaxHoriz>2.5</TrailHopMaxHoriz>
+    <TrailHopMaxClimb>1.6</TrailHopMaxClimb>
+
+    <!-- A*-first travel: when the NPC is far from the leader, use A* pathfinding instead of
+         direct servo. The gap between handover and release provides hysteresis so the mode does
+         not oscillate at the boundary. PathFirstFollow=true enables this; set false to revert
+         to the old servo-first behaviour where A* engages only on failure.
+    -->
+    <PathFirstFollow>true</PathFirstFollow>
+
+    <!-- INERT KEY: the ordered climb task that consumed this flag (UAITaskJumpUpSDX) no longer
+         exists, and nothing in the tree reads the flag any more, so true and false behave
+         identically today. The follow loop's ladder climb hands A* one exact path
+         unconditionally. The loader still reads the key (default true); it is kept in case
+         the flag is wired back to a future ordered climb.
+    -->
+    <LadderOrderedUseAstar>true</LadderOrderedUseAstar>
+    <!-- Recorded-patrol normal leg. When true, the leg between waypoints is A* owned: the
+         task hands A* one exact path to the next waypoint and re-paths only when the waypoint
+         changes, never per tick. It uses the base game FindPath (the same call the follow loop's
+         FindPathExact makes) rather than SCoreUtils.FindPath, because that SCore route replaces
+         any destination within 5m by the NPC's own x/z and patrol waypoints are often closer
+         than 5m. Set false to restore the legacy direct SetMoveTo servo with engine next-point
+         corner blending.
+    -->
+    <PatrolAStarLeg>true</PatrolAStarLeg>
+    <!-- Recorded patrol diagnostics. When true, the patrol task emits [PATROL-DIAG] once per  -->
+    <!-- second, [PATROL-DIAG-T] every tick for 1.5 s after each A* leg change, and           -->
+    <!-- [PATROL-DIAG-PATH] once per leg with the route node list. Measure only, no movement  -->
+    <!-- change. A shipping diagnostic: default false; enable it for a patrol-routing field   -->
+    <!-- run.                                                                                  -->
+    <PatrolDiagLogging>false</PatrolDiagLogging>
+    <!-- Master switch for stair mode. Kept for an A/B; A* first owns stairs, so it ships OFF. -->
+    <!-- When false, stair mode never enters.                                                  -->
+    <StairModeEnabled>false</StairModeEnabled>
+    <!-- When true (the default) the FOLLOW A* path is asked with canBreak=true so A* may plan  -->
+    <!-- through breakable blocks (railed metal stairs have no open route; with canBreak the    -->
+    <!-- no-route failures disappear). Patrol stays no-break. Set false to return to           -->
+    <!-- open-routes-only, no rebuild.                                                         -->
+    <FollowPathCanBreak>true</FollowPathCanBreak>
+    <!-- PathHandoverDist has NO key: it is derived from TrailHandoverDist at load (the trail and
+         TRAVEL handovers are one decision with two mechanisms, and the TRAVEL trigger set
+         mirrors the trail's), so TrailHandoverDist is the knob. An old <PathHandoverDist>
+         key in a user config is silently ignored (the key was removed).
+    -->
+    <!-- A* engages at a 1 m height gap; the servo only parks within 2.5 m.                    -->
+    <PathReleaseDist>2.5</PathReleaseDist>
+    <PathVerticalDist>1.0</PathVerticalDist>
+    <PathVerticalRelease>1.0</PathVerticalRelease>
+
+    <!-- Chat-follow distance escape. While an NPC is in a
+         chat pause window, the follow action is suppressed while the leader is within this    -->
+    <!-- distance (do not walk off mid-sentence) and RELEASES beyond it: the NPC resumes       -->
+    <!-- following while still chatting instead of standing still until the 60 m buff rescue.  -->
+    <!-- HORIZONTAL distance to the leader (the quantity the follow servo acts on). The 6.0    -->
+    <!-- default is a GUESS, not a measurement: roughly beyond conversation distance, and      -->
+    <!-- outside the Chat action's own 1-4 m TargetDistance band so the two actions do not     -->
+    <!-- fight. Raise it if a chatting NPC should stay put longer; lower it to let him close   -->
+    <!-- the gap sooner. No rebuild needed to change it.                                       -->
+    <ChatFollowEscapeDist>6.0</ChatFollowEscapeDist>
+
+    <!-- Own breadcrumb trail: replaces the vanilla player ring as the NPC follow route source.
+         RingSize: crumbs retained (~60m of history at 1m spacing).
+         Spacing: metres between recorded crumbs.
+         SampleInterval: seconds between position samples.
+         RosterInterval: seconds between roster scans for leaders with following NPCs.
+         SnapEpsilon: hover below this is recorded as-is (no snap).
+         SnapMaxDrop: hover up to this is snapped down; beyond, skip the sample.
+         RecordMaxScan: blocks scanned downward for ground during recording.
+         MaxAgeSeconds: crumbs older than this are filtered at snapshot build.
+    -->
+    <TrailRingSize>64</TrailRingSize>
+    <TrailSpacing>1.0</TrailSpacing>
+    <TrailSampleInterval>0.1</TrailSampleInterval>
+    <TrailRosterInterval>2.0</TrailRosterInterval>
+    <TrailSnapEpsilon>0.2</TrailSnapEpsilon>
+    <TrailSnapMaxDrop>1.2</TrailSnapMaxDrop>
+    <TrailRecordMaxScan>3</TrailRecordMaxScan>
+    <TrailMaxAgeSeconds>180</TrailMaxAgeSeconds>
+
+    <!-- Wait at the lip for a "jump down" command. When the leader drops further below the NPC than
+         MaxFollowDrop, the NPC HOLDS at the edge instead of being teleported down after it, because
+         the player has a JumpDown voice command and expects to be the one who decides.
+         This value is only the SAFETY VALVE: after this many seconds the normal teleport backstops
+         re-arm, so a forgotten command cannot strand the NPC permanently.
+         Raise it for a longer wait; before this key, the rescue it replaced fired at
+         VerticalStrandSeconds.
+    -->
+    <JumpDownWaitSeconds>10</JumpDownWaitSeconds>
+
+    <!-- Teleport gate: refuse teleports that cannot help.
+         TeleportMinGain: a teleport moving the NPC less than this distance is a no-op; refuse it.
+         Prevents the "teleport to own position" loop when err=0.0 and slotDist=0.0.
+         (Older configs may still contain a TeleportMinLeaderDist key that refused
+         teleports within 8m of the leader; the loader ignores it. The gate is gone
+         because an NPC stuck against geometry must be unstuck regardless of how close
+         the player is.)
+    -->
+    <TeleportMinGain>1.5</TeleportMinGain>
+
+    <!-- Engage ladder: defensive contact radius, metres.                          -->
+    <!-- Defensive (stance 0, "cover us") also engages an enemy that has targeted    -->
+    <!-- nobody but is this close to the leader. There is deliberately no blanket    -->
+    <!-- distance: a far blanket made defensive behave like aggressive indoors.      -->
+    <!-- Leader and squad assist still -->
+    <!-- authorise at any distance; this only covers "it is literally on top of us".  -->
+    <!-- Hold fire (2) never uses this. No rebuild needed to change it.               -->
+    <EngageContactRadius>2.5</EngageContactRadius>
+
+    <!-- Near-enemy gate: metres around the NPC itself.                            -->
+    <!-- Defensive (stance 0) also engages an enemy within this distance of the NPC -->
+    <!-- itself, whatever the enemy targets - approach and attack instead of waiting -->
+    <!-- to be hit. Independent of EngageContactRadius (which is measured from the   -->
+    <!-- leader). Hold fire (2) never uses this; the disengage window still wins.    -->
+    <!-- No rebuild needed to change it.                                             -->
+    <EngageNearRadius>5</EngageNearRadius>
+
+    <!-- Disengage break-off window, seconds. The "disengage" order keeps             -->
+    <!-- the NPC defending against a LIVE enemy, but the moment the enemy is stunned,  -->
+    <!-- ragdolled or dead, the NPC walks away instead of finishing it. The window      -->
+    <!-- ends early once he is back with the leader. No rebuild needed to change it.    -->
+    <DisengageWindow>20</DisengageWindow>
+
+    <!-- Proximity-greeting facing cone, TOTAL degrees. The player                    -->
+    <!-- must be within 135 degrees either side of the NPC's facing, flattened horizontal, so  -->
+    <!-- only a roughly 90 degree arc DIRECTLY BEHIND the NPC is rejected.                     -->
+    <!-- ONLY gates the PROACTIVE greeting - the NPC starting a conversation unprompted.       -->
+    <!-- ⛔ It does NOT gate player-initiated chat or orders: an NPC facing away still hears    -->
+    <!-- you, answers, and obeys. There is no vision or facing gate anywhere on that path.     -->
+    <!-- Why wide: the rule being enforced is narrow - a player sneaking up BEHIND an NPC must  -->
+    <!-- not be announced. A companion walking beside or just ahead of you is routinely         -->
+    <!-- outside a narrow cone, and facing changes second to second while it pathfinds, so a    -->
+    <!-- tight cone flickers and silences normal greetings.                                    -->
+    <!-- The check is load-bearing, not redundant: our NPCs inherit MaxViewAngle 360, and both  -->
+    <!-- the base and SCore v4 CanSee skip their own view cone below 10 m - every greeting      -->
+    <!-- range. Watch [PROACTIVE] Skipped ... facing away to see how often it fires.           -->
+    <GreetFacingConeDeg>270</GreetFacingConeDeg>
+
+    <!-- Tactical mode default: if true, new hires start in tactical (command-only) mode. -->
+    <!-- The player can toggle with "go tactical" / "at ease" voice commands. -->
+    <DefaultTacticalMode>false</DefaultTacticalMode>
+
+    <FormationDistances>
+        <Tier index="1" distance="2" />
+        <Tier index="2" distance="5" />
+    </FormationDistances>
+
+    <!-- ================================================================ -->
+    <!-- DebugLogging: enable per-tick verbose diagnostics (default false) -->
+    <!-- When true, the mod emits [FOLLOW-DBG], [FOLLOW-HOLD], [VC-ARC]   -->
+    <!-- and other per-tick debug lines.                                   -->
+    <!-- FOR DEDICATED SERVERS ONLY, and COMMENTED OUT ON PURPOSE.          -->
+    <!--                                                                    -->
+    <!-- On a CLIENT the escape-menu toggle "Mod Debug Logging" already     -->
+    <!-- controls this, and it is the player's setting. While this key is    -->
+    <!-- present it OVERRIDES that checkbox at every startup, so it can     -->
+    <!-- silently turn logging off behind the player's back. Leave it       -->
+    <!-- commented out unless you are on a headless server, which has no     -->
+    <!-- menu and no other way in ("vcdebug" typed on a client sets that     -->
+    <!-- client's PlayerPrefs, never the server's).                         -->
+    <!--                                                                    -->
+    <!-- Uncomment and set true on the dedi to diagnose follow issues, then  -->
+    <!-- comment out again - this produces per-tick output.                  -->
+    <!-- ================================================================ -->
+    <!-- <DebugLogging>true</DebugLogging> -->
+
+</XNPCVoiceControl>
