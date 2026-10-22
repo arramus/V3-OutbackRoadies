@@ -1208,6 +1208,21 @@
 			<stack_type value="ignore"/>
 			<duration value="20"/>
 		</buff>
+		<buff name="buffSdcsLootMode" hidden="true"> <!--  The hired follow-and-loot mode setter for the dialog "Loot around here" row, which cannot call C#: the OnActivate makes the same two writes the C# setters do (SdcsLootMode 1, then the Follow order through the stock follow buff).  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="1"/>
+				<triggered_effect trigger="onSelfBuffStart" action="AddBuff" target="self" buff="buffOrderFollow"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsLootModeClear" hidden="true"> <!--  The mode clear for the dialog order rows (a dialog row that changes the order must end the mode, and a dialog action cannot call C#): the OnActivate writes SdcsLootMode back to 0. The C# order paths clear through the base SdcsLootMode helper instead of this buff.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="0"/>
+			</effect_group>
+		</buff>
 		<buff name="ActivityBuff"> 
 			<stack_type value="ignore"/>
 			<duration value="6"/>

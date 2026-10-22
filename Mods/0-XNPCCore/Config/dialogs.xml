@@ -653,6 +653,7 @@
 			<response id="FollowMe" text="SdcsNPC_FollowMe" ref_text="Follow me">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="AddBuffSDX, SCore" id="buffOrderFollow" value="Self" />
+				<action type="AddBuffSDX, SCore" id="buffSdcsLootModeClear" value="Self" />
 			</response>
 			<response id="ShowMe" text="SdcsNPC_ShowMe" ref_text="Show Me your inventory">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
@@ -983,38 +984,48 @@
 				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Weapon Classes" />
 			</response>
 
-			<!-- STUBS: deliberately inert, no action child at all, pending hookup.
-			     Dialog.SelectResponse runs actions only if any exist, so these render and
-			     gate exactly like the live ones but do nothing when clicked.
-			     Requirement lines are kept as-is from the source dialog so the menu
-			     gates the same way. The responses carry their stock actions except
-			     Loot (hidden by its HasTask LootBasic requirement) and SetCode (stays a stub). -->
+			<!-- STUBS: one stub remains. Dialog.SelectResponse runs actions only if any
+			     exist, so a stub renders and gates exactly like the live ones but does
+			     nothing when clicked. Requirement lines are kept as-is from the source
+			     dialog so the menu gates the same way. All responses now carry their
+			     stock actions except SetCode (stays a stub). The Loot row is live: its
+			     HasTask LootBasic gate is false for our class (the SDCS loot actions are
+			     named LootSdcs), so the row always shows to the leader and applies the
+			     hired follow-and-loot mode (the mode buff sets the SdcsLootMode cvar
+			     and the Follow order; every other order row applies the mode clear
+			     buff, since a dialog row cannot call C#). -->
 			<response id="Wander" text="SdcsNPC_Wander" ref_text="Patrol around here">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="AddBuffSDX, SCore" id="buffOrderWander" value="Self" />
+				<action type="AddBuffSDX, SCore" id="buffSdcsLootModeClear" value="Self" />
 			</response>
 			<response id="GuardHere" text="SdcsNPC_GuardHere" ref_text="Stay where I am standing">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<requirement type="HasTask, SCore" requirementtype="Hide" value="Stay" />
 				<action type="AddBuffSDX, SCore" id="buffOrderGuardHere" value="Self" />
+				<action type="AddBuffSDX, SCore" id="buffSdcsLootModeClear" value="Self" />
 			</response>
 			<response id="GuardReturnHere" text="SdcsNPC_GuardReturnHere" ref_text="Guard and return to where I am standing">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<requirement type="HasTask, SCore" requirementtype="Hide" value="Guard" />
 				<action type="AddBuffSDX, SCore" id="buffOrderGuard" value="Self" />
+				<action type="AddBuffSDX, SCore" id="buffSdcsLootModeClear" value="Self" />
 			</response>
 			<response id="StayHere" text="SdcsNPC_StayHere" ref_text="Stay where you are standing">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="AddBuffSDX, SCore" id="buffOrderStay" value="Self" />
+				<action type="AddBuffSDX, SCore" id="buffSdcsLootModeClear" value="Self" />
 			</response>
-			<response id="Loot" text="SdcsNPC_Loot" ref_text="Loot around here">
+			<response id="Loot" text="SdcsNPC_Loot" ref_text="Follow and loot">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<requirement type="HasTask, SCore" requirementtype="Hide" value="LootBasic" />
+				<action type="AddBuffSDX, SCore" id="buffSdcsLootMode" value="Self" />
 			</response>
 			<response id="Dismiss" text="SdcsNPC_Dismiss" ref_text="Dismiss">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="ExecuteCommandSDX, SCore" id="Dismiss" />
 				<action type="AddBuffSDX, SCore" id="buffOrderDismiss" value="Self" />
+				<action type="AddBuffSDX, SCore" id="buffSdcsLootModeClear" value="Self" />
 			</response>
 			<response id="Pickup" text="SdcsNPC_Pickup" ref_text="Pick Me up!">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
@@ -1134,11 +1145,12 @@
          at OUR hired loot action name instead (LootSdcs, the SdcsNpcLoot package in
          utilityai.xml, assigned to npcSdcsBase, so every SDCS survivor passes it; the
          Leader requirement keeps the row on hired survivors only). The response gets
-         the same AddBuffSDX order action the other dialogs' loot rows use. "Follow me"
-         (buffOrderFollow, same menu) is the way back out of the loot order. -->
+         the mode action: the same mode buff the base row carries (idempotent, stack
+         ignore), which sets the SdcsLootMode cvar and the Follow order. "Follow me"
+         (buffOrderFollow plus the mode clear, same menu) is the way back out. -->
     <set xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Loot']/requirement[@type='HasTask, SCore']/@value">LootSdcs</set>
     <append xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Loot']">
-        <action type="AddBuffSDX, SCore" id="buffOrderLoot" value="Self" />
+        <action type="AddBuffSDX, SCore" id="buffSdcsLootMode" value="Self" />
     </append>
 
     <append xpath="/dialogs/dialog[@id='SdcsNPC']">

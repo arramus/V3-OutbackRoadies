@@ -1,7 +1,82 @@
-# 1-XNPCVoiceControl - Changelog
+# NPCCore - Changelog
 
-Historical release notes, newest first. The release being shipped (3.3.03) keeps its notes
-in `ReadMeFirst.md`, next to this file.
+Release notes, newest first. The current release's notes are also in `ReadMeFirst.md` (What's New), next to this file.
+
+## What's New in 3.3.04
+
+Targets 7 Days to Die **3.3**. **Requires 0-SCore 3.3.28 or newer** - an older SCore will not do. Everyone on a server needs the same version,
+server included.
+
+### Spikes and traps (requested)
+- **Survivors respect your traps.** They avoid spikes, barbed wire and blade traps, keep a cell's distance from spikes where there is room,
+  slow to a walk next to them, and step off if they end up touching one. The first brush against a spike costs them 1 health, not a full hit.
+- They are no longer dragged to a crawl by spikes, wire, webs or water, and they will not path off a drop of more than 5 blocks.
+- Survivors are immune to ordinary land mines (as before); the one mine that ignores that, the Twitch candy tin mine, they now walk around.
+
+### Follow and loot
+- **A hired survivor loots while she follows you.** Order it from her menu ("Follow and loot"), from the order wheel (Actions > Loot) or by
+  voice ("follow and loot" or "loot around here"). She stays with you; when you stop, she searches the containers within about 15 m of you and comes back; when you
+  walk on, she follows. Any other order ends it, and so does a full pack.
+- **Loose loot first.** Ammo, medical, book, food, chem and liquor piles are taken before cupboards and boxes, and a pile she empties
+  disappears just like one you empty.
+- **She reaches like you do.** She opens a container from up to 4 m away, as a player can, so a counter or a corner no longer stops her
+  short. She still needs a clear line to it: no looting through walls or closed doors, and she skips locked boxes and player storage.
+- **She finishes the room.** A container she has started for is not abandoned when you take a few steps; she only gives it up if you walk
+  more than 20 m away. A container she just emptied is never picked again.
+- **No looting under a zombie's nose.** She will not loot with an enemy close, and a sleeper that spots her sends her back to you. Once the
+  zombie is dead she goes back to the room.
+- She remembers a container she could not reach and leaves it alone for a few minutes.
+
+### The order wheel
+- **Two pages:** Actions (Go there, Jump down, Loot) and Position (Close, Normal, Far, Point).
+- **Go there:** look at a spot, open the wheel and send her; your aim passes through your own hires. She holds the spot without spinning.
+- **Point:** she leads the way ahead of you, takes stairs, and opens the door in front of her.
+
+### Combat
+- **Melee hires stay close.** A hire with a melee weapon only runs at an enemy within 10 m of you; hires with guns are unchanged.
+
+### Custom characters
+- **Your own characters as NPCs.** The characters you make in the character creator can be spawned as survivors (the F6 entity spawner's
+  `npcSdcsCustomMale` / `npcSdcsCustomFemale`, or the console: `sdcscustom spawn <name>`), with their hair and eye colour kept.
+
+### Fixes
+- **No more crash** when looking at a hired survivor.
+- **Hits land on the body.** An invisible box around every survivor, NPC and pet caught shots and swings up to 30 cm away from the body
+  (blood in the air beside them). It is gone; `Config/Settings.xml` `<HitBoxFix>` turns the fix off if you ever need to.
+- **Stunned pets** no longer flood the log with an error every tick.
+- **NPCs that fall through the world** (usually on loading into a game before the ground under them is ready) are put back: this is
+  SCore 3.3.28's own rescue - thanks to SphereII.
+
+## What's New in 3.3.03
+
+Targets 7 Days to Die **3.3**. Built and tested against 0-SCore **3.3.7.933** - use that or newer. Everyone on a server needs the same version, server included.
+
+### Survivors live their own lives
+- **Unhired survivors loot.** A survivor you have not hired searches containers near where she roams: usable items go to her bag, goods to her trade stock,
+  at most one container a minute. She gives up on a house she cannot get into.
+- **Hired survivors loot on order** (the "Loot" row in their dialog), kneel at the container and put their weapon away while they search.
+- **Trade with a survivor** to buy what she has collected; your coins go into her bag.
+- **Sleepers.** Survivors also spawn asleep inside buildings and wake on sight and noise. An unhired survivor slips away from a house that wakes up around her.
+- **Defensive by default.** An unhired survivor fights only an enemy that hurt her, is right on top of her or is coming for her.
+- **About half as many survivors** spawn in the open world.
+
+### Hired survivors
+- **They stay and face you** while you talk, trade or open their inventory, with their weapon put away.
+- **They greet you as a companion**, never as a stranger, and again after a quiet spell.
+- **They draw the gun you gave them** when a save loads, instead of their starting gun.
+- **"I'm out of ammo."** A survivor tells you when her gun runs dry. Starting ammo and medical supplies go into her bag.
+- **Weapon attachments show** (scope, flashlight, silencer) on add-on weapon models too.
+
+### Movement
+- **Feet on the ground.** Survivors no longer stand sunk into the floor.
+- **No more foot slide.** The walk and run animation follows how fast a survivor really moves.
+- **One pace.** Wild and hired survivors walk at the same speed.
+
+### Dedicated servers
+- **Server-built lines are heard.** "What are you carrying?", "I'm out of ammo." and "My pack is full." now reach every player within earshot.
+
+### Source code
+- Both mods are now published under the MPL 2.0 licence: <https://github.com/XythQ/NPCCore>.
 
 ## What's New in 3.3.02
 

@@ -4774,6 +4774,8 @@
 			<property name="ChestExplosionDamageMultiplier" value="1"/>
 			<effect_group name="Base Effects">
 				<passive_effect name="HealthMax" operation="base_set" value="150"/>
+				<!-- Survivors are not slowed by spike, barbed wire, web or water tiles; the damage from them still applies. -->
+				<passive_effect name="MovementFactorMultiplier" operation="base_set" value="1"/>
 				<passive_effect name="ProjectileStickChance" operation="perc_set" value="0"/>
 				<passive_effect name="BuffResistance" operation="base_set" value="200" tags="buffInfectionCatch,buffFatiguedTrigger,buffArmSprainedCHTrigger,buffLegSprainedCHTrigger,buffLaceration,buffInfectionCatch,buffAbrasionCatch,buffInjuryStunned01CHTrigger,buffInjuryBleedingTwo,buffInjuryBleedingBarbedWire,buffInjuryConcussion,buffArmBroken,buffInjuryUnconscious,buffStayDownKO,buffRadiationCatch,buffRadiation03,buffRadiationNew,buffRadiationNew2,buffRadiationWeak,buffRadiationStrong,buffBurningEnvironment,buffBurningEnvironmentHack,buffInjuryBleeding,buffInjuryBleedingZombie,buffPlayerFallingDamage,buffLegBroken,buffArmSprained"/>
 				<passive_effect name="LandMineImmunity" operation="base_set" value="1"/>
@@ -4973,6 +4975,25 @@
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
 			</effect_group>
+		</entity_class>
+
+		<!-- Custom survivor, male. The F6 entry (UserSpawnType is inherited) for a
+		     player-made creator character: without picks written onto the spawned
+		     entity it behaves exactly like a normal T1 male survivor (same pool,
+		     armour, weapons, name list - all inherited). When the SdcsCustom cvar
+		     is set (the sdcscustom command writes it; the later spawn paths will),
+		     SdcsLookApplier builds the face from the pick cvars instead of rolling
+		     the pool, and skips the name roll (the name is the profile name, set
+		     by whoever wrote the picks). Intended F6 label: "Custom survivor (male)"; the
+		     F6 list shows the raw class name (3.3 has no display-name hook for
+		     entity classes). -->
+		<entity_class name="npcSdcsCustomMale" extends="npcSdcsSurvivorMaleT1">
+		</entity_class>
+
+		<!-- Custom survivor, female. Same as npcSdcsCustomMale on the female T1
+		     base (the class must match the profile sex: IsMale, the sound bank,
+		     the mass and the tags all come from the class). -->
+		<entity_class name="npcSdcsCustomFemale" extends="npcSdcsSurvivorFemaleT1">
 		</entity_class>
 
 		<entity_class name="npcSdcsMaleM60" extends="npcSdcsBase">

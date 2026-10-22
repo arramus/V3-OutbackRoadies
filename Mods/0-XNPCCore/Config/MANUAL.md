@@ -1,4 +1,4 @@
-# NPC Voice Control — XML Modder's Guide
+# NPCCore — XML Modder's Guide
 
 This guide is for people who want to customize NPC personalities, voice commands, and system settings without touching C# code. All customization happens in the `Config/` folder.
 
@@ -319,15 +319,16 @@ Hold the radial key (default **Semicolon**) to open the order wheel - a multi-pa
 
 | Page | Sockets |
 |------|---------|
-| **0 (root)** | `Follow`, `Stay`, `Guard`, `Jump down`, `Crouch` (toggle) commit directly; `Stance`, `Distance`, `Formation` open a drill-down page |
+| **0 (root)** | `Follow`, `Stay`, `Guard`, `Crouch` (toggle) commit directly; `Actions`, `Stance`, `Position`, `Formation` open a drill-down page. No drill-down page opens another one - every order is one or two clicks deep |
+| **Actions** | `Go there`, `Jump down`, `Loot` (starts **follow and loot**, exactly the voice "loot" command - see *Hired survivors: follow and loot* below). **Look first, then open the wheel:** `Go there` goes to the spot under your crosshair *when the wheel opened*, not where you aim when you pick it. Room for `Wander` / `Patrol` later |
 | **Stance** | `Aggressive` (1), `Defensive` (0), `Hold fire` (2), `Disengage` (3) - the four SetEngage args verbatim |
-| **Distance** | `Close` (1 m), `Normal` (2.5 m), `Far` (5 m) - the real metres are drawn in the icon slot |
+| **Position** | `Close` (1 m), `Normal` (2.5 m), `Far` (5 m) - the real metres are drawn in the icon slot - and `Point` (the voice "take point": the companion leads 2 m ahead of you) |
 | **Formation** | The 8 compass bearings, N at top and E to the right. Direction only: each NPC keeps its own distance |
 
 **Commit vs navigate.**
 - **Release the key** while hovering a commit socket - the order goes to the **targeted companion**.
 - **Click** while still holding the key - the order goes to the **whole squad** (every formation socket is squad-capable; a non-squad socket falls back to the target, so a click always does something).
-- **Navigation sockets** (the three drill-downs) never commit. They are marked with a small chevron and the navigation border tint. Open one by clicking it, or simply by **resting the cursor on it for the dwell** (0.4 s default) - a faster pass over it does nothing, so a transit can never flip the page by accident.
+- **Navigation sockets** (the drill-downs) never commit. They are marked with a small chevron and the navigation border tint. Open one by clicking it, or simply by **resting the cursor on it for the dwell** (0.4 s default) - a faster pass over it does nothing, so a transit can never flip the page by accident.
 - **Back out:** rest the cursor on the wheel's **centre** and it returns to page 0. Clicking or releasing over the centre does nothing.
 
 Every socket carries the exact router arg of the equivalent voice command, so the wheel and the voice path cannot disagree - except where they deliberately differ: the crouch toggle above, and the voice-only `stand up`.
@@ -597,6 +598,29 @@ The breadcrumb trail itself is recorded from your own movement (`TrailRingSize` 
 
 ---
 
+## Hired survivors: follow and loot
+
+A hired survivor can loot while she follows you. Start it from her dialog row **"Follow and loot"**, the order wheel (**Actions > Loot**) or by
+voice (**"follow and loot"**, **"loot around here"**, **"scavenge here"**). Her order stays **Follow**; looting is a mode on top of it.
+
+- **When she loots:** only while you stand still (about a second without moving). While you walk she just follows; a trip she has already
+  started is finished.
+- **What she looks at:** containers within **15 m** of you (and within 3 m up or down), in the building you are in. Loose piles first (ammo,
+  medical, books, food, chem, liquor), then the rest, nearest first. She takes everything: usable items to her bag (up to its caps), the rest to
+  her harvest window.
+- **What she skips:** containers already opened (by her or anyone), locked or padlocked ones, player storage, anything behind a closed door or a
+  wall, and anything another hired survivor has already claimed.
+- **Reach:** she opens a container from up to **4 m** (the player's own reach), measured from her eyes to the nearest part of the container,
+  and only with a clear line to it.
+- **Giving up:** a container she cannot get to is left alone for 5 minutes. A trip is dropped if you walk more than **20 m** from that
+  container. A container she has emptied is never picked again; an emptied loose pile disappears.
+- **Danger:** she does not loot with an enemy within 15 m. A sleeper that spots her sends her back to you (follow); once it is dead she can go
+  back to the room.
+- **Ending it:** any other order, dismissing her, or a full harvest window.
+- **Debug view:** with `VerboseLogging` on, a smoke marker rises over the container she is heading for. It is off in normal play.
+
+The scan, reach and range numbers are on the hired loot action in `Config/utilityai.xml` (`leaderRange="15"`, `leaderAbortRange="20"`).
+
 ## Survivor Settings — `0-XNPCCore/Config/Settings.xml`
 
 The survivor (SDCS) behaviour of the base mod is tuned in its own `Settings.xml`, not in `modconfig.xml`. Each value is read once at game start,
@@ -619,10 +643,23 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<PlayerCtrlDeathWeapon>` | `vanish` | For player-controller NPCs only: on death the held weapon `vanish`es, or `fall`s with the body. |
 | `<Progression>` | | Hired survivors level up: `<HealthPerLevel>` (0.03), `<DamagePerLevel>` (0.02), `<SpreadPerLevel>` (0.02, tighter aim per level), `<MaxLevel>` (10), `<HealthRegenPerSecond>` (0.2). |
 | `<Progression><KillXpWorkaround>` | `true` | Works around an SCore error on NPC kills that also costs the player the kill's XP; leave on. |
+| `<AwakeStealth>` | `true` | An awake zombie that is after a survivor sees her through the player's own stealth test: crouching, a held light and speed count, as they do for you. |
+| `<HitBoxFix>` | `true` | Keeps the oversized invisible box around survivors, NPCs and pets switched off, so hits land on the body. `false`: the game's behaviour (hits up to 30 cm off the body). |
+| `<SdcsArmorExcludeGroups>` | `groupPreacher` | Outfit groups (comma separated) never rolled for an NPC, e.g. coats whose cloth only animates on players. |
+| `<SdcsCustomCharacterChance>` | `0.1` | Chance that a new wild survivor is dressed as one of an online player's own creator characters of the same sex; `0` turns it off. |
+| `<NpcPathRules>` | `true` | Survivors plan their paths with the mod's own rules (the hazard and drop settings below). `false`: the game's own paths. |
+| `<NpcPathSpikeCost>` | `1000000` | Path cost of a spike / barbed wire / cactus cell: crossed only when there is no other way. |
+| `<NpcPathHazardMargin>` | `4000` | Extra path cost next to a hazard, so paths keep one cell off spikes where there is room. `0` disables it. |
+| `<NpcPathMaxDropBlocks>` | `5` | A path never drops more than this many blocks in one step. `0` disables the cap. |
+| `<NpcHazardWalkSpeed>` | `1.0` | Speed cap (m/s) while a hazard is right next to her feet. `0` disables it. |
+| `<NpcHazardStepOut>` | `true` | A survivor standing in contact with a hazard steps to the nearest safe spot. |
+| `<NpcHazardFirstTouchDamage>` | `1` | Damage of her first brush against a hazard; a second touch within 3 s deals normal damage. `-1` turns the rule off. |
 | `<VerboseLogging>`, `<JitterWindow>`, `<SdcsPitchPin>`, `<PlayerCtrlOwnController>` | | Diagnostics and engine switches; leave as shipped. |
 
 Set elsewhere: wild and hired survivors walk at the same pace (`MoveSpeed` 1.5 on `npcSdcsBase` in `Config/entityclasses.xml`); about half as many survivors spawn in the open world as in 3.3.02 (`Config/entitygroups.xml`), and an
-unhired survivor loots at most one container a minute (`Config/buffs.xml`, `SdcsLootWildCooldown`). Survivors ignore a zombie that is still
+unhired survivor loots at most one container a minute (`Config/buffs.xml`, `SdcsLootWildCooldown`), taking every item tagged `medical`,
+`ammo`, `food`, `drinks` or `csm` (skill magazines) plus anything worth 100 or more, and leaving the rest (the wild loot action in `Config/utilityai.xml`,
+`listedTags` and `minValue`). Survivors ignore a zombie that is still
 asleep, and an unhired survivor carries on with what she is doing until a zombie actually threatens her.
 
 ## Stories (Custom Dialog Pool)

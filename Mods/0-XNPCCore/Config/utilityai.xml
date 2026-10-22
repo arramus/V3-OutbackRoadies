@@ -1356,16 +1356,17 @@
 
 		</ai_package>
 
-		<!-- The SDCS loot package. A HIRED survivor on the Loot order (the leader only dialog row adds
-			buffOrderLoot, CurrentOrder 7) walks to an untouched loot container and, unlike
+		<!-- The SDCS loot package. A HIRED survivor in the follow-and-loot mode (the
+			leader-gated surfaces set the SdcsLootMode cvar; the order stays Follow) walks to
+			an untouched loot container and, unlike
 			SCore's V4 loot task, really OPENS it: the grid is rolled from the block's loot
 			list the way a player's first open does, then Touch plus SetModified, and every
 			non empty slot is routed. A usable stack (the medical tag, or ammo for a gun she
 			carries) goes to her private bag up to the caps; everything else goes to her
 			harvest window because takeAll is true; what fits nowhere stays in the container.
-			When the harvest window is full the task puts her back on Follow, sets the plain
-			cvar SdcsLootFull and, with the voice mod installed, says so through the
-			XNPCCore.Loot.SayFull bridge. The task class is in the base assembly (it owns the
+			When the harvest window is full the task clears the mode (the order is already
+			Follow), sets the plain cvar SdcsLootFull and, with the voice mod installed, says
+			so through the XNPCCore.Loot.SayFull bridge. The task class is in the base assembly (it owns the
 			bag, the ammo rules and the harvest window); the class attribute resolves to UAI.
 			UAITaskLootSdcs in NPCSdcsCharacters. Wild survivors (L3) reuse the SAME package
 			shape with takeAll false, listedTags and minValue: the remainder then goes to the
@@ -1390,29 +1391,56 @@
 			The leave action in SdcsNpcLeave below stays UNGATED on purpose: a real attack
 			(zombie has her as target) must still pull her away. -->
 		<ai_package name="SdcsNpcLoot">
-			<!--  The HIRED survivor on the Loot order takes ALL. The order
-			   cvar can only be set by the leader-gated dialog, so this action
-			   needs the Loot order and the wild one below does not: the two can
-			   never both score for one NPC (hired needs the order, wild needs no
-			   leader).  -->
-			<action name="LootSdcs" weight="2" entity_filter="IsSelf">
-				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="true"/>
-				<consideration class="HasOrderV4, SCore" order="Loot"/>
+			<!--  The HIRED survivor in the follow-and-loot mode takes ALL. The
+			   mode cvar can only be set by the leader-gated surfaces (the wheel,
+			   the voice phrase, the dialog row), so this action needs the mode
+			   and the wild one below does not: the two can never both score for
+			   one NPC (hired needs the mode, wild needs no leader). Weight 3:
+			   strictly above the follow action (2, the order stays Follow while
+			   the mode is on, so a container in range must take over from it)
+			   and below every combat action (4 and up).
+			   FOLLOW-AND-LOOT RANGE: leaderRange="15" rides on BOTH the task and
+			   the SdcsHasLootTarget consideration (the task cannot read the
+			   consideration's attributes; absent on the wild action = the old
+			   self-centred scan). The scan then anchors on the leader (null or
+			   dead leader = no candidates, only containers within 15 m of him).
+			   A STARTED run is held wider than a pick is allowed: the task's
+			   own leaderAbortRange="20" force-stops the run (stop reason
+			   leader-left; items already taken stay taken) only once the leader
+			   is beyond 20 m from her container, so an in-progress open
+			   survives the leader pacing past the 15 m scan edge. STILL-LEADER GATE: SdcsLeaderStill
+			   (between the chat gate and the enemy scan) scores 1 only while
+			   the leader has stayed within 1 m of an anchor for at least 1 s
+			   (turning on the spot does not count as moving), so while he
+			   walks no NEW pick starts. A loot walk or rummage already
+			   running is not stopped by the gate (leader-left ends that).
+			   UAI does not short-circuit considerations, so the scan below
+			   gates ITSELF (SdcsLootGate: mode on and (active run or leader
+			   still)); the position here only keeps the cheap reads ahead of
+			   the scans in the result. No ActivityCoolDown gate on this
+			   action: a cleared room is looted container after container, no
+			   20 s pause between opens (the wild action below keeps its own).  -->
+			<action name="LootSdcs" weight="3" entity_filter="IsSelf">
+				<!-- priorityLootLists (the task's pile rank): the loose-loot pile loot lists (verified against the game's loot.xml). A picked container whose loot list is in this CSV ranks ahead of the rest of the pick, distance order within each class; the pick's random spread stays inside the leading class when it has five or more. -->
+				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="true" leaderRange="15" leaderAbortRange="20" priorityLootLists="ammoPileSmall,ammoPileMed,ammoPileLarge,medicalPileSmall,medicalPileMedium,medicalPileLarge,bookPile,singleBooks,foodPileSmall,foodPileMed,foodPileLarge,chemPileSmall,chemPileMed,chemPileLarge,liquorPileSmall,liquorPileMed,liquorPileLarge"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="1"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsLeaderStill, NPCSdcsCharacters"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
-				<consideration class="SelfNotHasBuffV4, SCore" buffs="ActivityCoolDown"/>
-				<consideration class="SdcsHasLootTarget, NPCSdcsCharacters"/>
+				<consideration class="SdcsHasLootTarget, NPCSdcsCharacters" leaderRange="15"/>
 			</action>
 			<!--  The WILD survivor loots on her own. One container per
 			   60 s (the SdcsLootWildCooldown buff, added by the task after the
 			   open), only near where she roams (the task's own scan, last and
 			   therefore only paid for when every cheap gate says yes), never with
 			   an enemy within 15 m. She takes only usable items to the bag (up to
-			   the caps) and sale goods worth at least the threshold to the harvest
-			   window; everything else stays in the container for whoever comes
-			   next (takeAll=false, minValue=100, no listed tags).  -->
+			   the caps) and, to the harvest window, anything tagged medical, ammo,
+			   food, drinks or csm whatever its price, plus anything worth at least
+			   the threshold; everything else stays in the container for whoever
+			   comes next (takeAll=false, minValue=100,
+			   listedTags=medical,ammo,food,drinks,csm).  -->
 			<action name="LootSdcsWild" weight="1" entity_filter="IsSelf">
-				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="false" minValue="100" listedTags="" cooldownBuff="SdcsLootWildCooldown"/>
+				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="false" minValue="100" listedTags="medical,ammo,food,drinks,csm" cooldownBuff="SdcsLootWildCooldown" priorityLootLists="ammoPileSmall,ammoPileMed,ammoPileLarge,medicalPileSmall,medicalPileMedium,medicalPileLarge,bookPile,singleBooks,foodPileSmall,foodPileMed,foodPileLarge,chemPileSmall,chemPileMed,chemPileLarge,liquorPileSmall,liquorPileMed,liquorPileLarge"/>
 				<consideration class="SdcsUnhired, NPCSdcsCharacters"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SelfNotHasBuffV4, SCore" buffs="ActivityCoolDown"/>

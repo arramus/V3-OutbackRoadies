@@ -43,7 +43,7 @@
       GuardHere          - NPC guards where the player is standing (buffOrderGuardHere)
       GuardReturn        - NPC guards and returns to player's position (buffOrderGuard)
       Wander             - NPC patrols around the area (buffOrderWander)
-      Loot               - NPC loots around the area (buffOrderLoot)
+      Loot               - NPC loots around the area (follow-and-loot mode, SdcsLootMode cvar)
       Dismiss            - Dismiss the NPC (buffOrderDismiss + ExecuteCMD "Dismiss")
       Pickup             - Pick up the NPC (SCore PickUpNPC)
       Hire               - Open the hire dialog window (SCore OpenDialogSDX)
@@ -189,7 +189,7 @@
         </Trigger>
 
         <Trigger enabled="true">
-            <Phrase>loot around here;scavenge here;この辺りを略奪して;探検して;ra se tsu shi te;rasetsu shite;tanken shite;</Phrase>
+            <Phrase>follow and loot;ついてきて略奪して;loot around here;scavenge here;この辺りを略奪して;探検して;ra se tsu shi te;rasetsu shite;tanken shite;</Phrase>
             <Aliases>loot;scavenge;略奪;rasetsu;ra se tsu;探検;tanken;</Aliases>
                         <Response lang="en">I'll scavenge what I can find.;I'll look for supplies.;On it.</Response>
                         <Response lang="zh">找到什么就收什么。;去找物资。;好的。</Response>

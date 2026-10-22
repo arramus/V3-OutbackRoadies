@@ -77,6 +77,36 @@
          missing node on an old install warns once and keeps the default
          (true). Log tag: [SDCS-SLEEPER]. -->
     <SleeperTrigger>true</SleeperTrigger>
+    <!-- [SDCS-STEALTH] An awake EAI observer (a zombie that holds one of our
+         survivors as a target, e.g. after she has hit it) passes the survivor
+         through the PLAYER's own stealth test (crouch, held light, speed),
+         the way the game's EAITarget.check already does for a player. The
+         light is computed once per 0.5 s per survivor. While false the patch
+         returns at once and an awake observer keeps a survivor target exactly
+         as the vanilla non-player branch does. The EFFECTIVE value is read with
+         the same lazy, warn-once, ParseBool shape as the other keys here; a
+         missing node on an old install warns once and keeps the default (true).
+         Log tag: [SDCS-STEALTH]. -->
+    <AwakeStealth>true</AwakeStealth>
+    <!-- [SDCS-HITBOX] The oversized root hit box. The base game stores the
+         root BoxCollider on every entity (Entity.SetupBounds), disables it at
+         Awake for any entity with detailed head and body colliders, and
+         EntityTrader.OnUpdateLive re-enables it EVERY tick through the same
+         cached reference. Every SCore NPC (survivors, legacy NPCs, pets)
+         derives from EntityTrader and calls base.OnUpdateLive, so their root
+         box (measured 0.73x1.80x0.73 against a 0.70x1.80x0.37 body on the
+         field survivor) is live again every tick and fat by 12 to 30 cm:
+         hits land beside the body and the interact ray sees a box bigger
+         than the model. While true this mod disables the box once per NPC
+         (before the trader tick can run) and drops the cached reference,
+         the same move SCore already makes at death, so the trader tick has
+         nothing to re-enable. The interact prompt is unaffected: the body
+         part colliders it resolves through sit on layer 0, which is in the
+         interact ray's layer mask. The EFFECTIVE value is read with the same
+         lazy, warn-once, ParseBool shape as the other keys here; a missing
+         node on an old install warns once and keeps the default (true).
+         Log tag: [SDCS-HITBOX]. -->
+    <HitBoxFix>true</HitBoxFix>
     <!-- [SDCS-MEASURED] The local NPC's Locomotion-tree feed. While true, a LOCAL
          entity's Forward/Strafe floats are driven by the body's measured horizontal
          travel (a 0.2 s window projected on facing and right, smoothed with a
@@ -163,6 +193,30 @@
          1.0 so a centimetre/metres typo cannot float the rig. Takes effect
          for NPCs spawned after a restart. -->
     <SdcsModelYOffset>0.08</SdcsModelYOffset>
+    <!-- [SDCS-PATH] The NPC path rules: while true, the mod's own traversal provider replaces the game's for the SDCS survivors' paths. -->
+    <NpcPathRules>true</NpcPathRules>
+    <!-- [SDCS-PATH] The cost (A* penalty units) a hazard-marked node (spikes, barbed wire, cactus) costs on a survivor path: expensive, never forbidden, so a wall of spikes is crossed only when it is the only way. -->
+    <NpcPathSpikeCost>1000000</NpcPathSpikeCost>
+    <!-- [SDCS-PATH] The plan-time drop cap in blocks: a grid step that drops more than this many blocks is not routed (0 disables the cap). -->
+    <NpcPathMaxDropBlocks>5</NpcPathMaxDropBlocks>
+    <!-- [SDCS-PATH] Extra cost (A* penalty units) a clean node pays when one of its four linked grid neighbours is a hazard column, so the search keeps a one cell buffer off spikes where there is room (0 disables the margin). -->
+    <NpcPathHazardMargin>4000</NpcPathHazardMargin>
+    <!-- [SDCS-PATH] The move speed (m/s) an SDCS survivor is capped to while a contact damage block sits in her 3 x 3 feet neighbourhood (feet level and one below): the move helper cuts corners at speed, so this slows her where she can still clip a spike in short clusters. 0 disables the cap. -->
+    <NpcHazardWalkSpeed>1.0</NpcHazardWalkSpeed>
+    <!-- [SDCS-PATH] The standing step-out: when a NOT moving SDCS survivor's body box is in contact with a contact damage block (spikes that powered on under her, a spawn into spikes), she is walked to the nearest standable, contact free cell centre, re-issued every 0.25 s probe while she stays in contact. false disables the step-out entirely (the moving rules above are untouched). -->
+    <NpcHazardStepOut>true</NpcHazardStepOut>
+    <!-- [SDCS-PATH] The damage an SDCS survivor takes on a first touch of a contact damage block (spikes, barbed wire, cactus); a hit within 3 s of her previous contact hit is staying and deals normal damage. -1 turns the rule off. -->
+    <NpcHazardFirstTouchDamage>1</NpcHazardFirstTouchDamage>
+    <!-- [SDCS-CUSTOM] The chance that a newly spawned wild survivor is one of an online player's own creator characters of the same sex; 0 turns it off. A fresh spawn of a wild survivor class (one with a SdcsLookArchetypes pool and a Names list) rolls this once, deterministically from its entity id; on a take it is dressed as a random online character of the class's sex and keeps that look for good (a later hire keeps it, the look rides the NPC's own cvars). Clamped 0 to 1 by the loader. -->
+    <SdcsCustomCharacterChance>0.1</SdcsCustomCharacterChance>
+    <!-- [SDCS-LOOK] ArmorGroup names (comma separated) never rolled for an NPC:
+         outfits that render badly on one, e.g. cloth parts the engine only
+         simulates for players. Matching is case-insensitive; an empty node
+         excludes nothing. The value is latched once per process with the same
+         lazy, warn-once shape as the other keys; a missing node on an old
+         install keeps the default (no exclusions) with a one-time warning.
+         Log tag: [SDCS-LOOK]. -->
+    <SdcsArmorExcludeGroups>groupPreacher</SdcsArmorExcludeGroups>
     <Progression>
         <HealthPerLevel>0.03</HealthPerLevel>
         <DamagePerLevel>0.02</DamagePerLevel>

@@ -4,6 +4,6 @@
     <DisplayName value="0-XNPCCore" />
     <Description value="Spawns NPCs built on the game's modular character system, so they use archetypes, hair, armour and clothing sets the same way the player does - instead of a hand-authored rig per character. Coexists with existing NPC characters; replaces nothing." />
     <Author value="Dave Taylor" />
-    <Version value="3.3.03" />
+    <Version value="3.3.04" />
     <Website value="" />
 </xml>
