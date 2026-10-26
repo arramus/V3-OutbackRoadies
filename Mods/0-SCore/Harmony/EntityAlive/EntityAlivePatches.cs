@@ -58,6 +58,39 @@ namespace Harmony.EntityAlive
         }
 
         /// <summary>
+        /// Sleeper poses other than the standing idle (5) shrink physicsHeight to 0.85. On wake-up the
+        /// game sees a height under 1 and plays a "Crouch Walk 8" crossfade instead of the normal
+        /// sleeper trigger, which leaves NPC animators locked in place. Restore full height first so
+        /// SCore NPCs always use the normal wake-up.
+        ///
+        /// Vanilla has the same bug for any entity with CrouchType 0 (the Demolisher): the only code
+        /// that stands an entity back up, CrouchHeightFixedUpdate, returns early when crouchType is 0.
+        /// So a Demolisher woken from a lying/sitting pose crouch-walks forever with physicsHeight
+        /// stuck at 0.85, and EAIBreakBlock then skips blocks that only obstruct its head.
+        /// </summary>
+        [HarmonyPatch(typeof(global::EntityAlive))]
+        [HarmonyPatch(nameof(global::EntityAlive.ConditionalTriggerSleeperWakeUp))]
+        public class ConditionalTriggerSleeperWakeUp
+        {
+            public static void Prefix(global::EntityAlive __instance)
+            {
+                if (!(__instance is IEntityAliveSDX || __instance is EntityNPCBandit || __instance.crouchType == 0)) return;
+                if (!__instance.IsSleeping || __instance.IsDead()) return;
+                if (__instance.physicsHeight >= 1f || __instance.physicsBaseHeight < 1f) return;
+                if (__instance.IsWalkTypeACrawl()) return;
+
+                try
+                {
+                    __instance.SetHeight(__instance.physicsBaseHeight);
+                }
+                catch (Exception)
+                {
+                    // No character controller yet; fall back to the game's own wake-up.
+                }
+            }
+        }
+
+        /// <summary>
         /// Postfix for <see cref="global::EntityAlive.PostInit"/> that adds a read-only cvar
         /// containing the entity ID.
         /// </summary>
