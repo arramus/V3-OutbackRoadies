@@ -3937,6 +3937,20 @@
 			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
 		</item>
 
+		<!-- The douse's display item: the vanilla water jar mesh, no consume, no
+			     events. HoldType 3 (the vanilla jar's own hold type) so its use clip
+			     plays the drink motion, not the bandage prop motion. -->
+		<item name="sdcsDisplayWaterJar">
+			<property name="CreativeMode" value="None"/>
+			<property name="HoldType" value="3"/>
+			<property name="Meshfile" value="@:Other/Items/Food/masonJarWaterPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mglass"/>
+			<property name="Stacknumber" value="1"/>
+			<property name="EconomicValue" value="0"/>
+			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
+		</item>
+
 	</append>
 	
 	

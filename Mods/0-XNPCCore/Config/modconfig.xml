@@ -475,6 +475,20 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <!-- Do NOT instead raise MoveSpeedAggro in entityclasses.xml. See the reverted note there.  -->
     <FollowCatchupCeiling>2.0</FollowCatchupCeiling>
 
+    <!-- Player-tunable follow distances, in metres. A value outside its rule warns once at   -->
+    <!-- boot and keeps the default; the boot line [Config] follow distances shows the values  -->
+    <!-- in force.                                                                             -->
+    <!-- FollowDistanceDefault: how far behind you a hired survivor settles while following,   -->
+    <!--   unless "follow closer / further" set her own. 0.5 to 10. Default 2.5.               -->
+    <!-- CommandLeashDist: holding a "stay here" post, how far you may walk away before she    -->
+    <!--   leaves it and follows. Must sit ABOVE the hired chat maximum 40 (or she leaves while -->
+    <!--   you can still talk to her) and BELOW the SCore follow teleport 50. Default 45.      -->
+    <!-- CatchupStartDist: how far behind you before she steps up to catch-up speed; the      -->
+    <!--   speed ramp ends at 30. 1 up to 30. Default 8.                                       -->
+    <FollowDistanceDefault>2.5</FollowDistanceDefault>
+    <CommandLeashDist>45</CommandLeashDist>
+    <CatchupStartDist>8</CatchupStartDist>
+
     <!-- Near-range ceiling for the DIRECT SERVO, as a MULTIPLE of run speed (default 1.0). -->
     <!-- Governs close range AND FORMATION SLOTS. 1.0 is what the leader actually walked, so -->
     <!-- legacy follows at his pace; 1.25 read as a jog. Raising it makes NPCs visibly faster -->
@@ -676,6 +690,31 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <!-- No rebuild needed to change it.                                             -->
     <EngageNearRadius>5</EngageNearRadius>
 
+    <!-- Engage release line: metres around the NPC itself. A fight the NPC is ALREADY -->
+    <!-- engaging keeps its near-gate authorisation out to this distance instead of    -->
+    <!-- being re-argued at the engage boundary; a NEW enemy still needs                -->
+    <!-- EngageNearRadius. Must be >= EngageNearRadius: a smaller value warns once at  -->
+    <!-- load and runs at EngageNearRadius + 2. No rebuild needed to change it.        -->
+    <EngageReleaseRadius>7</EngageReleaseRadius>
+
+    <!-- Target stickiness: a hire keeps the enemy she is fighting instead of turning   -->
+    <!-- to whichever is nearest each time she moves between closing in and swinging. -->
+    <!-- Another enemy takes over only when it is this many metres closer to her than -->
+    <!-- her current one (or the current one dies or drops out of the fight). 0 = the -->
+    <!-- nearest always wins (the old behaviour). Clamped 0 to 20.                    -->
+    <TargetSwitchCloserMetres>2</TargetSwitchCloserMetres>
+
+    <!-- Seconds she remembers her current enemy through a short break (a step back, -->
+    <!-- an idle moment between swings). Clamped 0 to 30.                           -->
+    <TargetStickMemorySeconds>3</TargetStickMemorySeconds>
+
+    <!-- Combat linger, seconds. After the last engaged enemy dies or leaves, the hire -->
+    <!-- holds its ground this long before returning to follow (it stands in its idle  -->
+    <!-- action; a live enemy still gets fought, a new engage re-stamps it). An        -->
+    <!-- explicit player order releases it early. Clamped 0 to 30; 0 turns it off.     -->
+    <!-- No rebuild needed to change it.                                               -->
+    <CombatLingerSeconds>3</CombatLingerSeconds>
+
     <!-- Disengage break-off window, seconds. The "disengage" order keeps             -->
     <!-- the NPC defending against a LIVE enemy, but the moment the enemy is stunned,  -->
     <!-- ragdolled or dead, the NPC walks away instead of finishing it. The window      -->
@@ -696,6 +735,11 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <!-- the base and SCore v4 CanSee skip their own view cone below 10 m - every greeting      -->
     <!-- range. Watch [PROACTIVE] Skipped ... facing away to see how often it fires.           -->
     <GreetFacingConeDeg>270</GreetFacingConeDeg>
+
+    <!-- How close, in metres, before a survivor greets you UNPROMPTED: the town-noise knob.   -->
+    <!-- Must sit below the greet re-arm distance 20 (walk that far away and she may greet     -->
+    <!-- again). 1 up to 20. Default 10.                                                       -->
+    <ProactiveGreetRange>10</ProactiveGreetRange>
 
     <!-- Tactical mode default: if true, new hires start in tactical (command-only) mode. -->
     <!-- The player can toggle with "go tactical" / "at ease" voice commands. -->

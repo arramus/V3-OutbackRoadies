@@ -522,7 +522,7 @@
 				<passive_effect name="HealthMax" operation="perc_set" value="1"/>
 				<passive_effect name="StaminaMax" operation="base_set" value="2000"/>
 				<passive_effect name="PhysicalDamageResist" operation="base_set" value="10" />
-				<passive_effect name="BuffResistance" operation="base_set" value="200" tags= "buffInfectionCatch,buffFatiguedTrigger,buffArmSprainedCHTrigger,buffLegSprainedCHTrigger,buffLaceration,buffInfectionCatch,buffAbrasionCatch,buffInjuryStunned01CHTrigger,buffInjuryBleedingTwo,buffInjuryBleedingBarbedWire,buffInjuryConcussion,buffArmBroken,buffInjuryUnconscious,buffStayDownKO,buffRadiationCatch,buffRadiation03,buffRadiationNew,buffRadiationNew2,buffRadiationWeak,buffRadiationStrong,buffBurningEnvironment,buffBurningEnvironmentHack,buffInjuryBleeding,buffInjuryBleedingZombie,buffPlayerFallingDamage,buffLegBroken,buffArmSprained"/> 
+				<passive_effect name="BuffResistance" operation="base_set" value="200" tags= "buffInfectionCatch,buffFatiguedTrigger,buffArmSprainedCHTrigger,buffLegSprainedCHTrigger,buffLaceration,buffInfectionCatch,buffAbrasionCatch,buffInjuryStunned01CHTrigger,buffInjuryConcussion,buffArmBroken,buffInjuryUnconscious,buffStayDownKO,buffRadiationCatch,buffRadiation03,buffRadiationNew,buffRadiationNew2,buffRadiationWeak,buffRadiationStrong,buffBurningEnvironment,buffBurningEnvironmentHack,buffPlayerFallingDamage,buffLegBroken,buffArmSprained"/> 
 				<passive_effect name="LandMineImmunity" operation="base_set" value="1"/> <!--  SCore add  -->
 			</effect_group>	
 			
@@ -4675,7 +4675,15 @@
 			     It only scores on the SdcsLeavingArea buff the sleeper detection adds to a
 			     WILD survivor, so nothing changes until a wild one is detected in a
 			     grown sleeper volume. -->
-			<property name="AIPackages" value="NPCModCore, SdcsNpcRangedAdvanced, NPCModNPCHired, SdcsNpcLoot, SdcsNpcLeave"/>
+			<!-- SdcsNpcMedic: the heal-other package (walk to a patient, run the first-aid
+			     sequence). AID band weight 7, below the combat packages: the backup
+			     action in SdcsNpcRangedAdvanced sits in the defence band (8), so a
+			     target in her face keeps winning over a patient. It only scores through
+			     the shared SdcsPatientNeedsAid gate (a patient who needs aid, no
+			     defend-first block, a held item), so nothing changes until that gate
+			     passes. Placed after SdcsNpcRangedAdvanced in the list. -->
+			<!-- The first and third entries are the SDCS forks (SdcsNpcCore, SdcsNpcHired): copies of the shared NPCModCore / NPCModNPCHired packages banded for our characters, so the legacy templates keep the originals untouched. -->
+			<property name="AIPackages" value="SdcsNpcCore, SdcsNpcRangedAdvanced, SdcsNpcHired, SdcsNpcMedic, SdcsNpcLoot, SdcsNpcLeave"/>
 			<property name="Hirable" value="true"/>
 			<!-- RestoreSpeed and the UAI movement tasks read these.  THESE ARE NOW LITERAL METRES PER SECOND. -->
 			<property name="MoveSpeed" value="1.5"/>
@@ -4707,11 +4715,11 @@
 				<passive_effect name="WeaponHandling" operation="perc_add" value="0.5"/>
 			</effect_group>
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
-				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
 			<!-- Prefab is mandatory. Player is the stock value of the only SDCS class in the
 				game, and the SDCS model plus physics body are built separately from the prefab,
@@ -4777,9 +4785,12 @@
 				<!-- Survivors are not slowed by spike, barbed wire, web or water tiles; the damage from them still applies. -->
 				<passive_effect name="MovementFactorMultiplier" operation="base_set" value="1"/>
 				<passive_effect name="ProjectileStickChance" operation="perc_set" value="0"/>
-				<passive_effect name="BuffResistance" operation="base_set" value="200" tags="buffInfectionCatch,buffFatiguedTrigger,buffArmSprainedCHTrigger,buffLegSprainedCHTrigger,buffLaceration,buffInfectionCatch,buffAbrasionCatch,buffInjuryStunned01CHTrigger,buffInjuryBleedingTwo,buffInjuryBleedingBarbedWire,buffInjuryConcussion,buffArmBroken,buffInjuryUnconscious,buffStayDownKO,buffRadiationCatch,buffRadiation03,buffRadiationNew,buffRadiationNew2,buffRadiationWeak,buffRadiationStrong,buffBurningEnvironment,buffBurningEnvironmentHack,buffInjuryBleeding,buffInjuryBleedingZombie,buffPlayerFallingDamage,buffLegBroken,buffArmSprained"/>
+				<passive_effect name="BuffResistance" operation="base_set" value="200" tags="buffInfectionCatch,buffFatiguedTrigger,buffArmSprainedCHTrigger,buffLegSprainedCHTrigger,buffLaceration,buffInfectionCatch,buffAbrasionCatch,buffInjuryStunned01CHTrigger,buffInjuryConcussion,buffArmBroken,buffInjuryUnconscious,buffStayDownKO,buffRadiationCatch,buffRadiation03,buffRadiationNew,buffRadiationNew2,buffRadiationWeak,buffRadiationStrong,buffBurningEnvironment,buffBurningEnvironmentHack,buffPlayerFallingDamage,buffLegBroken,buffArmSprained"/>
 				<passive_effect name="LandMineImmunity" operation="base_set" value="1"/>
 				<passive_effect name="DismemberChance" operation="base_set" value=".05"/>
+				<!-- Harvest yield: the same base HarvestCount the player class has (wood, ore, crops). The game's yield math reads it from the entity class; without it a survivor's harvest gives nothing. Butchering starts at the player's base 0.5. -->
+				<passive_effect name="HarvestCount" operation="base_set" value="1" tags="allHarvest,oreWoodHarvest,cropHarvest,wildCropsHarvest"/>
+				<passive_effect name="HarvestCount" operation="base_set" value="0.5" tags="butcherHarvest"/>
 				<triggered_effect trigger="onSelfFirstSpawn" action="AddBuff" target="self" buff="buffEntitySpawnHeal"/>
 			</effect_group>
 			<!-- Do NOT key NPC HP off GameDifficulty or the legacy _difficulty groups. In 3.2 the sandbox
@@ -4837,11 +4848,11 @@
 			</effect_group>
 			<property name="Archetype" value="npcSdcsFemaleAK47"/>
 			<property name="BagItems" value="gunMGT1AK47,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
-				<property name="GameModeSurvival" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalSP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalMP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvival" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
 		</entity_class>
 
@@ -4866,11 +4877,11 @@
 				back in. -->
 			<property name="SdcsWeapons" value="meleeWpnClubT0WoodenClub,meleeWpnBladeT0BoneKnife,meleeWpnSpearT0StoneSpear,meleeWpnSledgeT0StoneSledgehammer,meleeWpnKnucklesT0LeatherKnuckles,meleeWpnBatonT0PipeBaton,meleeWpnBladeT1HuntingKnife,meleeWpnClubT1BaseballBat,meleeWpnSpearT1IronSpear,meleeWpnKnucklesT1IronKnuckles,meleeWpnSledgeT1IronSledgehammer,meleeToolAxeT1IronFireaxe"/>
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
-				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
 			<!-- Melee-only is a STATE, not a class shape. The dry gunHandgunT0PipePistol sits in the spawn kit
 				(BagItems + ItemsOnEnterGame) and never in SdcsWeapons: the held weapon always comes
@@ -4895,11 +4906,11 @@
 			<!-- Spawn kit only; the rolled weapon is seeded into the bag at first
 				spawn by SdcsLookApplier. See the block comment on npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
-				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
 			<property name="SdcsSpawnAmmo" value="false"/>
 			<effect_group name="SDCS Look">
@@ -4919,7 +4930,7 @@
 				declares no ItemsOnEnterGame of its own); see the block comment on
 				npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
 			</effect_group>
@@ -4937,7 +4948,7 @@
 				spawn by SdcsLookApplier. The kit is INHERITED from npcSdcsBase (this class declares
 				no ItemsOnEnterGame of its own); see the block comment on npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
 			</effect_group>
@@ -4954,7 +4965,7 @@
 				spawn by SdcsLookApplier. The kit is INHERITED from npcSdcsBase (this class declares
 				no ItemsOnEnterGame of its own); see the block comment on npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
 			</effect_group>
@@ -4971,7 +4982,7 @@
 				spawn by SdcsLookApplier. The kit is INHERITED from npcSdcsBase (this class declares
 				no ItemsOnEnterGame of its own); see the block comment on npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
 			</effect_group>
@@ -5006,11 +5017,11 @@
 			</effect_group>
 			<property name="Archetype" value="npcSdcsMaleM60"/>
 			<property name="BagItems" value="gunMGT3M60,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
-				<property name="GameModeSurvival" value="gunMGT3M60,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalSP" value="gunMGT3M60,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalMP" value="gunMGT3M60,ammo762mmBulletBall,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvival" value="gunMGT3M60,ammo762mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="gunMGT3M60,ammo762mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="gunMGT3M60,ammo762mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
 		</entity_class>
 
@@ -5024,11 +5035,11 @@
 			</effect_group>
 			<property name="Archetype" value="npcSdcsFemaleBow"/>
 			<property name="BagItems" value="gunBowT3CompoundBow,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammoArrowIron=40,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammoArrowIron=40,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
-				<property name="GameModeSurvival" value="gunBowT3CompoundBow,ammoArrowIron,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalSP" value="gunBowT3CompoundBow,ammoArrowIron,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalMP" value="gunBowT3CompoundBow,ammoArrowIron,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvival" value="gunBowT3CompoundBow,ammoArrowIron,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="gunBowT3CompoundBow,ammoArrowIron,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="gunBowT3CompoundBow,ammoArrowIron,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
 		</entity_class>
 
@@ -5042,11 +5053,11 @@
 			</effect_group>
 			<property name="Archetype" value="npcSdcsMaleXBow"/>
 			<property name="BagItems" value="gunBowT1IronCrossbow,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammoCrossbowBoltIron=40,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammoCrossbowBoltIron=40,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
-				<property name="GameModeSurvival" value="gunBowT1IronCrossbow,ammoCrossbowBoltIron,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalSP" value="gunBowT1IronCrossbow,ammoCrossbowBoltIron,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalMP" value="gunBowT1IronCrossbow,ammoCrossbowBoltIron,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvival" value="gunBowT1IronCrossbow,ammoCrossbowBoltIron,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="gunBowT1IronCrossbow,ammoCrossbowBoltIron,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="gunBowT1IronCrossbow,ammoCrossbowBoltIron,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
 		</entity_class>
 
@@ -5061,11 +5072,11 @@
 			</effect_group>
 			<property name="Archetype" value="npcSdcsXyth"/>
 			<property name="BagItems" value="gunMGT1AK47,meleeWpnBatonT2StunBaton"/>
-			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
-				<property name="GameModeSurvival" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton"/>
-				<property name="GameModeSurvivalSP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton"/>
-				<property name="GameModeSurvivalMP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton"/>
+				<property name="GameModeSurvival" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
 		</entity_class>
 
@@ -5137,11 +5148,11 @@
 			<!-- Spawn kit only; the rolled weapon is seeded into the bag at first
 				spawn by SdcsLookApplier (see the block comment on npcSdcsSurvivorFemaleT1). -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
-				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
+				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
 			<property name="SdcsSpawnAmmo" value="false"/>
 			<effect_group name="SDCS Look">
@@ -5154,7 +5165,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnClubT0WoodenClub"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnClubT0WoodenClub"/>
@@ -5183,7 +5194,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnClubT1BaseballBat"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnClubT1BaseballBat"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnClubT1BaseballBat"/>
@@ -5195,7 +5206,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnSledgeT0StoneSledgehammer"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnSledgeT0StoneSledgehammer"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnSledgeT0StoneSledgehammer"/>
@@ -5207,7 +5218,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnBladeT0BoneKnife"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnBladeT0BoneKnife"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnBladeT0BoneKnife"/>
@@ -5219,7 +5230,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnBladeT3Machete"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnBladeT3Machete"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnBladeT3Machete"/>
@@ -5231,7 +5242,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnSpearT0StoneSpear"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnSpearT0StoneSpear"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnSpearT0StoneSpear"/>
@@ -5243,7 +5254,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnBatonT0PipeBaton"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnBatonT0PipeBaton"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnBatonT0PipeBaton"/>
@@ -5255,7 +5266,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnBatonT2StunBaton"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnBatonT2StunBaton"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnBatonT2StunBaton"/>
@@ -5267,7 +5278,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnKnucklesT0LeatherKnuckles"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnKnucklesT0LeatherKnuckles"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnKnucklesT0LeatherKnuckles"/>
@@ -5279,7 +5290,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnKnucklesT1IronKnuckles"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnKnucklesT1IronKnuckles"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnKnucklesT1IronKnuckles"/>
@@ -5291,7 +5302,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="meleeWpnKnucklesT3SteelKnuckles"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnKnucklesT3SteelKnuckles"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnKnucklesT3SteelKnuckles"/>
@@ -5308,7 +5319,7 @@
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<!-- gunHandgunT1Pistol Magazine_items: game items.xml:5881 ammo9mmBulletBall -->
 			<property name="BagItems" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
 				<property name="GameModeSurvivalSP" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
@@ -5322,7 +5333,7 @@
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<!-- gunRifleT0PipeRifle Magazine_items: game items.xml:6998 ammo762mmBulletBall -->
 			<property name="BagItems" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
 				<property name="GameModeSurvivalSP" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
@@ -5340,7 +5351,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="gunBowT3OakDiscCannon,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammoOakDisc=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammoOakDisc=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunBowT3OakDiscCannon,meleeWpnClubT0WoodenClub"/>
 				<property name="GameModeSurvivalSP" value="gunBowT3OakDiscCannon,meleeWpnClubT0WoodenClub"/>
@@ -5353,7 +5364,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?Baker_X"/>
 			<property name="Names" value="Bob,Billy,Beau,Ben,Brody,Byron,Brian,Bruce"/>
 			<property name="BagItems" value="gunBowT3CompoundCrossbow,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammoCrossbowBoltStone=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammoCrossbowBoltStone=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunBowT3CompoundCrossbow,meleeWpnClubT0WoodenClub"/>
 				<property name="GameModeSurvivalSP" value="gunBowT3CompoundCrossbow,meleeWpnClubT0WoodenClub"/>
@@ -5372,7 +5383,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?NurseNancy_X"/>
 			<property name="Names" value="Nancy,Nan,Nanny,Nanna,Ratchet,Nightingale"/>
 			<property name="BagItems" value="meleeWpnClubT1BaseballBat"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="meleeWpnClubT1BaseballBat"/>
 				<property name="GameModeSurvivalSP" value="meleeWpnClubT1BaseballBat"/>
@@ -5400,7 +5411,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?NurseNancy_X"/>
 			<property name="Names" value="Nancy,Nan,Nanny,Nanna,Ratchet,Nightingale"/>
 			<property name="BagItems" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
 				<property name="GameModeSurvivalSP" value="gunHandgunT1Pistol,meleeWpnClubT0WoodenClub"/>
@@ -5428,7 +5439,7 @@
 			<property name="Mesh" value="#@modfolder:Resources/XythNPCs.unity3d?NurseNancy_X"/>
 			<property name="Names" value="Nancy,Nan,Nanny,Nanna,Ratchet,Nightingale"/>
 			<property name="BagItems" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=2"/>
+			<property name="HarvestItems" value="ammo762mmBulletBall=60,medicalFirstAidBandage=5"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>
 				<property name="GameModeSurvivalSP" value="gunRifleT0PipeRifle,meleeWpnClubT0WoodenClub"/>

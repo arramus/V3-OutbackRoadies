@@ -2,6 +2,145 @@
 
 Release notes, newest first. The current release's notes are also in `ReadMeFirst.md` (What's New), next to this file.
 
+## What's New in 3.4.01
+
+Targets 7 Days to Die **3.4** with **0-SCore 3.4**, like 3.4.00. Everyone on a server needs the same version, server included.
+
+### Humanoid characters ride as gunners
+- **Mod-pack characters hold their gun in a vehicle.** Any Humanoid character (the Mixamo-format rigs mod packs use) now holds its weapon
+  properly in a vehicle seat instead of the plain sitting pose, and turns to aim like the built-in survivors.
+- **For pack authors:** `sdcspose captureall human` captures the hold poses on any Humanoid character in one run; one set serves every
+  Humanoid rig. The shipped set lives in `Config/SeatPoses/Humanoid/`.
+
+### Character authors: choose what text a character shows
+- New `<Subtitles>` in a character's `personalities.xml` entry: `all` shows every line (replies, chat, order acknowledgements, clip
+  captions), `clip` shows only a voice clip's own caption and never the generic reply text, `none` shows no text for that character.
+- Unset, a clips character (`VoiceMode` clips, such as Harley) uses `clip`, so her recorded lines are no longer paired with generic
+  order text that does not match them; set `all` for the old behaviour. Every other character keeps `all`.
+
+### New settings: how survivors follow you, loot, work, keep your base, deal with sleepers and ride
+- `Settings.xml` `<Follow>`: how close she walks beside you (`PaceNearDistMetres` 8), when she runs to catch up (`PaceFarDistMetres` 10)
+  and her walking speed near you (`PaceNearWalkSpeedMps` 2).
+- `modconfig.xml`: her default follow distance (`FollowDistanceDefault` 2.5), how far you may walk from a "stay here" post before she
+  follows (`CommandLeashDist` 45), when she steps up to catch-up speed (`CatchupStartDist` 8), and how close before a survivor greets
+  you unprompted (`ProactiveGreetRange` 10).
+- `Settings.xml` `<Loot>`: how much medical (`BagMaxMedical` 5) and how many ammo stacks per gun (`BagMaxAmmoStacks` 2) she keeps
+  in her own bag before the rest goes to your window, how far above or below you she loots (`VerticalReachMetres` 3, one storey), and
+  the distance beyond which she teleports back after "loot around here" (`ReturnTeleportMetres` 40).
+- `Settings.xml` `<WorkSite>`: how many layers of an ore vein she mines (`MineVeinDepthLayers` 2), how long she swings at one tree,
+  rock or corpse (`SwingBudgetSeconds` 60) and how long she walks to one (`WalkBudgetSeconds` 15) before moving on.
+- `Settings.xml` `<BaseKeeper>`: how often the base keeper rescans for new damage (`RescanSeconds` 30), how big an area she finishes
+  before moving on (`AreaRadiusMetres` 8), how fresh a hit must be for combat repair to chase it (`UnderAttackSeconds` 5) and how far a
+  chest that is not broadcast may sit from her post (`ChestReachMetres` 15).
+- `Settings.xml` `<Sleeper>`: how close a sleeping zombie must be to see one of your survivors (`SightRangeMetres` 16), how far a wild
+  survivor runs past a house that woke on her (`LeaveBeyondMetres` 30) and how long she stays out of it (`HouseAvoidSeconds` 300).
+- `Settings.xml` `<Vehicle>`: the seated gunner's range cap (`GunnerMaxRangeMetres` 40), how long she keeps her gun out after the last
+  enemy (`GunnerIdleHolsterSeconds` 5) and how far from the vehicle a hire walks over to get in (`BoardRangeMetres` 30).
+- Every default is the old fixed value, so nothing changes until you edit one. A value that would break a linked distance (for example
+  a leash beyond the 50 m follow teleport) is refused with a warning in the log, and the default stays.
+
+### Fixes
+- A seated gunner fires within her gun's own effective range (a pistol about 17 m, a magnum 27 m, rifles up to the 40 m cap)
+  instead of firing every gun out to 40 m.
+- Survivors no longer fall through the ground and come back badly hurt when you load a save; a survivor who was riding with you
+  when you logged off now stands beside the vehicle, not inside or under it.
+- No more red "Attachments not found" error when a survivor holding a scoped weapon puts out a fire or bandages herself.
+- A wild survivor no longer stays crouched after looting.
+- A survivor's pack window is titled "Backpack" (in every language) instead of `traderNPC`.
+- A survivor whose weapon comes out mid-chat (you pick one from her menu, a roll, a bandage) puts it away again a few seconds later,
+  instead of holding it for the rest of the chat.
+- A medic whose own heal cannot act yet (waiting, or no item that fits) now treats the party instead of standing by.
+- The Korean "stop being the medic" reply reads correctly.
+- German "follow me" subtitles show the follow replies again (they always read "Schon erledigt."); the Spanish "weapons free" reply
+  reads "Entro en combate.".
+- A clips character (such as Harley) answers wheel and squad orders with her own clips instead of a text voice.
+- Harley's voice clips show their captions (they sat in a file the game never loaded), and her laugh has one now.
+- Harley and the other older characters cannot do jobs (loot, pick, chop, mine, dig, butcher, repair, keep the base, be the medic). A
+  job order now gets "I don't know how to do that." (Harley answers with a clip) and she keeps following, instead of taking the order
+  and standing guard at the spot. One still carrying a job from an older save drops it when the save loads, so she fights again
+  instead of holding back to the old job spot.
+- A hire keeps fighting the zombie she is on instead of flipping between two of them every time she closes in or swings: another
+  one takes over only when it is 2 m closer to her, or when hers dies or drops out of the fight. New `modconfig.xml` settings:
+  `TargetSwitchCloserMetres` (2; 0 = the nearest always wins, as before) and `TargetStickMemorySeconds` (3, how long she
+  remembers her zombie through a step back or a pause between swings).
+- A survivor's short status lines ("Base remembered.", "My pack is full.", "I need an axe for that." and the rest) now show their
+  subtitles in your game language. They are still spoken in English, like every other line.
+- A survivor who rode with you no longer ends up under the vehicle when you get out: the follow trail stops while you drive and
+  starts fresh where you step out, so she can no longer hop back to a spot inside the vehicle.
+
+## What's New in 3.4.00
+
+Targets 7 Days to Die **3.4**. **Requires 0-SCore 3.4 or newer** - an older SCore will not do. Everyone on a server needs the same version,
+server included.
+
+### The designated medic
+- **Be the medic.** Say "be the medic" or use the wheel toggle to appoint one survivor as your medic - one at a time; "stop being the
+  medic" releases her. As medic she looks after the whole party, not just you.
+- **Bleeding first, then the right item.** She stops a bleed before anything else, and heals with the item that fits the job - a cloth
+  bandage, a medicated bandage, a first aid kit, or pain pills - spending that item and getting its own heal.
+- **Aids you in a fight on her own.** A hired survivor treats a leader who drops low in a fight (and after, if he stays hurt): she walks
+  to him first, never while an enemy is on her, and says "Applying first aid." when she starts.
+- Survivors bleed in a fight again (legacy NPCs too), now that bandaging works - which is what all of the above treats.
+- The role and the treatment choices are tunable in `Config/Settings.xml` (`<Medic>`).
+
+### Steadier in a fight
+- **She keeps her nerve.** A hire engages an enemy inside about 5 m, keeps fighting the one she is already on until it is beyond 7 m, and
+  after the last kill she holds her spot for 3 seconds before resuming the follow - a bursty fight no longer turns her around halfway.
+  Any order ends the wait at once. `Config/modconfig.xml` has `EngageReleaseRadius` and `CombatLingerSeconds` if you want them different.
+- **No trap damage on your hires.** With 0-SCore 3.4 a hired survivor takes no damage from traps.
+
+### The base keeper
+- **"Remember the base."** Say it (or pick it on the wheel) and she takes a snapshot of the base; it then learns your own building and
+  removals, while zombie, collapse, gun and explosion damage stays marked as holes. The snapshot loads with the world and saves with it.
+- **Rebuild what is destroyed.** A base keeper walks to each destroyed block - lowest first - and puts the original block back at its
+  full material cost, paid from the base chests and her pack. "Combat repair" fills fresh holes first; "base repair" works the damaged
+  blocks first. Two or more keepers split the base between them, and a fresh hit in combat still draws everyone.
+- A block's neighbours are re-checked a second after it falls, so a wall that goes down in a line is rebuilt as a line; destroyed traps
+  and workstations are not left stuck in the hole list.
+
+### Field jobs
+- **The harvest list grows:** chop wood around here, mine stone and every ore, dig clay, pick wild plants and ripe crops, and butcher
+  animals. "Butcher around here" sends a hire to the fresh corpses near you, and a following hire will also finish a fresh corpse within
+  about 10 m of you on her own.
+- **Loot around here.** A hire loots the area you stand in (the place, or 15 m), guards it on a Guard order, then comes back.
+- **Tools wear for real:** the wear sticks, a broken tool is not used, she moves to her next one, and every survivor's kit now carries a
+  stone axe, a stone shovel, a bone knife and 5 bandages.
+- **She works harder as she levels:** harvest jobs pay +10% per level above 1.
+- **The order wheel matches the voice:** a root Orders page (crouch, stand up, scout, guard and return, record / run / cancel patrol)
+  and a Stance Weapons page (guns, rifles, shotguns, machine guns, melee, blades, empty hands); the jobs live on Harvest and Mine
+  pages. The talk menu is cut to essentials, and the patrol rows fold into one entry.
+- **Every voice command answers in all 12 languages** - the stance, formation, distance, crouch, patrol, jump and go-there replies that
+  used to be English only are translated now.
+
+### In the vehicle
+- **She rides with you.** "Get in" / "get out", or she boards when you start driving - and you can see her in the seat. Ranged riders
+  take the back seats, melee riders the front passenger seat.
+- **Car gunner.** A seated ranged hire fires her own gun at what her stance allows (about 40 m, a 90 degree arc of the vehicle), holds a
+  shot that would pass through an ally, reloads that can never stick, and her upper body twists toward her target; in defensive stance
+  she answers anything coming for you or her squad.
+- Getting out no longer sends her sliding off the vehicle, and a pillion gunner shoots past the driver's shoulders.
+
+### Fire
+- **A burning survivor puts herself out.** She rolls clear of the fire first, then drinks from a water jar (every survivor carries two);
+  a heal waits until the fire is out.
+
+### Fixes
+- **The medic walk crash** - the medic no longer crashes when she walks to a patient.
+- **npcSdcsXyth's eyes** - her eye colour was spelled a way the game does not ship; she now has the blue colour the game does.
+- A repair hammer is never remembered as a survivor's weapon - she fights with her real weapon and the hammer comes back for the repair.
+- After a restart she keeps the weapon you last gave or chose (when she still has it and the gun is loaded).
+- She holds her weapon away for a few seconds after a chat window closes, and draws at once if a fight starts.
+- Harvest and mine field fixes: small trees and shrubs count, a one-swing shrub pays its wood, she walks up close before swinging and
+  aims into dug holes, and a leftover target no longer steers the swing.
+- A seated gunner aims at a live target only - no more aiming at a dead target's head.
+- Both debug switches (verbose logging) ship off.
+
+### Under the hood
+- Survivor decisions are grouped into priority bands (safety, defence, aid, engage, jobs, orders, ambient), with tests that hold every
+  weight in its band - the base for steadier calls in a fight.
+- A performance probe (`sdcsperf`, off by default) times each survivor's decision updates.
+- The new `Config/Settings.xml` `<Combat>` block carries the fight-back radius and the close-melee distances at today's values.
+
 ## What's New in 3.3.04
 
 Targets 7 Days to Die **3.3**. **Requires 0-SCore 3.3.28 or newer** - an older SCore will not do. Everyone on a server needs the same version,

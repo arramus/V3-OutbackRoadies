@@ -76,6 +76,94 @@
 		</action>
 			</ai_package>
 
+			<!-- SDCS fork of NPCModCore: every survivor we develop (npcSdcsBase and the
+			     player-controller classes that inherit it) runs this copy, banded per
+			     weight band, so the original stays untouched for the legacy templates.
+			     Stay and Guard move to the orders band weight 3 and gain the NoActiveChat
+			     gate: at weight 3 they would beat Chat (2) while a player talks to her and
+			     she would stop turning to talk; the gate keeps today's outcome. -->
+			<ai_package name="SdcsNpcCore" >  <!-- SDCS characters only: the banded fork of the shared core package  -->
+				<!-- Weight .5, off the band's whole numbers on purpose: the idle
+				     floor must stay below every other action, and the band's own
+				     minimum is 0.5. -->
+				<!-- band: AMBIENT -->
+				<action name="DefaultAction" weight=".5" entity_filter="IsSelf">
+					<task class="IdleSDX, SCore" />
+				</action>
+				<!-- band: AMBIENT -->
+				<action name="Wander" weight="1" entity_filter="IsSelf">
+					<task class="WanderSDX, SCore"/>
+					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="30" />
+                    <consideration class="NotHasOrder, SCore" order="Stay"/>
+                    <consideration class="NotHasOrder, SCore" order="Follow"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+				</action>
+				<!-- band: AMBIENT -->
+				<action name="Chat" weight="2" entity_filter="IsPlayer">
+					<task class="IdleSDX, SCore" OnStartAddBuffs="RandomIdle" OnStopRemoveBuffs="RandomIdle" />
+					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="10" />
+					<consideration class="TargetDistance" flip_x="true" min="1" max="4" curve="threshold" />
+				<consideration class="HasActiveChat, 1-XNPCVoiceControl" />
+				</action>
+				<!-- Weight 3 (the orders band) plus the NoActiveChat gate:
+				     without the gate, at 3 she would hold the point and stop turning to
+				     talk while a player is within the chat distance; today weight 2 ties
+				     Chat (2) and the package order lets her talk. The gate keeps that. -->
+				<!-- band: ORDERS -->
+				<action name="Stay" weight="3" entity_filter="IsSelf">
+                    <task class="Guard, SCore"  />
+                    <consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" />
+                    <consideration class="HasOrder, SCore" order="Stay"/>
+					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+                </action>
+				<!-- Weight 3 (the orders band) plus the NoActiveChat gate:
+				     same reason as Stay above - at 3 an unguarded Guard would beat Chat
+				     (2) and she would stop turning to talk mid-conversation. -->
+				<!-- band: ORDERS -->
+				<action name="Guard" weight="3" entity_filter="IsSelf">
+					<task class="Guard, SCore" />
+					<consideration class="HasOrder, SCore" order="Guard" />
+					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+				</action>
+				<!-- FLEE DISABLED. The action below is commented out in all four NPCModCore
+				variants pending a proper trigger, which will be an entity and/or
+				personality property rather than this cvar.
+				WHY: it gated on SelfHasCVar $Timid=1, and $Timid has NO WRITER ANYWHERE:
+				the framework's own writer is commented out upstream, so the gate can
+				never score, and commenting the action out is BEHAVIOUR NEUTRAL.
+				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
+				within 15 m", and weight 6 outranks MeleeAttack (5) and ties RangedMeleeAttack
+				(6). Ungated, a hired NPC would flee from essentially every fight. The gate is
+				an opt-in personality flag doing its job; what is missing is any way to set it.
+				-->
+				<!--
+				<action name="Flee" weight="6" entity_filter="IsEnemy">
+					<task class="FleeFromTarget" max_distance="30"/>
+					<consideration class="SelfHasCVar, SCore" cvar="$Timid" value="1"/>
+					<consideration class="TargetDistance" min="0" max="15" curve="threshold"/>
+					<consideration class="SelfVisible"/>
+				</action>
+				-->
+				<!-- Weight 10: an explicit jump order must beat the fight (the highest
+				     ENGAGE weight is 6, and the DEFENCE backup actions sit below this),
+				     so she drops over the edge even mid-combat. -->
+				<!-- band: DEFENCE -->
+				<action name="JumpDownOrder" weight="10" entity_filter="IsSelf">
+					<task class="JumpDownSDX, 1-XNPCVoiceControl" OnStopAddBuffs="XVC_JumpCooldown" />
+					<consideration class="SelfHasCVar, SCore" cvar="$XVC_PendingCommand" value="2"/>
+					<consideration class="SelfNotHasBuff, SCore" buffs="XVC_JumpCooldown"/>
+				</action>
+				<!-- Weight 12, the top of the file: while the forced roll or bandage
+				     plays, no other action may fight the playback's move order. With the
+				     cvar absent (the common case) the single consideration scores 0 and
+				     the action is inert. -->
+				<!-- band: SAFETY -->
+				<action name="SdcsAnimBusy" weight="12" entity_filter="IsSelf">
+					<task class="SdcsAnimBusy, 1-XNPCVoiceControl"/>
+					<consideration class="SelfHasCVar, SCore" cvar="SdcsAnimBusy" value="1"/>
+				</action>
+			</ai_package>
+
 			<ai_package name="NPCModCoreNoChat" ><!-- Standard package for non-Hirable characters  -->
 				<action name="DefaultAction" weight=".5" entity_filter="IsSelf">
 					<task class="IdleSDX, SCore" />
@@ -148,6 +236,57 @@
 					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
 				</action>
 				<action name="Patrol" weight="2" >
+					<task class="PatrolRecorded, 1-XNPCVoiceControl"/>
+					<consideration class="HasOrder, SCore" order="Patrol"/>
+					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+				</action>
+			</ai_package>
+
+			<!-- SDCS fork of NPCModNPCHired: the hired standing orders, banded. The
+			     orders move to weight 3; TooClose sits at 3.5, off the band's whole
+			     number on purpose (reason in its marker line): a job at weight 4 must
+			     also keep beating it, and an order that must beat the other orders
+			     needs room above the band's 3. -->
+			<ai_package name="SdcsNpcHired" entity_filter="IsLeader" >
+				<!-- Weight 3.5, off the band's whole number on purpose: it must
+				     still beat Guard (she backs off a leader in her face while
+				     guarding, as before) and a job at weight 4 must keep beating
+				     it (the hire at work stays working when the leader stands next
+				     to her). 3.5 keeps all three: above the orders at 3, below the
+				     jobs at 4. -->
+				<!-- band: ORDERS -->
+                <action name="TooClose" weight="3.5">
+                    <task class="BackupFromTargetSDX, SCore" max_distance="2.5"/>
+				    <consideration class="NotHasOrder, SCore" order="Stay"/>         <!-- Fail fast if ordered -->
+				    <consideration class="NotHasOrder, SCore" order="Follow"/>
+				    <consideration class="TargetDistance" flip_x="true" min="0" max="2" />
+				    <consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="20" />     <!-- Expensive, last -->
+                </action>
+
+				<!-- The unified follow task: servos to vcFollowMin with
+				     dead-band hysteresis; the task owns distance internally, the action
+				     always wins on Follow order. The CombatLinger consideration scores 0
+				     for the configured seconds after the last ENGAGE authorisation, so the
+				     hire holds the fight site (the SdcsNpcCore idle wins at 0.5) instead of
+				     turning back to the leader after every kill of a bursty fight; an
+				     explicit order releases it early (the command router clears the stamp).
+				     SDCS hired package only: the legacy NPCMod packages never get it. -->
+				<!-- band: AMBIENT -->
+				<action name="DynamicFollow" weight="2">
+					<task class="DynamicFollow, 1-XNPCVoiceControl"/>
+					<consideration class="HasOrder, SCore" order="Follow"/>
+					<consideration class="CanFollowNow, 1-XNPCVoiceControl" />
+					<consideration class="NoActiveChatOrLeaderFar, 1-XNPCVoiceControl" />
+					<consideration class="CombatLinger, 1-XNPCVoiceControl" />
+				</action>
+				<!-- band: ORDERS -->
+				<action name="PatrolRecord" weight="3" >
+					<task class="FollowSDX, SCore" max_distance="50"/>
+					<consideration class="HasOrder, SCore" order="SetPatrolPoint"/>
+					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+				</action>
+				<!-- band: ORDERS -->
+				<action name="Patrol" weight="3" >
 					<task class="PatrolRecorded, 1-XNPCVoiceControl"/>
 					<consideration class="HasOrder, SCore" order="Patrol"/>
 					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
@@ -1258,7 +1397,11 @@
 
 			<!-- The ranged attack. Index 0 is FIRE on a player ranged weapon. On a melee weapon
 				this action is silenced by the class 0 gate below, and the MeleeAttack pair does
-				the job instead. -->
+				the job instead. Gate-exclusive pair: this action and MeleeAttack below are
+				class-exclusive (this requires a non-class-0 weapon, that one requires class 0),
+				and with the same weapon only one of the range gates can score, so exactly one
+				attack action can run at a time. -->
+			<!-- band: ENGAGE -->
 			<action name="RangedMeleeAttack" weight="6">
 				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
@@ -1280,10 +1423,10 @@
 				<consideration class="CanSeeTarget, SCore"/>
 			</action>
 
-			<!-- KEEP A SHOOTING DISTANCE. Weight 7 beats the attack's 6, so inside 4 m this action
-				wins and
-				the NPC backs off instead of firing; beyond 4 m the threshold band scores nothing
-				and the attack resumes. The task is our own BackupFromTargetPaced, not SCore's
+			<!-- KEEP A SHOOTING DISTANCE. Weight 8 beats the attack's 6, so inside 4 m this
+				action wins and the NPC backs off instead of firing; beyond 4 m the threshold
+				band scores nothing and the attack resumes. The task is our own
+				BackupFromTargetPaced, not SCore's
 				BackupFromTargetSDX: it draws up to six away-points and takes the first within 25
 				degrees of straight back (the stock task allowed 80, which reads as a half-circle
 				loop), and it commands the pace at the source: pace 1 is the class run speed (5.5
@@ -1291,10 +1434,11 @@
 				the controller clamp. When UAI switches the action, the task's Stop cancels the
 				in-flight path, so the retreat never survives a swap to melee. Same task and
 				settings as BackupRanged below, which still owns the wider 1 to 10 m comfort band
-				at weight 3 (it is also what carries the NPC back while SdcsReloading silences the
+				at weight 5 (it is also what carries the NPC back while SdcsReloading silences the
 				attack). If the enemy gets on top of us anyway, the close-range C# rule swaps the
 				gun for melee; see [SDCS-CLOSEMELEE]. -->
-			<action name="BackupKeepDistance" weight="7">
+			<!-- band: DEFENCE -->
+			<action name="BackupKeepDistance" weight="8">
 				<task class="BackupFromTargetPaced, 1-XNPCVoiceControl" max_distance="10" pace="1" max_speed="2.4" spread="25" tries="6"/>
 				<consideration class="NotHasOrder, SCore" order="Stay"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
@@ -1309,8 +1453,13 @@
 				Zoom, which declares no Range and therefore falls back to about 1.5 m. That makes
 				it a close range trigger rather than the weapon's real 40 m reach, which is
 				exactly what is wanted here: back off only when something is on top of us.
-				max_distance 10 is how far it backs off to, taken from the VC package. -->
-			<action name="BackupRanged" weight="3">
+				max_distance 10 is how far it backs off to, taken from the VC package.
+				Gate-exclusive pair with MeleeApproach below: the class gates are inverted
+				(this requires a non-class-0 weapon, that one requires class 0), so exactly one
+				approach action can score at a time, and each is the range-outside half of its
+				own weapon's pair (the range-inside half is the attack action). -->
+			<!-- band: ENGAGE -->
+			<action name="BackupRanged" weight="5">
 				<!-- The pace parameters: pace 1 (the class run speed) capped at max_speed 2.4
 					commands the fast walk at the source, so no clamp is needed to kill the 6 m/s
 					sprint; spread 25 with tries 6 picks a near-straight away-point instead of an 80
@@ -1335,8 +1484,12 @@
 			<!-- MELEE HALF. Modelled on the base game's default melee actions, without the
 				full control mode gates (a buff this mod never applies). Both are gated on class 0
 				so the ranged pair above is silent while a melee weapon or bare hands is held, and
-				vice versa: exactly one pair can score at a time. -->
-			<action name="MeleeApproach" weight="4">
+				vice versa: exactly one pair can score at a time. Weight 5 with the
+				MeleeApproach: the gate-exclusive approach pair (class 0 vs not, outside
+				weapon range vs inside, the attack half), so no weight offset is needed
+				between them. -->
+			<!-- band: ENGAGE -->
+			<action name="MeleeApproach" weight="5">
 				<task class="MoveToAttackTargetSDX, SCore" run="true" />
 				<consideration class="NotHasOrder, SCore" order="Stay"/>
 				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
@@ -1345,6 +1498,7 @@
 				<consideration class="CanSeeTarget, SCore"/>
 				<consideration class="NotInWeaponRange, SCore" action_index="0" />
 			</action>
+			<!-- band: ENGAGE -->
 			<action name="MeleeAttack" weight="5">
 				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
 				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
@@ -1395,10 +1549,12 @@
 			   mode cvar can only be set by the leader-gated surfaces (the wheel,
 			   the voice phrase, the dialog row), so this action needs the mode
 			   and the wild one below does not: the two can never both score for
-			   one NPC (hired needs the mode, wild needs no leader). Weight 3:
-			   strictly above the follow action (2, the order stays Follow while
-			   the mode is on, so a container in range must take over from it)
-			   and below every combat action (4 and up).
+			   one NPC (hired needs the mode, wild needs no leader). Weight 4, the
+			   jobs band: strictly above the follow action (2, the order stays
+			   Follow while the mode is on, so a container in range must take
+			   over from it), above the post's Guard order (3, which every job at
+			   a post also sets: the job is the primary, the order is the fallback
+			   when the job has no target) and below every combat action (5 and up).
 			   FOLLOW-AND-LOOT RANGE: leaderRange="15" rides on BOTH the task and
 			   the SdcsHasLootTarget consideration (the task cannot read the
 			   consideration's attributes; absent on the wild action = the old
@@ -1420,7 +1576,8 @@
 			   the scans in the result. No ActivityCoolDown gate on this
 			   action: a cleared room is looted container after container, no
 			   20 s pause between opens (the wild action below keeps its own).  -->
-			<action name="LootSdcs" weight="3" entity_filter="IsSelf">
+			<!-- band: JOBS -->
+			<action name="LootSdcs" weight="4" entity_filter="IsSelf">
 				<!-- priorityLootLists (the task's pile rank): the loose-loot pile loot lists (verified against the game's loot.xml). A picked container whose loot list is in this CSV ranks ahead of the rest of the pick, distance order within each class; the pick's random spread stays inside the leading class when it has five or more. -->
 				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="true" leaderRange="15" leaderAbortRange="20" priorityLootLists="ammoPileSmall,ammoPileMed,ammoPileLarge,medicalPileSmall,medicalPileMedium,medicalPileLarge,bookPile,singleBooks,foodPileSmall,foodPileMed,foodPileLarge,chemPileSmall,chemPileMed,chemPileLarge,liquorPileSmall,liquorPileMed,liquorPileLarge"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="1"/>
@@ -1428,6 +1585,175 @@
 				<consideration class="SdcsLeaderStill, NPCSdcsCharacters"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
 				<consideration class="SdcsHasLootTarget, NPCSdcsCharacters" leaderRange="15"/>
+			</action>
+			<!--  AUTO BUTCHER (automatic, rulings 2, 4, 5): a plain follower (no
+			   job running) butchers ONE fresh corpse within 10 m of HER while her
+			   leader is within 15 m of her and still (ruling 4); once started she
+			   FINISHES that corpse and only then catches up (ruling 5): the task
+			   holds the ActivityBuff while it swings so the still gate keeps
+			   scoring, and it carries no leader-range abort. One corpse per run:
+			   the task latches when the run ends and the latch releases only while
+			   SdcsLeaderNear scores 0 (the leader out of the 15 m band, the
+			   catch-up). No mode-cvar gate element: the stock SelfHasCVarV4 scores
+			   0 for an UNSET cvar, and a plain follower's SdcsLootMode is never
+			   set, so the mode-off gate lives in the SdcsHasButcherTarget
+			   around="self" consideration instead (it scores 0 unless the mode
+			   cvar is unset or 0 and a leader is present). Weight 4 like the other
+			   loot-package jobs: above Follow (2), above the orders (3 to 3.5),
+			   below every combat action. -->
+			<!-- band: JOBS -->
+			<action name="ButcherSdcsAuto" weight="4" entity_filter="IsSelf">
+				<task class="ButcherSdcs, NPCSdcsCharacters" auto="true"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsLeaderStill, NPCSdcsCharacters"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
+				<consideration class="SdcsLeaderNear, NPCSdcsCharacters" distance="15"/>
+				<consideration class="SdcsHasButcherTarget, NPCSdcsCharacters" around="self" range="10"/>
+			</action>
+			<!--  LOOT AROUND HERE (loot-here, SdcsLootMode 2): the same task and
+			   scan with a FIXED area. The setter buff (buffSdcsLootHere, base
+			   buffs.xml) puts her on the Guard order (9) with her guard post at
+			   the leader's block centre: the post is the area's centre
+			   (anchor="pin") and is saved with her. Area: the POI box when the
+			   post is inside one, else 15 m and one storey around it. Between
+			   containers the guard task holds her at the post (the guard order, 3,
+			   sits below this job, 4: it is the fallback for when the job finds
+			   no target) and she fights at it (combat outranks the job). No
+			   leader-still gate (the area does
+			   not move) and no leader-left abort. When a fresh scan finds nothing
+			   left, or her pack fills, she says one line, goes back on Follow and
+			   is teleported to the leader beyond 40 m.  -->
+			<!-- band: JOBS -->
+			<action name="LootSdcsHere" weight="4" entity_filter="IsSelf">
+				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="true" leaderRange="15" anchor="pin" priorityLootLists="ammoPileSmall,ammoPileMed,ammoPileLarge,medicalPileSmall,medicalPileMedium,medicalPileLarge,bookPile,singleBooks,foodPileSmall,foodPileMed,foodPileLarge,chemPileSmall,chemPileMed,chemPileLarge,liquorPileSmall,liquorPileMed,liquorPileLarge"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="2"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
+				<consideration class="SdcsHasLootTarget, NPCSdcsCharacters" leaderRange="15" anchor="pin"/>
+			</action>
+			<!--  CHOP WOOD AROUND HERE (harvest-here, SdcsLootMode 3): the pinned
+			   shape of loot-here (Guard 9 at a post at the leader's block, set by
+			   buffSdcsHarvestHere) with the harvest task. Targets: grown trees,
+			   wild or planted, within 20 m of the post (HarvestRules). She needs
+			   an axe (or a chainsaw) on her: equipped to chop, her weapon given
+			   back after. She swings with the game's own melee action; the wood
+			   goes to her trade window; no trees left, no axe or a full window =
+			   one line, Follow, teleport beyond 40 m.  -->
+			<!-- band: JOBS -->
+			<action name="HarvestSdcsHere" weight="4" entity_filter="IsSelf">
+				<task class="HarvestSdcs, NPCSdcsCharacters"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="3"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
+				<consideration class="SdcsHasHarvestTarget, NPCSdcsCharacters"/>
+			</action>
+			<!--  MINE STONE AROUND HERE (mine-here, SdcsLootMode 4): the same
+				   pinned shape with the harvest task in its stone kind
+				   (kind="stone" on the task AND the consideration - one action
+				   per kind keeps each consideration's shared scan state its
+				   own). Targets within 20 m of the post: the boulders
+				   (resourceRock01-03, the ore boulders) and the terrain ore
+				   piles in the top two layers of the column (HarvestRules,
+				   ruling 23). She needs a mining tool (pickaxe, auger, stone
+				   axe) on her: equipped to swing, her weapon given back after.
+				   No rocks left, no tool or a full window = one line, Follow,
+				   teleport beyond 40 m.  -->
+			<!-- band: JOBS -->
+			<action name="MineSdcsHere" weight="4" entity_filter="IsSelf">
+				<task class="HarvestSdcs, NPCSdcsCharacters" kind="stone"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="4"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
+				<consideration class="SdcsHasHarvestTarget, NPCSdcsCharacters" kind="stone"/>
+			</action>
+			<!--  DIG CLAY AROUND HERE (dig-clay-here, SdcsLootMode 5): the same
+				   pinned shape with the harvest task in its clay kind
+				   (kind="clay" on the task AND the consideration - one action
+				   per kind keeps each consideration's shared scan state its
+				   own). Targets within 8 m of the post: the dirt grounds
+				   (terrDirt and kin) in the top layer only, 1 block clear of
+				   builds (HarvestRules, ruling 31). She needs a shovel (a
+				   mining tool, the auger last) on her: equipped to dig, her
+				   weapon given back after. No clay left, no tool or a full
+				   window = one line, Follow, teleport beyond 40 m.  -->
+			<!-- band: JOBS -->
+			<action name="DigClaySdcsHere" weight="4" entity_filter="IsSelf">
+				<task class="HarvestSdcs, NPCSdcsCharacters" kind="clay"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="5"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
+				<consideration class="SdcsHasHarvestTarget, NPCSdcsCharacters" kind="clay"/>
+			</action>
+			<!--  PICK AROUND HERE (pick-here, SdcsLootMode 6): the same
+				   pinned shape with the harvest task in its plant kind
+				   (kind="plant" on the task AND the consideration - one action
+				   per kind keeps each consideration's shared scan state its
+				   own). Targets within 20 m of the post: wild plants and ripe
+				   farm crops, the order's own half (SdcsPickFilter 0 plants /
+				   1 crops, HarvestRules). She picks with bare hands; no tool
+				   is needed, none is checked. No plants left or a full window
+				   = one line, Follow, teleport beyond 40 m.  -->
+			<!-- band: JOBS -->
+			<action name="PickSdcsHere" weight="4" entity_filter="IsSelf">
+				<task class="HarvestSdcs, NPCSdcsCharacters" kind="plant"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="6"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
+				<consideration class="SdcsHasHarvestTarget, NPCSdcsCharacters" kind="plant"/>
+			</action>
+			<!--  BUTCHER AROUND HERE (butcher-here, SdcsLootMode 7): the same
+				   pinned shape with the butcher task: her kit bone knife (the
+				   corpseRemoval item) on the animal corpses around the post
+				   (dead ragdolls with butcherHarvest Harvest drops and hit
+				   points left, ButcherRules; the same WorkSite HarvestRadius
+				   area as the wood job). The meat, leather, fat and bone go to
+				   her trade window in shares as her swings use the corpse up,
+				   the rest when it is fully butchered; the corpse's Destroy
+				   drops are not paid. No knife, no fresh corpses or a full
+				   window = one line, Follow, teleport beyond 40 m.  -->
+			<!-- band: JOBS -->
+			<action name="ButcherSdcsHere" weight="4" entity_filter="IsSelf">
+				<task class="ButcherSdcs, NPCSdcsCharacters"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="7"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
+				<consideration class="SdcsHasButcherTarget, NPCSdcsCharacters"/>
+			</action>
+			<!--  BASE REPAIR, THE BASE KEEPER STANDING DUTY (SdcsLootMode 8):
+			   she stays at the base on Guard and repairs damage whenever it
+			   appears, most damaged block first (nearest breaks ties). The
+			   duty's registration and its 30 s reconciliation run on the 1 Hz
+			   lifecycle tick; this action only picks targets. She sees a block
+			   on a clear block-only line from her eyes up to 30 m (bars and
+			   windows count as seen) and walks only when no damaged block is
+			   visible. She repairs what is visible: she faces the block and
+			   swings at the tool's Delay (the heal and the materials are the
+			   mod's; the swing is the cosmetic tool use, never a melee hit),
+			   and she walks toward a damaged block only when none is visible.
+			   Only an enemy she can SEE stops the repair: the enemy
+			   gate runs a block-only line of sight from her eyes, and bars,
+			   windows and glass count as seen, so a zombie behind the wall it
+			   is breaking does not stop her.  -->
+			<!-- band: JOBS -->
+			<action name="BaseKeepSdcsBase" weight="4" entity_filter="IsSelf">
+				<task class="BaseKeepSdcs, NPCSdcsCharacters"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="8"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15" sight="block"/>
+				<consideration class="SdcsHasRepairTarget, NPCSdcsCharacters"/>
+			</action>
+			<!--  COMBAT REPAIR (SdcsLootMode 9): the same standing duty with the
+			   other order: a block damaged in the last few seconds first (the
+			   wall under attack), then most damaged. Same reach, walk, hold and
+			   gates as the base action; only the mode cvar value and the target
+			   order differ.  -->
+			<!-- band: JOBS -->
+			<action name="BaseKeepSdcsCombat" weight="4" entity_filter="IsSelf">
+				<task class="BaseKeepSdcs, NPCSdcsCharacters"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="9"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15" sight="block"/>
+				<consideration class="SdcsHasRepairTarget, NPCSdcsCharacters"/>
 			</action>
 			<!--  The WILD survivor loots on her own. One container per
 			   60 s (the SdcsLootWildCooldown buff, added by the task after the
@@ -1439,6 +1765,7 @@
 			   the threshold; everything else stays in the container for whoever
 			   comes next (takeAll=false, minValue=100,
 			   listedTags=medical,ammo,food,drinks,csm).  -->
+			<!-- band: AMBIENT -->
 			<action name="LootSdcsWild" weight="1" entity_filter="IsSelf">
 				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="false" minValue="100" listedTags="medical,ammo,food,drinks,csm" cooldownBuff="SdcsLootWildCooldown" priorityLootLists="ammoPileSmall,ammoPileMed,ammoPileLarge,medicalPileSmall,medicalPileMedium,medicalPileLarge,bookPile,singleBooks,foodPileSmall,foodPileMed,foodPileLarge,chemPileSmall,chemPileMed,chemPileLarge,liquorPileSmall,liquorPileMed,liquorPileLarge"/>
 				<consideration class="SdcsUnhired, NPCSdcsCharacters"/>
@@ -1454,21 +1781,42 @@
 			    volume has the leave point stored on her controller and the hidden
 			    SdcsLeavingArea buff (45 s, base Config/buffs.xml) added by the
 			    detection. This single action scores on that buff and nothing else
-			    (entity_filter IsSelf, one consideration), at weight 8: the score
-			    is the weight while the buff is on her (the product of the one
-			    consideration), which outranks every attack action of the packages
-			    npcSdcsBase runs (the highest is BackupKeepDistance, 7, in
-			    SdcsNpcRangedAdvanced), so she breaks off the fight and runs. The
-			    task is in the base assembly (the LootSdcs precedent): it paths to
+			    (entity_filter IsSelf, one consideration), at weight 9, in the defence
+			    band: she breaks off the fight and runs (it outranks every attack
+			    action, the highest ENGAGE weight being 6, and the shooting-distance
+			    backup at 8 too). The task is in the base assembly (the LootSdcs
+			    precedent): it paths to
 			    the stored point at her fastest move speed, supervises the walk with
 			    the loot task's travel rule, removes the buff on every exit, and adds
 			    SdcsLeaveFailed (20 s) on a cornered give-up so the next detection
 			    does not re-run the leave and the attack actions win instead. The
 			    Flee actions above stay disabled and are not reused for this. -->
 		<ai_package name="SdcsNpcLeave">
-			<action name="LeaveAreaSdcs" weight="8" entity_filter="IsSelf">
+			<!-- band: DEFENCE -->
+			<action name="LeaveAreaSdcs" weight="9" entity_filter="IsSelf">
 				<task class="LeaveAreaSdcs, NPCSdcsCharacters"/>
 				<consideration class="SelfHasBuffV4, SCore" buffs="SdcsLeavingArea"/>
+			</action>
+		</ai_package>
+
+		<!-- [SDCS-MEDIC] The medic package: walk to an ally who needs aid, then run the first-aid sequence. One consideration, SdcsPatientNeedsAid, is the whole decision (the cached combat clock, the defend-first gate, the patient gate, the condition, the held item). The two actions share it: MoveToPatientSdcs scores only beyond 3 m (the game's plain MoveToTarget, which only walks and does NOT attack), FirstAidSdcs only within 3.5 m, and both are gated by SdcsIsHealing (her own heal running) and NoActiveChat (an open dialog holds her). AID band weight 7. -->
+		<ai_package name="SdcsNpcMedic" entity_filter="IsAlly">
+			<!-- band: AID -->
+			<action name="MoveToPatientSdcs" weight="7">
+				<task class="MoveToTarget" distance="3"/>
+				<consideration class="SdcsPatientNeedsAid, NPCSdcsCharacters"/>
+				<consideration class="TargetDistance" min="3" max="30" curve="threshold"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SelfNotHasBuffV4, SCore" buffs="SdcsIsHealing"/>
+			</action>
+			<!-- band: AID -->
+			<action name="FirstAidSdcs" weight="7">
+				<task class="FirstAidSdcs, NPCSdcsCharacters"/>
+				<consideration class="SdcsPatientNeedsAid, NPCSdcsCharacters"/>
+				<!-- A threshold, not a decay: full score anywhere inside 3.5 m. A decaying curve drops below follow and jobs at the 3 m walk stop and she drifts back to following. -->
+				<consideration class="TargetDistance" flip_x="true" min="0" max="3.5" curve="threshold"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SelfNotHasBuffV4, SCore" buffs="SdcsIsHealing"/>
 			</action>
 		</ai_package>
 

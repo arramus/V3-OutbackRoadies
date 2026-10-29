@@ -8,6 +8,9 @@
     <!-- Reverse rows and cols values -->
     <set xpath="/windows/window[@name='windowBackpack']/rect[@name='content']/scrollview/grid[@name='inventory']/@rows">8</set>
     <set xpath="/windows/window[@name='windowBackpack']/rect[@name='content']/scrollview/grid[@name='inventory']/@cols">12</set>
+    <!-- Shuffling Backpack Icons to different locations -->
+    <set xpath="/windows/window[@name='windowBackpack']/rect[@name='actions']/rect[@name='filters'][@pos='2,0']/@pos">162,0</set>
+    <set xpath="/windows/window[@name='windowBackpack']/rect[@name='actions']/rect[@pos='${parentinnerwidth-162},0']/@pos">2,0</set>
 	
 	<!-- KhaineGB's 12 Slot Crafting Queue - Much thanks -->	
     <!-- update the overall backpack size -->

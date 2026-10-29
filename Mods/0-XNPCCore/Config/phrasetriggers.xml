@@ -8,9 +8,10 @@
 
     === Leader Requirements ===
       Some actions require the player to be the NPC's leader (hired first):
-        FollowPlayer, StopFollow, GuardHere, GuardReturn, Wander, Loot,
+        FollowPlayer, StopFollow, GuardHere, GuardReturn, Wander, Loot, LootHere, HarvestHere, MineHere, DigClayHere, PickHere, ButcherHere,
+        BaseRepairHere, CombatRepairHere, RepairHere, RememberBase, MedicOn, MedicOff,
         Dismiss, Pickup, OpenInventory, SwapWeapon, SetCombatMode, SetEngage,
-        SetCrouch, SetFollowDistance, SetFormation, MoveToPosition
+        SetCrouch, SetFollowDistance, SetFormation, MoveToPosition, Vehicle
 
       Actions that work on ANY NPC (no leader needed):
         Hire, OpenTraderInventory, GiveItem, GiveBuff, CustomDialog
@@ -43,7 +44,19 @@
       GuardHere          - NPC guards where the player is standing (buffOrderGuardHere)
       GuardReturn        - NPC guards and returns to player's position (buffOrderGuard)
       Wander             - NPC patrols around the area (buffOrderWander)
-      Loot               - NPC loots around the area (follow-and-loot mode, SdcsLootMode cvar)
+      Loot               - NPC follows and loots near the leader (follow-and-loot mode, SdcsLootMode 1)
+      LootHere           - NPC loots the area where the leader stands, guarding it (loot-here, SdcsLootMode 2)
+      HarvestHere        - NPC chops the trees around where the leader stands, guarding it (harvest-here, SdcsLootMode 3)
+      MineHere             - NPC mines the stone and ore around where the leader stands, guarding it (mine-here, SdcsLootMode 4)
+      DigClayHere          - NPC digs the clay ground around where the leader stands, guarding it (dig-clay-here, SdcsLootMode 5)
+      PickHere             - NPC picks the wild plants (ActionParam "plants") or the ripe crops (ActionParam "crops") around where the leader stands, guarding it (pick-here, SdcsLootMode 6)
+      ButcherHere          - NPC butchers the carcasses around where the leader stands, guarding it (butcher-here, SdcsLootMode 7)
+      BaseRepairHere       - NPC keeps the leader's base repaired, most damaged block first, guarding the post (base-keeper, SdcsLootMode 8)
+      CombatRepairHere     - NPC keeps the leader's base repaired, a block damaged in the last few seconds first, guarding the post (base-keeper, SdcsLootMode 9)
+      RepairHere           - plain "repair the base": the base mod's Config/Settings.xml BaseKeeper/DefaultMode picks SdcsLootMode 8 or 9
+      RememberBase         - "remember the base": the base resolves the leader's claims and takes the base snapshot (budgeted across frames)
+      MedicOn              - "be the medic": sets the designated-medic role on this survivor (SdcsMedicRole cvar, leader-only, individual: with the role on she treats the whole party)
+      MedicOff             - "stop being the medic": clears the role (back to tending the leader only)
       Dismiss            - Dismiss the NPC (buffOrderDismiss + ExecuteCMD "Dismiss")
       Pickup             - Pick up the NPC (SCore PickUpNPC)
       Hire               - Open the hire dialog window (SCore OpenDialogSDX)
@@ -60,6 +73,7 @@
       SetFormation       - Formation bearing (ActionParam "abs:<degrees>" or "abs:<degrees>,<tier>",
                            tier -1 = direction only; "0,0" cancels)
       MoveToPosition     - Go to what the player is pointing at (resolved from the focus raycast; no ActionParam)
+      Vehicle            - Get in / get out of the leader's vehicle (ActionParam "in" = board when he seats, "out" = get out and stay out)
 
     === Optional requireConfirmation Attribute ===
       Add requireConfirmation="true" to a <Trigger> to make the NPC ask "Are you sure?" before executing.
@@ -112,7 +126,6 @@
                         <Response lang="fr">C'est parti. Je reste près de toi.;D'accord, avançons ensemble.;Juste derrière toi.</Response>
                         <Response lang="es">Voy. Me quedo cerca.;Vale, vamos juntos.;Justo detrás de ti.</Response>
                         <Response lang="de">Mach ich. Ich bleib dicht bei dir.;Alles klar, gehen wir zusammen.;Direkt hinter dir.</Response>
-            <Response lang="de">Schon erledigt.</Response>
             <ActionType>FollowPlayer</ActionType>
         </Trigger>
 
@@ -189,7 +202,7 @@
         </Trigger>
 
         <Trigger enabled="true">
-            <Phrase>follow and loot;ついてきて略奪して;loot around here;scavenge here;この辺りを略奪して;探検して;ra se tsu shi te;rasetsu shite;tanken shite;</Phrase>
+            <Phrase>follow and loot;ついてきて略奪して;探検して;ra se tsu shi te;rasetsu shite;tanken shite;</Phrase>
             <Aliases>loot;scavenge;略奪;rasetsu;ra se tsu;探検;tanken;</Aliases>
                         <Response lang="en">I'll scavenge what I can find.;I'll look for supplies.;On it.</Response>
                         <Response lang="zh">找到什么就收什么。;去找物资。;好的。</Response>
@@ -205,12 +218,380 @@
                         <Response lang="de">Ich sammle, was ich finden kann.;Ich suche nach Vorräten.;Mach ich.</Response>
             <ActionType>Loot</ActionType>
         </Trigger>
+        <Trigger enabled="true">
+            <Phrase>loot around here;loot here;loot this area;scavenge here;この辺りを略奪して;ここを略奪して;</Phrase>
+                        <Response lang="en">I'll clear this place out.;I'll search this area.;On it, I'll loot here.</Response>
+                        <Response lang="zh">我把这里搜干净。;我来搜这片区域。;好的，在这里搜刮。</Response>
+                        <Response lang="tr">Burayı temizleyeceğim.;Bu bölgeyi arayacağım.;Tamam, burayı yağmalıyorum.</Response>
+                        <Response lang="ru">Обыщу тут всё.;Осмотрю этот район.;Понял, обыщу здесь.</Response>
+                        <Response lang="pt">Vou limpar este lugar.;Vou vasculhar esta área.;Certo, saqueio aqui.</Response>
+                        <Response lang="pl">Wyczyszczę to miejsce.;Przeszukam tę okolicę.;Jasne, przeszukam tutaj.</Response>
+                        <Response lang="ko">여기 싹 털게.;이 구역을 뒤질게.;알겠어, 여기서 약탈할게.</Response>
+                        <Response lang="ja">ここを片付ける。;この辺りを探す。;了解、ここを略奪する。</Response>
+                        <Response lang="it">Ripulisco questo posto.;Perlustro questa zona.;Ci sono, saccheggio qui.</Response>
+                        <Response lang="fr">Je vide cet endroit.;Je fouille ce secteur.;Compris, je pille ici.</Response>
+                        <Response lang="es">Limpiaré este sitio.;Registraré esta zona.;Vale, saqueo aquí.</Response>
+                        <Response lang="de">Ich räume hier aus.;Ich durchsuche diese Gegend.;Mach ich, ich plündere hier.</Response>
+            <ActionType>LootHere</ActionType>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>chop wood around here;chop wood here;chop wood;chop some wood;chop the trees;chop trees;cut wood here;cut down trees;harvest wood;gather wood;この辺りで木を切って;木を切って;</Phrase>
+                        <Response lang="en">I'll chop some wood.;On it, cutting trees.;I'll gather wood here.</Response>
+                        <Response lang="zh">我去砍点柴。;好的，砍树去。;我在这儿收集木头。</Response>
+                        <Response lang="tr">Biraz odun keseceğim.;Tamam, ağaç kesiyorum.;Burada odun toplayacağım.</Response>
+                        <Response lang="ru">Нарублю дров.;Понял, рублю деревья.;Соберу здесь дерево.</Response>
+                        <Response lang="pt">Vou cortar lenha.;Certo, cortando árvores.;Vou juntar madeira aqui.</Response>
+                        <Response lang="pl">Narąbię drewna.;Jasne, ścinam drzewa.;Zbiorę tu drewno.</Response>
+                        <Response lang="ko">나무 좀 벨게.;알겠어, 나무 벨게.;여기서 목재 모을게.</Response>
+                        <Response lang="ja">薪を割ってくる。;了解、木を切る。;ここで木材を集める。</Response>
+                        <Response lang="it">Taglio un po' di legna.;Ci sono, abbatto alberi.;Raccolgo legna qui.</Response>
+                        <Response lang="fr">Je coupe du bois.;Compris, j'abats des arbres.;Je ramasse du bois ici.</Response>
+                        <Response lang="es">Cortaré leña.;Vale, talando árboles.;Recogeré madera aquí.</Response>
+                        <Response lang="de">Ich hacke Holz.;Mach ich, ich fälle Bäume.;Ich sammle hier Holz.</Response>
+            <ActionType>HarvestHere</ActionType>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>mine stone around here;mine stone here;mine stone;mine everything;mine all;mine here;gather stone;この郼で町を掘って;石を掘って;</Phrase>
+                        <Response lang="en">I'll mine some stone.;On it, breaking rocks.;I'll gather stone here.</Response>
+                        <Response lang="zh">我去采点石。;好的，砸石头去。;我在这儿采石。</Response>
+                        <Response lang="tr">Biraz taş çıkaracağım.;Tamam, taş kırıyorum.;Burada taş toplayacağım.</Response>
+                        <Response lang="ru">Добуду немного камня.;Понял, разбиваю камни.;Соберу здесь камень.</Response>
+                        <Response lang="pt">Vou extrair alguma pedra.;Certo, quebrando pedras.;Vou juntar pedra aqui.</Response>
+                        <Response lang="pl">Wydobudę trochę kamienia.;Jasne, rozbijam kamienie.;Zbiorę tu kamień.</Response>
+                        <Response lang="ko">돌 좀 치게.;알가오, 돌 기는 중.;유기에서 돌 모일게.</Response>
+                        <Response lang="ja">すこしな石を掘ってくる。;解斞、石を坏す。;ここで石を集める。</Response>
+                        <Response lang="it">Estrai un po' di pietra.;Ci sono, rompo le rocce.;Raccoglierò pietra qui.</Response>
+                        <Response lang="fr">Je vais extraire de la pierre.;Compris, je brise des roches.;Je ramasse de la pierre ici.</Response>
+                        <Response lang="es">Extraeré algo de piedra.;Vale, rompiendo rocas.;Recogeré piedra aquí.</Response>
+                        <Response lang="de">Ich werde etwas Stein abbauen.;Mach ich, ich zerbreche Steine.;Ich sammle hier Stein.</Response>
+            <ActionType>MineHere</ActionType>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>mine iron here;mine iron;get iron;gather iron;</Phrase>
+                        <Response lang="en">I'll mine some iron.;On it, getting iron.</Response>
+                        <Response lang="zh">我去采点铁矿石。;好的，采铁去。</Response>
+                        <Response lang="tr">Biraz demir çıkaracağım.;Tamam, demir topluyorum.</Response>
+                        <Response lang="ru">Добуду немного железа.;Понял, добываю железо.</Response>
+                        <Response lang="pt">Vou extrair algum ferro.;Certo, obtendo ferro.</Response>
+                        <Response lang="pl">Wydobudę trochę żelaza.;Jasne, zbieram żelazo.</Response>
+                        <Response lang="ko">철 좀 채굴할게.;알겠어, 철 가져올게.</Response>
+                        <Response lang="ja">鉄を少し掘ってくる。;了解、鉄を集める。</Response>
+                        <Response lang="it">Estrairo un po' di ferro.;Ci sono, prendo ferro.</Response>
+                        <Response lang="fr">Je vais extraire du fer.;Compris, je récupère du fer.</Response>
+                        <Response lang="es">Extraeré algo de hierro.;Vale, obteniendo hierro.</Response>
+                        <Response lang="de">Ich werde etwas Eisen abbauen.;Mach ich, ich sammle Eisen.</Response>
+            <ActionType>MineHere</ActionType>
+            <ActionParam>iron</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>mine coal here;mine coal;get coal;gather coal;</Phrase>
+                        <Response lang="en">I'll mine some coal.;On it, getting coal.</Response>
+                        <Response lang="zh">我去采点煤。;好的，采煤去。</Response>
+                        <Response lang="tr">Biraz kömür çıkaracağım.;Tamam, kömür topluyorum.</Response>
+                        <Response lang="ru">Добуду немного угля.;Понял, добываю уголь.</Response>
+                        <Response lang="pt">Vou extrair alguma carvão.;Certo, obtendo carvão.</Response>
+                        <Response lang="pl">Wydobudę trochę węgla.;Jasne, zbieram węgiel.</Response>
+                        <Response lang="ko">석탄 좀 채굴할게.;알겠어, 석탄 가져올게.</Response>
+                        <Response lang="ja">石炭を少し掘ってくる。;了解、石炭を集める。</Response>
+                        <Response lang="it">Estrairò un po' di carbone.;Ci sono, prendo carbone.</Response>
+                        <Response lang="fr">Je vais extraire du charbon.;Compris, je récupère du charbon.</Response>
+                        <Response lang="es">Extraeré algo de carbón.;Vale, obteniendo carbón.</Response>
+                        <Response lang="de">Ich werde etwas Kohle abbauen.;Mach ich, ich sammle Kohle.</Response>
+            <ActionType>MineHere</ActionType>
+            <ActionParam>coal</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>mine lead here;mine lead;get lead;gather lead;</Phrase>
+                        <Response lang="en">I'll mine some lead.;On it, getting lead.</Response>
+                        <Response lang="zh">我去采点铅。;好的，采铅去。</Response>
+                        <Response lang="tr">Biraz kurşun çıkaracağım.;Tamam, kurşun topluyorum.</Response>
+                        <Response lang="ru">Добуду немного свинца.;Понял, добываю свинец.</Response>
+                        <Response lang="pt">Vou extrair algum chumbo.;Certo, obtendo chumbo.</Response>
+                        <Response lang="pl">Wydobudę trochę ołowiu.;Jasne, zbieram ołów.</Response>
+                        <Response lang="ko">연 좀 채굴할게.;알겠어, 연 가져올게.</Response>
+                        <Response lang="ja">鉛を少し掘ってくる。;了解、鉛を集める。</Response>
+                        <Response lang="it">Estrairò un po' di piombo.;Ci sono, prendo piombo.</Response>
+                        <Response lang="fr">Je vais extraire du plomb.;Compris, je récupère du plomb.</Response>
+                        <Response lang="es">Extraeré algo de plomo.;Vale, obteniendo plomo.</Response>
+                        <Response lang="de">Ich werde etwas Blei abbauen.;Mach ich, ich sammle Blei.</Response>
+            <ActionType>MineHere</ActionType>
+            <ActionParam>lead</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>mine shale here;mine shale;mine oil shale;gather shale;</Phrase>
+                        <Response lang="en">I'll mine some shale.;On it, getting shale.</Response>
+                        <Response lang="zh">我去采点油页岩。;好的，采油页岩去。</Response>
+                        <Response lang="tr">Biraz şist çıkaracağım.;Tamam, şist topluyorum.</Response>
+                        <Response lang="ru">Добуду немного сланца.;Понял, добываю сланец.</Response>
+                        <Response lang="pt">Vou extrair alguma xisto.;Certo, obtendo xisto.</Response>
+                        <Response lang="pl">Wydobudę trochę łupka.;Jasne, zbieram łupek.</Response>
+                        <Response lang="ko">슬레이트 좀 채굴할게.;알겠어, 슬레이트 가져올게.</Response>
+                        <Response lang="ja">頁岩を少し掘ってくる。;了解、頁岩を集める。</Response>
+                        <Response lang="it">Estrairò un po' di scisto.;Ci sono, prendo scisto.</Response>
+                        <Response lang="fr">Je vais extraire de l'ardoise.;Compris, je récupère de l'ardoise.</Response>
+                        <Response lang="es">Extraeré algo de pizarra.;Vale, obteniendo pizarra.</Response>
+                        <Response lang="de">Ich werde etwas Schiefer abbauen.;Mach ich, ich sammle Schiefer.</Response>
+            <ActionType>MineHere</ActionType>
+            <ActionParam>shale</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>mine nitrate here;mine nitrate;mine potassium nitrate;gather nitrate;</Phrase>
+                        <Response lang="en">I'll mine some nitrate.;On it, getting nitrate.</Response>
+                        <Response lang="zh">我去采点硝石。;好的，采硝石去。</Response>
+                        <Response lang="tr">Biraz nitrat çıkaracağım.;Tamam, nitrat topluyorum.</Response>
+                        <Response lang="ru">Добуду немного селитры.;Понял, добываю селитру.</Response>
+                        <Response lang="pt">Vou extrair algum nitrato.;Certo, obtendo nitrato.</Response>
+                        <Response lang="pl">Wydobudę trochę saletry.;Jasne, zbieram saletrę.</Response>
+                        <Response lang="ko">니트레이트 좀 채굴할게.;알겠어, 니트레이트 가져올게.</Response>
+                        <Response lang="ja">硝石を少し掘ってくる。;了解、硝石を集める。</Response>
+                        <Response lang="it">Estrairò un po' di nitrato.;Ci sono, prendo nitrato.</Response>
+                        <Response lang="fr">Je vais extraire du nitrate.;Compris, je récupère du nitrate.</Response>
+                        <Response lang="es">Extraeré algo de nitrato.;Vale, obteniendo nitrato.</Response>
+                        <Response lang="de">Ich werde etwas Salpeter abbauen.;Mach ich, ich sammle Salpeter.</Response>
+            <ActionType>MineHere</ActionType>
+            <ActionParam>nitrate</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>dig clay around here;dig clay here;dig clay;dig for clay;gather clay;この辺りで粘土を掘って;粘土を掘って;</Phrase>
+                        <Response lang="en">I'll dig some clay.;On it, digging for clay.;I'll gather clay here.</Response>
+                        <Response lang="zh">我去挖点黏土。;好的，挖黏土去。;我在这儿收集黏土。</Response>
+                        <Response lang="tr">Biraz kil kazacağım.;Tamam, kil kazıyorum.;Burada kil toplayacağım.</Response>
+                        <Response lang="ru">Я накопаю немного глины.;Понял, копаю глину.;Соберу здесь глину.</Response>
+                        <Response lang="pt">Vou cavar um pouco de argila.;Certo, cavando argila.;Vou juntar argila aqui.</Response>
+                        <Response lang="pl">Wykopię trochę gliny.;Jasne, kopię glinę.;Zbiorę tu glinę.</Response>
+                        <Response lang="ko">점토 좀 팰게.;알겠어, 점토 파는 중.;여기서 점토 모을게.</Response>
+                        <Response lang="ja">粘土を少し掘ってくる。;了解、粘土を掘る。;ここで粘土を集める。</Response>
+                        <Response lang="it">Scavo un po' di argilla.;Ci sono, scavo argilla.;Raccoglierò argilla qui.</Response>
+                        <Response lang="fr">Je vais creuser de l'argile.;Compris, je creuse de l'argile.;Je ramasse de l'argile ici.</Response>
+                        <Response lang="es">Cavaré algo de arcilla.;Vale, cavando arcilla.;Recogeré arcilla aquí.</Response>
+                        <Response lang="de">Ich werde etwas Lehm graben.;Mach ich, ich grabe Lehm.;Ich sammle hier Lehm.</Response>
+            <ActionType>DigClayHere</ActionType>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>pick plants around here;pick plants here;pick plants;gather plants;pick flowers;forage here;</Phrase>
+            <Response lang="en">I'll pick some plants.;On it, gathering plants.</Response>
+                        <Response lang="zh">我去摘点植物。;好的，去采植物。</Response>
+                        <Response lang="tr">Biraz bitki toplayacağım.;Tamam, bitki topluyorum.</Response>
+                        <Response lang="ru">Я сорву немного растений.;Понял, собираю растения.</Response>
+                        <Response lang="pt">Vou colher algumas plantas.;Certo, colhendo plantas.</Response>
+                        <Response lang="pl">Zbiorę trochę roślin.;Jasne, zbieram rośliny.</Response>
+                        <Response lang="ko">식물 좀 따 올게.;알겠어, 식물 따는 중.</Response>
+                        <Response lang="ja">植物を少し摘むよ。;了解、植物を集める。</Response>
+                        <Response lang="it">Raccoglierò qualche pianta.;Ci sono, sto raccogliendo piante.</Response>
+                        <Response lang="fr">Je cueillerai quelques plantes.;Compris, je cueille des plantes.</Response>
+                        <Response lang="es">Recogeré algunas plantas.;Vale, recogiendo plantas.</Response>
+                        <Response lang="de">Ich sammle etwas Pflanzen.;Mach ich, ich sammle Pflanzen.</Response>
+            <ActionType>PickHere</ActionType>
+            <ActionParam>plants</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>harvest the crops;harvest crops here;harvest crops;pick the crops;harvest the farm;</Phrase>
+            <Response lang="en">I'll harvest the crops.;On it, harvesting.</Response>
+                        <Response lang="zh">我去收获作物。;好的，去收割。</Response>
+                        <Response lang="tr">Ekinleri hasat edeceğim.;Tamam, hasat yapıyorum.</Response>
+                        <Response lang="ru">Я соберу урожай.;Понял, убираю урожай.</Response>
+                        <Response lang="pt">Vou colher as plantações.;Certo, colhendo.</Response>
+                        <Response lang="pl">Zbiorę plony.;Jasne, zbieram plony.</Response>
+                        <Response lang="ko">작물을 수확할게.;알겠어, 수확하는 중.</Response>
+                        <Response lang="ja">作物を収穫するよ。;了解、収穫する。</Response>
+                        <Response lang="it">Raccoglierò i raccolti.;Ci sono, sto raccogliendo.</Response>
+                        <Response lang="fr">Je récolterai les cultures.;Compris, je récolte.</Response>
+                        <Response lang="es">Cosecharé los cultivos.;Vale, cosechando.</Response>
+                        <Response lang="de">Ich ernte die Feldfrüchte.;Mach ich, ich ernte.</Response>
+            <ActionType>PickHere</ActionType>
+            <ActionParam>crops</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>butcher around here;butcher here;butcher;butcher the animals;butcher the corpses;skin the animals;この辺りで解体して;解体して;</Phrase>
+            <Response lang="en">I'll butcher what's around here.;On it, skinning.;I'll process the carcasses here.</Response>
+            <Response lang="zh">我在这附近处理尸体。;好的，开始处理。</Response>
+            <Response lang="tr">Buradaki cesetleri işleyeceğim.;Tamam, işliyorum.</Response>
+            <Response lang="ru">Я разделываю то, что здесь.;Понял, разделываю.</Response>
+            <Response lang="pt">Vou desfilece o que tem por aqui.;Certo, desfilecendo.</Response>
+            <Response lang="pl">Rozczłonkuję to, co tu jest.;Jasne, rozczłonkuję.</Response>
+            <Response lang="ko">이 근처의 시체를 처리할게.;알겠어, 처리하는 중.</Response>
+            <Response lang="ja">近くで解体するよ。;了解、解体する。</Response>
+            <Response lang="it">Sbozzo quello che c'è qui.;Ci sono, sbozzo.</Response>
+            <Response lang="fr">Je dépece ce qu'il y a ici.;Compris, je dépece.</Response>
+            <Response lang="es">Despiezo lo que hay por aquí.;Vale, despiezando.</Response>
+            <Response lang="de">Ich zerlege, was hier liegt.;Mach ich, ich zerlege.</Response>
+            <ActionType>ButcherHere</ActionType>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>repair the base;fix the base;keep the base repaired;repair base</Phrase>
+            <Response lang="en">I'll keep the base repaired.;On it.;Repairing the base.</Response>
+            <Response lang="zh">我会修好基地的。;好的，开始修。</Response>
+            <Response lang="tr">Üssü onarıp koruyacağım.;Tamam, onarıyorum.</Response>
+            <Response lang="ru">Я буду держать базу в порядке.;Понял, ремонтирую.</Response>
+            <Response lang="pt">Vou manter a base reparada.;Certo, reparando.</Response>
+            <Response lang="pl">Zadbam o naprawę bazy.;Jasne, naprawiam.</Response>
+            <Response lang="ko">기지를 수리해 둘게.;알겠어, 수리 중이야.</Response>
+            <Response lang="ja">拠点は修理しておくよ。;了解、修理する。</Response>
+            <Response lang="it">Mantengo la base riparata.;Ci sono, riparo.</Response>
+            <Response lang="fr">Je maintiendrai la base réparée.;Compris, je répare.</Response>
+            <Response lang="es">Mantendré la base reparada.;Vale, reparando.</Response>
+            <Response lang="de">Ich halte die Basis in Stand.;Mach ich, ich repariere.</Response>
+            <ActionType>RepairHere</ActionType>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>base repair;do base repair;repair the worst first</Phrase>
+            <Response lang="en">Base repair. Worst damage first.;On it.;Most damaged first.</Response>
+            <Response lang="zh">基地维修，先修最严重的。;好的。</Response>
+            <Response lang="tr">Üs onarımı. En hasarlı önce.;Tamam.</Response>
+            <Response lang="ru">Ремонт базы. Сначала самое повреждённое.;Понял.</Response>
+            <Response lang="pt">Reparação da base. O mais danificado primeiro.;Certo.</Response>
+            <Response lang="pl">Naprawa bazy. Najbardziej uszkodzone pierwsze.;Jasne.</Response>
+            <Response lang="ko">기지 수리. 가장 많이 다친 것부터.;알겠어.</Response>
+            <Response lang="ja">拠点修理。最も壊れているものから。;了解。</Response>
+            <Response lang="it">Riparazione della base. Il più danneggiato prima.;Ci sono.</Response>
+            <Response lang="fr">Réparation de la base. Le plus endommagé d'abord.;Compris.</Response>
+            <Response lang="es">Reparación de la base. Lo peor primero.;Vale.</Response>
+            <Response lang="de">Basisreparatur. Erst das Schlimmste.;Mach ich.</Response>
+            <ActionType>BaseRepairHere</ActionType>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>combat repair;do combat repair;repair under fire</Phrase>
+            <Response lang="en">Combat repair. I'll patch what they hit.;On it.;Under fire, I'll keep it up.</Response>
+            <Response lang="zh">战斗维修，他们打坏的我来补。;好的。</Response>
+            <Response lang="tr">Savaş onarımı. Vurdukları yerleri onarırım.;Tamam.</Response>
+            <Response lang="ru">Ремонт в бою. Я латаю то, что они бьют.;Понял.</Response>
+            <Response lang="pt">Reparação em combate. Conserto o que eles atingem.;Certo.</Response>
+            <Response lang="pl">Naprawa w walce. Łatam to, co uderzą.;Jasne.</Response>
+            <Response lang="ko">전투 수리. 공격당한 곳을 수리할게.;알겠어.</Response>
+            <Response lang="ja">戦闘修理。撃たれた箇所を直すよ。;了解。</Response>
+            <Response lang="it">Riparazione in combattimento. Riparo quello che colpiscono.;Ci sono.</Response>
+            <Response lang="fr">Réparation en combat. Je répare ce qu'ils touchent.;Compris.</Response>
+            <Response lang="es">Reparación en combate. Arreglo lo que golpeen.;Vale.</Response>
+            <Response lang="de">Kampfreparatur. Ich flicke, was sie treffen.;Mach ich.</Response>
+            <ActionType>CombatRepairHere</ActionType>
+        </Trigger>
+
+        <!-- === BASE SNAPSHOT (remember the base) === -->
+        <Trigger enabled="true">
+            <Phrase>remember the base;remember this base;save the base layout;remember my base</Phrase>
+            <Response lang="en">I'll remember the base.;On it, I'll take a snapshot.;Saving the base layout.</Response>
+            <Response lang="zh">我会记住基地的。;好的，我来拍个快照。;保存基地布局。</Response>
+            <Response lang="tr">Üssü hatırlayacağım.;Tamam, bir kopya alacağım.;Üs düzenini kaydediyorum.</Response>
+            <Response lang="ru">Я запомню базу.;Понял, сделаю снимок.;Сохраняю базу.</Response>
+            <Response lang="pt">Vou lembrar da base.;Certo, vou tirar uma cópia.;Salvando o layout da base.</Response>
+            <Response lang="pl">Zapamiętam bazę.;Jasne, zrobię kopię.;Zapisuję układ bazy.</Response>
+            <Response lang="ko">기지를 기억할게.;알겠어, 스냅샷 찍을게.;기지 배치를 저장해.</Response>
+            <Response lang="ja">拠点を覚えておくよ。;了解、スナップショットを撮る。;拠点のレイアウトを保存する。</Response>
+            <Response lang="it">Ricorderò la base.;Ci sono, faccio una copia.;Salvo il layout della base.</Response>
+            <Response lang="fr">Je me souviendrai de la base.;Compris, je prends une copie.;J'enregistre la disposition.</Response>
+            <Response lang="es">Recordaré la base.;Vale, hago una copia.;Guardo el plano de la base.</Response>
+            <Response lang="de">Ich merke mir die Basis.;Mach ich, ich mache eine Kopie.;Ich speichere den Grundriss.</Response>
+            <ActionType>RememberBase</ActionType>
+        </Trigger>
+
+        <!-- === DESIGNATED MEDIC (be the medic / stop being the medic) ===
+             The medic ROLE on one survivor (leader-only, individual: the
+             wheel socket is not squad-capable and the orders are not in the
+             squad allow-list). The router sets/clears the SdcsMedicRole cvar
+             directly; with the role on the patient set widens to the whole
+             party. -->
+        <Trigger enabled="true">
+            <Phrase>be the medic;you're the medic;heal the team;</Phrase>
+            <Response lang="en">I'll look after everyone.;On it, I'll tend the whole party.;Medic duty, understood.</Response>
+            <Response lang="zh">我来照顾大家。;好的，我照看全队。;医疗任务，明白。</Response>
+            <Response lang="tr">Herkese bakacağım.;Tamam, tüm grubu tedavi edeceğim.;Tıbbi görev, anlaşıldı.</Response>
+            <Response lang="ru">Я позабочусь обо всех.;Хорошо, я буду лечить всю группу.;Медицинская задача, понял.</Response>
+            <Response lang="pt">Vou cuidar de todos.;Certo, vou atender o grupo inteiro.;Dever de médico, entendido.</Response>
+            <Response lang="pl">Zajmę się wszystkimi.;Jasne, będę leczyć całą ekipę.;Obowiązki medyka, jasne.</Response>
+            <Response lang="ko">내가 다 돌볼게.;알겠어, 우리 팀 전체를 간호할게.;의료 임무, 알았어.</Response>
+            <Response lang="ja">みんなの世話をしよう。;了解、パーティ全員を治療する。;医療担当、了解。</Response>
+            <Response lang="it">Mi prenderò cura di tutti.;D'accordo, curerò il gruppo intero.;Mansione medica, inteso.</Response>
+            <Response lang="fr">Je m'occuperai de tout le monde.;Compris, je soigne tout le groupe.;Tâche médicale, compris.</Response>
+            <Response lang="es">Me encargaré de todos.;Vale, atenderé a todo el grupo.;Deber médico, entendido.</Response>
+            <Response lang="de">Ich kümmere mich um alle.;Mach ich, ich behandle die ganze Gruppe.;Medizinische Aufgabe, verstanden.</Response>
+            <ActionType>MedicOn</ActionType>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>stop being the medic;no more medic duty;</Phrase>
+            <Response lang="en">Back to just looking after you.;Understood, I'll stop.;Medic duty off.</Response>
+            <Response lang="zh">好，我只照顾你了。;明白，我停手。;医疗任务取消。</Response>
+            <Response lang="tr">Tamam, sadece sana bakacağım.;Anlaşıldı, duruyorum.;Tıbbi görev kapandı.</Response>
+            <Response lang="ru">Хорошо, снова только за тобой.;Понял, останавливаюсь.;Медицинская задача отменена.</Response>
+            <Response lang="pt">Certo, vou só cuidar de você.;Entendido, estou parando.;Dever de médico encerrado.</Response>
+            <Response lang="pl">Jasne, będę się tylko tobą zajmować.;Jasne, przestaję.;Obowiązki medyka odwołane.</Response>
+            <Response lang="ko">그래, 너만 돌볼게.;알겠어, 멈출게.;의료 임무 취소.</Response>
+            <Response lang="ja">分かった、君だけ看病するよ。;了解、やめる。;医療担当、解除。</Response>
+            <Response lang="it">Va bene, mi occupo solo di te.;Inteso, smetto.;Mansione medica annullata.</Response>
+            <Response lang="fr">D'accord, je m'occupe juste de toi.;Compris, j'arrête.;Tâche médicale annulée.</Response>
+            <Response lang="es">Vale, solo me encargo de ti.;Entendido, me detengo.;Deber médico cancelado.</Response>
+            <Response lang="de">Gut, ich kümmere mich nur noch um dich.;Verstanden, ich höre auf.;Medizinische Aufgabe aufgehoben.</Response>
+            <ActionType>MedicOff</ActionType>
+        </Trigger>
+
+        <!-- === VEHICLE RIDE (get in / get out) === -->
+        <Trigger enabled="true">
+            <Phrase>get in;get in the car;get in the truck;get in the vehicle;hop in;climb in;</Phrase>
+                        <Response lang="en">Getting in.;Coming.</Response>
+                        <Response lang="zh">我上车。;马上来。</Response>
+                        <Response lang="tr">Biniyorum.;Geliyorum.</Response>
+                        <Response lang="ru">Забираюсь.;Иду.</Response>
+                        <Response lang="pt">Vou entrar.;Vou já.</Response>
+                        <Response lang="pl">Wsiadam.;Już idę.</Response>
+                        <Response lang="ko">탈게.;간다.</Response>
+                        <Response lang="ja">乗りにいく。;いくよ。</Response>
+                        <Response lang="it">Salgo.;Arrivo.</Response>
+                        <Response lang="fr">Je monte.;J'arrive.</Response>
+                        <Response lang="es">Subo.;Ya voy.</Response>
+                        <Response lang="de">Steige ein.;Komm gleich.</Response>
+            <ActionType>Vehicle</ActionType>
+            <ActionParam>in</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>get out;get out of the car;get out of the truck;hop out;climb out;</Phrase>
+                        <Response lang="en">Getting out.;Okay.</Response>
+                        <Response lang="zh">我下车。;好的。</Response>
+                        <Response lang="tr">İnüyorum.;Tamam.</Response>
+                        <Response lang="ru">Выхожу.;Хорошо.</Response>
+                        <Response lang="pt">Vou sair.;Tá bom.</Response>
+                        <Response lang="pl">Wysiadam.;Dobrze.</Response>
+                        <Response lang="ko">내릴게.;그래.</Response>
+                        <Response lang="ja">降りるよ。;わかった。</Response>
+                        <Response lang="it">Scendo.;Ok.</Response>
+                        <Response lang="fr">Je descends.;D'accord.</Response>
+                        <Response lang="es">Baje.;Vale.</Response>
+                        <Response lang="de">Steige aus.;Okay.</Response>
+            <ActionType>Vehicle</ActionType>
+            <ActionParam>out</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>mine rocks here;mine rocks;break rocks;gather rocks;</Phrase>
+            <Response lang="en">I'll break some rocks.;On it, gathering stone.</Response>
+                        <Response lang="zh">我去砸些石头。;好的，去采石。</Response>
+                        <Response lang="tr">Biraz taş kıracakım.;Tamam, taş topluyorum.</Response>
+                        <Response lang="ru">Я разобью немного камней.;Понял, собираю камень.</Response>
+                        <Response lang="pt">Vou quebrar algumas pedras.;Certo, juntando pedra.</Response>
+                        <Response lang="pl">Rozbiję trochę kamieni.;Jasne, zbieram kamień.</Response>
+                        <Response lang="ko">돌 좀 깰게.;알겠어, 돌 모으는 중.</Response>
+                        <Response lang="ja">石を少し壊すよ。;了解、石を集める。</Response>
+                        <Response lang="it">Romperò qualche roccia.;Ci sono, sto raccogliendo pietra.</Response>
+                        <Response lang="fr">Je briserai quelques rochers.;Compris, je ramasse de la pierre.</Response>
+                        <Response lang="es">Romperé unas rocas.;Vale, recogiendo piedra.</Response>
+                        <Response lang="de">Ich breche etwas Fels.;Mach ich, ich sammle Stein.</Response>
+            <ActionType>MineHere</ActionType>
+            <ActionParam>rocks</ActionParam>
+        </Trigger>
 
         <!-- === VERTICAL MOVEMENT (JumpDown) === -->
         <Trigger enabled="true">
             <Phrase>jump down;jump off the ledge;drop down;get down from here;</Phrase>
             <Aliases>jump off;drop;jump down;</Aliases>
                         <Response lang="en">Jumping.;On it, finding an edge.</Response>
+            <Response lang="zh">跳了。;找好落脚点再跳。</Response>
+            <Response lang="tr">Atlıyorum.;Bir kenar buluyorum.</Response>
+            <Response lang="ru">Прыгаю.;Нахожу край и прыгаю.</Response>
+            <Response lang="pt">Pulando.;Procurando uma beirada.</Response>
+            <Response lang="pl">Skaczę.;Szukam krawędzi.</Response>
+            <Response lang="ko">내려갈게.;밑바닥 찾아서.</Response>
+            <Response lang="ja">降りるよ。;端を見つけてから。</Response>
+            <Response lang="it">Salto.;Cerco un bordo.</Response>
+            <Response lang="fr">Je saute.;Je cherche un rebord.</Response>
+            <Response lang="es">Saltando.;Buscando un borde.</Response>
+            <Response lang="de">Springe.;Suche mir eine Kante.</Response>
             <ActionType>JumpDown</ActionType>
         </Trigger>
 
@@ -219,6 +600,17 @@
             <Phrase>set patrol;here's your path;show me the way;show me a route;</Phrase>
             <Aliases>set patrol;</Aliases>
                         <Response lang="en">I'll follow you and remember the route.;Lead the way, I'm recording.;On it, walking the path.</Response>
+            <Response lang="zh">我跟着你，把路线记住。;带路，我在记。;好，边走边记。</Response>
+            <Response lang="tr">Sana uyuyorum, rotayı hatırlayacağım.;Önünden git, kaydediyorum.;Tamam, yolu dolaşıyorum.</Response>
+            <Response lang="ru">Пойду за тобой и запомню путь.;Веди, записываю.;Пошёл, иду по маршруту.</Response>
+            <Response lang="pt">Sigo você e levo a rota.;Pode na frente, estou anotando.;Vou, andando o caminho.</Response>
+            <Response lang="pl">Idę za tobą i uczę się trasy.;Prowadź, notuję.;Jasne, chodzę po trasie.</Response>
+            <Response lang="ko">따라가면서 경로를 외울게.;앞장서 줘, 기록 중이야.;그래, 경로를 돌며 외워.</Response>
+            <Response lang="ja">ついていってルートを覚えるよ。;先へ、記録中。;了解、道を歩く。</Response>
+            <Response lang="it">Ti seguo e memorizzo la rotta.;Dai, la registro.;Ci sono, percorro il sentiero.</Response>
+            <Response lang="fr">Je te suis et je mémorise la route.;En tête, je la note.;Compris, je parcours le chemin.</Response>
+            <Response lang="es">Te sigo y me aprendo la ruta.;Adelante, la estoy anotando.;Voy, recorriendo el camino.</Response>
+            <Response lang="de">Ich folge dir und merk mir die Route.;Führ an, ich notiere.;Mach ich, ich geh den Weg.</Response>
             <ActionType>SetPatrolPoint</ActionType>
         </Trigger>
 
@@ -226,6 +618,17 @@
             <Phrase>begin patrol;start patrol;do the route;patrol your route;walk your route;</Phrase>
             <Aliases>begin patrol;start patrol;</Aliases>
                         <Response lang="en">I'll patrol this route.;On it, starting the patrol.;Route locked in.</Response>
+            <Response lang="zh">我沿这条路线巡逻。;好，开始巡逻。;路线记好了。</Response>
+            <Response lang="tr">Bu rotada devriye gezeceğim.;Tamam, devriyeye başlıyorum.;Rota hazır.</Response>
+            <Response lang="ru">Буду патрулировать этот маршрут.;Пошёл, начинаю обход.;Маршрут зафиксирован.</Response>
+            <Response lang="pt">Patrolo esta rota.;Vou, começando a patrulha.;Rota fixada.</Response>
+            <Response lang="pl">Patroluję tę trasę.;Jasne, zaczynam patrol.;Trasa zapisana.</Response>
+            <Response lang="ko">이 경로를 순찰할게.;그래, 순찰 시작해.;경로 고정했어.</Response>
+            <Response lang="ja">このルートを巡回するよ。;了解、巡回開始。;ルートは確定。</Response>
+            <Response lang="it">Patrollo questa rotta.;Ci sono, inizio la ronda.;Rotta fissata.</Response>
+            <Response lang="fr">Je patrouille sur cette route.;Compris, je commence la ronde.;Route enregistrée.</Response>
+            <Response lang="es">Patrullo esta ruta.;Voy, empiezo la patrulla.;Ruta fija.</Response>
+            <Response lang="de">Ich patrouilliere diese Route.;Mach ich, patrolle los.;Route eingeplant.</Response>
             <ActionType>Patrol</ActionType>
         </Trigger>
 
@@ -233,6 +636,17 @@
             <Phrase>cancel patrol;cancel route;cancel recording;never mind;stop recording;abort the route;</Phrase>
             <Aliases>cancel patrol;cancel route;</Aliases>
                         <Response lang="en">Cancelled, clearing the path.;Never mind, I'll stay here.;Path recording aborted.</Response>
+            <Response lang="zh">取消，清掉路线。;算了，我就在这。;路线记录中止。</Response>
+            <Response lang="tr">İptal, yol siliniyor.;Olur, burada kalırım.;Yol kaydı durduruldu.</Response>
+            <Response lang="ru">Отменяю, очищаю путь.;Ладно, останусь здесь.;Запись пути прервана.</Response>
+            <Response lang="pt">Cancelado, limpando o caminho.;Sem problema, fico aqui.;Registro do caminho abortado.</Response>
+            <Response lang="pl">Anulowane, czyścę trasę.;Nigdy um, zostaję tutaj.;Rejestracja trasy przerwana.</Response>
+            <Response lang="ko">취소, 경로 지웠어.;아니었어, 여기 있을게.;경로 기록 멈췄어.</Response>
+            <Response lang="ja">キャンセル、ルートを消す。;いや、ここで待つ。;ルート記録を止めた。</Response>
+            <Response lang="it">Annullato, rimuovo il percorso.;Lascia stare, resto qui.;Registrazione annullata.</Response>
+            <Response lang="fr">Annulé, je vide le parcours.;Oublie, je reste ici.;Enregistrement interrompu.</Response>
+            <Response lang="es">Cancelado, borrando el camino.;Olvidate, me quedo aquí.;Grabación del camino abortada.</Response>
+            <Response lang="de">Abgesagt, ich lösche den Weg.;Mach dir nichts, ich bleibe.;Wegaufnahme abgebrochen.</Response>
             <ActionType>CancelPatrolRecord</ActionType>
         </Trigger>
 
@@ -241,6 +655,17 @@
             <Phrase>come closer;get closer;move closer;move in tighter;come in tighter;tighten up;pull in;</Phrase>
             <Aliases>closer;</Aliases>
             <Response lang="en">I'll stay close.;Right behind you.;Got it.</Response>
+            <Response lang="zh">我贴着你走。;就在你后面。;好。</Response>
+            <Response lang="tr">Yakında kalacağım.;Tam arkanda.;Tamam.</Response>
+            <Response lang="ru">Держусь близко.;Прямо за тобой.;Принял.</Response>
+            <Response lang="pt">Fico pertinho.;Logo atrás de você.;Certo.</Response>
+            <Response lang="pl">Zostaję blisko.;Tuż za tobą.;Jasne.</Response>
+            <Response lang="ko">가까이 있을게.;바로 뒤에 있어.;알았어.</Response>
+            <Response lang="ja">近くにいるよ。;すぐ後ろ。;了解。</Response>
+            <Response lang="it">Resto vicino.;Proprio dietro.;Ricevuto.</Response>
+            <Response lang="fr">Je reste près de toi.;Juste derrière toi.;Compris.</Response>
+            <Response lang="es">Me quedo cerca.;Justo detrás tuyo.;Entendido.</Response>
+            <Response lang="de">Ich bleibe dicht dabei.;Direkt hinter dir.;Verstanden.</Response>
             <ActionType>SetFollowDistance</ActionType>
             <ActionParam>1</ActionParam>
         </Trigger>
@@ -249,6 +674,17 @@
             <Phrase>back off;give me space;back up;spread out;fan out;give me room;</Phrase>
             <Aliases>back off;space;</Aliases>
             <Response lang="en">I'll give you room.;Backing up.;Got it.</Response>
+            <Response lang="zh">我拉开点距离。;往后退。;好。</Response>
+            <Response lang="tr">Alan bırakıyorum.;Geride kalıyorum.;Tamam.</Response>
+            <Response lang="ru">Отойду подальше.;Отступаю.;Принял.</Response>
+            <Response lang="pt">Deixo espaço.;Recuando.;Certo.</Response>
+            <Response lang="pl">Zostawię odstęp.;Cofam się.;Jasne.</Response>
+            <Response lang="ko">거리 둘게.;뒤로 물러날게.;알았어.</Response>
+            <Response lang="ja">間隔を空けるよ。;後ろに下がって。;了解。</Response>
+            <Response lang="it">Lascio spazio.;Rimango indietro.;Ricevuto.</Response>
+            <Response lang="fr">Je te laisse de la place.;Je recule.;Compris.</Response>
+            <Response lang="es">Te dejo hueco.;Retrocedo.;Entendido.</Response>
+            <Response lang="de">Ich lasse Platz.;Gehe zurück.;Verstanden.</Response>
             <ActionType>SetFollowDistance</ActionType>
             <ActionParam>5</ActionParam>
         </Trigger>
@@ -257,6 +693,17 @@
             <Phrase>normal distance;default distance;</Phrase>
             <Aliases>normal distance;</Aliases>
             <Response lang="en">Back to normal.;Got it.</Response>
+            <Response lang="zh">恢复正常距离。;好。</Response>
+            <Response lang="tr">Normal mesafeye dönüyorum.;Tamam.</Response>
+            <Response lang="ru">Возвращаюсь к обычной дистанции.;Принял.</Response>
+            <Response lang="pt">De volta ao normal.;Certo.</Response>
+            <Response lang="pl">Wracam do normalnej odległości.;Jasne.</Response>
+            <Response lang="ko">보통 거리로 돌아갈게.;알았어.</Response>
+            <Response lang="ja">通常の距離に戻るよ。;了解。</Response>
+            <Response lang="it">Torno alla distanza normale.;Ricevuto.</Response>
+            <Response lang="fr">De retour à la normale.;Compris.</Response>
+            <Response lang="es">Vuelvo a la distancia normal.;Entendido.</Response>
+            <Response lang="de">Zurück zur normalen Distanz.;Verstanden.</Response>
             <ActionType>SetFollowDistance</ActionType>
             <ActionParam>2.5</ActionParam>
         </Trigger>
@@ -268,6 +715,17 @@
         <Trigger enabled="true">
             <Phrase>cover north;hold north;watch north;</Phrase>
             <Response lang="en">Covering north.;Holding the north side.</Response>
+            <Response lang="zh">北面我守。;北面交给我。</Response>
+            <Response lang="tr">Kuzeyi örtüyorum.;Kuzey tarafı bende.</Response>
+            <Response lang="ru">Прикрываю север.;Северная сторона за мной.</Response>
+            <Response lang="pt">Cubro o norte.;Seguro o lado norte.</Response>
+            <Response lang="pl">Ossłoniam północ.;Trzymam północną stronę.</Response>
+            <Response lang="ko">북쪽 맡을게.;북쪽은 내가 지킬게.</Response>
+            <Response lang="ja">北を守っている。;北側は任せて。</Response>
+            <Response lang="it">Copro il nord.;Tengo il lato nord.</Response>
+            <Response lang="fr">Je couvre le nord.;Je tiens le côté nord.</Response>
+            <Response lang="es">Cubro el norte.;Sostengo el lado norte.</Response>
+            <Response lang="de">Norden abgesichert.;Halte die Nordseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>abs:0</ActionParam>
         </Trigger>
@@ -275,6 +733,17 @@
         <Trigger enabled="true">
             <Phrase>cover east;hold east;watch east;</Phrase>
             <Response lang="en">Covering east.;Holding the east side.</Response>
+            <Response lang="zh">东面我守。;东面交给我。</Response>
+            <Response lang="tr">Doğuyu örtüyorum.;Doğu tarafı bende.</Response>
+            <Response lang="ru">Прикрываю восток.;Восточная сторона за мной.</Response>
+            <Response lang="pt">Cubro o leste.;Seguro o lado leste.</Response>
+            <Response lang="pl">Ossłoniam wschód.;Trzymam wschodnią stronę.</Response>
+            <Response lang="ko">동쪽 맡을게.;동쪽은 내가 지킬게.</Response>
+            <Response lang="ja">東を守っている。;東側は任せて。</Response>
+            <Response lang="it">Copro l'est.;Tengo il lato est.</Response>
+            <Response lang="fr">Je couvre l'est.;Je tiens le côté est.</Response>
+            <Response lang="es">Cubro el este.;Sostengo el lado este.</Response>
+            <Response lang="de">Osten abgesichert.;Halte die Ostseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>abs:90</ActionParam>
         </Trigger>
@@ -282,6 +751,17 @@
         <Trigger enabled="true">
             <Phrase>cover south;hold south;watch south;</Phrase>
             <Response lang="en">Covering south.;Holding the south side.</Response>
+            <Response lang="zh">南面我守。;南面交给我。</Response>
+            <Response lang="tr">Güneyi örtüyorum.;Güney tarafı bende.</Response>
+            <Response lang="ru">Прикрываю юг.;Южная сторона за мной.</Response>
+            <Response lang="pt">Cubro o sul.;Seguro o lado sul.</Response>
+            <Response lang="pl">Ossłoniam południe.;Trzymam południową stronę.</Response>
+            <Response lang="ko">남쪽 맡을게.;남쪽은 내가 지킬게.</Response>
+            <Response lang="ja">南を守っている。;南側は任せて。</Response>
+            <Response lang="it">Copro il sud.;Tengo il lato sud.</Response>
+            <Response lang="fr">Je couvre le sud.;Je tiens le côté sud.</Response>
+            <Response lang="es">Cubro el sur.;Sostengo el lado sur.</Response>
+            <Response lang="de">Süden abgesichert.;Halte die Südseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>abs:180</ActionParam>
         </Trigger>
@@ -289,6 +769,17 @@
         <Trigger enabled="true">
             <Phrase>cover west;hold west;watch west;</Phrase>
             <Response lang="en">Covering west.;Holding the west side.</Response>
+            <Response lang="zh">西面我守。;西面交给我。</Response>
+            <Response lang="tr">Batıyı örtüyorum.;Batı tarafı bende.</Response>
+            <Response lang="ru">Прикрываю запад.;Западная сторона за мной.</Response>
+            <Response lang="pt">Cubro o oeste.;Seguro o lado oeste.</Response>
+            <Response lang="pl">Ossłoniam zachód.;Trzymam zachodnią stronę.</Response>
+            <Response lang="ko">서쪽 맡을게.;서쪽은 내가 지킬게.</Response>
+            <Response lang="ja">西を守っている。;西側は任せて。</Response>
+            <Response lang="it">Copro l'ovest.;Tengo il lato ovest.</Response>
+            <Response lang="fr">Je couvre l'ouest.;Je tiens le côté ouest.</Response>
+            <Response lang="es">Cubro el oeste.;Sostengo el lado oeste.</Response>
+            <Response lang="de">Westen abgesichert.;Halte die Westseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>abs:270</ActionParam>
         </Trigger>
@@ -298,6 +789,17 @@
         <Trigger enabled="true">
             <Phrase>cover northeast;hold northeast;watch northeast;cover north east;hold north east;watch north east;</Phrase>
             <Response lang="en">Covering northeast.;Holding the northeast side.</Response>
+            <Response lang="zh">东北面我守。;东北面交给我。</Response>
+            <Response lang="tr">Kuzeydoğuyu örtüyorum.;Kuzeydoğu tarafı bende.</Response>
+            <Response lang="ru">Прикрываю северо-восток.;Северо-восточная сторона за мной.</Response>
+            <Response lang="pt">Cubro o nordeste.;Seguro o lado nordeste.</Response>
+            <Response lang="pl">Ossłoniam północny wschód.;Trzymam północno-wschodnią stronę.</Response>
+            <Response lang="ko">북동쪽 맡을게.;북동쪽은 내가 지킬게.</Response>
+            <Response lang="ja">北東を守っている。;北東側は任せて。</Response>
+            <Response lang="it">Copro il nord-est.;Tengo il lato nord-est.</Response>
+            <Response lang="fr">Je couvre le nord-est.;Je tiens le côté nord-est.</Response>
+            <Response lang="es">Cubro el noreste.;Sostengo el lado noreste.</Response>
+            <Response lang="de">Nordosten abgesichert.;Halte die Nordostseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>abs:45</ActionParam>
         </Trigger>
@@ -305,6 +807,17 @@
         <Trigger enabled="true">
             <Phrase>cover southeast;hold southeast;watch southeast;cover south east;hold south east;watch south east;</Phrase>
             <Response lang="en">Covering southeast.;Holding the southeast side.</Response>
+            <Response lang="zh">东南面我守。;东南面交给我。</Response>
+            <Response lang="tr">Güneydoğuyu örtüyorum.;Güneydoğu tarafı bende.</Response>
+            <Response lang="ru">Прикрываю юго-восток.;Юго-восточная сторона за мной.</Response>
+            <Response lang="pt">Cubro o sudeste.;Seguro o lado sudeste.</Response>
+            <Response lang="pl">Ossłoniam południowy wschód.;Trzymam południowo-wschodnią stronę.</Response>
+            <Response lang="ko">남동쪽 맡을게.;남동쪽은 내가 지킬게.</Response>
+            <Response lang="ja">南東を守っている。;南東側は任せて。</Response>
+            <Response lang="it">Copro il sud-est.;Tengo il lato sud-est.</Response>
+            <Response lang="fr">Je couvre le sud-est.;Je tiens le côté sud-est.</Response>
+            <Response lang="es">Cubro el sureste.;Sostengo el lado sureste.</Response>
+            <Response lang="de">Südosten abgesichert.;Halte die Südostseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>abs:135</ActionParam>
         </Trigger>
@@ -312,6 +825,17 @@
         <Trigger enabled="true">
             <Phrase>cover southwest;hold southwest;watch southwest;cover south west;hold south west;watch south west;</Phrase>
             <Response lang="en">Covering southwest.;Holding the southwest side.</Response>
+            <Response lang="zh">西南面我守。;西南面交给我。</Response>
+            <Response lang="tr">Güneybatıyı örtüyorum.;Güneybatı tarafı bende.</Response>
+            <Response lang="ru">Прикрываю юго-запад.;Юго-западная сторона за мной.</Response>
+            <Response lang="pt">Cubro o sudoeste.;Seguro o lado sudoeste.</Response>
+            <Response lang="pl">Ossłoniam południowy zachód.;Trzymam południowo-zachodnią stronę.</Response>
+            <Response lang="ko">남서쪽 맡을게.;남서쪽은 내가 지킬게.</Response>
+            <Response lang="ja">南西を守っている。;南西側は任せて。</Response>
+            <Response lang="it">Copro il sud-ovest.;Tengo il lato sud-ovest.</Response>
+            <Response lang="fr">Je couvre le sud-ouest.;Je tiens le côté sud-ouest.</Response>
+            <Response lang="es">Cubro el suroeste.;Sostengo el lado suroeste.</Response>
+            <Response lang="de">Südwesten abgesichert.;Halte die Südwestseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>abs:225</ActionParam>
         </Trigger>
@@ -319,6 +843,17 @@
         <Trigger enabled="true">
             <Phrase>cover northwest;hold northwest;watch northwest;cover north west;hold north west;watch north west;</Phrase>
             <Response lang="en">Covering northwest.;Holding the northwest side.</Response>
+            <Response lang="zh">西北面我守。;西北面交给我。</Response>
+            <Response lang="tr">Kuzeybatıyı örtüyorum.;Kuzeybatı tarafı bende.</Response>
+            <Response lang="ru">Прикрываю северо-запад.;Северо-западная сторона за мной.</Response>
+            <Response lang="pt">Cubro o noroeste.;Seguro o lado noroeste.</Response>
+            <Response lang="pl">Ossłoniam północny zachód.;Trzymam północno-zachodnią stronę.</Response>
+            <Response lang="ko">북서쪽 맡을게.;북서쪽은 내가 지킬게.</Response>
+            <Response lang="ja">北西を守っている。;北西側は任せて。</Response>
+            <Response lang="it">Copro il nord-ovest.;Tengo il lato nord-ovest.</Response>
+            <Response lang="fr">Je couvre le nord-ouest.;Je tiens le côté nord-ouest.</Response>
+            <Response lang="es">Cubro el noroeste.;Sostengo el lado noroeste.</Response>
+            <Response lang="de">Nordwesten abgesichert.;Halte die Nordwestseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>abs:315</ActionParam>
         </Trigger>
@@ -329,6 +864,17 @@
         <Trigger enabled="true">
             <Phrase>cover the front;cover front;watch the front;hold the front;cover ahead;watch ahead;</Phrase>
             <Response lang="en">Covering the front.;On the front.</Response>
+            <Response lang="zh">我守前面。;前面交给我。</Response>
+            <Response lang="tr">Önü örtüyorum.;Ön taraf bende.</Response>
+            <Response lang="ru">Прикрываю перед.;Передняя сторона за мной.</Response>
+            <Response lang="pt">Cubro a frente.;Frente comigo.</Response>
+            <Response lang="pl">Ossłoniam przód.;Przód trzymany.</Response>
+            <Response lang="ko">앞을 맡을게.;앞은 내가 지킬게.</Response>
+            <Response lang="ja">前を守っている。;前側は任せて。</Response>
+            <Response lang="it">Copro il frontale.;Fronte con me.</Response>
+            <Response lang="fr">Je couvre l'avant.;L'avant est à moi.</Response>
+            <Response lang="es">Cubro el frente.;El frente conmigo.</Response>
+            <Response lang="de">Die Front ist abgesichert.;Halte die Frontseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>0</ActionParam>
         </Trigger>
@@ -336,6 +882,17 @@
         <Trigger enabled="true">
             <Phrase>cover the left;cover left;watch the left;hold the left;cover my left;</Phrase>
             <Response lang="en">Covering the left.;On your left.</Response>
+            <Response lang="zh">我守你的左面。;左侧交给我。</Response>
+            <Response lang="tr">Sol tarafını örtüyorum.;Sende, solda.</Response>
+            <Response lang="ru">Прикрываю левый бок.;На твоем левом.</Response>
+            <Response lang="pt">Cubro o teu lado esquerdo.;No teu esquerdo.</Response>
+            <Response lang="pl">Ossłoniam lewe skrzydło.;Na twojej lewej.</Response>
+            <Response lang="ko">네 왼쪽을 지킬게.;왼쪽 맡아.</Response>
+            <Response lang="ja">左を守る。;左に就く。</Response>
+            <Response lang="it">Copro il tuo fianco sinistro.;Sul tuo sinistro.</Response>
+            <Response lang="fr">Je couvre ton flanc gauche.;Sur ton gauche.</Response>
+            <Response lang="es">Cubro tu flanco izquierdo.;En tu izquierda.</Response>
+            <Response lang="de">Ich decke deine linke Seite.;Links bei dir.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>90</ActionParam>
         </Trigger>
@@ -343,6 +900,17 @@
         <Trigger enabled="true">
             <Phrase>cover the rear;cover rear;watch the rear;hold the rear;cover behind me;watch behind me;watch our backs;</Phrase>
             <Response lang="en">Watching our backs.;Covering the rear.</Response>
+            <Response lang="zh">我看着后路。;后面我负责。</Response>
+            <Response lang="tr">Arkamızı gözetliyorum.;Arka taraf bende.</Response>
+            <Response lang="ru">Стык прикрываю.;Прикрываю тыл.</Response>
+            <Response lang="pt">Vigio nossas costas.;Cubro a retaguarda.</Response>
+            <Response lang="pl">Obserwuję nasze plecy.;Ossłoniam tył.</Response>
+            <Response lang="ko">등을 보고 있을게.;뒤쪽 지킬게.</Response>
+            <Response lang="ja">背後を見る。;後ろを守る。</Response>
+            <Response lang="it">Vedo le nostre spalle.;Copro il retro.</Response>
+            <Response lang="fr">Je surveille nos arrières.;Je couvre l'arrière.</Response>
+            <Response lang="es">Vigilo nuestras espaldas.;Cubro la retaguardia.</Response>
+            <Response lang="de">Ich passe auf unsere Rücken auf.;Halte die Rückseite.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>180</ActionParam>
         </Trigger>
@@ -350,6 +918,17 @@
         <Trigger enabled="true">
             <Phrase>cover the right;cover right;watch the right;hold the right;cover my right;</Phrase>
             <Response lang="en">Covering the right.;On your right.</Response>
+            <Response lang="zh">我守你的右面。;右侧交给我。</Response>
+            <Response lang="tr">Sağ tarafını örtüyorum.;Sende, sağda.</Response>
+            <Response lang="ru">Прикрываю правый бок.;На твоем правом.</Response>
+            <Response lang="pt">Cubro o teu lado direito.;No teu direito.</Response>
+            <Response lang="pl">Ossłoniam prawe skrzydło.;Na twojej prawej.</Response>
+            <Response lang="ko">네 오른쪽을 지킬게.;오른쪽 맡아.</Response>
+            <Response lang="ja">右を守る。;右に就く。</Response>
+            <Response lang="it">Copro il tuo fianco destro.;Sul tuo destro.</Response>
+            <Response lang="fr">Je couvre ton flanc droit.;Sur ton droit.</Response>
+            <Response lang="es">Cubro tu flanco derecho.;En tu derecha.</Response>
+            <Response lang="de">Ich decke deine rechte Seite.;Rechts bei dir.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>270</ActionParam>
         </Trigger>
@@ -359,6 +938,17 @@
         <Trigger enabled="true">
             <Phrase>shield the front;shield front;shield ahead;shield wall;form a shield wall;make a shield wall;</Phrase>
             <Response lang="en">Shielding the front.;Wall up front.</Response>
+            <Response lang="zh">我挡在前面。;正面立盾墙。</Response>
+            <Response lang="tr">Önden kalkanım.;Önde kalkan duvarı.</Response>
+            <Response lang="ru">Щитом прикрываю перед.;Стена спереди.</Response>
+            <Response lang="pt">Escudo na frente.;Muralha na frente.</Response>
+            <Response lang="pl">Tarcza na przodzie.;Ściana na przodzie.</Response>
+            <Response lang="ko">앞을 방패로 막아.;앞에 방패벽.</Response>
+            <Response lang="ja">前を盾で防ぐ。;前に壁を張る。</Response>
+            <Response lang="it">Scudo davanti.;Muro davanti.</Response>
+            <Response lang="fr">Bouclier devant.;Mur en avant.</Response>
+            <Response lang="es">Escudo al frente.;Muralla al frente.</Response>
+            <Response lang="de">Schild vor uns.;Mauer vorne.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>0</ActionParam>
             <ActionParam2>arc5</ActionParam2>
@@ -367,6 +957,17 @@
         <Trigger enabled="true">
             <Phrase>shield the left;shield left;shield my left;</Phrase>
             <Response lang="en">Shielding the left.;Wall on the left.</Response>
+            <Response lang="zh">我挡住左面。;左侧立盾墙。</Response>
+            <Response lang="tr">Soldan kalkanım.;Solda kalkan duvarı.</Response>
+            <Response lang="ru">Щитом прикрываю левый бок.;Стена слева.</Response>
+            <Response lang="pt">Escudo à esquerda.;Muralha à esquerda.</Response>
+            <Response lang="pl">Tarcza po lewej.;Ściana po lewej.</Response>
+            <Response lang="ko">왼쪽을 방패로 막아.;왼쪽에 방패벽.</Response>
+            <Response lang="ja">左を盾で防ぐ。;左に壁を張る。</Response>
+            <Response lang="it">Scudo a sinistra.;Muro a sinistra.</Response>
+            <Response lang="fr">Bouclier à gauche.;Mur à gauche.</Response>
+            <Response lang="es">Escudo a la izquierda.;Muralla a la izquierda.</Response>
+            <Response lang="de">Schild links.;Mauer links.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>90</ActionParam>
             <ActionParam2>arc5</ActionParam2>
@@ -375,6 +976,17 @@
         <Trigger enabled="true">
             <Phrase>shield the rear;shield rear;shield behind me;shield our backs;</Phrase>
             <Response lang="en">Shielding our backs.;Wall behind us.</Response>
+            <Response lang="zh">我挡住后面。;身后立盾墙。</Response>
+            <Response lang="tr">Arkamızı kalkanla koruyorum.;Arkamızda kalkan duvarı.</Response>
+            <Response lang="ru">Щитом прикрываю спину.;Стена позади.</Response>
+            <Response lang="pt">Escudo nas costas.;Muralha atrás de nós.</Response>
+            <Response lang="pl">Tarcza za plecami.;Ściana z tyłu.</Response>
+            <Response lang="ko">등을 방패로 막아.;뒤에 방패벽.</Response>
+            <Response lang="ja">背後を盾で防ぐ。;後ろに壁を張る。</Response>
+            <Response lang="it">Scudo alle spalle.;Muro dietro di noi.</Response>
+            <Response lang="fr">Bouclier dans notre dos.;Mur derrière nous.</Response>
+            <Response lang="es">Escudo a nuestras espaldas.;Muralla detrás de nosotros.</Response>
+            <Response lang="de">Schild auf dem Rücken.;Mauer hinter uns.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>180</ActionParam>
             <ActionParam2>arc5</ActionParam2>
@@ -383,6 +995,17 @@
         <Trigger enabled="true">
             <Phrase>shield the right;shield right;shield my right;</Phrase>
             <Response lang="en">Shielding the right.;Wall on the right.</Response>
+            <Response lang="zh">我挡住右面。;右侧立盾墙。</Response>
+            <Response lang="tr">Sağdan kalkanım.;Sağda kalkan duvarı.</Response>
+            <Response lang="ru">Щитом прикрываю правый бок.;Стена справа.</Response>
+            <Response lang="pt">Escudo à direita.;Muralha à direita.</Response>
+            <Response lang="pl">Tarcza po prawej.;Ściana po prawej.</Response>
+            <Response lang="ko">오른쪽을 방패로 막아.;오른쪽에 방패벽.</Response>
+            <Response lang="ja">右を盾で防ぐ。;右に壁を張る。</Response>
+            <Response lang="it">Scudo a destra.;Muro a destra.</Response>
+            <Response lang="fr">Bouclier à droite.;Mur à droite.</Response>
+            <Response lang="es">Escudo a la derecha.;Muralla a la derecha.</Response>
+            <Response lang="de">Schild rechts.;Mauer rechts.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>270</ActionParam>
             <ActionParam2>arc5</ActionParam2>
@@ -391,6 +1014,17 @@
         <Trigger enabled="true">
             <Phrase>full shield;shield all around;shield everywhere;</Phrase>
             <Response lang="en">Full shield.;Covering all around.</Response>
+            <Response lang="zh">全面盾。;四面包围。</Response>
+            <Response lang="tr">Tam kalkan.;Her yönden örtüyorum.</Response>
+            <Response lang="ru">Полный щит.;Прикрываю со всех сторон.</Response>
+            <Response lang="pt">Escudo completo.;Cobro todos os lados.</Response>
+            <Response lang="pl">Pełna tarcza.;Ossłaniam ze wszystkich stron.</Response>
+            <Response lang="ko">완전 방패.;모든 방향을 막아.</Response>
+            <Response lang="ja">完全防御。;全方位を守る。</Response>
+            <Response lang="it">Scudo completo.;Coperto su tutti i lati.</Response>
+            <Response lang="fr">Bouclier complet.;Protégé de toutes parts.</Response>
+            <Response lang="es">Escudo completo.;Cubrimos todos los lados.</Response>
+            <Response lang="de">Volles Schild.;Rundum abgesichert.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>0</ActionParam>
             <ActionParam2>arc8</ActionParam2>
@@ -401,6 +1035,17 @@
         <Trigger enabled="true">
             <Phrase>take point;</Phrase>
             <Response lang="en">On point.</Response>
+            <Response lang="zh">我打头阵。</Response>
+            <Response lang="tr">Önde benim.</Response>
+            <Response lang="ru">Я иду первым.</Response>
+            <Response lang="pt">Vou na frente.</Response>
+            <Response lang="pl">Idę pierwszy.</Response>
+            <Response lang="ko">앞선이 내가 가.</Response>
+            <Response lang="ja">頭を走るよ。</Response>
+            <Response lang="it">Io in punta.</Response>
+            <Response lang="fr">J'ouvre le pas.</Response>
+            <Response lang="es">Voy delante.</Response>
+            <Response lang="de">Ich mache Spitze.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>point,1</ActionParam>
         </Trigger>
@@ -410,6 +1055,17 @@
             <Phrase>on me;stay close;cancel formation;break formation;</Phrase>
             <Aliases>fall in;come back;</Aliases>
             <Response lang="en">On you.;Falling in.;Right behind you.</Response>
+            <Response lang="zh">我贴着你。;归队。;就在你后面。</Response>
+            <Response lang="tr">Sende olacağım.;Sıraya giriyorum.;Tam arkanda.</Response>
+            <Response lang="ru">Возле тебя.;Иду в строй.;Прямо за тобой.</Response>
+            <Response lang="pt">Colado em você.;Enfileirando.;Logo atrás de você.</Response>
+            <Response lang="pl">Przy tobie.;Wracam do szyku.;Tuż za tobą.</Response>
+            <Response lang="ko">네 옆으로 갈게.;정렬해.;바로 뒤에 있어.</Response>
+            <Response lang="ja">そばにいるよ。;隊列に戻る。;すぐ後ろ。</Response>
+            <Response lang="it">Con te.;Mi allineo.;Proprio dietro.</Response>
+            <Response lang="fr">Je suis avec toi.;Je me range.;Juste derrière toi.</Response>
+            <Response lang="es">Contigo.;Entra en línea.;Justo detrás tuyo.</Response>
+            <Response lang="de">Bei dir.;Ich stelle mich auf.;Direkt hinter dir.</Response>
             <ActionType>SetFormation</ActionType>
             <ActionParam>0,0</ActionParam>
         </Trigger>
@@ -419,6 +1075,17 @@
         <Trigger enabled="true">
             <Phrase>go to that;go there;move to that;get to that;go to that door;post up there;</Phrase>
             <Response lang="en">On my way.;Moving there.</Response>
+            <Response lang="zh">我去。;正赶过去。</Response>
+            <Response lang="tr">Yolda.;Oraya gidiyorum.</Response>
+            <Response lang="ru">Уже иду.;Иду туда.</Response>
+            <Response lang="pt">A caminho.;Movendo-me para lá.</Response>
+            <Response lang="pl">W drodze.;Idę tam.</Response>
+            <Response lang="ko">가는 중이다.;거기로 갈게.</Response>
+            <Response lang="ja">向かっているよ。;そこへ移動する。</Response>
+            <Response lang="it">In cammino.;Mi sposto lì.</Response>
+            <Response lang="fr">J'y vais.;Je m'y rends.</Response>
+            <Response lang="es">Voy en camino.;Me muevo hacia allí.</Response>
+            <Response lang="de">Unterwegs.;Ich gehe dorthin.</Response>
             <ActionType>MoveToPosition</ActionType>
         </Trigger>
 
@@ -429,6 +1096,17 @@
             <Phrase>kneel;get down;take cover;</Phrase>
             <Aliases>take a knee;</Aliases>
             <Response lang="en">Down.;Taking cover.;Got it.</Response>
+            <Response lang="zh">蹲下。;找掩护了。;好。</Response>
+            <Response lang="tr">Yere.;Sığınak alıyorum.;Tamam.</Response>
+            <Response lang="ru">Вниз.;Принимаю укрытие.;Принял.</Response>
+            <Response lang="pt">Baixando.;Buscando cobertura.;Certo.</Response>
+            <Response lang="pl">W dół.;Biorę osłonę.;Jasne.</Response>
+            <Response lang="ko">개구리 앉음.;개구리 앉을게.;알겠어.</Response>
+            <Response lang="ja">下がるよ。;伏せてる。;了解。</Response>
+            <Response lang="it">In basso.;Prendo copertura.;Ricevuto.</Response>
+            <Response lang="fr">En bas.;Je prends couverture.;Compris.</Response>
+            <Response lang="es">Abajo.;Busco cobertura.;Entendido.</Response>
+            <Response lang="de">Runter.;Deckung.;Verstanden.</Response>
             <ActionType>SetCrouch</ActionType>
             <ActionParam>1</ActionParam>
         </Trigger>
@@ -437,6 +1115,17 @@
             <Phrase>stand up;on your feet;</Phrase>
             <Aliases>on your feet;</Aliases>
             <Response lang="en">Up.;Rising.;Yes.</Response>
+            <Response lang="zh">起来。;站起来了。;是。</Response>
+            <Response lang="tr">Ayağa.;Kalkıyorum.;Evet.</Response>
+            <Response lang="ru">Встать.;Встаю.;Да.</Response>
+            <Response lang="pt">De pé.;Levantando.;Sim.</Response>
+            <Response lang="pl">W górę.;Wstaję.;Tak.</Response>
+            <Response lang="ko">일어설게.;일어선다.;그래.</Response>
+            <Response lang="ja">起きるよ。;立ち上がる。;はい。</Response>
+            <Response lang="it">In piedi.;Mi alzo.;Sì.</Response>
+            <Response lang="fr">Debout.;Je me relève.;Oui.</Response>
+            <Response lang="es">De pie.;Levanto.;Sí.</Response>
+            <Response lang="de">Hoch.;Ich stehe auf.;Ja.</Response>
             <ActionType>SetCrouch</ActionType>
             <ActionParam>2</ActionParam>
         </Trigger>
@@ -445,6 +1134,17 @@
             <Phrase>follow my lead;</Phrase>
             <Aliases>match me;normal stance;as you were;</Aliases>
             <Response lang="en">Copy.;On it.;As you say.</Response>
+            <Response lang="zh">收到。;照做。;听你的。</Response>
+            <Response lang="tr">Anlaşıldı.;Yapıyorum.;Dediğin gibi.</Response>
+            <Response lang="ru">Принял.;Исполняю.;Как скажешь.</Response>
+            <Response lang="pt">Recebido.;Pode ser.;Como quiser.</Response>
+            <Response lang="pl">Jasne.;W takim razie.;Jak każesz.</Response>
+            <Response lang="ko">수신했다.;그대로 할게.;말한 대로.</Response>
+            <Response lang="ja">了解。;やるよ。;その通りにする。</Response>
+            <Response lang="it">Ricevuto.;Ci sono.;Come vuoi.</Response>
+            <Response lang="fr">Compris.;J'y vais.;Comme tu dis.</Response>
+            <Response lang="es">Recibido.;Enseguida.;Como digas.</Response>
+            <Response lang="de">Verstanden.;Mach ich.;Wie du sagst.</Response>
             <ActionType>SetCrouch</ActionType>
             <ActionParam>0</ActionParam>
         </Trigger>
@@ -454,6 +1154,17 @@
         <Trigger enabled="true">
             <Phrase>go tactical;lock in;tactical mode;command mode;</Phrase>
             <Response lang="en">Tactical mode on.;Locked in.;Command only.</Response>
+            <Response lang="zh">战术模式开。;锁定。;只接命令。</Response>
+            <Response lang="tr">Taktik mod açık.;Kilitli.;Sadece komut.</Response>
+            <Response lang="ru">Тактический режим вкл.;Зафиксировано.;Только команды.</Response>
+            <Response lang="pt">Modo tático ligado.;Travado.;Só comandos.</Response>
+            <Response lang="pl">Tryb taktyczny włączony.;Zablokowane.;Tylko komendy.</Response>
+            <Response lang="ko">전술 모드 켜짐.;고정 완료.;명령만 받아.</Response>
+            <Response lang="ja">戦術モードオン。;固定した。;命令のみ。</Response>
+            <Response lang="it">Modo tattico attivo.;Bloccato.;Solo comandi.</Response>
+            <Response lang="fr">Mode tactique actif.;Verrouillé.;Ordres uniquement.</Response>
+            <Response lang="es">Modo táctico activado.;Bloqueado.;Solo órdenes.</Response>
+            <Response lang="de">Taktikmodus an.;Gesperrt.;Nur Befehle.</Response>
             <ActionType>SetTacticalMode</ActionType>
             <ActionParam>1</ActionParam>
         </Trigger>
@@ -461,6 +1172,17 @@
         <Trigger enabled="true">
             <Phrase>at ease;stand down;normal mode;</Phrase>
             <Response lang="en">At ease.;Normal mode.;Relaxing.</Response>
+            <Response lang="zh">放松。;恢复正常。;松口气了。</Response>
+            <Response lang="tr">Rahat ol.;Normal mod.;Geçiyorum.</Response>
+            <Response lang="ru">Режим сброшен.;Обычный режим.;Ослабляю.</Response>
+            <Response lang="pt">À vontade.;Modo normal.;Soltando.</Response>
+            <Response lang="pl">Spocznij.;Normalny tryb.;Rozluźniam się.</Response>
+            <Response lang="ko">긴장 풀고.;보통 모드로.;이완할게.</Response>
+            <Response lang="ja">休め。;通常モード。;緩めるよ。</Response>
+            <Response lang="it">Al vostro posto.;Modalità normale.;Mi rilasso.</Response>
+            <Response lang="fr">Desserrez.;Mode normal.;Je me détends.</Response>
+            <Response lang="es">Suelten.;Modo normal.;Me relajo.</Response>
+            <Response lang="de">Locker.;Normalmodus.;Ich entspanne mich.</Response>
             <ActionType>SetTacticalMode</ActionType>
             <ActionParam>0</ActionParam>
         </Trigger>
@@ -1659,12 +2381,34 @@
             <Phrase>weapons free;attack;engage;fight them;hunting mode;</Phrase>
             <Aliases>engage;hunting;</Aliases>
             <Response lang="en">Weapons free.;Engaging.;On it.</Response>
+            <Response lang="zh">武器放开。;开火。;执行。</Response>
+            <Response lang="tr">Ateş izni var.;Savaşa giriyorum.;Tamam.</Response>
+            <Response lang="ru">Стрельба разрешена.;Вхожу в бой.;Пошёл.</Response>
+            <Response lang="pt">Armas livres.;Engajando.;Pode.</Response>
+            <Response lang="pl">Ogień wolny.;Wchodzę w walkę.;Jasne.</Response>
+            <Response lang="ko">총격 가능.;전투 개시.;알겠어.</Response>
+            <Response lang="ja">武器使用可。;交戦する。;了解。</Response>
+            <Response lang="it">Armi libere.;Ingresso in combattimento.;Ci sono.</Response>
+            <Response lang="fr">Armes libres.;J'engage.;Compris.</Response>
+            <Response lang="es">Armas libres.;Entro en combate.;Entendido.</Response>
+            <Response lang="de">Waffen frei.;Ich greife an.;Mach ich.</Response>
             <ActionType>SetEngage</ActionType>
             <ActionParam>1</ActionParam>
         </Trigger>
         <Trigger enabled="true">
             <Phrase>cover me;defend only;at ease;normal engagement;</Phrase>
             <Response lang="en">Covering you.;Defensive only.;Understood.</Response>
+            <Response lang="zh">我掩护你。;只守不攻。;明白。</Response>
+            <Response lang="tr">Seni örtüyorum.;Sadece savunma.;Anlaşıldı.</Response>
+            <Response lang="ru">Прикрываю тебя.;Только оборона.;Понял.</Response>
+            <Response lang="pt">Cobrindo você.;Só defesa.;Entendido.</Response>
+            <Response lang="pl">Osłaniam cię.;Tylko obrona.;Jasne.</Response>
+            <Response lang="ko">너를 지킬게.;방어만 해.;알겠어.</Response>
+            <Response lang="ja">前をカバー。;防御だけ。;了解。</Response>
+            <Response lang="it">Ti copro.;Solo difesa.;Ricevuto.</Response>
+            <Response lang="fr">Je te couvre.;Défense uniquement.;Compris.</Response>
+            <Response lang="es">Te cubro.;Solo defensa.;Entendido.</Response>
+            <Response lang="de">Ich decke dich.;Nur Verteidigung.;Verstanden.</Response>
             <ActionType>SetEngage</ActionType>
             <ActionParam>0</ActionParam>
         </Trigger>
@@ -1676,12 +2420,34 @@
         <Trigger enabled="true">
             <Phrase>hold fire;stand down;weapons tight;ignore them;leave it;leave them;full control;</Phrase>
             <Response lang="en">Holding fire.;Your call.;Standing down.</Response>
+            <Response lang="zh">不开火。;听你的。;停手。</Response>
+            <Response lang="tr">Ateş tuttum.;Karar sende.;Duruyorum.</Response>
+            <Response lang="ru">Не стреляю.;Решать тебе.;Отхожу в ожидание.</Response>
+            <Response lang="pt">Segurando o gatilho.;Comando é seu.;Parado.</Response>
+            <Response lang="pl">Nie strzelam.;Decydujesz.;Stoję w miejscu.</Response>
+            <Response lang="ko">총 안 쏴.;네가 결정해.;정지.</Response>
+            <Response lang="ja">撃たない。;判断はあなたに。;待機する。</Response>
+            <Response lang="it">Tiro trattenuto.;Decidi tu.;In attesa.</Response>
+            <Response lang="fr">Je retiens le feu.;C'est toi qui décides.;Je m'arrête.</Response>
+            <Response lang="es">Aguantando el fuego.;Tú decides.;Me detengo.</Response>
+            <Response lang="de">Feuer festhalten.;Du entscheidest.;Ich halte inne.</Response>
             <ActionType>SetEngage</ActionType>
             <ActionParam>2</ActionParam>
         </Trigger>
         <Trigger enabled="true">
             <Phrase>disengage;break off;fall back;retreat;back off;</Phrase>
             <Response lang="en">Breaking off.;Falling back.;Coming back.</Response>
+            <Response lang="zh">脱离接敌。;撤回去。;马上回来。</Response>
+            <Response lang="tr">Çekiliyorum.;Geriye çekiliyorum.;Dönüyorum.</Response>
+            <Response lang="ru">Отрываюсь.;Отступаю.;Возвращаюсь.</Response>
+            <Response lang="pt">Desengajando.;Recuando.;Volto.</Response>
+            <Response lang="pl">Rozchodzę się.;Wycofuję się.;Wracam.</Response>
+            <Response lang="ko">전투 종료해.;뒤로 물러날게.;돌아올게.</Response>
+            <Response lang="ja">離脱する。;下がって。;戻ってくる。</Response>
+            <Response lang="it">Mi disimpegno.;Retrocedo.;Ritorno.</Response>
+            <Response lang="fr">Je me désengage.;Je recule.;Je reviens.</Response>
+            <Response lang="es">Desengancho.;Retrocedo.;Vuelvo.</Response>
+            <Response lang="de">Ich breche ab.;Gehe zurück.;Ich komme zurück.</Response>
             <ActionType>SetEngage</ActionType>
             <ActionParam>3</ActionParam>
         </Trigger>

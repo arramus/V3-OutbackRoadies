@@ -282,7 +282,6 @@ SdcsNPC_FollowMe,dialogs,Dialogs,,,,Follow me,,Folge mir,Sígueme,Suivez-moi,Seg
 SdcsNPC_GuardHere,dialogs,Dialogs,,,,Stay where I am standing,,"Bleib dort, wo ich stehe",Quédate donde estoy yo,Restez où je suis debout,Resta dove sono io,私が立っている場所にとどまってください,내가 서 있는 곳에 있어,"Zostań tam, gdzie stoję",Fique onde eu estou,"Стой там, где стою я",Durduğum yerde kal,待在我站的地方,待在我站的地方
 SdcsNPC_GuardReturnHere,dialogs,Dialogs,,,,Guard and return to where I am standing,,"Bewache und kehre dorthin zurück, wo ich stehe",Vigila y vuelve a donde estoy yo,Gardez et revenez où je suis debout,Fai la guardia e torna dove sono io,私が立っている場所に戻って警備してください,경계하다가 내가 서 있는 곳으로 돌아와,"Pilnuj i wracaj tam, gdzie stoję",Vigie e volte para onde eu estou,"Охраняй и возвращайся туда, где стою я",Nöbet tut ve durduğum yere dön,警戒并回到我站的地方,警戒並回到我站的地方
 SdcsNPC_Hire,dialogs,Dialogs,,,,I am interested in hiring you.,,Ich möchte dich anheuern.,Me interesa contratarte.,Je suis intéressé à vous embaucher.,Mi interessa assoldarti.,あなたを雇うことに興味があります。,당신을 고용하고 싶어요.,Chcę cię wynająć.,Tenho interesse em te contratar.,Я хочу тебя нанять.,Seni kiralamak istiyorum.,我想雇佣你。,我想僱用你。
-SdcsNPC_Loot,dialogs,Dialogs,,,,Follow and loot,,Folge mir und plündere,Sígueme y saquea,Suivez-moi et pillez,Seguimi e saccheggia,ついてきて略奪してください,따라오면서 약탈해,Chodź za mną i przeszukuj,Me siga e saqueie,Следуй за мной и обыскивай,Beni takip et ve yağmala,跟我来并搜刮,跟我來並搜刮
 SdcsNPC_Melee,dialogs,Dialogs,,,,Melee Menu,,Nahkampfmenü,Menú cuerpo a cuerpo,Menu de mêlée,Menu mischia,近接メニュー,근접 메뉴,Menu walki wręcz,Menu corpo a corpo,Меню ближнего боя,Yakın Dövüş Menüsü,近战菜单,近戰選單
 SdcsNPC_Melee Menu,dialogs,Dialogs,,,,Melee Weapons,,Nahkampfwaffen,Armas cuerpo a cuerpo,Armes de mêlée,Armi da mischia,近接武器,근접 무기,Broń do walki wręcz,Armas corpo a corpo,Оружие ближнего боя,Yakın Dövüş Silahları,近战武器,近戰武器
 SdcsNPC_Patrol,dialogs,Dialogs,,,,Patrol your coded route,,Patrouilliere deine programmierte Route,Patrulla tu ruta programada,Patrouillez votre itinéraire codé,Pattuglia il tuo percorso programmato,コード化されたルートを巡回してください,지정된 경로를 순찰해,Patroluj zaprogramowaną trasę,Patrulhe sua rota programada,Патрулируй заданный маршрут,Kodlu rotanda devriye gez,按设定路线巡逻,按設定路線巡邏
@@ -324,8 +323,19 @@ SdcsNPC_Heavy Menu,dialogs,Dialogs,,,,Heavy Weapons,,Schwere Waffen,Armas pesada
 SdcsNPC_Blades,dialogs,Dialogs,,,,Blades Menu,,Klingenmenü,Menú de hojas,Menu des lames,Menu lame,刃物メニュー,칼날 무기 메뉴,Menu ostrzy,Menu de lâminas,Меню клинков,Bıçak Menüsü,刀刃菜单,刀刃選單
 SdcsNPC_Clubs,dialogs,Dialogs,,,,Clubs Menu,,Knüppelmenü,Menú de garrotes,Menu des massues,Menu mazze,棍棒メニュー,둔기 메뉴,Menu maczug,Menu de porretes,Меню дубин,Sopa Menüsü,棍棒菜单,棍棒選單
 SdcsNPC_Heavy,dialogs,Dialogs,,,,Heavy Menu,,Menü schwere Waffen,Menú de armas pesadas,Menu des armes lourdes,Menu armi pesanti,重火器メニュー,중화기 메뉴,Menu broni ciężkiej,Menu de armas pesadas,Меню тяжёлого оружия,Ağır Silah Menüsü,重武器菜单,重武器選單
+traderNPC,entityclasses,Entity Info,,,,Backpack,,Rucksack,Mochila,Sac à dos,Zaino,バックパック,백팩,Plecak,Mochila,Рюкзак,Sırt Çantası,背包,背包
+Iseeyou,sounds,Voice Clip,,,,"I see you"
+Wannaplay,sounds,Voice Clip,,,,"Wanna play?"
+Teehee,sounds,Voice Clip,,,,"Tee-hee!"
+Woopee,sounds,Voice Clip,,,,"Whoopee!"
+Ididit,sounds,Voice Clip,,,,"I did it!"
+Onemore,sounds,Voice Clip,,,,"One more time!"
+Nutzo,sounds,Voice Clip,,,,"That's Nutzo!"
+Ominous,sounds,Voice Clip,,,,"ominous ominus ipso facto"
+Laugh01,sounds,Voice Clip,,,,"Hahaha!"
 VCPatrol_Scout,,,,,,Scout around here,,Erkunde die Gegend,Explora por aquí,Explorez les environs,Esplora qui intorno,この辺りを偵察して,이 근처를 정찰해,Przeprowadź zwiad w okolicy,Explore por aqui,Разведай местность,Buraları keşfet,在附近侦察,在附近偵察
 VCPatrol_SetPatrolPoint,,,,,,Show me a route,,Ich zeige dir eine Route,Te enseñaré una ruta,Je vais vous montrer un itinéraire,Ti mostro un percorso,ルートを教える,경로를 알려 줄게,Pokażę ci trasę,Vou te mostrar uma rota,Я покажу тебе маршрут,Sana bir rota göstereyim,我来给你指条路线,我來給你指條路線
 VCPatrol_Patrol,,,,,,Patrol your route,,Patrouilliere deine Route,Patrulla tu ruta,Patrouillez votre itinéraire,Pattuglia il tuo percorso,ルートを巡回して,네 경로를 순찰해,Patroluj swoją trasę,Patrulhe sua rota,Патрулируй свой маршрут,Rotanda devriye gez,按你的路线巡逻,按你的路線巡邏
 VCPatrol_CancelPatrolRecord,,,,,,Cancel patrol,,Patrouille abbrechen,Cancelar patrulla,Annuler la patrouille,Annulla pattuglia,巡回を中止,순찰 취소,Anuluj patrol,Cancelar patrulha,Отменить патруль,Devriyeyi iptal et,取消巡逻,取消巡邏
+VCPatrol_PatrolMenu,,,,,,Patrol,,Patrouille,Patrulla,Patrouille,Pattuglia,巡回,순찰,Patrol,Patrulha,Патруль,Devriye,巡逻,巡邏
 SdcsNPC_WhatCarrying,,,,,,What are you carrying?,,Was trägst du bei dir?,¿Qué llevas encima?,Que transportez-vous ?,Cosa stai portando?,何を持っている？,뭘 가지고 있어?,Co masz przy sobie?,O que você está carregando?,Что ты несёшь?,Üzerinde ne var?,你带着什么？,你帶著什麼？

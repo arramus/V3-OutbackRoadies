@@ -42,6 +42,13 @@
              ForceLanguage: forces this NPC's subtitle language (ja, zh, es, etc.)
                  regardless of player setting. Leave empty or omit for normal behavior. 
              <ForceLanguage>ja</ForceLanguage>			 
+             Subtitles: what text this character shows on screen. all = every line (replies,
+                 chat, order acknowledgements, clip captions); clip = only a voice clip's own
+                 caption (its .txt sidecar or localization key), never the generic reply text;
+                 none = no text at all. Omit it for the default: clip for a VoiceMode clips
+                 character, all for everyone else.
+             <Subtitles>none</Subtitles>
+
             <Greetings>
                 <Greeting lang="en">Hello traveler!</Greeting>
                 <Greeting lang="de">Hallo, Reisender!</Greeting>
@@ -1596,11 +1603,14 @@
       hire, pickup, wander) plus a greeting, and SKIPS the LLM chat entirely.
       Clips live in Resources/NPC_Voices/Harley/{Greetings, Triggers/<action>, Default}/*.ogg
       excludeFromRandom: assigned via an entityclass personality property, not handed out randomly.
+      Subtitles=clip shows only her clips' own captions, never the generic order text (clip is
+      already the default for a clips character; it is written out here as the example).
     -->
     <Personality id="harley" excludeFromRandom="true">
         <Name>Harley Quinn</Name>
         <VoiceMode>clips</VoiceMode>
         <VoiceClipFolder>Harley</VoiceClipFolder>
+        <Subtitles>clip</Subtitles>
         <TTSLanguage>en</TTSLanguage>
         <ProactiveGreetingChance>1.0</ProactiveGreetingChance>
         <Traits>Chaotic, playful, unpredictable. Quick to joke, quick to threaten.</Traits>
@@ -1626,12 +1636,10 @@
         <ProactiveGreetingChance>1.0</ProactiveGreetingChance>
         <Traits>Mechanical, loyal, precise. Responds with synthesized speech and status tones.</Traits>
         <Backstory></Backstory>
-        <!-- NO Greetings block, deliberately. Same reason as Harley, and
-             stronger. VoiceMode is clips, but the MechCompanion clip tree ships EMPTY
-             (Default, Greetings and all six Trigger folders hold zero files), and the
-             mech has no MaleVoice or FemaleVoice. So greeting text here falls through to
-             TTS and is spoken by the global default HUMAN voice, at chance 1.0, on every
-             contact. Clip mode for the mech is scaffolded, not implemented. -->
+        <!-- NO Greetings block, deliberately (same as Harley): the mech has no
+             MaleVoice or FemaleVoice, so it has no voice of its own for greeting text.
+             VoiceMode is clips; the MechCompanion clip tree ships eight wordless tones
+             (Idle1 to Idle5, Die), so its lines carry no captions. -->
     </Personality>
 
     <Personality id="jen" excludeFromRandom="true">

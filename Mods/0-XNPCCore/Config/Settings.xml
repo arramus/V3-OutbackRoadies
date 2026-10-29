@@ -23,7 +23,9 @@
      hidden level buff (SdcsNpcLevelBonus in Config/buffs.xml). HealthPerLevel
      and DamagePerLevel are perc_add per level; SpreadPerLevel is a negative
      SpreadMultiplierHip tightener per level above 1 (0 at level 1, so the
-     spawn spread is untouched); MaxLevel is this mod's own level clamp. The
+     spawn spread is untouched); MaxLevel is this mod's own level clamp. HarvestPerLevel
+     is the extra harvest yield per level above 1 (wood, stone, ore, clay, plants, crops,
+     butchering). The
      HealthRegenPerSecond is the slow natural regen on the same buff, in HP per
      SECOND (the engine multiplies by the 0.5 s stat tick), so 0.2 is 1 HP every
      5 s: an NPC tops itself off while it wanders instead of being healed
@@ -77,6 +79,34 @@
          missing node on an old install warns once and keeps the default
          (true). Log tag: [SDCS-SLEEPER]. -->
     <SleeperTrigger>true</SleeperTrigger>
+    <!-- [SDCS-SLEEPER] How sleeping zombies and wild survivors deal with each other, read
+         once at boot; a missing or unreadable node warns once and keeps the value below.
+         SightRangeMetres: how close a sleeping zombie must be to see one of your
+             survivors. Clamped 4 to 29 (below the zombie's own 30 m sight range).
+         LeaveBeyondMetres: once a house wakes on a wild survivor, how far past it she
+             runs before she counts as away. Clamped 10 to 100.
+         HouseAvoidSeconds: how long she will not loot that house afterwards (the same
+             memory keeps her away from a container she gave up on). Clamped 30 to 3600. -->
+    <Sleeper>
+        <SightRangeMetres>16</SightRangeMetres>
+        <LeaveBeyondMetres>30</LeaveBeyondMetres>
+        <HouseAvoidSeconds>300</HouseAvoidSeconds>
+    </Sleeper>
+    <!-- [SDCS-VEHICLE] Riding and the seated gunner, read once at boot; a missing or
+         unreadable node warns once and keeps the value below.
+         GunnerMaxRangeMetres: the overall cap on how far a seated gunner fires. Each gun
+             fires only within its own damage falloff range under this cap (the game's
+             effective range: a pistol about 17 m, a magnum 27 m, rifles reach the cap),
+             and an enemy inside the cap keeps her gun out. Clamped 5 to 150.
+         GunnerIdleHolsterSeconds: how long she keeps the gun out after the last enemy
+             is gone. Clamped 0 to 60.
+         BoardRangeMetres: how far from the vehicle a hire walks over to get in.
+             Clamped 5 to 100. -->
+    <Vehicle>
+        <GunnerMaxRangeMetres>40</GunnerMaxRangeMetres>
+        <GunnerIdleHolsterSeconds>5</GunnerIdleHolsterSeconds>
+        <BoardRangeMetres>30</BoardRangeMetres>
+    </Vehicle>
     <!-- [SDCS-STEALTH] An awake EAI observer (a zombie that holds one of our
          survivors as a target, e.g. after she has hit it) passes the survivor
          through the PLAYER's own stealth test (crouch, held light, speed),
@@ -221,8 +251,126 @@
         <HealthPerLevel>0.03</HealthPerLevel>
         <DamagePerLevel>0.02</DamagePerLevel>
         <SpreadPerLevel>0.02</SpreadPerLevel>
+        <HarvestPerLevel>0.10</HarvestPerLevel>
         <MaxLevel>10</MaxLevel>
         <HealthRegenPerSecond>0.2</HealthRegenPerSecond>
         <KillXpWorkaround>true</KillXpWorkaround>
     </Progression>
+    <!-- Work-site scan radii in metres around the worker's post: HarvestRadius is how far the chop-wood, mine-stone and pick-plants scans reach; ClayRadius does the same for dig-clay (clay is everywhere, so it stays smaller). Both are clamped to 4-40 m by the loader, so a hand-typed 0 or 500 cannot break a scan. -->
+    <WorkSite>
+        <HarvestRadius>20</HarvestRadius>
+        <ClayRadius>8</ClayRadius>
+        <!-- MineVeinDepthLayers: how many layers of an ore vein she mines,
+             counted down from the surface as she first saw it. Clamped 1 to 10.
+             SwingBudgetSeconds: how long she keeps swinging at one tree, rock,
+             plant or corpse before skipping it (harvest and butcher). Clamped
+             5 to 600. WalkBudgetSeconds: how long she keeps walking to one
+             target before skipping it (harvest, butcher and the base keeper).
+             Clamped 5 to 120. -->
+        <MineVeinDepthLayers>2</MineVeinDepthLayers>
+        <SwingBudgetSeconds>60</SwingBudgetSeconds>
+        <WalkBudgetSeconds>15</WalkBudgetSeconds>
+    </WorkSite>
+    <!-- [SDCS-BASEKEEP] The priority a plain "repair the base" order uses:
+         base (the most damaged repairable block first) or combat (a block
+         damaged in the last few seconds first, the wall under attack).
+         Case-insensitive; an unknown value warns once and means base. The
+         EFFECTIVE value is read with the same lazy, warn-once string shape
+         as the other keys here (the pure parse is test-pinned).
+         Log tag: [SDCS-BASEKEEP]. -->
+    <BaseKeeper>
+        <DefaultMode>base</DefaultMode>
+        <!-- RescanSeconds: how often she rescans the base for new damage (and
+             rebuilds her material chests). Clamped 5 to 300.
+             AreaRadiusMetres: how far her worked area reaches; she finishes it
+             before moving on to the next worst cluster, and two keepers stay
+             this far apart. Clamped 2 to 40.
+             UnderAttackSeconds: in combat repair, a block hit within this many
+             seconds counts as under attack and comes first. Clamped 1 to 60.
+             ChestReachMetres: how far a chest that is not broadcast may sit from
+             her post and still feed her repairs (broadcast chests anywhere in the
+             claims always count). Clamped 2 to 40. -->
+        <RescanSeconds>30</RescanSeconds>
+        <AreaRadiusMetres>8</AreaRadiusMetres>
+        <UnderAttackSeconds>5</UnderAttackSeconds>
+        <ChestReachMetres>15</ChestReachMetres>
+    </BaseKeeper>
+    <!-- [SDCS-MEDIC] The low-health lines the medic treats a patient at, in percent of the patient's max health. InCombatHealthPercent applies while an enemy is visible (in combat, only low health counts) and AfterCombatHealthPercent applies once the combat-ended clock has passed its grace. SelfHealHealthPercent is the survivor's own low-health self-heal line, DireHealthPercent the dire line below it (the first aid kit and the pain pills tier), SelfHealCooldownSeconds the wait between low-health self-heals, and BleedRecheckSeconds the wait before a new bleed may trigger another treatment. The three percent lines clamp to 1 to 99 (a dire line at or above the self-heal line warns once and keeps 25), the two seconds lines clamp at 0, and a missing or unreadable node warns once and keeps its default. All six effective values print once at first read as the [SDCS-MEDIC] line. -->
+    <Medic>
+        <InCombatHealthPercent>50</InCombatHealthPercent>
+        <AfterCombatHealthPercent>50</AfterCombatHealthPercent>
+        <SelfHealHealthPercent>70</SelfHealHealthPercent>
+        <DireHealthPercent>25</DireHealthPercent>
+        <SelfHealCooldownSeconds>30</SelfHealCooldownSeconds>
+        <BleedRecheckSeconds>10</BleedRecheckSeconds>
+    </Medic>
+    <!-- [SDCS-COMBAT] The six combat rules, read once at boot with the same
+         lazy, warn-once shape as the other sections; a missing or unreadable
+         node warns once and keeps the value below (which is the value the
+         code used before this section existed), so nothing changes in play.
+         WildTargetedRadiusMetres: how far a zombie that HAS HER as its
+             target still provokes a wild (unhired) survivor into fighting
+             it. The voice mod's engagement consideration reads the same
+             effective value through the mod bridge. Clamped 1 to 60.
+         CloseMeleeEnterMetres: an NPC holding a ranged weapon swaps to melee
+             at/below this distance. Clamped 0.5 to 20.
+         CloseMeleeExitMetres: the swap back to the ranged weapon beyond this
+             distance. It must sit ABOVE CloseMeleeEnterMetres (the hysteresis
+             band); if it does not, the mod warns once and uses Enter + 2.
+         CloseMeleeMinHoldSeconds: minimum seconds on the melee swap before an
+             exit is allowed, so a poking enemy cannot ping-pong the hand.
+             Clamped 0 to 30.
+         CrawlerAimHeadMetres: on a dedicated server (where a crawler's
+             skeleton is never animated) the head aim point is replaced with
+             this height above the entity root. Clamped 0.05 to 1.5.
+         CrawlerAimBellyMetres: the belly aim point, the same way. It must sit
+             BELOW CrawlerAimHeadMetres; if it does not, the mod warns once
+             and uses Head - 0.2. -->
+    <Combat>
+        <WildTargetedRadiusMetres>15</WildTargetedRadiusMetres>
+        <CloseMeleeEnterMetres>3</CloseMeleeEnterMetres>
+        <CloseMeleeExitMetres>5</CloseMeleeExitMetres>
+        <CloseMeleeMinHoldSeconds>3</CloseMeleeMinHoldSeconds>
+        <CrawlerAimHeadMetres>0.45</CrawlerAimHeadMetres>
+        <CrawlerAimBellyMetres>0.25</CrawlerAimBellyMetres>
+    </Combat>
+    <!-- [SDCS-FOLLOW] How a hired survivor paces herself while following
+         you, read once at boot; a missing or unreadable node warns once and
+         keeps the value below (the value the code used before this section).
+         PaceNearDistMetres: at or below this distance from you she walks.
+             Clamped 1 to 60.
+         PaceFarDistMetres: at or above this distance she moves at the full
+             speed her task asks for; between the two the speed blends. It
+             must sit ABOVE PaceNearDistMetres (max 80); if it does not, the
+             mod warns once and uses Near + 2.
+         PaceNearWalkSpeedMps: her walking speed near you, in metres per
+             second. It must be at least 0.5 and BELOW the run-gait switch
+             (2.75), or walking beside you plays as a run; if it is not, the
+             mod warns once and uses 2. -->
+    <Follow>
+        <PaceNearDistMetres>8</PaceNearDistMetres>
+        <PaceFarDistMetres>10</PaceFarDistMetres>
+        <PaceNearWalkSpeedMps>2</PaceNearWalkSpeedMps>
+    </Follow>
+    <!-- [SDCS-LOOT] What a hired survivor keeps from her looting and how far
+         she ranges, read once at boot; a missing or unreadable node warns
+         once and keeps the value below (the value the code used before this
+         section).
+         BagMaxMedical: medical units she keeps in her own bag; the rest goes
+             to your harvest window. 0 keeps none. Clamped 0 to 100.
+         BagMaxAmmoStacks: full stacks of each carried gun's ammo she keeps
+             in her own bag. 0 keeps none. Clamped 0 to 20.
+         VerticalReachMetres: how far above or below you she loots: one
+             storey by default, so she clears the room above or below you
+             but not the whole building. The horizontal reach is the loot
+             action's own leaderRange. Clamped 1 to 20.
+         ReturnTeleportMetres: after "loot around here" ends, within this
+             distance she walks back to you; beyond it she teleports. Kept
+             below the stay-post leash 45. Clamped 5 to 44. -->
+    <Loot>
+        <BagMaxMedical>5</BagMaxMedical>
+        <BagMaxAmmoStacks>2</BagMaxAmmoStacks>
+        <VerticalReachMetres>3</VerticalReachMetres>
+        <ReturnTeleportMetres>40</ReturnTeleportMetres>
+    </Loot>
 </Settings>

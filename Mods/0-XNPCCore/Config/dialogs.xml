@@ -534,7 +534,6 @@
 				<response_entry id="GuardHere" ref_text="Stay where I am standing" />
 				<response_entry id="GuardReturnHere" ref_text="Guard and return to where I am standing" />
 				<response_entry id="StayHere" ref_text="Stay where you are standing" />
-				<response_entry id="Loot" ref_text="Loot around here" />
 				<response_entry id="Dismiss" ref_text="Dismiss" />
 				<response_entry id="done" ref_text="Nevermind." />
 			</statement>
@@ -544,6 +543,7 @@
 				<response_entry id="Dump2Log" ref_text="Dump Values to Log" />
 				<response_entry id="done" ref_text="Nevermind." />
 			</statement>
+
 			<!-- The weapon menu is POSSESSION DRIVEN. One response per swappable
 			     weapon, each hidden unless the NPC actually holds that PLAYER item right now, in the
 			     harvest window, the bag or the toolbelt (NPCHasItemSDX checks exactly those stores).
@@ -988,12 +988,10 @@
 			     exist, so a stub renders and gates exactly like the live ones but does
 			     nothing when clicked. Requirement lines are kept as-is from the source
 			     dialog so the menu gates the same way. All responses now carry their
-			     stock actions except SetCode (stays a stub). The Loot row is live: its
-			     HasTask LootBasic gate is false for our class (the SDCS loot actions are
-			     named LootSdcs), so the row always shows to the leader and applies the
-			     hired follow-and-loot mode (the mode buff sets the SdcsLootMode cvar
-			     and the Follow order; every other order row applies the mode clear
-			     buff, since a dialog row cannot call C#). -->
+			     stock actions except SetCode (stays a stub). Every order row applies the
+			     mode clear buff (a dialog row cannot call C#); the follow-and-loot mode
+			     itself is set by the voice router and the order wheel, which still carry
+			     every job and vehicle order this menu no longer lists. -->
 			<response id="Wander" text="SdcsNPC_Wander" ref_text="Patrol around here">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="AddBuffSDX, SCore" id="buffOrderWander" value="Self" />
@@ -1015,11 +1013,6 @@
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="AddBuffSDX, SCore" id="buffOrderStay" value="Self" />
 				<action type="AddBuffSDX, SCore" id="buffSdcsLootModeClear" value="Self" />
-			</response>
-			<response id="Loot" text="SdcsNPC_Loot" ref_text="Follow and loot">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTask, SCore" requirementtype="Hide" value="LootBasic" />
-				<action type="AddBuffSDX, SCore" id="buffSdcsLootMode" value="Self" />
 			</response>
 			<response id="Dismiss" text="SdcsNPC_Dismiss" ref_text="Dismiss">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
@@ -1094,8 +1087,12 @@
     </append>
 
     <!-- SDCS rigs open the SdcsNPC dialog, not GenericNPC, so the GenericNPC ops above never
-         reach them. The same 9 ops apply here (all removes before any insert/append), and the
-         same patrol rows before done for the same 10 row grid reason. -->
+         reach them. The same 7 ops apply here (all removes before any insert/append). The SDCS
+         Command Menu is cut to essentials (command-surface R1/R2 ruling): instead of the three
+         patrol rows, ONE Patrol row leads into a Patrol Menu statement (the old Harvest Menu
+         shape) carrying the same three rows. It is inserted before Dismiss so the effective
+         menu is the pinned order (Scout, Follow, Stay x3, Patrol, Dismiss, Nevermind); it
+         fits the 10 row grid with room to spare, so Nevermind can never be cut. -->
     <set xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Command Menu']/response_entry[@id='Wander']/@ref_text">Scout around here</set>
     <set xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Wander']/@text">VCPatrol_Scout</set>
     <set xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Wander']/@ref_text">Scout around here</set>
@@ -1105,10 +1102,10 @@
     <remove xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='SetCode']"/>
     <remove xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Patrol']"/>
 
-    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Command Menu']/response_entry[@id='done']">
-        <response_entry id="SetPatrolPoint" ref_text="Show me a route" />
-        <response_entry id="Patrol" ref_text="Patrol your route" />
-        <response_entry id="CancelPatrolRecord" ref_text="Cancel patrol" />
+    <!-- Before Dismiss on purpose (the R1/R2 result pin): the menu is Scout, Follow,
+         Stay x3, Patrol, Dismiss, Nevermind, with both exits last. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Command Menu']/response_entry[@id='Dismiss']">
+        <response_entry id="Patrol Menu" ref_text="Patrol" />
     </insertBefore>
     <append xpath="/dialogs/dialog[@id='SdcsNPC']">
         <response id="SetPatrolPoint" text="VCPatrol_SetPatrolPoint" ref_text="Show me a route">
@@ -1126,6 +1123,19 @@
             <requirement type="NPCNoVoiceTag, 1-XNPCVoiceControl" requirementtype="Hide" />
             <action type="CancelPatrolRecord, 1-XNPCVoiceControl" />
         </response>
+        <!-- The Patrol row is the nav response (no action, like the base Jobs/Harvest/Mine nav
+             rows); it carries the same no_voice gate as the rows it leads to, so a no_voice
+             entity never sees a menu of dead buttons. -->
+        <response id="Patrol Menu" text="VCPatrol_PatrolMenu" nextstatementid="Patrol Menu" ref_text="Patrol">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <requirement type="NPCNoVoiceTag, 1-XNPCVoiceControl" requirementtype="Hide" />
+        </response>
+        <statement id="Patrol Menu" text="VCPatrol_PatrolMenu" ref_text="Patrol">
+            <response_entry id="SetPatrolPoint" ref_text="Show me a route" />
+            <response_entry id="Patrol" ref_text="Patrol your route" />
+            <response_entry id="CancelPatrolRecord" ref_text="Cancel patrol" />
+            <response_entry id="done" ref_text="Nevermind." />
+        </statement>
     </append>
 
     <!-- "What are you carrying?" in the SDCS Carried Weapons statement. The bag is private
@@ -1140,19 +1150,6 @@
     <append xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Carried Weapons']">
         <response_entry id="WhatCarrying" ref_text="What are you carrying?" />
     </append>
-    <!-- The SDCS Command Menu's "Loot around here" row: the base requirement names
-         HasTask value="LootBasic", an NPCCore action no SDCS package runs, so it points
-         at OUR hired loot action name instead (LootSdcs, the SdcsNpcLoot package in
-         utilityai.xml, assigned to npcSdcsBase, so every SDCS survivor passes it; the
-         Leader requirement keeps the row on hired survivors only). The response gets
-         the mode action: the same mode buff the base row carries (idempotent, stack
-         ignore), which sets the SdcsLootMode cvar and the Follow order. "Follow me"
-         (buffOrderFollow plus the mode clear, same menu) is the way back out. -->
-    <set xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Loot']/requirement[@type='HasTask, SCore']/@value">LootSdcs</set>
-    <append xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Loot']">
-        <action type="AddBuffSDX, SCore" id="buffSdcsLootMode" value="Self" />
-    </append>
-
     <append xpath="/dialogs/dialog[@id='SdcsNPC']">
         <response id="WhatCarrying" text="SdcsNPC_WhatCarrying" ref_text="What are you carrying?">
             <requirement type="Leader, SCore" requirementtype="Hide" />

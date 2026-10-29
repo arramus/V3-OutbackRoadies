@@ -97,7 +97,9 @@ its type or class name, but deliberate.
 
 **One exception, visible in that same dialog:** the three *patrol* rows (Show me a route /
 Patrol your route / Cancel patrol) are **Voice Control** rows, not NPC Mod rows — this mod
-added them and removed the NPC Mod's legacy patrol rows. They are hidden for a `no_voice`
+added them and removed the NPC Mod's legacy patrol rows. In the SDCS survivors' dialog they
+sit under the Command Menu's single **Patrol** row (a one-row deep menu); the generic NPC
+dialog keeps them flat in the Command Menu. They are hidden for a `no_voice`
 character because patrol cannot work without the Voice Control component the tag withholds.
 A tagged character can be hired and ordered normally, just not put on a recorded patrol.
 
@@ -146,6 +148,7 @@ Or skip Step 2 to let it auto-assign via entity class name matching or random fa
 - `<MaleVoice>` and `<FemaleVoice>` are chosen based on the NPC's gender tag in entityclasses.xml
 - **Optional: VoiceMode** — Set `<VoiceMode>clips</VoiceMode>` to use pre-recorded OGG clips instead of TTS. See [Voice Clips Mode](#voice-clips-mode) below.
 - **Optional: ForceLanguage** — Set `<ForceLanguage>ja</ForceLanguage>` (or any ISO code) to force this NPC's subtitle language regardless of the player's game language setting.
+- **Optional: Subtitles** — What text this character shows on screen: `all` (every line: replies, chat, order acknowledgements, clip captions), `clip` (only a voice clip's own caption, never the generic reply text) or `none` (no text at all). Omit it for the default: `clip` for a clips character, `all` for everyone else.
 
 ---
 
@@ -231,6 +234,9 @@ If no matching `lang` entry exists for the player's language, the system falls b
 | `GuardReturn` | Yes | NPC guards and returns to player position |
 | `Wander` | Yes | NPC patrols the area |
 | `Loot` | Yes | NPC scavenges the area |
+| `BaseRepairHere` | Yes | The base keeper's standing duty: keeps the leader's base repaired, most damaged block first (SdcsLootMode 8). Voice: "base repair", "repair the worst first"; wheel: Actions > Base Repair |
+| `CombatRepairHere` | Yes | The same standing duty, a block damaged in the last few seconds first (SdcsLootMode 9). Voice: "combat repair", "repair under fire"; wheel: Actions > Combat Repair |
+| `RepairHere` | Yes | Plain "repair the base" / "fix the base": the base mod's `Settings.xml` `<BaseKeeper><DefaultMode>` (`base` or `combat`) picks the duty (SdcsLootMode 8 or 9) |
 | `SetPatrolPoint` | Yes | Start recording patrol route (SCore ExecuteCMD "SetPatrol") |
 | `Patrol` | Yes | Start looping recorded patrol route (SCore ExecuteCMD "Patrol") |
 | `CancelPatrolRecord` | Yes | Cancel recording / stop active patrol, clear points, order→Stay |
@@ -240,7 +246,7 @@ If no matching `lang` entry exists for the player's language, the system falls b
 | `SwapWeapon` | Yes | Swaps NPC weapon. See SwapWeapon section below. |
 | `SetEngage` | Yes | Engagement. `<ActionParam>` = 0=cover me (defensive, default), 1=weapons free, 2=hold fire, 3=disengage action. |
 | `SetTacticalMode` | Yes | Player-wide tactical mode toggle, but it still fires off a hired companion, so a leaderless NPC refuses it. `<ActionParam>` = 0=off (chat+commands), 1=on (command-only). |
-| `SetCrouch` | Yes | Crouch override cvar. `<ActionParam>` = 0=mirror leader, 1=crouch, 2=stand. The order wheel shows only the 0/1 toggle (Crouch/Resume, no Stand) - see the Order Wheel section. |
+| `SetCrouch` | Yes | Crouch override cvar. `<ActionParam>` = 0=mirror leader, 1=crouch, 2=stand. The order wheel's Orders page carries the 0/1 toggle (Crouch/Resume) plus a `Stand up` socket - see the Order Wheel section. |
 | `SetFollowDistance` | Yes | Mode-aware follow distance. `<ActionParam>` = 1 (close), 2.5 (normal), 5 (far). Adjusts plain-follow min or formation socket radius depending on mode. |
 | `SetFormation` | Yes | Set formation position. `<ActionParam>` = `abs:<bearing>` (e.g. `abs:0` north, `abs:90` east) or `0,0` to cancel. |
 | `SetCombatMode` | Yes | Set combat behavior. `<ActionParam>` = 0, 1, or 2. **DEFERRED** — triggers disabled, code dormant for future richer-mode work. |
@@ -319,9 +325,11 @@ Hold the radial key (default **Semicolon**) to open the order wheel - a multi-pa
 
 | Page | Sockets |
 |------|---------|
-| **0 (root)** | `Follow`, `Stay`, `Guard`, `Crouch` (toggle) commit directly; `Actions`, `Stance`, `Position`, `Formation` open a drill-down page. No drill-down page opens another one - every order is one or two clicks deep |
-| **Actions** | `Go there`, `Jump down`, `Loot` (starts **follow and loot**, exactly the voice "loot" command - see *Hired survivors: follow and loot* below). **Look first, then open the wheel:** `Go there` goes to the spot under your crosshair *when the wheel opened*, not where you aim when you pick it. Room for `Wander` / `Patrol` later |
-| **Stance** | `Aggressive` (1), `Defensive` (0), `Hold fire` (2), `Disengage` (3) - the four SetEngage args verbatim |
+| **0 (root)** | `Follow`, `Stay`, `Guard` commit directly; `Orders`, `Actions`, `Stance`, `Position`, `Formation` open a drill-down page. Only the `Actions` page (Harvest / Mine) and the `Stance` page (Weapons) open a third level - every order is one, two or three clicks deep |
+| **Orders** | `Crouch` (the 0/1 toggle - Crouch / Resume resolved from her state, exactly as before), `Stand up` (the voice `stand up`, SetCrouch arg 2), `Scout` (the voice wander order), `Guard and return` (guard the spot, then come back to you), `Record patrol` / `Run patrol` / `Cancel patrol` (the patrol trio - one survivor's route; a click while held goes to the target, not the squad) |
+| **Actions** | `Follow + loot` (starts **follow and loot**, exactly the voice "loot" command - see *Hired survivors: follow and loot* below), `Loot here`, the `Harvest` and `Mine` drill-downs (the wood / plants / crops / butcher orders and the mine / clay orders), and the two base-keeper duties `Base Repair` (most damaged block first, the wheel arg `baserepair`) and `Combat Repair` (a block damaged in the last few seconds first, the wheel arg `combatrepair`). **Look first, then open the wheel:** `Go there` goes to the spot under your crosshair *when the wheel opened*, not where you aim when you pick it. |
+| **Stance** | `Aggressive` (1), `Defensive` (0), `Hold fire` (2), `Disengage` (3) - the four SetEngage args verbatim - plus the `Weapons` drill-down |
+| **Weapons** | `Guns`, `Rifles`, `Shotguns`, `Machine guns`, `Melee`, `Blades`, `Empty hands` - the voice weapon-category swaps, the same resolved swap as speaking them (she equips the first weapon of that category she actually carries, and says so; a click while held goes to the target, not the squad) |
 | **Position** | `Close` (1 m), `Normal` (2.5 m), `Far` (5 m) - the real metres are drawn in the icon slot - and `Point` (the voice "take point": the companion leads 2 m ahead of you) |
 | **Formation** | The 8 compass bearings, N at top and E to the right. Direction only: each NPC keeps its own distance |
 
@@ -331,7 +339,7 @@ Hold the radial key (default **Semicolon**) to open the order wheel - a multi-pa
 - **Navigation sockets** (the drill-downs) never commit. They are marked with a small chevron and the navigation border tint. Open one by clicking it, or simply by **resting the cursor on it for the dwell** (0.4 s default) - a faster pass over it does nothing, so a transit can never flip the page by accident.
 - **Back out:** rest the cursor on the wheel's **centre** and it returns to page 0. Clicking or releasing over the centre does nothing.
 
-Every socket carries the exact router arg of the equivalent voice command, so the wheel and the voice path cannot disagree - except where they deliberately differ: the crouch toggle above, and the voice-only `stand up`.
+Every socket carries the exact router arg of the equivalent voice command, so the wheel and the voice path cannot disagree - the one deliberate exception is the crouch toggle on the Orders page, which offers Crouch **or** Resume depending on her current state (arg 1 or 0) instead of one fixed arg.
 
 ### Order Wheel settings (modconfig.xml, top-level `<FormationRadial>` section)
 
@@ -381,6 +389,7 @@ NPC_Voices/
 **Notes:**
 - Clips bypass the LLM entirely — no AI conversation, only pre-recorded lines
 - Each OGG can have an optional `.txt` sidecar for subtitles (e.g., `Hello.ogg` + `Hello.txt`)
+- A clips character shows only her clips' own captions by default (`<Subtitles>clip</Subtitles>`): the generic text for an order ("On my way") is not shown, because it would not match the recorded line. A clip without a caption plays with no text. Set `<Subtitles>none</Subtitles>` for no text at all, or `<Subtitles>all</Subtitles>` to show the generic text as well
 - Clip libraries are discovered from all loaded mods' `Resources/NPC_Voices/` folders
 
 ---
@@ -600,7 +609,7 @@ The breadcrumb trail itself is recorded from your own movement (`TrailRingSize` 
 
 ## Hired survivors: follow and loot
 
-A hired survivor can loot while she follows you. Start it from her dialog row **"Follow and loot"**, the order wheel (**Actions > Loot**) or by
+A hired survivor can loot while she follows you. Start it from the order wheel (**Actions > Loot**) or by
 voice (**"follow and loot"**, **"loot around here"**, **"scavenge here"**). Her order stays **Follow**; looting is a mode on top of it.
 
 - **When she loots:** only while you stand still (about a second without moving). While you walk she just follows; a trip she has already

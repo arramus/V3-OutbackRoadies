@@ -32,7 +32,7 @@
 			<equipment transform_name="feet" prefab="@:Entities/Player/{sex}/Gear/Nomad/gear{sex}NomadPrefab.prefab" excludes="feet"/>
 		</archetype>
 		<!-- Look from Dave's Xyth character profile, Nerd set. -->
-		<archetype name="npcSdcsXyth" male="true" race="White" variant="1" eye_color="hazel04" hair="buzzcut" hair_color="09 Red" mustache="3" chops="1" beard="1">
+		<archetype name="npcSdcsXyth" male="true" race="White" variant="1" eye_color="Blue03" hair="buzzcut" hair_color="09 Red" mustache="3" chops="1" beard="1">
 			<equipment transform_name="body" prefab="@:Entities/Player/{sex}/Gear/Nerd/gear{sex}NerdPrefab.prefab" excludes="body"/>
 			<equipment transform_name="hands" prefab="@:Entities/Player/{sex}/Gear/Nerd/gear{sex}NerdPrefab.prefab" excludes="hands"/>
 			<equipment transform_name="feet" prefab="@:Entities/Player/{sex}/Gear/Nerd/gear{sex}NerdPrefab.prefab" excludes="feet"/>

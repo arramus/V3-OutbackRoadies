@@ -6,10 +6,10 @@
 
 Unzip into your `Mods` folder:
 
-1. **`0-XNPCCore-v3.3.04.zip` - required.** The NPCs, orders, voice commands and the mod's code. On its own it runs with every AI feature off.
+1. **`0-XNPCCore-v3.4.01.zip` - required.** The NPCs, orders, voice commands and the mod's code. On its own it runs with every AI feature off.
 2. **Plus at most ONE add-on:**
-   - **`1-XNPCVoiceControl-Complete-v3.3.04.zip`** - AI chat, voice in and voice out. **Most players want this one.**
-   - **`1-XNPCVoiceControl-Voice-v3.3.04.zip`** - voice in and voice out only, no AI chat.
+   - **`1-XNPCVoiceControl-Complete-v3.4.01.zip`** - AI chat, voice in and voice out. **Most players want this one.**
+   - **`1-XNPCVoiceControl-Voice-v3.4.01.zip`** - voice in and voice out only, no AI chat.
 
 You should end up with `Mods/0-XNPCCore` and, if you took an add-on, `Mods/1-XNPCVoiceControl-Complete` or `Mods/1-XNPCVoiceControl-Voice` beside it. The add-on holds only models and helper servers; it does nothing without `0-XNPCCore`.
 
@@ -46,15 +46,16 @@ You do not need to memorise exact wording. Phrases match as **substrings**, so
 Hold **;** (default; remappable in `modconfig.xml` under `<FormationRadial><Key>`) to open the
 order wheel - a multi-page radial:
 
-- **Page 0** - Follow, Stay, Guard, Jump down, Crouch, plus three submenus: **Stance**,
-  **Distance** and **Formation**. The submenus are marked with a small chevron and a
+- **Page 0** - Follow, Stay, Guard, Crouch, plus four submenus: **Jobs**, **Stance**, **Position** and
+  **Formation**. The submenus are marked with a small chevron and a
   blue-tinted border.
 - **Who it targets** - whoever you are looking at, otherwise the last companion you ordered,
   otherwise the nearest. Their name sits in the middle of the ring, and the mouse wheel
   cycles through your hires.
 - **Commit** - release the key over a socket to order the targeted companion; while still
   holding the key, **click** a socket to apply the same order to your **whole squad**
-  (formation bearings included).
+  (formation bearings included). The job sockets (**Follow + loot**, **Loot here**,
+  **Chop wood**) always go to the targeted companion only, click or release.
 - **Open a submenu** - click it, or simply rest the cursor on it for a beat (the dwell,
   0.4 s by default - a quick pass over it does nothing).
 - **Back out** - rest the cursor on the middle of the wheel and it returns to page 0.
@@ -444,53 +445,74 @@ Search for `[1-XNPCVoiceControl]` to see mod-specific messages.
 
 ---
 
-## What's New in 3.3.04
+## What's New in 3.4.01
 
-Targets 7 Days to Die **3.3**. **Requires 0-SCore 3.3.28 or newer** - an older SCore will not do. Everyone on a server needs the same version,
-server included.
+Targets 7 Days to Die **3.4** with **0-SCore 3.4**, like 3.4.00. Everyone on a server needs the same version, server included.
 
-### Spikes and traps (requested)
-- **Survivors respect your traps.** They avoid spikes, barbed wire and blade traps, keep a cell's distance from spikes where there is room,
-  slow to a walk next to them, and step off if they end up touching one. The first brush against a spike costs them 1 health, not a full hit.
-- They are no longer dragged to a crawl by spikes, wire, webs or water, and they will not path off a drop of more than 5 blocks.
-- Survivors are immune to ordinary land mines (as before); the one mine that ignores that, the Twitch candy tin mine, they now walk around.
+### Humanoid characters ride as gunners
+- **Mod-pack characters hold their gun in a vehicle.** Any Humanoid character (the Mixamo-format rigs mod packs use) now holds its weapon
+  properly in a vehicle seat instead of the plain sitting pose, and turns to aim like the built-in survivors.
+- **For pack authors:** `sdcspose captureall human` captures the hold poses on any Humanoid character in one run; one set serves every
+  Humanoid rig. The shipped set lives in `Config/SeatPoses/Humanoid/`.
 
-### Follow and loot
-- **A hired survivor loots while she follows you.** Order it from her menu ("Follow and loot"), from the order wheel (Actions > Loot) or by
-  voice ("follow and loot" or "loot around here"). She stays with you; when you stop, she searches the containers within about 15 m of you and comes back; when you
-  walk on, she follows. Any other order ends it, and so does a full pack.
-- **Loose loot first.** Ammo, medical, book, food, chem and liquor piles are taken before cupboards and boxes, and a pile she empties
-  disappears just like one you empty.
-- **She reaches like you do.** She opens a container from up to 4 m away, as a player can, so a counter or a corner no longer stops her
-  short. She still needs a clear line to it: no looting through walls or closed doors, and she skips locked boxes and player storage.
-- **She finishes the room.** A container she has started for is not abandoned when you take a few steps; she only gives it up if you walk
-  more than 20 m away. A container she just emptied is never picked again.
-- **No looting under a zombie's nose.** She will not loot with an enemy close, and a sleeper that spots her sends her back to you. Once the
-  zombie is dead she goes back to the room.
-- She remembers a container she could not reach and leaves it alone for a few minutes.
+### Character authors: choose what text a character shows
+- New `<Subtitles>` in a character's `personalities.xml` entry: `all` shows every line (replies, chat, order acknowledgements, clip
+  captions), `clip` shows only a voice clip's own caption and never the generic reply text, `none` shows no text for that character.
+- Unset, a clips character (`VoiceMode` clips, such as Harley) uses `clip`, so her recorded lines are no longer paired with generic
+  order text that does not match them; set `all` for the old behaviour. Every other character keeps `all`.
 
-### The order wheel
-- **Two pages:** Actions (Go there, Jump down, Loot) and Position (Close, Normal, Far, Point).
-- **Go there:** look at a spot, open the wheel and send her; your aim passes through your own hires. She holds the spot without spinning.
-- **Point:** she leads the way ahead of you, takes stairs, and opens the door in front of her.
-
-### Combat
-- **Melee hires stay close.** A hire with a melee weapon only runs at an enemy within 10 m of you; hires with guns are unchanged.
-
-### Custom characters
-- **Your own characters as NPCs.** The characters you make in the character creator can be spawned as survivors (the F6 entity spawner's
-  `npcSdcsCustomMale` / `npcSdcsCustomFemale`, or the console: `sdcscustom spawn <name>`), with their hair and eye colour kept.
+### New settings: how survivors follow you, loot, work, keep your base, deal with sleepers and ride
+- `Settings.xml` `<Follow>`: how close she walks beside you (`PaceNearDistMetres` 8), when she runs to catch up (`PaceFarDistMetres` 10)
+  and her walking speed near you (`PaceNearWalkSpeedMps` 2).
+- `modconfig.xml`: her default follow distance (`FollowDistanceDefault` 2.5), how far you may walk from a "stay here" post before she
+  follows (`CommandLeashDist` 45), when she steps up to catch-up speed (`CatchupStartDist` 8), and how close before a survivor greets
+  you unprompted (`ProactiveGreetRange` 10).
+- `Settings.xml` `<Loot>`: how much medical (`BagMaxMedical` 5) and how many ammo stacks per gun (`BagMaxAmmoStacks` 2) she keeps
+  in her own bag before the rest goes to your window, how far above or below you she loots (`VerticalReachMetres` 3, one storey), and
+  the distance beyond which she teleports back after "loot around here" (`ReturnTeleportMetres` 40).
+- `Settings.xml` `<WorkSite>`: how many layers of an ore vein she mines (`MineVeinDepthLayers` 2), how long she swings at one tree,
+  rock or corpse (`SwingBudgetSeconds` 60) and how long she walks to one (`WalkBudgetSeconds` 15) before moving on.
+- `Settings.xml` `<BaseKeeper>`: how often the base keeper rescans for new damage (`RescanSeconds` 30), how big an area she finishes
+  before moving on (`AreaRadiusMetres` 8), how fresh a hit must be for combat repair to chase it (`UnderAttackSeconds` 5) and how far a
+  chest that is not broadcast may sit from her post (`ChestReachMetres` 15).
+- `Settings.xml` `<Sleeper>`: how close a sleeping zombie must be to see one of your survivors (`SightRangeMetres` 16), how far a wild
+  survivor runs past a house that woke on her (`LeaveBeyondMetres` 30) and how long she stays out of it (`HouseAvoidSeconds` 300).
+- `Settings.xml` `<Vehicle>`: the seated gunner's range cap (`GunnerMaxRangeMetres` 40), how long she keeps her gun out after the last
+  enemy (`GunnerIdleHolsterSeconds` 5) and how far from the vehicle a hire walks over to get in (`BoardRangeMetres` 30).
+- Every default is the old fixed value, so nothing changes until you edit one. A value that would break a linked distance (for example
+  a leash beyond the 50 m follow teleport) is refused with a warning in the log, and the default stays.
 
 ### Fixes
-- **No more crash** when looking at a hired survivor.
-- **Hits land on the body.** An invisible box around every survivor, NPC and pet caught shots and swings up to 30 cm away from the body
-  (blood in the air beside them). It is gone; `Config/Settings.xml` `<HitBoxFix>` turns the fix off if you ever need to.
-- **Stunned pets** no longer flood the log with an error every tick.
-- **NPCs that fall through the world** (usually on loading into a game before the ground under them is ready) are put back: this is
-  SCore 3.3.28's own rescue - thanks to SphereII.
+- A seated gunner fires within her gun's own effective range (a pistol about 17 m, a magnum 27 m, rifles up to the 40 m cap)
+  instead of firing every gun out to 40 m.
+- Survivors no longer fall through the ground and come back badly hurt when you load a save; a survivor who was riding with you
+  when you logged off now stands beside the vehicle, not inside or under it.
+- No more red "Attachments not found" error when a survivor holding a scoped weapon puts out a fire or bandages herself.
+- A wild survivor no longer stays crouched after looting.
+- A survivor's pack window is titled "Backpack" (in every language) instead of `traderNPC`.
+- A survivor whose weapon comes out mid-chat (you pick one from her menu, a roll, a bandage) puts it away again a few seconds later,
+  instead of holding it for the rest of the chat.
+- A medic whose own heal cannot act yet (waiting, or no item that fits) now treats the party instead of standing by.
+- The Korean "stop being the medic" reply reads correctly.
+- German "follow me" subtitles show the follow replies again (they always read "Schon erledigt."); the Spanish "weapons free" reply
+  reads "Entro en combate.".
+- A clips character (such as Harley) answers wheel and squad orders with her own clips instead of a text voice.
+- Harley's voice clips show their captions (they sat in a file the game never loaded), and her laugh has one now.
+- Harley and the other older characters cannot do jobs (loot, pick, chop, mine, dig, butcher, repair, keep the base, be the medic). A
+  job order now gets "I don't know how to do that." (Harley answers with a clip) and she keeps following, instead of taking the order
+  and standing guard at the spot. One still carrying a job from an older save drops it when the save loads, so she fights again
+  instead of holding back to the old job spot.
+- A hire keeps fighting the zombie she is on instead of flipping between two of them every time she closes in or swings: another
+  one takes over only when it is 2 m closer to her, or when hers dies or drops out of the fight. New `modconfig.xml` settings:
+  `TargetSwitchCloserMetres` (2; 0 = the nearest always wins, as before) and `TargetStickMemorySeconds` (3, how long she
+  remembers her zombie through a step back or a pause between swings).
+- A survivor's short status lines ("Base remembered.", "My pack is full.", "I need an axe for that." and the rest) now show their
+  subtitles in your game language. They are still spoken in English, like every other line.
+- A survivor who rode with you no longer ends up under the vehicle when you get out: the follow trail stops while you drive and
+  starts fresh where you step out, so she can no longer hop back to a spot inside the vehicle.
 
 ---
 
 ## Earlier Releases
 
-Release notes for 3.3.03 and earlier are in `CHANGELOG.md`, next to this file.
+Release notes for 3.4.00 and earlier are in `CHANGELOG.md`, next to this file.

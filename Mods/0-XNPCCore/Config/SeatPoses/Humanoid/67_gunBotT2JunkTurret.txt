@@ -1,0 +1,74 @@
+humanpose 67 gunBotT2JunkTurret
+Spine Front-Back	-0.0572938062
+Spine Left-Right	-0.0218004733
+Spine Twist Left-Right	0.000174807443
+Chest Front-Back	0.13459678
+Chest Left-Right	0.03282623
+Chest Twist Left-Right	-0.207917362
+UpperChest Front-Back	-0.6777522
+UpperChest Left-Right	-0.0279411636
+UpperChest Twist Left-Right	-0.0117791574
+Neck Nod Down-Up	-0.293375075
+Neck Tilt Left-Right	0.216337129
+Neck Turn Left-Right	-0.0258922018
+Head Nod Down-Up	0.219543308
+Head Tilt Left-Right	-0.100836456
+Head Turn Left-Right	0.219186559
+Left Shoulder Down-Up	0.06684721
+Left Shoulder Front-Back	-0.0659440756
+Left Arm Down-Up	-0.378164917
+Left Arm Front-Back	0.146603465
+Left Arm Twist In-Out	-0.053757742
+Left Forearm Stretch	-0.22762309
+Left Forearm Twist In-Out	-0.0544120967
+Left Hand Down-Up	0.227142021
+Left Hand In-Out	0.035340324
+Right Shoulder Down-Up	0.0671798959
+Right Shoulder Front-Back	-0.0645649657
+Right Arm Down-Up	-0.481491148
+Right Arm Front-Back	0.366052747
+Right Arm Twist In-Out	0.0794635639
+Right Forearm Stretch	-0.271439075
+Right Forearm Twist In-Out	-0.0296125673
+Right Hand Down-Up	0.184649855
+Right Hand In-Out	-0.217502445
+Left Thumb 1 Stretched	-1.69180477
+Left Thumb Spread	-1.30174077
+Left Thumb 2 Stretched	-0.106720954
+Left Thumb 3 Stretched	-0.297196418
+Left Index 1 Stretched	-0.4572496
+Left Index Spread	-0.9784226
+Left Index 2 Stretched	-0.7261337
+Left Index 3 Stretched	-0.6230669
+Left Middle 1 Stretched	-0.4643769
+Left Middle Spread	-1.6828084
+Left Middle 2 Stretched	-0.5915899
+Left Middle 3 Stretched	-0.6243411
+Left Ring 1 Stretched	-0.443002641
+Left Ring Spread	0.5665806
+Left Ring 2 Stretched	-0.5916695
+Left Ring 3 Stretched	-0.6244438
+Left Little 1 Stretched	-0.546944857
+Left Little Spread	-0.07961028
+Left Little 2 Stretched	-0.591936231
+Left Little 3 Stretched	-0.624670863
+Right Thumb 1 Stretched	-1.67343009
+Right Thumb Spread	-1.28920686
+Right Thumb 2 Stretched	-0.17035076
+Right Thumb 3 Stretched	-0.374090463
+Right Index 1 Stretched	-0.458290577
+Right Index Spread	-0.952927768
+Right Index 2 Stretched	-0.727264464
+Right Index 3 Stretched	-0.623741746
+Right Middle 1 Stretched	-0.465287328
+Right Middle Spread	-1.61386907
+Right Middle 2 Stretched	-0.5919356
+Right Middle 3 Stretched	-0.624415338
+Right Ring 1 Stretched	-0.444446146
+Right Ring Spread	0.4991868
+Right Ring 2 Stretched	-0.59185493
+Right Ring 3 Stretched	-0.624615669
+Right Little 1 Stretched	-0.548419535
+Right Little Spread	-0.107198276
+Right Little 2 Stretched	-0.591772
+Right Little 3 Stretched	-0.6246184

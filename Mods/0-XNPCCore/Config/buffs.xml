@@ -741,6 +741,25 @@
 		</effect_group>
 	</insertAfter>
 	
+	<!-- the douse starts on the fire's own start event, so a burning survivor reacts at once; the 2 s status check stays as the retry. -->
+	<append xpath="/buffs/buff[@name='buffIsOnFire']">
+		<effect_group name="SdcsDouseOnFireStart">
+			<triggered_effect trigger="onSelfBuffStart" action="AddBuff" target="self" buff="SdcsIsDousing">
+				<requirement name="HasBuff" buff="SdcsStatusCheck"/>
+				<requirement name="CVarCompare" cvar="Leader" operation="LTE" value="0"/>
+				<requirement name="!HasBuff" buff="SdcsIsDousing"/>
+				<requirement name="!HasBuff" buff="buffExtinguishFire"/>
+			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffStart" action="AddBuff" target="self" buff="SdcsIsDousing">
+				<requirement name="HasBuff" buff="SdcsStatusCheck"/>
+				<requirement name="CVarCompare" cvar="Leader" operation="GT" value="0"/>
+				<requirement name="CVarCompare" cvar="SdcsHasWater" operation="Equals" value="1"/>
+				<requirement name="!HasBuff" buff="SdcsIsDousing"/>
+				<requirement name="!HasBuff" buff="buffExtinguishFire"/>
+			</triggered_effect>
+		</effect_group>
+	</append>
+	
 	<!-- REMOVE BUFF WITH NETWORKED VARIABLES AND AOE TARGETS -->
 	<remove xpath="//buff[@name='buffStatusCheck01']/effect_group[@name='LeaderLevelUpdate']"/>
 	<remove xpath="//buff[@name='buffNPCStatusCheck']/effect_group[starts-with(@name, 'EntityDamageLeaderLevel')]"/>
@@ -1216,6 +1235,179 @@
 				<triggered_effect trigger="onSelfBuffStart" action="AddBuff" target="self" buff="buffOrderFollow"/>
 			</effect_group>
 		</buff>
+		<buff name="buffSdcsLootHere" hidden="true"> <!--  The hired loot-here setter (dialog row "Loot around here", the order wheel, the voice phrase): ONE buff start writes the job (SdcsLootMode 2), the true Guard order (CurrentOrder 9, so she fights at her post) and the guard post at the leader's block centre (GuardHere, SCore), which is the centre of her loot area and is saved with her.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsHarvestHere" hidden="true"> <!--  The hired harvest-here setter (dialog row "Chop wood around here", the order wheel, the voice phrase): one buff start writes the job (SdcsLootMode 3), the Guard order (CurrentOrder 9) and the guard post at the leader's block centre (GuardHere, SCore), the centre of her harvest area, saved with her.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="3"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsMineHere" hidden="true"> <!--  The hired mine-here setter (dialog row "Mine stone around here", the order wheel, the voice phrase): one buff start writes the job (SdcsLootMode 4), the ore filter (SdcsMineFilter 0 = every rock and ore), the Guard order (CurrentOrder 9) and the guard post at the leader's block centre (GuardHere, SCore), the centre of her mine area, saved with her.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="4"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsMineFilter" operation="set" value="0"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsMineIronHere" hidden="true"> <!--  The hired mine-here setter for the iron ore order: same one-buff shape as buffSdcsMineHere with the iron ore filter (SdcsMineFilter 1).  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="4"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsMineFilter" operation="set" value="1"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsMineCoalHere" hidden="true"> <!--  The hired mine-here setter for the coal order: same one-buff shape as buffSdcsMineHere with the coal ore filter (SdcsMineFilter 2).  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="4"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsMineFilter" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsMineLeadHere" hidden="true"> <!--  The hired mine-here setter for the lead ore order: same one-buff shape as buffSdcsMineHere with the lead ore filter (SdcsMineFilter 3).  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="4"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsMineFilter" operation="set" value="3"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsMineShaleHere" hidden="true"> <!--  The hired mine-here setter for the shale ore order: same one-buff shape as buffSdcsMineHere with the shale ore filter (SdcsMineFilter 4).  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="4"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsMineFilter" operation="set" value="4"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsMineNitrateHere" hidden="true"> <!--  The hired mine-here setter for the nitrate ore order: same one-buff shape as buffSdcsMineHere with the nitrate ore filter (SdcsMineFilter 5).  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="4"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsMineFilter" operation="set" value="5"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsMineRocksHere" hidden="true"> <!--  The hired mine-here setter for the rocks order (stone only): same one-buff shape as buffSdcsMineHere with the rock filter (SdcsMineFilter 6).  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="4"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsMineFilter" operation="set" value="6"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsDigClayHere" hidden="true"> <!--  The hired dig-clay-here setter (dialog row "Dig clay around here", the voice phrase): one buff start writes the job (SdcsLootMode 5), the Guard order (CurrentOrder 9) and the guard post at the leader's block centre (GuardHere, SCore), the centre of her clay area, saved with her.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="5"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsPickPlantsHere" hidden="true"> <!--  The hired pick-here setter for the plants order (dialog row, the voice phrase): one buff start writes the job (SdcsLootMode 6), the pick filter (SdcsPickFilter 0) and the Guard order (CurrentOrder 9) with the guard post at the leader's block centre (GuardHere, SCore), the centre of her pick area, saved with her.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="6"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsPickFilter" operation="set" value="0"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsPickCropsHere" hidden="true"> <!--  The hired pick-here setter for the crops order (dialog row, the voice phrase): one buff start writes the job (SdcsLootMode 6), the pick filter (SdcsPickFilter 1) and the Guard order (CurrentOrder 9) with the guard post at the leader's block centre (GuardHere, SCore), the centre of her pick area, saved with her.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="6"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsPickFilter" operation="set" value="1"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsButcherHere" hidden="true"> <!--  The hired butcher-here setter (dialog row, the voice phrase): one buff start writes the job (SdcsLootMode 7), the Guard order (CurrentOrder 9) and the guard post at the leader's block centre (GuardHere, SCore), the centre of her butcher area, saved with her.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="7"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsBaseRepairHere" hidden="true"> <!--  The hired base-keeper setter for the base repair order (dialog row, the order wheel, the voice phrase): one buff start writes the duty (SdcsLootMode 8, most damaged block first), the Guard order (CurrentOrder 9) and the guard post at the leader's block centre (GuardHere, SCore), the keeper's post, saved with her.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="8"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsCombatRepairHere" hidden="true"> <!--  The hired base-keeper setter for the combat repair order (dialog row, the order wheel, the voice phrase): one buff start writes the duty (SdcsLootMode 9, a block damaged in the last few seconds first), the Guard order (CurrentOrder 9) and the guard post at the leader's block centre (GuardHere, SCore), the keeper's post, saved with her.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsVehicleGetIn" hidden="true"> <!--  The dialog row "Get in my vehicle": writes the ride order (SdcsVehicleOrder 1), the same order the voice and the wheel write; the base boards her when the leader sits.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsVehicleOrder" operation="set" value="1"/>
+			</effect_group>
+		</buff>
+		<buff name="buffSdcsVehicleGetOut" hidden="true"> <!--  The dialog row "Get out of the vehicle": writes the ride order SdcsVehicleOrder 2 (out, and stay out until the leader leaves the vehicle).  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsVehicleOrder" operation="set" value="2"/>
+			</effect_group>
+		</buff>
 		<buff name="buffSdcsLootModeClear" hidden="true"> <!--  The mode clear for the dialog order rows (a dialog row that changes the order must end the mode, and a dialog action cannot call C#): the OnActivate writes SdcsLootMode back to 0. The C# order paths clear through the base SdcsLootMode helper instead of this buff.  -->
 			<stack_type value="ignore"/>
 			<duration value="1"/>
@@ -1620,48 +1812,66 @@
 		<buff name="SdcsStatusCheck" hidden="true" remove_on_death="true">
 			<stack_type value="ignore"/>
 			<update_rate value="2"/>
-			<!-- UNHIRED: free heal. No item is required and nothing is consumed. -->
-			<effect_group name="SdcsHealingUnhired">
-				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="SdcsIsHealing">
+			<!-- Self-heal trigger: C# owns it now. The 1 Hz
+			     authority scan (the controller's [SDCS-HEAL] decision) runs the
+			     pure ladder (BLEEDING first, then the settings low-health line,
+			     the two settings waits), spends the picked item by name and
+			     adds SdcsIsHealing itself, so this buff carries no heal groups:
+			     the old percent line, the has-medical gate and the old healing
+			     cooldown cvar are gone from the XML, and the !SdcsIsHealing /
+			     !buffIsOnFire gates moved into the decision's inputs. The douse
+			     groups below are untouched. -->
+			<!-- Douse, unhired: a burning survivor douses herself for free (no item,
+				     no cooldown, no health). The C# heal sequence takes the marker's
+				     rising edge. -->
+			<effect_group name="SdcsDouseUnhired">
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="SdcsIsDousing">
 					<requirement name="CVarCompare" cvar="Leader" operation="LTE" value="0"/>
-					<requirement name="StatComparePercCurrentToMax" stat="health" operation="LTE" value=".7"/>
-					<requirement name="!HasBuff" buff="SdcsIsHealing"/>
-					<requirement name="CVarCompare" cvar="$SdcsHealingCooldown" operation="LTE" value="0"/>
+					<requirement name="HasBuff" buff="buffIsOnFire"/>
+					<requirement name="!HasBuff" buff="SdcsIsDousing"/>
+					<requirement name="!HasBuff" buff="buffExtinguishFire"/>
 				</triggered_effect>
 			</effect_group>
-			<!-- HIRED: heal costs a bandage. The has-medical gate is the player's resupply
-			     loop; the consume happens in SdcsIsHealing below. -->
-			<effect_group name="SdcsHealingHired">
-				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="SdcsIsHealing">
+			<!-- Douse, hired: spends one drink (consumed by the C# sequence), so the
+				     trigger is gated on the SdcsHasWater cvar the controller publishes. Both
+			     douse groups are gated on vanilla's 8 s buffExtinguishFire, so a lingering
+			     buffIsOnFire cannot start a second, empty douse. -->
+			<effect_group name="SdcsDouseHired">
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="SdcsIsDousing">
 					<requirement name="CVarCompare" cvar="Leader" operation="GT" value="0"/>
-					<requirement name="CVarCompare" cvar="SdcsHasMedical" operation="Equals" value="1"/>
-					<requirement name="StatComparePercCurrentToMax" stat="health" operation="LTE" value=".7"/>
-					<requirement name="!HasBuff" buff="SdcsIsHealing"/>
-					<requirement name="CVarCompare" cvar="$SdcsHealingCooldown" operation="LTE" value="0"/>
-				</triggered_effect>
-			</effect_group>
-			<!-- Cooldown tick: one unit per update while counting, same shape as
-			     NPCCore's NPCHealing group. 15 units at rate 2 is a 30-second cadence. -->
-			<effect_group name="SdcsHealingCooldown">
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$SdcsHealingCooldown" operation="add" value="-1">
-					<requirement name="CVarCompare" cvar="$SdcsHealingCooldown" operation="GT" value="0"/>
+					<requirement name="CVarCompare" cvar="SdcsHasWater" operation="Equals" value="1"/>
+					<requirement name="HasBuff" buff="buffIsOnFire"/>
+					<requirement name="!HasBuff" buff="SdcsIsDousing"/>
+					<requirement name="!HasBuff" buff="buffExtinguishFire"/>
 				</triggered_effect>
 			</effect_group>
 		</buff>
 
-		<!-- The heal's START. Everything is onSelfBuffStart at t=0: the bandage is
-		     spent, the bleeding is cleared and the cooldown is armed. The HEALTH part
-		     (the three medical lines) is in SdcsHealApply below: the heal sequence
-		     (AvatarSdcsNpcController.HealSeq) adds it when the bandage animation ends,
-		     or at once as the fallback when the sequence cannot run, so the trickle
-		     now starts at the END of the bandage instead of t=0. The duration is
-		     therefore ONLY the combat-mute window: while this buff is present, every
-		     SdcsNpcRangedAdvanced action fails its SelfNotHasBuff SdcsIsHealing gate
-		     and UAI falls back to DynamicFollow (the NPC turns to its leader and
-		     walks - visible in the field as "heals by strolling away"). The 3 s
-		     NPCCore IsHealing length reads as dead air, so the duration is 1 s; the
-		     heal sequence's SdcsHealSeq cvar carries the busy state past the buff's
-		     expiry. -->
+		<!-- The douse's trigger marker: no t=0 effects at all (no cooldown, no
+			     consume, no safety net); the C# heal sequence does everything. -->
+		<buff name="SdcsIsDousing" hidden="true">
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+		</buff>
+
+		<!-- The heal's START. C# (the 1 Hz [SDCS-HEAL] decision) adds this buff
+		     only after it spent the picked item by name (hired) and wrote the
+		     apply-contract cvars (SdcsSelfHealKind / SdcsSelfHealAmount), so the
+		     XML t=0 does the safety-net reset and the bleed-family clear only -
+		     the family is gated on the kind (the pain pills, kind 4, do not stop
+		     a bleed). There is no XML consume and no cooldown arm any more: C#
+		     spends the item and owns the two waits. The HEALTH part is in
+		     SdcsHealApply below: the heal sequence
+		     (AvatarSdcsNpcController.HealSeq) adds it when the bandage animation
+		     ends, or at once as the fallback when the sequence cannot run, so the
+		     trickle now starts at the END of the bandage instead of t=0. The
+		     duration is therefore ONLY the combat-mute window: while this buff is
+		     present, every SdcsNpcRangedAdvanced action fails its SelfNotHasBuff
+		     SdcsIsHealing gate and UAI falls back to DynamicFollow (the NPC turns
+		     to its leader and walks - visible in the field as "heals by strolling
+		     away"). The 3 s NPCCore IsHealing length reads as dead air, so the
+		     duration is 1 s; the heal sequence's SdcsHealSeq cvar carries the busy
+		     state past the buff's expiry. -->
 		<buff name="SdcsIsHealing">
 			<stack_type value="ignore"/>
 			<duration value="1"/>
@@ -1672,27 +1882,40 @@
 				     the moment it takes the heal, so the end effect below fires
 				     only when no controller saw this buff. -->
 				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsHealSeqSeen" operation="set" value="0"/>
-				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleeding"/>
-				<!-- Any heal clears ALL bleeding. The laceration chain (game buffs.xml
-				     5701-5743) re-adds buffInjuryBleeding via buffInjuryBleedingOne, so the wound,
-				     its one/two/barbedwire carriers and internal bleeding all go too. -->
-				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffLaceration"/>
-				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleedingOne"/>
-				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleedingTwo"/>
-				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleedingBarbedWire"/>
-				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInternalBleeding"/>
-				<!-- Mirror the vanilla laceration end (game buffs.xml 5728 and 5743): clear the
-				     wound counter, health blockage and display so no leftover re-adds the bleed. -->
-				<triggered_effect trigger="onSelfBuffStart" action="RemoveCVar" cvar="$lacerationCounter,.lacerationHealthBlockage,.lacerationDurationDisplay"/>
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$SdcsHealingCooldown" operation="set" value="15"/>
-				<!-- Hired only: the heal consumes a medical item from whichever store holds
-				     one (toolbelt, bag, loot container, then the player-facing harvest
-				     container - the EntityUtilities search order). Unhired heals free.
-				     The hand holds the display item (sdcsDisplayBandage), so the
-				     consume takes a real medical item from her stores. -->
-				<triggered_effect trigger="onSelfBuffStart" action="ConsumeItemByTagSDX, SCore" tag="medical">
-					<requirement name="CVarCompare" cvar="Leader" operation="GT" value="0"/>
+				<!-- The bleed family clears ONLY when the picked item stops a bleed
+				     (the cloth bandage, the medicated bandage, the first aid kit) or the
+				     heal is the unhired free one: the 1 Hz decision wrote
+				     SdcsSelfHealKind at heal start (0 free, 1 cloth, 2 medicated, 3 kit,
+				     4 pain pills), and the pills (4) do not stop a bleed. Any such heal
+				     clears ALL bleeding: the laceration chain (game buffs.xml 5701-5743)
+				     re-adds buffInjuryBleeding via buffInjuryBleedingOne, so the wound,
+				     its one/two/barbedwire carriers and internal bleeding all go too, and
+				     the wound counter, health blockage and display clear with it (the
+				     vanilla laceration end, game buffs.xml 5728 and 5743). -->
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleeding">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
 				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffLaceration">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleedingOne">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleedingTwo">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleedingBarbedWire">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInternalBleeding">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveCVar" cvar="$lacerationCounter,.lacerationHealthBlockage,.lacerationDurationDisplay">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
+				</triggered_effect>
+				<!-- The hired spend moved to C# (the 1 Hz decision spends ONE of the
+				     picked item by name, at the heal start, before adding this buff) and
+				     the $SdcsHealingCooldown arm is gone (the two waits are the C# clocks). -->
 				<!-- The safety net for the health. If the avatar
 				     controller's per-frame code never saw this buff (component not
 				     ticking, a class without the controller), the health still
@@ -1707,21 +1930,42 @@
 			</effect_group>
 		</buff>
 
-		<!-- The heal's HEALTH, at the END. The three lines live in SdcsIsHealing above;
-		     the heal sequence adds this buff when the bandage
-		     animation ends (or at once, as the fallback, when the sequence cannot
-		     run). On start it queues the same +30 / 2 per s trickle the in-place heal
-		     queued: buffProcessConsumables reads medicalRegHealthAmount and
-		     adds the game's buffHealHealth (the visible Heal icon rides it). Hidden:
-		     nothing of its own displays. -->
+		<!-- The heal's HEALTH, at the END, from the PICKED item: the
+		     1 Hz [SDCS-HEAL] decision wrote SdcsSelfHealAmount at heal start -
+		     free 30, medicated bandage 30, first aid kit 180; the cloth bandage
+		     is 0 and the over-time lines below skip it (it stops the bleed and
+		     heals nothing, its own vanilla value). The over-time lines keep
+		     today's fixed 2 per s (the perk cvar is NOT read - it is not set on
+		     an NPC); buffProcessConsumables reads medicalRegHealthAmount and
+		     adds the game's buffHealHealth (the visible Heal icon rides it).
+		     The pain pills (kind 4) heal INSTANT instead, their own vanilla
+		     +40 at once, and the concussion goes with it. The heal sequence
+		     adds this buff when the bandage animation ends (or at once, as the
+		     fallback, when the sequence cannot run). Hidden: nothing of its own
+		     displays. -->
 		<buff name="SdcsHealApply" hidden="true">
 			<stack_type value="ignore"/>
 			<duration value="1"/>
 			<update_rate value="1"/>
 			<effect_group name="SdcsHealApply">
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="medicalRegHealthAmount" operation="add" value="30"/>
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="medRegHealthIncSpeed" operation="set" value="2"/>
-				<triggered_effect trigger="onSelfBuffStart" action="AddBuff" target="self" buff="buffProcessConsumables"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="medicalRegHealthAmount" operation="add" value="@SdcsSelfHealAmount">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
+					<requirement name="CVarCompare" cvar="SdcsSelfHealAmount" operation="GT" value="0"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="medRegHealthIncSpeed" operation="set" value="2">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
+					<requirement name="CVarCompare" cvar="SdcsSelfHealAmount" operation="GT" value="0"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="AddBuff" target="self" buff="buffProcessConsumables">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="LTE" value="3"/>
+					<requirement name="CVarCompare" cvar="SdcsSelfHealAmount" operation="GT" value="0"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyStats" stat="Health" operation="add" value="@SdcsSelfHealAmount">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="Equals" value="4"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryConcussion">
+					<requirement name="CVarCompare" cvar="SdcsSelfHealKind" operation="Equals" value="4"/>
+				</triggered_effect>
 			</effect_group>
 		</buff>
 
@@ -1748,6 +1992,8 @@
 				<passive_effect name="HealthMax" operation="perc_add" value="@SdcsLevelHealth"/>
 				<passive_effect name="DamageModifier" operation="perc_add" value="@SdcsLevelDamage"/>
 				<passive_effect name="SpreadMultiplierHip" operation="perc_add" value="@SdcsLevelSpread"/>
+				<!-- Harvest yield grows with her level (wood, stone, ore, clay, plants, crops, butchering). -->
+				<passive_effect name="HarvestCount" operation="perc_add" value="@SdcsLevelHarvest" tags="oreWoodHarvest,cropHarvest,wildCropsHarvest,butcherHarvest"/>
 				<!-- Slow natural regen: the NPC tops itself off while it
 				     wanders instead of being healed instantly on a level-up (which would have
 				     full-healed a companion mid-fight). Small enough not to matter in combat. -->
