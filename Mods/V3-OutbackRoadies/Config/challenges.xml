@@ -5,6 +5,7 @@
 	<set xpath="/challenges/challenge[@name='healerDysentery']/objective/@count">1</set><!-- Default is 5 -->
 	<set xpath="/challenges/challenge[@name='healerConcussion']/objective/@count">1</set><!-- Default is 5 -->
 	<set xpath="/challenges/challenge[@name='healerFatigued']/objective/@count">1</set><!-- Default is 5 -->
+	<set xpath="/challenges/challenge[@name='healerLaceration']/objective/@count">1</set><!-- Default is 5 -->
 
 	<!-- *** BURNT_FOREST_CHALLENGES -->
 	<append xpath="/challenges/challenge[@name='burntSurvivalKillZombie']/objective[@type='Kill']/@entity_names">,zombieBurntRadiatedMini</append>
