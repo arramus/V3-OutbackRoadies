@@ -820,6 +820,19 @@
 	
 	
 	
+	<!-- The legacy mode icons are retired: nothing writes the player cvars they
+	     read any more, so Resume and Hunting showed for ever. The check now only
+	     clears them from players who still carry them; the squad stance icon
+	     (the voice mod's buffs.xml) shows the stance instead. -->
+	<remove xpath="//buff[@name='buffNPCModVerifyCurrentActions']/effect_group[@name='buffNPCModVerifyCurrentActions']/triggered_effect"/>
+	<append xpath="/buffs/buff[@name='buffNPCModVerifyCurrentActions']/effect_group[@name='buffNPCModVerifyCurrentActions']">
+		<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffNPCModHaltDisplay"/>
+		<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffNPCModResumeDisplay"/>
+		<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffNPCModHuntingModeDisplay"/>
+		<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffNPCModThreatControlModeDisplay"/>
+		<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffNPCModFullControlModeDisplay"/>
+	</append>
+
 <!--  The sections below are options or for development purposes and are not active in all NPCCore characters  -->
 	
 		
@@ -1227,6 +1240,10 @@
 			<stack_type value="ignore"/>
 			<duration value="20"/>
 		</buff>
+		<buff name="SdcsWanderRest" hidden="true"> <!--  The flag that a wander just gave up (she got nowhere for Settings.xml Wander StuckSeconds). No effects; while present the SdcsNpcCore Wander action scores 0, so she idles or does something else before she wanders again.  -->
+			<stack_type value="ignore"/>
+			<duration value="10"/>
+		</buff>
 		<buff name="buffSdcsLootMode" hidden="true"> <!--  The hired follow-and-loot mode setter for the dialog "Loot around here" row, which cannot call C#: the OnActivate makes the same two writes the C# setters do (SdcsLootMode 1, then the Follow order through the stock follow buff).  -->
 			<stack_type value="ignore"/>
 			<duration value="1"/>
@@ -1393,6 +1410,20 @@
 				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
 				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
 			</effect_group>
+		</buff>
+		<buff name="buffSdcsCraftHere" hidden="true"> <!--  The hired craft-here setter (the E-menu craft order): one buff start writes the job (SdcsLootMode 10), the Guard order (CurrentOrder 9) and the guard post at the leader's block centre (GuardHere, SCore), saved with her. The recipe and the count are the order the server queued beside it.  -->
+			<stack_type value="ignore"/>
+			<duration value="1"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="SdcsLootMode" operation="set" value="10"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="CurrentOrder" operation="set" value="9"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="Guarding" operation="set" value="2"/>
+				<triggered_effect trigger="onSelfBuffStart" action="GuardHere, SCore"/>
+			</effect_group>
+		</buff>
+		<buff name="SdcsCraftingBuff" hidden="true"> <!--  She is crafting: the rummage pose holds while this is on. No effects. The craft task adds it again every few seconds while it runs (replace restarts the duration), so the pose ends on its own within the duration when anything else takes over; combat removes it at once. Its own name, so the loot gate never reads crafting as a loot run.  -->
+			<stack_type value="replace"/>
+			<duration value="5"/>
 		</buff>
 		<buff name="buffSdcsVehicleGetIn" hidden="true"> <!--  The dialog row "Get in my vehicle": writes the ride order (SdcsVehicleOrder 1), the same order the voice and the wheel write; the base boards her when the leader sits.  -->
 			<stack_type value="ignore"/>
@@ -1977,7 +2008,7 @@
 		     (same as our own "@EntityID" usage). With "@$" the
 		     buff is ON the entity but the cvar holds 0.06 and HealthMax never moves. The passive effects
 			     read the $-cvars the controller writes (SdcsLevelHealth /
-			     SdcsLevelDamage / SdcsLevelSpread), and the engine re-reads them
+			     SdcsLevelDamage / SdcsLevelHarvest), and the engine re-reads them
 			     live on every passive-effect evaluation, so a cvar refresh on a
 			     level-up changes the effect in place (no buff re-add). No
 			     duration (permanent) and NO remove_on_death on purpose: the level
@@ -1991,13 +2022,28 @@
 			<effect_group name="SdcsNpcLevelBonus">
 				<passive_effect name="HealthMax" operation="perc_add" value="@SdcsLevelHealth"/>
 				<passive_effect name="DamageModifier" operation="perc_add" value="@SdcsLevelDamage"/>
-				<passive_effect name="SpreadMultiplierHip" operation="perc_add" value="@SdcsLevelSpread"/>
 				<!-- Harvest yield grows with her level (wood, stone, ore, clay, plants, crops, butchering). -->
 				<passive_effect name="HarvestCount" operation="perc_add" value="@SdcsLevelHarvest" tags="oreWoodHarvest,cropHarvest,wildCropsHarvest,butcherHarvest"/>
 				<!-- Slow natural regen: the NPC tops itself off while it
 				     wanders instead of being healed instantly on a level-up (which would have
 				     full-healed a companion mid-fight). Small enough not to matter in combat. -->
 				<passive_effect name="HealthChangeOT" operation="base_add" value="@SdcsLevelRegen"/>
+			</effect_group>
+		</buff>
+
+		<!-- [SDCS-LEAD] Her leader's Charismatic Nature on a hired survivor (the
+		     game's perk buffs only other players). The controller's 1 Hz pass writes
+		     the three values from his calculated rank and Settings.xml Leadership
+		     (0 below the rank that gives each) BEFORE it adds this buff; the buff
+		     reads them live, so a rank change needs no re-add. Permanent, like
+		     SdcsNpcLevelBonus; a 0 reads as no bonus. -->
+		<buff name="SdcsNpcLeadership" hidden="true">
+			<stack_type value="ignore"/>
+			<effect_group name="SdcsNpcLeadership">
+				<passive_effect name="HealthChangeOT" operation="base_add" value="@SdcsLeadRegen"/>
+				<passive_effect name="EntityDamage" operation="perc_add" value="@SdcsLeadDamage"/>
+				<passive_effect name="BlockDamage" operation="perc_add" value="@SdcsLeadDamage" tags="melee"/>
+				<passive_effect name="GeneralDamageResist" operation="base_add" value="@SdcsLeadResist"/>
 			</effect_group>
 		</buff>
 
@@ -2036,6 +2082,47 @@
 		<buff name="XVC_JumpCooldown">
 			<stack_type value="ignore"/>
 			<duration value="2"/>
+		</buff>
+	</append>
+
+	<!-- [VC-STANCE] The squad stance on the player's buff bar: the Engage stance his
+	     hires share (the server writes the player cvar sdcsSquadStance once a second:
+	     0 none, 1 defensive, 2 aggressive, 3 hold fire), with the order wheel's own
+	     Engage symbols. No hires, or hires on different stances: no icon. -->
+	<append xpath="/buffs/buff[@name='buffStatusCheck01']">
+		<effect_group name="SdcsSquadStanceDisplay">
+			<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="buffSdcsStanceDefensive">
+				<requirement name="CVarCompare" cvar="sdcsSquadStance" operation="Equals" value="1"/>
+			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffSdcsStanceDefensive">
+				<requirement name="CVarCompare" cvar="sdcsSquadStance" operation="NotEquals" value="1"/>
+			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="buffSdcsStanceAggressive">
+				<requirement name="CVarCompare" cvar="sdcsSquadStance" operation="Equals" value="2"/>
+			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffSdcsStanceAggressive">
+				<requirement name="CVarCompare" cvar="sdcsSquadStance" operation="NotEquals" value="2"/>
+			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="buffSdcsStanceHoldFire">
+				<requirement name="CVarCompare" cvar="sdcsSquadStance" operation="Equals" value="3"/>
+			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffSdcsStanceHoldFire">
+				<requirement name="CVarCompare" cvar="sdcsSquadStance" operation="NotEquals" value="3"/>
+			</triggered_effect>
+		</effect_group>
+	</append>
+	<append xpath="/buffs">
+		<buff name="buffSdcsStanceDefensive" icon="ui_game_symbol_defense" name_key="buffSdcsStanceDefensiveName" description_key="buffSdcsStanceDefensiveDesc">
+			<stack_type value="ignore"/>
+			<duration value="0"/>
+		</buff>
+		<buff name="buffSdcsStanceAggressive" icon="ui_game_symbol_skull" name_key="buffSdcsStanceAggressiveName" description_key="buffSdcsStanceAggressiveDesc">
+			<stack_type value="ignore"/>
+			<duration value="0"/>
+		</buff>
+		<buff name="buffSdcsStanceHoldFire" icon="ui_game_symbol_hand" name_key="buffSdcsStanceHoldFireName" description_key="buffSdcsStanceHoldFireDesc">
+			<stack_type value="ignore"/>
+			<duration value="0"/>
 		</buff>
 	</append>
 </configs>

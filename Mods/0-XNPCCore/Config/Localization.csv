@@ -324,18 +324,170 @@ SdcsNPC_Blades,dialogs,Dialogs,,,,Blades Menu,,Klingenmenü,Menú de hojas,Menu 
 SdcsNPC_Clubs,dialogs,Dialogs,,,,Clubs Menu,,Knüppelmenü,Menú de garrotes,Menu des massues,Menu mazze,棍棒メニュー,둔기 메뉴,Menu maczug,Menu de porretes,Меню дубин,Sopa Menüsü,棍棒菜单,棍棒選單
 SdcsNPC_Heavy,dialogs,Dialogs,,,,Heavy Menu,,Menü schwere Waffen,Menú de armas pesadas,Menu des armes lourdes,Menu armi pesanti,重火器メニュー,중화기 메뉴,Menu broni ciężkiej,Menu de armas pesadas,Меню тяжёлого оружия,Ağır Silah Menüsü,重武器菜单,重武器選單
 traderNPC,entityclasses,Entity Info,,,,Backpack,,Rucksack,Mochila,Sac à dos,Zaino,バックパック,백팩,Plecak,Mochila,Рюкзак,Sırt Çantası,背包,背包
-Iseeyou,sounds,Voice Clip,,,,"I see you"
-Wannaplay,sounds,Voice Clip,,,,"Wanna play?"
-Teehee,sounds,Voice Clip,,,,"Tee-hee!"
-Woopee,sounds,Voice Clip,,,,"Whoopee!"
-Ididit,sounds,Voice Clip,,,,"I did it!"
-Onemore,sounds,Voice Clip,,,,"One more time!"
-Nutzo,sounds,Voice Clip,,,,"That's Nutzo!"
-Ominous,sounds,Voice Clip,,,,"ominous ominus ipso facto"
-Laugh01,sounds,Voice Clip,,,,"Hahaha!"
+Harley_Iseeyou,sounds,Voice Clip,,,,"I see you"
+Harley_Wannaplay,sounds,Voice Clip,,,,"Wanna play?"
+Harley_Teehee,sounds,Voice Clip,,,,"Tee-hee!"
+Harley_Woopee,sounds,Voice Clip,,,,"Whoopee!"
+Harley_Ididit,sounds,Voice Clip,,,,"I did it!"
+Harley_Onemore,sounds,Voice Clip,,,,"One more time!"
+Harley_Nutzo,sounds,Voice Clip,,,,"That's Nutzo!"
+Harley_Ominous,sounds,Voice Clip,,,,"ominous ominus ipso facto"
+Harley_Laugh01,sounds,Voice Clip,,,,"Hahaha!"
 VCPatrol_Scout,,,,,,Scout around here,,Erkunde die Gegend,Explora por aquí,Explorez les environs,Esplora qui intorno,この辺りを偵察して,이 근처를 정찰해,Przeprowadź zwiad w okolicy,Explore por aqui,Разведай местность,Buraları keşfet,在附近侦察,在附近偵察
 VCPatrol_SetPatrolPoint,,,,,,Show me a route,,Ich zeige dir eine Route,Te enseñaré una ruta,Je vais vous montrer un itinéraire,Ti mostro un percorso,ルートを教える,경로를 알려 줄게,Pokażę ci trasę,Vou te mostrar uma rota,Я покажу тебе маршрут,Sana bir rota göstereyim,我来给你指条路线,我來給你指條路線
 VCPatrol_Patrol,,,,,,Patrol your route,,Patrouilliere deine Route,Patrulla tu ruta,Patrouillez votre itinéraire,Pattuglia il tuo percorso,ルートを巡回して,네 경로를 순찰해,Patroluj swoją trasę,Patrulhe sua rota,Патрулируй свой маршрут,Rotanda devriye gez,按你的路线巡逻,按你的路線巡邏
 VCPatrol_CancelPatrolRecord,,,,,,Cancel patrol,,Patrouille abbrechen,Cancelar patrulla,Annuler la patrouille,Annulla pattuglia,巡回を中止,순찰 취소,Anuluj patrol,Cancelar patrulha,Отменить патруль,Devriyeyi iptal et,取消巡逻,取消巡邏
 VCPatrol_PatrolMenu,,,,,,Patrol,,Patrouille,Patrulla,Patrouille,Pattuglia,巡回,순찰,Patrol,Patrulha,Патруль,Devriye,巡逻,巡邏
 SdcsNPC_WhatCarrying,,,,,,What are you carrying?,,Was trägst du bei dir?,¿Qué llevas encima?,Que transportez-vous ?,Cosa stai portando?,何を持っている？,뭘 가지고 있어?,Co masz przy sobie?,O que você está carregando?,Что ты несёшь?,Üzerinde ne var?,你带着什么？,你帶著什麼？
+SdcsNPC_CraftMenu,,,,,,Craft...,,Herstellen...,Fabricar...,Fabriquer...,Fabbrica...,クラフト...,제작...,Wytwórz...,Fabricar...,Изготовить...,Üret...,制作...,製作...
+SdcsNPC_CraftMenuText,,,,,,What should I make?,,Was soll ich herstellen?,¿Qué debo fabricar?,Que dois-je fabriquer ?,Cosa devo fabbricare?,何を作ればいい？,뭘 만들까?,Co mam wytworzyć?,O que devo fabricar?,Что мне сделать?,Ne üreteyim?,我该做什么？,我該做什麼？
+SdcsNPC_CraftKindText,,,,,,What kind of thing?,,Welche Art von Ding?,¿Qué tipo de cosa?,Quel genre de chose ?,Che tipo di cosa?,どんな種類の物？,어떤 종류의 물건?,Jaki rodzaj rzeczy?,Que tipo de coisa?,Какого рода вещь?,Ne tür bir şey?,什么类型的东西？,什麼類型的東西？
+SdcsNPC_CraftCountText,,,,,,How many?,,Wie viele?,¿Cuántos?,Combien ?,Quanti?,いくつ？,몇 개?,Ile?,Quantos?,Сколько?,Kaç tane?,做几个？,做幾個？
+SdcsNPC_CraftBack,,,,,,Back,,Zurück,Atrás,Retour,Indietro,戻る,뒤로,Wstecz,Voltar,Назад,Geri,返回,返回
+SdcsNPC_CraftAll,,,,,,All,,Alle,Todos,Tous,Tutti,全部,전부,Wszystkie,Todos,Все,Hepsi,全部,全部
+SdcsNPC_CraftMore,,,,,,More...,,Mehr...,Más...,Plus...,Altro...,もっと...,더 보기...,Więcej...,Mais...,Ещё...,Daha fazla...,更多...,更多...
+SdcsNPC_CraftWait,,,,,,...,,...,...,...,...,...,...,...,...,...,...,...,...
+SdcsNPC_CraftNone,,,,,,I can't make anything with what's here.,,"Mit dem, was hier ist, kann ich nichts herstellen.",No puedo fabricar nada con lo que hay aquí.,Je ne peux rien fabriquer avec ce qu'il y a ici.,Non posso fabbricare niente con quello che c'è qui.,ここにある物では何も作れない。,여기 있는 걸로는 아무것도 못 만들어.,"Z tego, co tu jest, nic nie wytworzę.",Não consigo fabricar nada com o que tem aqui.,"Из того, что здесь есть, ничего не сделать.",Buradakilerle hiçbir şey yapamam.,用这里的东西我什么都做不了。,用這裡的東西我什麼都做不了。
+SdcsNPC_ProgressMenu,,,,,,Your progress,,Dein Fortschritt,Tu progreso,Ta progression,I tuoi progressi,君の成長,너의 성장,Twoje postępy,Seu progresso,Твой прогресс,İlerlemen,你的成长,你的成長
+SdcsNPC_ProgressText,,,,,,How am I doing?,,Wie stehe ich da?,¿Cómo voy?,Où en suis-je ?,Come sto andando?,私の成長はどう？,내 성장은 어때?,Jak mi idzie?,Como estou indo?,Как у меня дела?,Nasıl gidiyorum?,我成长得怎么样？,我成長得怎麼樣？
+SdcsNPC_ProgressLevel,,,,,,Level {0},,Stufe {0},Nivel {0},Niveau {0},Livello {0},レベル {0},레벨 {0},Poziom {0},Nível {0},Уровень {0},Seviye {0},等级 {0},等級 {0}
+SdcsNPC_ProgressXp,,,,,,XP {0} / {1},,XP {0} / {1},XP {0} / {1},XP {0} / {1},XP {0} / {1},経験値 {0} / {1},경험치 {0} / {1},XP {0} / {1},XP {0} / {1},Опыт {0} / {1},XP {0} / {1},经验 {0} / {1},經驗 {0} / {1}
+SdcsNPC_ProgressTier,,,,,,Crafts at quality {0},,Stellt in Qualität {0} her,Fabrica con calidad {0},Fabrique en qualité {0},Fabbrica con qualità {0},品質 {0} で製作,품질 {0}로 제작,Wytwarza w jakości {0},Fabrica com qualidade {0},Изготавливает с качеством {0},{0} kalitede üretir,制作品质 {0},製作品質 {0}
+SdcsNPC_ProgressRepair,,,,,,Repairs up to {0}: {1} / {2} repair XP,,Repariert bis {0}: {1} / {2} Reparatur-EP,Repara hasta {0}: {1} / {2} PX de reparación,Répare jusqu'à {0} : {1} / {2} XP de réparation,Ripara fino a {0}: {1} / {2} XP di riparazione,{0}まで修理可能: 修理経験値 {1} / {2},{0}까지 수리: 수리 경험치 {1} / {2},Naprawia do poziomu {0}: {1} / {2} PD naprawy,Repara até {0}: {1} / {2} XP de reparo,Чинит до уровня «{0}»: опыт ремонта {1} / {2},{0} seviyesine kadar onarır: {1} / {2} onarım XP,可修理至{0}：修理经验 {1} / {2},可修理至{0}：修理經驗 {1} / {2}
+SdcsNPC_ProgressRepairMax,,,,,,Repairs up to {0}: {1} repair XP,,Repariert bis {0}: {1} Reparatur-EP,Repara hasta {0}: {1} PX de reparación,Répare jusqu'à {0} : {1} XP de réparation,Ripara fino a {0}: {1} XP di riparazione,{0}まで修理可能: 修理経験値 {1},{0}까지 수리: 수리 경험치 {1},Naprawia do poziomu {0}: {1} PD naprawy,Repara até {0}: {1} XP de reparo,Чинит до уровня «{0}»: опыт ремонта {1},{0} seviyesine kadar onarır: {1} onarım XP,可修理至{0}：修理经验 {1},可修理至{0}：修理經驗 {1}
+SdcsNPC_ProgressSkill,,,,,,{0} skill {1}: {2} / {3} crafts,,{0}-Fertigkeit {1}: {2} / {3} Herstellungen,Habilidad de {0} {1}: {2} / {3} fabricaciones,Compétence {0} {1} : {2} / {3} fabrications,Abilità {0} {1}: {2} / {3} creazioni,{0}スキル {1}: 製作 {2} / {3},{0} 기술 {1}: 제작 {2} / {3},Umiejętność {0} {1}: {2} / {3} wytworzeń,Habilidade de {0} {1}: {2} / {3} fabricações,Навык «{0}» {1}: изготовлено {2} / {3},{0} becerisi {1}: {2} / {3} üretim,{0}技能 {1}：制作 {2} / {3},{0}技能 {1}：製作 {2} / {3}
+SdcsNPC_ProgressSkillMax,,,,,,{0} skill {1}: {2} crafts,,{0}-Fertigkeit {1}: {2} Herstellungen,Habilidad de {0} {1}: {2} fabricaciones,Compétence {0} {1} : {2} fabrications,Abilità {0} {1}: {2} creazioni,{0}スキル {1}: 製作 {2},{0} 기술 {1}: 제작 {2},Umiejętność {0} {1}: {2} wytworzeń,Habilidade de {0} {1}: {2} fabricações,Навык «{0}» {1}: изготовлено {2},{0} becerisi {1}: {2} üretim,{0}技能 {1}：制作 {2},{0}技能 {1}：製作 {2}
+SdcsNPC_RepairTier_wood,,,,,,wood,,Holz,madera,bois,legno,木材,나무,drewno,madeira,дерево,ahşap,木材,木材
+SdcsNPC_RepairTier_cobblestone,,,,,,cobblestone,,Kopfsteinpflaster,adoquín,pavés,ciottoli,丸石,조약돌,bruk,paralelepípedo,булыжник,arnavut kaldırımı,鹅卵石,鵝卵石
+SdcsNPC_RepairTier_concrete,,,,,,concrete,,Beton,hormigón,béton,calcestruzzo,コンクリート,콘크리트,beton,concreto,бетон,beton,混凝土,混凝土
+SdcsNPC_RepairTier_steel,,,,,,steel,,Stahl,acero,acier,acciaio,鋼鉄,강철,stal,aço,сталь,çelik,钢,鋼
+SdcsNPC_ProgressRoles,,,,,,Roles: {0},,Rollen: {0},Funciones: {0},Rôles : {0},Ruoli: {0},役割: {0},역할: {0},Role: {0},Funções: {0},Роли: {0},Roller: {0},职责：{0},職責：{0}
+SdcsNPC_ProgressNoRoles,,,,,,No roles,,Keine Rollen,Sin funciones,Aucun rôle,Nessun ruolo,役割なし,역할 없음,Brak ról,Sem funções,Нет ролей,Rol yok,没有职责,沒有職責
+SdcsNPC_TitleMedic,,,,,,Medic,,Sanitäter,Médico,Médecin,Medico,衛生兵,의무병,Medyk,Médico,Медик,Sıhhiyeci,医疗兵,醫療兵
+SdcsNPC_TitleCook,,,,,,Cook,,Koch,Cocinero,Cuisinier,Cuoco,料理人,요리사,Kucharz,Cozinheiro,Повар,Aşçı,厨师,廚師
+SdcsNPC_TitleBlacksmith,,,,,,Smith,,Schmied,Herrero,Forgeron,Fabbro,鍛冶屋,대장장이,Kowal,Ferreiro,Кузнец,Demirci,铁匠,鐵匠
+SdcsNPC_TitleChemist,,,,,,Chemist,,Chemiker,Químico,Chimiste,Chimico,化学者,화학자,Chemik,Químico,Химик,Kimyager,化学家,化學家
+SdcsNPC_TitleCrafter,,,,,,Crafter,,Handwerker,Artesano,Artisan,Artigiano,職人,제작자,Rzemieślnik,Artesão,Ремесленник,Zanaatkâr,工匠,工匠
+SdcsNPC_TitleFormat,,,,,,{0} - {1},,{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1}
+entitycommand_vcorders,,,,,,Orders,,Befehle,Órdenes,Ordres,Ordini,命令,명령,Rozkazy,Ordens,Приказы,Emirler,命令,命令
+vcWheel_Follow,,,,,,Follow,,Folgen,Seguir,Suivre,Seguire,追従,따라오기,Podążaj,Seguir,Следовать,Takip et,跟随,跟隨
+vcWheel_Stay,,,,,,Stay,,Bleiben,Quedarse,Rester,Restare,待機,대기,Zostań,Ficar,Стоять,Bekle,待命,待命
+vcWheel_Guard,,,,,,Guard,,Bewachen,Vigilar,Garder,Sorvegliare,警備,경계,Pilnuj,Vigiar,Охранять,Nöbet tut,警戒,警戒
+vcWheel_Jobs,,,,,,Jobs,,Aufgaben,Trabajos,Tâches,Lavori,仕事,작업,Zadania,Trabalhos,Работа,İşler,工作,工作
+vcWheel_Orders,,,,,,Orders,,Befehle,Órdenes,Ordres,Ordini,命令,명령,Rozkazy,Ordens,Приказы,Emirler,命令,命令
+vcWheel_Stance,,,,,,Stance,,Haltung,Postura,Posture,Atteggiamento,構え,태세,Postawa,Postura,Тактика,Tavır,姿态,姿態
+vcWheel_Position,,,,,,Position,,Position,Posición,Position,Posizione,位置,위치,Pozycja,Posição,Позиция,Konum,位置,位置
+vcWheel_Formation,,,,,,Formation,,Formation,Formación,Formation,Formazione,隊形,대형,Formacja,Formação,Строй,Düzen,队形,隊形
+vcWheel_Aggressive,,,,,,Aggressive,,Aggressiv,Agresivo,Agressif,Aggressivo,攻撃的,공격적,Agresywnie,Agressivo,Агрессивно,Saldırgan,激进,激進
+vcWheel_Defensive,,,,,,Defensive,,Defensiv,Defensivo,Défensif,Difensivo,防御的,방어적,Defensywnie,Defensivo,Оборона,Savunmacı,防守,防守
+vcWheel_HoldFire,,,,,,Hold fire,,Feuer einstellen,Alto el fuego,Cessez le feu,Cessate il fuoco,撃ち方やめ,사격 중지,Wstrzymaj ogień,Cessar fogo,Не стрелять,Ateşi kes,停火,停火
+vcWheel_Disengage,,,,,,Disengage,,Rückzug,Retirarse,Décrocher,Sganciarsi,離脱,이탈,Wycofaj się,Recuar,Отступить,Çekil,脱离战斗,脫離戰鬥
+vcWheel_Weapons,,,,,,Weapons,,Waffen,Armas,Armes,Armi,武器,무기,Broń,Armas,Оружие,Silahlar,武器,武器
+vcWheel_Crouch,,,,,,Crouch,,Ducken,Agacharse,S'accroupir,Accovacciarsi,しゃがむ,웅크리기,Kucnij,Agachar,Пригнуться,Çömel,蹲下,蹲下
+vcWheel_Resume,,,,,,Resume,,Fortsetzen,Reanudar,Reprendre,Riprendere,再開,재개,Wznów,Retomar,Продолжить,Devam et,恢复,恢復
+vcWheel_StandUp,,,,,,Stand up,,Aufstehen,Levantarse,Se lever,Alzarsi,立つ,일어서기,Wstań,Levantar,Встать,Ayağa kalk,站起来,站起來
+vcWheel_Scout,,,,,,Scout,,Erkunden,Explorar,Explorer,Esplorare,偵察,정찰,Zwiad,Explorar,Разведка,Keşif,侦察,偵察
+vcWheel_GuardAndReturn,,,,,,Guard and return,,Bewachen und zurück,Vigilar y volver,Garder et revenir,Sorvegliare e tornare,警備して戻る,경계 후 복귀,Pilnuj i wróć,Vigiar e voltar,Охранять и вернуться,Nöbet tut ve dön,警戒并返回,警戒並返回
+vcWheel_RecordPatrol,,,,,,Record patrol,,Patrouille aufzeichnen,Grabar patrulla,Enregistrer la patrouille,Registra pattuglia,巡回を記録,순찰 기록,Zapisz patrol,Gravar patrulha,Записать патруль,Devriye kaydet,记录巡逻,記錄巡邏
+vcWheel_RunPatrol,,,,,,Run patrol,,Patrouille laufen,Patrullar,Patrouiller,Pattugliare,巡回する,순찰 실행,Patroluj,Patrulhar,Патрулировать,Devriyeye çık,执行巡逻,執行巡邏
+vcWheel_CancelPatrol,,,,,,Cancel patrol,,Patrouille abbrechen,Cancelar patrulla,Annuler la patrouille,Annulla pattuglia,巡回を中止,순찰 취소,Anuluj patrol,Cancelar patrulha,Отменить патруль,Devriyeyi iptal et,取消巡逻,取消巡邏
+vcWheel_Medic,,,,,,Medic,,Sanitäter,Médico,Médecin,Medico,衛生兵,의무병,Medyk,Médico,Медик,Sıhhiyeci,医疗兵,醫療兵
+vcWheel_StopMedic,,,,,,Stop medic,,Sanitäter beenden,Dejar de curar,Ne plus soigner,Smetti di curare,衛生兵をやめる,의무병 해제,Przestań leczyć,Parar de curar,Хватит лечить,Sıhhiyeciliği bırak,取消医疗兵,取消醫療兵
+vcWheel_Roles,,,,,,Roles,,Rollen,Roles,Rôles,Ruoli,役割,역할,Role,Funções,Роли,Roller,职责,職責
+vcWheel_Cook,,,,,,Cook,,Koch,Cocinero,Cuisinier,Cuoco,料理人,요리사,Kucharz,Cozinheiro,Повар,Aşçı,厨师,廚師
+vcWheel_StopCook,,,,,,Stop cook,,Koch beenden,Dejar de cocinar,Ne plus cuisiner,Smetti di cucinare,料理人をやめる,요리사 해제,Przestań gotować,Parar de cozinhar,Хватит готовить,Aşçılığı bırak,取消厨师,取消廚師
+vcWheel_Blacksmith,,,,,,Blacksmith,,Schmied,Herrero,Forgeron,Fabbro,鍛冶屋,대장장이,Kowal,Ferreiro,Кузнец,Demirci,铁匠,鐵匠
+vcWheel_StopBlacksmith,,,,,,Stop blacksmith,,Schmied beenden,Dejar de forjar,Ne plus forger,Smetti di forgiare,鍛冶屋をやめる,대장장이 해제,Przestań kuć,Parar de forjar,Хватит ковать,Demirciliği bırak,取消铁匠,取消鐵匠
+vcWheel_Chemist,,,,,,Chemist,,Chemiker,Químico,Chimiste,Chimico,化学者,화학자,Chemik,Químico,Химик,Kimyager,化学家,化學家
+vcWheel_StopChemist,,,,,,Stop chemist,,Chemiker beenden,Dejar la química,Arrêter la chimie,Smetti la chimica,化学者をやめる,화학자 해제,Koniec z chemią,Parar a química,Хватит химичить,Kimyagerliği bırak,取消化学家,取消化學家
+vcWheel_Crafter,,,,,,Crafter,,Handwerker,Artesano,Artisan,Artigiano,職人,제작자,Rzemieślnik,Artesão,Мастер,Zanaatkâr,工匠,工匠
+vcWheel_StopCrafter,,,,,,Stop crafter,,Handwerker beenden,Dejar de fabricar,Ne plus fabriquer,Smetti di fabbricare,職人をやめる,제작자 해제,Przestań wytwarzać,Parar de fabricar,Хватит мастерить,Zanaatkârlığı bırak,取消工匠,取消工匠
+vcWheel_Guns,,,,,,Guns,,Schusswaffen,Armas de fuego,Armes à feu,Armi da fuoco,銃,총기,Broń palna,Armas de fogo,Огнестрельное,Ateşli silahlar,枪械,槍械
+vcWheel_Rifles,,,,,,Rifles,,Gewehre,Rifles,Fusils,Fucili,ライフル,소총,Karabiny,Rifles,Винтовки,Tüfekler,步枪,步槍
+vcWheel_Shotguns,,,,,,Shotguns,,Schrotflinten,Escopetas,Fusils à pompe,Fucili a pompa,ショットガン,산탄총,Strzelby,Espingardas,Дробовики,Pompalı tüfekler,霰弹枪,霰彈槍
+vcWheel_MachineGuns,,,,,,Machine guns,,Maschinengewehre,Ametralladoras,Mitrailleuses,Mitragliatrici,マシンガン,기관총,Karabiny maszynowe,Metralhadoras,Пулемёты,Makineli tüfekler,机枪,機槍
+vcWheel_Melee,,,,,,Melee,,Nahkampf,Cuerpo a cuerpo,Mêlée,Mischia,近接,근접,Walka wręcz,Corpo a corpo,Ближний бой,Yakın dövüş,近战,近戰
+vcWheel_Blades,,,,,,Blades,,Klingen,Hojas,Lames,Lame,刃物,날붙이,Ostrza,Lâminas,Клинки,Bıçaklar,刀刃,刀刃
+vcWheel_EmptyHands,,,,,,Empty hands,,Leere Hände,Manos vacías,Mains nues,Mani nude,素手,맨손,Puste ręce,Mãos vazias,Пустые руки,Boş eller,空手,空手
+vcWheel_Close,,,,,,Close,,Nah,Cerca,Près,Vicino,近い,가까이,Blisko,Perto,Близко,Yakın,近,近
+vcWheel_Normal,,,,,,Normal,,Normal,Normal,Normal,Normale,普通,보통,Normalnie,Normal,Обычно,Normal,正常,正常
+vcWheel_Far,,,,,,Far,,Weit,Lejos,Loin,Lontano,遠い,멀리,Daleko,Longe,Далеко,Uzak,远,遠
+vcWheel_Point,,,,,,Point,,Vorne,Delante,En tête,In testa,先頭,선두,Na czele,À frente,Впереди,Önde,打头阵,打頭陣
+vcWheel_GoThere,,,,,,Go there,,Dorthin gehen,Ve allí,Va là-bas,Vai lì,そこへ行け,저기로 가,Idź tam,Vá até lá,Иди туда,Oraya git,去那里,去那裡
+vcWheel_JumpDown,,,,,,Jump down,,Runterspringen,Saltar abajo,Sauter en bas,Salta giù,飛び降りる,뛰어내리기,Zeskocz,Pular para baixo,Спрыгнуть,Aşağı atla,跳下,跳下
+vcWheel_GetIn,,,,,,Get in,,Einsteigen,Subir,Monter,Salire,乗車,탑승,Wsiadaj,Entrar,Сесть,Bin,上车,上車
+vcWheel_GetOut,,,,,,Get out,,Aussteigen,Bajar,Descendre,Scendere,降車,하차,Wysiadaj,Sair,Выйти,İn,下车,下車
+vcWheel_N,,,,,,N,,N,N,N,N,北,북,N,N,С,K,北,北
+vcWheel_NE,,,,,,NE,,NO,NE,NE,NE,北東,북동,NE,NE,СВ,KD,东北,東北
+vcWheel_E,,,,,,E,,O,E,E,E,東,동,E,L,В,D,东,東
+vcWheel_SE,,,,,,SE,,SO,SE,SE,SE,南東,남동,SE,SE,ЮВ,GD,东南,東南
+vcWheel_S,,,,,,S,,S,S,S,S,南,남,S,S,Ю,G,南,南
+vcWheel_SW,,,,,,SW,,SW,SO,SO,SO,南西,남서,SW,SO,ЮЗ,GB,西南,西南
+vcWheel_W,,,,,,W,,W,O,O,O,西,서,W,O,З,B,西,西
+vcWheel_NW,,,,,,NW,,NW,NO,NO,NO,北西,북서,NW,NO,СЗ,KB,西北,西北
+vcWheel_FollowLoot,,,,,,Follow + loot,,Folgen + plündern,Seguir + saquear,Suivre + piller,Seguire + saccheggiare,追従＋略奪,따라오며 수색,Podążaj + szabruj,Seguir + saquear,Следовать + обыск,Takip + yağma,跟随＋搜刮,跟隨＋搜刮
+vcWheel_LootHere,,,,,,Loot here,,Hier plündern,Saquear aquí,Piller ici,Saccheggia qui,ここを略奪,여기 수색,Szabruj tutaj,Saquear aqui,Обыскать здесь,Burayı yağmala,在此搜刮,在此搜刮
+vcWheel_Harvest,,,,,,Harvest,,Ernten,Cosechar,Récolter,Raccogliere,採取,채집,Zbieraj,Coletar,Сбор,Topla,采集,採集
+vcWheel_Mine,,,,,,Mine,,Abbauen,Minar,Miner,Scavare,採掘,채굴,Kop,Minerar,Добыча,Kaz,采矿,採礦
+vcWheel_MineAll,,,,,,Mine all,,Alles abbauen,Minar todo,Tout miner,Scava tutto,すべて採掘,모두 채굴,Kop wszystko,Minerar tudo,Добывать всё,Hepsini kaz,全部采矿,全部採礦
+vcWheel_Iron,,,,,,Iron,,Eisen,Hierro,Fer,Ferro,鉄,철,Żelazo,Ferro,Железо,Demir,铁,鐵
+vcWheel_Coal,,,,,,Coal,,Kohle,Carbón,Charbon,Carbone,石炭,석탄,Węgiel,Carvão,Уголь,Kömür,煤,煤
+vcWheel_Lead,,,,,,Lead,,Blei,Plomo,Plomb,Piombo,鉛,납,Ołów,Chumbo,Свинец,Kurşun,铅,鉛
+vcWheel_Shale,,,,,,Shale,,Ölschiefer,Esquisto,Schiste,Scisto,オイルシェール,셰일,Łupek,Xisto,Сланец,Şist,页岩,頁岩
+vcWheel_Nitrate,,,,,,Nitrate,,Nitrat,Nitrato,Nitrate,Nitrato,硝石,질산염,Saletra,Nitrato,Селитра,Nitrat,硝石,硝石
+vcWheel_Rocks,,,,,,Rocks,,Steine,Rocas,Pierres,Rocce,岩,바위,Kamienie,Pedras,Камни,Kayalar,岩石,岩石
+vcWheel_Clay,,,,,,Clay,,Lehm,Arcilla,Argile,Argilla,粘土,점토,Glina,Argila,Глина,Kil,黏土,黏土
+vcWheel_Wood,,,,,,Wood,,Holz,Madera,Bois,Legna,木材,목재,Drewno,Madeira,Дерево,Odun,木材,木材
+vcWheel_Plants,,,,,,Plants,,Pflanzen,Plantas,Plantes,Piante,植物,식물,Rośliny,Plantas,Растения,Bitkiler,植物,植物
+vcWheel_Crops,,,,,,Crops,,Feldfrüchte,Cultivos,Récoltes,Raccolti,作物,작물,Uprawy,Colheitas,Урожай,Ekinler,作物,作物
+vcWheel_Butcher,,,,,,Butcher,,Ausweiden,Despiezar,Dépecer,Macellare,解体,도축,Oprawiaj,Carnear,Разделка,Kesim,屠宰,屠宰
+vcWheel_BaseRepair,,,,,,Base Repair,,Basis reparieren,Reparar base,Réparer la base,Ripara la base,拠点修理,기지 수리,Naprawa bazy,Reparar base,Ремонт базы,Üs onarımı,基地维修,基地維修
+vcWheel_CombatRepair,,,,,,Combat Repair,,Kampfreparatur,Reparar en combate,Réparer au combat,Ripara in combattimento,戦闘中修理,전투 중 수리,Naprawa w walce,Reparar em combate,Ремонт в бою,Savaşta onarım,战斗维修,戰鬥維修
+vcWheel_RememberBase,,,,,,Remember base,,Basis merken,Recordar base,Mémoriser la base,Ricorda la base,拠点を記憶,기지 기억,Zapamiętaj bazę,Lembrar base,Запомнить базу,Üssü hatırla,记住基地,記住基地
+vcSettings_Title,,,,,,NPC AI Chat Configuration,,NPC-KI-Chat-Einstellungen,Configuración del chat IA de NPC,Configuration du chat IA des PNJ,Configurazione chat IA degli NPC,NPC AIチャット設定,NPC AI 대화 설정,Konfiguracja czatu AI postaci,Configuração do chat de IA dos NPCs,Настройки ИИ-чата NPC,NPC Yapay Zeka Sohbet Ayarları,NPC AI 聊天设置,NPC AI 聊天設定
+vcSettings_Tts,,,,,,Text-to-Speech,,Sprachausgabe,Texto a voz,Synthèse vocale,Sintesi vocale,音声読み上げ,음성 합성,Synteza mowy,Texto para fala,Озвучка текста,Metinden sese,文字转语音,文字轉語音
+vcSettings_Volume,,,,,,Volume,,Lautstärke,Volumen,Volume,Volume,音量,음량,Głośność,Volume,Громкость,Ses düzeyi,音量,音量
+vcSettings_SpeechRate,,,,,,Speech Rate,,Sprechtempo,Velocidad de habla,Débit de parole,Velocità del parlato,話す速さ,말하기 속도,Tempo mowy,Velocidade da fala,Скорость речи,Konuşma hızı,语速,語速
+vcSettings_Stt,,,,,,Speech-to-Text,,Spracherkennung,Voz a texto,Reconnaissance vocale,Riconoscimento vocale,音声認識,음성 인식,Rozpoznawanie mowy,Fala para texto,Распознавание речи,Sesten metne,语音转文字,語音轉文字
+vcSettings_WakeWord,,,,,,Wake Word (Hands-Free),,Aktivierungswort (freihändig),Palabra de activación (manos libres),Mot d'activation (mains libres),Parola di attivazione (mani libere),ウェイクワード（ハンズフリー）,호출어 (핸즈프리),Słowo aktywujące (bez rąk),Palavra de ativação (mãos livres),Слово активации (без рук),Uyandırma kelimesi (eller serbest),唤醒词（免提）,喚醒詞（免持）
+vcSettings_BeamSize,,,,,,Beam Size (1-5),,Strahlbreite (1-5),Tamaño de haz (1-5),Taille du faisceau (1-5),Ampiezza del fascio (1-5),ビーム幅（1-5）,빔 크기 (1-5),Szerokość wiązki (1-5),Tamanho do feixe (1-5),Ширина луча (1-5),Işın boyutu (1-5),束宽（1-5）,束寬（1-5）
+vcSettings_Model,,,,,,Loaded AI Model,,Geladenes KI-Modell,Modelo de IA cargado,Modèle d'IA chargé,Modello IA caricato,読み込み済みAIモデル,불러온 AI 모델,Wczytany model AI,Modelo de IA carregado,Загруженная модель ИИ,Yüklü yapay zeka modeli,已加载的 AI 模型,已載入的 AI 模型
+vcSettings_MaxTokens,,,,,,Max Tokens (64-2048),,Max. Tokens (64-2048),Tokens máximos (64-2048),Jetons max (64-2048),Token massimi (64-2048),最大トークン数（64-2048）,최대 토큰 (64-2048),Maks. tokenów (64-2048),Máx. de tokens (64-2048),Макс. токенов (64-2048),En fazla token (64-2048),最大令牌数（64-2048）,最大令牌數（64-2048）
+vcSettings_ContextWindow,,,,,,Context Window (3-20),,Kontextfenster (3-20),Ventana de contexto (3-20),Fenêtre de contexte (3-20),Finestra di contesto (3-20),コンテキスト長（3-20）,문맥 창 (3-20),Okno kontekstu (3-20),Janela de contexto (3-20),Окно контекста (3-20),Bağlam penceresi (3-20),上下文窗口（3-20）,上下文視窗（3-20）
+vcSettings_ChatDistance,,,,,,Chat Distance (3-15m),,Gesprächsabstand (3-15 m),Distancia de chat (3-15 m),Distance de discussion (3-15 m),Distanza di chat (3-15 m),会話距離（3-15m）,대화 거리 (3-15m),Zasięg rozmowy (3-15 m),Distância de conversa (3-15 m),Дистанция разговора (3-15 м),Sohbet mesafesi (3-15 m),对话距离（3-15米）,對話距離（3-15公尺）
+vcSettings_HiredChatDistance,,,,,,Hired Chat Distance (5-40m),,Gesprächsabstand Angeheuerte (5-40 m),Distancia de chat contratados (5-40 m),Distance de discussion recrues (5-40 m),Distanza di chat assoldati (5-40 m),雇用NPCの会話距離（5-40m）,고용 NPC 대화 거리 (5-40m),Zasięg rozmowy najemników (5-40 m),Distância de conversa contratados (5-40 m),Дистанция разговора наёмников (5-40 м),Kiralık sohbet mesafesi (5-40 m),雇佣对话距离（5-40米）,僱傭對話距離（5-40公尺）
+vcSettings_ChatTimeout,,,,,,Chat Timeout (15-120s),,Gesprächs-Timeout (15-120 s),Tiempo de espera del chat (15-120 s),Délai de discussion (15-120 s),Timeout chat (15-120 s),会話タイムアウト（15-120秒）,대화 제한 시간 (15-120초),Limit czasu rozmowy (15-120 s),Tempo limite da conversa (15-120 s),Тайм-аут разговора (15-120 с),Sohbet zaman aşımı (15-120 sn),对话超时（15-120秒）,對話逾時（15-120秒）
+vcSettings_VoiceRange,,,,,,Voice Range (5-40m),,Stimmreichweite (5-40 m),Alcance de voz (5-40 m),Portée de la voix (5-40 m),Portata della voce (5-40 m),声の届く範囲（5-40m）,음성 범위 (5-40m),Zasięg głosu (5-40 m),Alcance da voz (5-40 m),Дальность голоса (5-40 м),Ses menzili (5-40 m),语音范围（5-40米）,語音範圍（5-40公尺）
+vcSettings_DebugLogging,,,,,,Mod Debug Logging,,Mod-Debug-Protokoll,Registro de depuración del mod,Journal de débogage du mod,Log di debug della mod,MODデバッグログ,모드 디버그 로그,Logi debugowania moda,Log de depuração do mod,Журнал отладки мода,Mod hata ayıklama günlüğü,模组调试日志,模組除錯日誌
+vcSettings_Enabled,,,,,,Enabled,,Aktiviert,Activado,Activé,Attivo,有効,사용,Włączone,Ativado,Включено,Etkin,已启用,已啟用
+vcSettings_TestVoice,,,,,,Test Voice,,Stimme testen,Probar voz,Tester la voix,Prova voce,音声をテスト,음성 테스트,Testuj głos,Testar voz,Проверить голос,Sesi test et,测试语音,測試語音
+vcSettings_TestMic,,,,,,Test Microphone,,Mikrofon testen,Probar micrófono,Tester le micro,Prova microfono,マイクをテスト,마이크 테스트,Testuj mikrofon,Testar microfone,Проверить микрофон,Mikrofonu test et,测试麦克风,測試麥克風
+vcSettings_TestAi,,,,,,Test AI Connection,,KI-Verbindung testen,Probar conexión con la IA,Tester la connexion IA,Prova connessione IA,AI接続をテスト,AI 연결 테스트,Testuj połączenie z AI,Testar conexão com a IA,Проверить связь с ИИ,Yapay zeka bağlantısını test et,测试 AI 连接,測試 AI 連線
+vcSettings_ClearConversations,,,,,,Clear All Conversations,,Alle Gespräche löschen,Borrar todas las conversaciones,Effacer toutes les conversations,Cancella tutte le conversazioni,すべての会話を消去,모든 대화 지우기,Wyczyść wszystkie rozmowy,Apagar todas as conversas,Очистить все разговоры,Tüm sohbetleri temizle,清除所有对话,清除所有對話
+vcSettings_Save,,,,,,Save Settings,,Einstellungen speichern,Guardar ajustes,Enregistrer les réglages,Salva impostazioni,設定を保存,설정 저장,Zapisz ustawienia,Salvar configurações,Сохранить настройки,Ayarları kaydet,保存设置,儲存設定
+vcMsg_no_npc_nearby,,,,,,No NPC nearby to talk to,,Kein NPC in der Nähe zum Reden,No hay ningún NPC cerca con quien hablar,Aucun PNJ à proximité à qui parler,Nessun NPC nelle vicinanze con cui parlare,話しかけられるNPCがいません,근처에 대화할 NPC가 없습니다,Brak postaci w pobliżu do rozmowy,Nenhum NPC por perto para conversar,Рядом нет NPC для разговора,Yakında konuşulacak NPC yok,附近没有可以交谈的NPC,附近沒有可以交談的NPC
+vcMsg_settings_saved,,,,,,Settings saved — takes effect on next launch,,Einstellungen gespeichert — wirksam ab dem nächsten Start,Ajustes guardados — se aplican en el próximo inicio,Paramètres enregistrés — pris en compte au prochain lancement,Impostazioni salvate — attive dal prossimo avvio,設定を保存しました — 次回起動から有効になります,설정이 저장되었습니다 — 다음 실행부터 적용됩니다,Ustawienia zapisane — działają od następnego uruchomienia,Configurações salvas — valem a partir da próxima inicialização,Настройки сохранены — вступят в силу при следующем запуске,Ayarlar kaydedildi — bir sonraki açılışta geçerli olur,设置已保存 — 下次启动时生效,設定已儲存 — 下次啟動時生效
+vcMsg_tts_not_available,,,,,,TTS service not available,,Sprachausgabe-Dienst nicht verfügbar,Servicio de texto a voz no disponible,Service de synthèse vocale indisponible,Servizio di sintesi vocale non disponibile,TTSサービスが利用できません,음성 합성 서비스를 사용할 수 없습니다,Usługa syntezy mowy jest niedostępna,Serviço de texto para fala indisponível,Служба озвучки текста недоступна,Metinden sese hizmeti kullanılamıyor,文字转语音服务不可用,文字轉語音服務無法使用
+vcMsg_tts_disabled_here,,,,,,Text-to-speech is off in this install,,Die Sprachausgabe ist in dieser Installation aus,El texto a voz está desactivado en esta instalación,La synthèse vocale est désactivée dans cette installation,La sintesi vocale è disattivata in questa installazione,このインストールでは音声合成は無効です,이 설치에서는 음성 합성이 꺼져 있습니다,Synteza mowy jest wyłączona w tej instalacji,O texto para fala está desativado nesta instalação,Озвучка текста отключена в этой установке,Bu kurulumda metinden sese kapalı,此安装中文字转语音已关闭,此安裝中文字轉語音已關閉
+vcMsg_stt_disabled_here,,,,,,Speech-to-text is off in this install,,Die Spracherkennung ist in dieser Installation aus,La voz a texto está desactivada en esta instalación,La reconnaissance vocale est désactivée dans cette installation,Il riconoscimento vocale è disattivato in questa installazione,このインストールでは音声認識は無効です,이 설치에서는 음성 인식이 꺼져 있습니다,Rozpoznawanie mowy jest wyłączone w tej instalacji,O reconhecimento de fala está desativado nesta instalação,Распознавание речи отключено в этой установке,Bu kurulumda konuşmadan metne kapalı,此安装中语音识别已关闭,此安裝中語音辨識已關閉
+vcMsg_llm_disabled_here,,,,,,The AI chat model is off in this install,,Das KI-Chatmodell ist in dieser Installation aus,El modelo de chat de IA está desactivado en esta instalación,Le modèle de chat IA est désactivé dans cette installation,Il modello di chat IA è disattivato in questa installazione,このインストールではAIチャットは無効です,이 설치에서는 AI 대화 모델이 꺼져 있습니다,Model czatu AI jest wyłączony w tej instalacji,O modelo de chat de IA está desativado nesta instalação,Модель ИИ-чата отключена в этой установке,Bu kurulumda yapay zeka sohbet modeli kapalı,此安装中AI聊天模型已关闭,此安裝中AI聊天模型已關閉
+vcMsg_llm_no_model_loaded,,,,,,No model loaded,,Kein Modell geladen,Ningún modelo cargado,Aucun modèle chargé,Nessun modello caricato,モデルが読み込まれていません,로드된 모델이 없습니다,Nie wczytano modelu,Nenhum modelo carregado,Модель не загружена,Yüklü model yok,未加载模型,未載入模型
+vcMsg_generating_test_audio,,,,,,Generating test audio...,,Testaudio wird erzeugt...,Generando audio de prueba...,Génération de l'audio de test...,Generazione dell'audio di prova...,テスト音声を作成中...,테스트 오디오 생성 중...,Generowanie dźwięku testowego...,Gerando áudio de teste...,Создание тестового звука...,Test sesi oluşturuluyor...,正在生成测试音频...,正在產生測試音訊...
+vcMsg_failed_parse_wav,,,,,,Failed to parse WAV data,,WAV-Daten konnten nicht gelesen werden,No se pudieron leer los datos WAV,Impossible de lire les données WAV,Impossibile leggere i dati WAV,WAVデータの解析に失敗しました,WAV 데이터를 읽지 못했습니다,Nie udało się odczytać danych WAV,Falha ao ler os dados WAV,Не удалось прочитать данные WAV,WAV verisi okunamadı,无法解析WAV数据,無法解析WAV資料
+vcMsg_playing_test_audio,,,,,,Playing test audio...,,Testaudio wird abgespielt...,Reproduciendo audio de prueba...,Lecture de l'audio de test...,Riproduzione dell'audio di prova...,テスト音声を再生中...,테스트 오디오 재생 중...,Odtwarzanie dźwięku testowego...,Reproduzindo áudio de teste...,Воспроизведение тестового звука...,Test sesi çalınıyor...,正在播放测试音频...,正在播放測試音訊...
+vcMsg_tts_test_failed,,,,,,TTS test failed: {0},,Test der Sprachausgabe fehlgeschlagen: {0},Falló la prueba de texto a voz: {0},Échec du test de synthèse vocale : {0},Test della sintesi vocale non riuscito: {0},TTSテストに失敗しました: {0},음성 합성 테스트 실패: {0},Test syntezy mowy nie powiódł się: {0},Falha no teste de texto para fala: {0},Тест озвучки не удался: {0},Metinden sese testi başarısız: {0},文字转语音测试失败：{0},文字轉語音測試失敗：{0}
+vcMsg_stt_not_available,,,,,,STT service not available,,Spracherkennungsdienst nicht verfügbar,Servicio de voz a texto no disponible,Service de reconnaissance vocale indisponible,Servizio di riconoscimento vocale non disponibile,STTサービスが利用できません,음성 인식 서비스를 사용할 수 없습니다,Usługa rozpoznawania mowy jest niedostępna,Serviço de reconhecimento de fala indisponível,Служба распознавания речи недоступна,Konuşmadan metne hizmeti kullanılamıyor,语音识别服务不可用,語音辨識服務無法使用
+vcMsg_microphone_not_available,,,,,,Microphone not available,,Mikrofon nicht verfügbar,Micrófono no disponible,Microphone indisponible,Microfono non disponibile,マイクが利用できません,마이크를 사용할 수 없습니다,Mikrofon jest niedostępny,Microfone indisponível,Микрофон недоступен,Mikrofon kullanılamıyor,麦克风不可用,麥克風無法使用
+vcMsg_recording_3_seconds,,,,,,Recording for 3 seconds...,,Aufnahme für 3 Sekunden...,Grabando durante 3 segundos...,Enregistrement pendant 3 secondes...,Registrazione per 3 secondi...,3秒間録音中...,3초 동안 녹음 중...,Nagrywanie przez 3 sekundy...,Gravando por 3 segundos...,Запись 3 секунды...,3 saniye kaydediliyor...,正在录音3秒...,正在錄音3秒...
+vcMsg_voice_error,,,,,,Voice error: {0},,Sprachfehler: {0},Error de voz: {0},Erreur vocale : {0},Errore vocale: {0},音声エラー: {0},음성 오류: {0},Błąd głosu: {0},Erro de voz: {0},Ошибка голоса: {0},Ses hatası: {0},语音错误：{0},語音錯誤：{0}
+vcMsg_formation_ack,,,,,,Taking position: {0},,Gehe in Position: {0},Tomando posición: {0},Je prends position : {0},Prendo posizione: {0},配置につきます: {0},위치로 이동합니다: {0},Zajmuję pozycję: {0},Assumindo posição: {0},Занимаю позицию: {0},Pozisyon alıyorum: {0},就位：{0},就位：{0}
+buffSdcsStanceDefensiveName,,,,,,Squad: defensive,,Trupp: defensiv,Escuadra: defensiva,Escouade : défensive,Squadra: difensiva,部隊：防御,분대: 방어,Oddział: obrona,Esquadrão: defensivo,Отряд: оборона,Ekip: savunma,小队：防守,小隊：防守
+buffSdcsStanceDefensiveDesc,,,,,,Your hired survivors fight what threatens you or each other.,,Deine Leute bekämpfen jede Bedrohung für dich oder sie.,Tus supervivientes contratados combaten lo que te amenaza a ti o a ellos.,Tes survivants recrutés combattent ce qui te menace ou les menace.,I tuoi sopravvissuti assoldati combattono ciò che minaccia te o loro.,雇った生存者はあなたや互いを脅かす敵と戦う。,고용한 생존자들이 당신이나 서로를 위협하는 적과 싸운다.,Twoi najęci ocaleni zwalczają zagrożenia dla ciebie i siebie.,Seus sobreviventes contratados combatem o que ameaça você ou eles.,Твои наёмники отбивают угрозы тебе и друг другу.,Tuttuğun hayatta kalanlar sana ya da birbirlerine tehdit oluşturanla savaşır.,你雇佣的幸存者会对付威胁你或彼此的敌人。,你僱用的倖存者會對付威脅你或彼此的敵人。
+buffSdcsStanceAggressiveName,,,,,,Squad: aggressive,,Trupp: aggressiv,Escuadra: agresiva,Escouade : agressive,Squadra: aggressiva,部隊：攻撃的,분대: 공격,Oddział: atak,Esquadrão: agressivo,Отряд: атака,Ekip: saldırgan,小队：进攻,小隊：進攻
+buffSdcsStanceAggressiveDesc,,,,,,Your hired survivors fight anything hostile they see.,,Deine Leute bekämpfen alles Feindliche in Sicht.,Tus supervivientes contratados combaten a cualquier hostil que vean.,Tes survivants recrutés combattent tout ennemi qu'ils voient.,I tuoi sopravvissuti assoldati combattono ogni ostile che vedono.,雇った生存者は見かけた敵すべてと戦う。,고용한 생존자들이 보이는 모든 적과 싸운다.,Twoi najęci ocaleni walczą z każdym wrogiem w zasięgu wzroku.,Seus sobreviventes contratados combatem qualquer hostil que virem.,Твои наёмники атакуют любого врага в поле зрения.,Tuttuğun hayatta kalanlar gördükleri her düşmanla savaşır.,你雇佣的幸存者会攻击看到的任何敌人。,你僱用的倖存者會攻擊看到的任何敵人。
+buffSdcsStanceHoldFireName,,,,,,Squad: hold fire,,Trupp: Feuer einstellen,Escuadra: alto el fuego,Escouade : cessez le feu,Squadra: cessate il fuoco,部隊：射撃中止,분대: 사격 중지,Oddział: wstrzymać ogień,Esquadrão: cessar fogo,Отряд: не стрелять,Ekip: ateşi kes,小队：停火,小隊：停火
+buffSdcsStanceHoldFireDesc,,,,,,Your hired survivors only defend themselves.,,Deine Leute verteidigen nur sich selbst.,Tus supervivientes contratados solo se defienden a sí mismos.,Tes survivants recrutés se défendent seulement eux-mêmes.,I tuoi sopravvissuti assoldati difendono solo se stessi.,雇った生存者は自分の身を守るだけ。,고용한 생존자들은 자신만 방어한다.,Twoi najęci ocaleni tylko się bronią.,Seus sobreviventes contratados apenas se defendem.,Твои наёмники только защищаются.,Tuttuğun hayatta kalanlar yalnızca kendilerini savunur.,你雇佣的幸存者只会自卫。,你僱用的倖存者只會自衛。
+SdcsNPC_AmmoMenu,,,,,,Ammo...,,Munition...,Munición...,Munitions...,Munizioni...,弾薬...,탄약...,Amunicja...,Munição...,Патроны...,Mermi...,弹药...,彈藥...
+SdcsNPC_AmmoText,,,,,,Which ammo should I load?,,Welche Munition soll ich laden?,¿Qué munición cargo?,Quelles munitions je charge ?,Quali munizioni carico?,どの弾を込める？,어떤 탄약을 넣을까?,Jaką amunicję załadować?,Que munição eu carrego?,Какие патроны зарядить?,Hangi mermiyi takayım?,装哪种弹药？,裝哪種彈藥？
+SdcsNPC_AmmoLoaded,,,,,,{0} ({1}) - loaded,,{0} ({1}) - geladen,{0} ({1}) - cargada,{0} ({1}) - chargée,{0} ({1}) - caricata,{0}（{1}）- 装填中,{0} ({1}) - 장전됨,{0} ({1}) - załadowana,{0} ({1}) - carregada,{0} ({1}) - заряжено,{0} ({1}) - takılı,{0}（{1}）- 已装填,{0}（{1}）- 已裝填
+SdcsNPC_AmmoNoGun,,,,,,I'm not holding a gun.,,Ich halte keine Schusswaffe.,No tengo un arma de fuego en la mano.,Je n'ai pas d'arme à feu en main.,Non ho un'arma da fuoco in mano.,銃を持ってない。,총을 들고 있지 않아.,Nie trzymam broni palnej.,Não estou segurando uma arma.,У меня в руках нет оружия.,Elimde silah yok.,我手里没有枪。,我手裡沒有槍。

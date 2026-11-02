@@ -6,10 +6,10 @@
 
 Unzip into your `Mods` folder:
 
-1. **`0-XNPCCore-v3.4.01.zip` - required.** The NPCs, orders, voice commands and the mod's code. On its own it runs with every AI feature off.
+1. **`0-XNPCCore-v3.4.02.zip` - required.** The NPCs, orders, voice commands and the mod's code. On its own it runs with every AI feature off.
 2. **Plus at most ONE add-on:**
-   - **`1-XNPCVoiceControl-Complete-v3.4.01.zip`** - AI chat, voice in and voice out. **Most players want this one.**
-   - **`1-XNPCVoiceControl-Voice-v3.4.01.zip`** - voice in and voice out only, no AI chat.
+   - **`1-XNPCVoiceControl-Complete-v3.4.02.zip`** - AI chat, voice in and voice out. **Most players want this one.**
+   - **`1-XNPCVoiceControl-Voice-v3.4.02.zip`** - voice in and voice out only, no AI chat.
 
 You should end up with `Mods/0-XNPCCore` and, if you took an add-on, `Mods/1-XNPCVoiceControl-Complete` or `Mods/1-XNPCVoiceControl-Voice` beside it. The add-on holds only models and helper servers; it does nothing without `0-XNPCCore`.
 
@@ -46,25 +46,32 @@ You do not need to memorise exact wording. Phrases match as **substrings**, so
 Hold **;** (default; remappable in `modconfig.xml` under `<FormationRadial><Key>`) to open the
 order wheel - a multi-page radial:
 
-- **Page 0** - Follow, Stay, Guard, Crouch, plus four submenus: **Jobs**, **Stance**, **Position** and
-  **Formation**. The submenus are marked with a small chevron and a
+- **Page 0** - Follow, Stay, Guard, plus five submenus: **Jobs**, **Orders**, **Stance**, **Position**
+  and **Formation**. The submenus are marked with a small chevron and a
   blue-tinted border.
 - **Who it targets** - whoever you are looking at, otherwise the last companion you ordered,
   otherwise the nearest. Their name sits in the middle of the ring, and the mouse wheel
   cycles through your hires.
 - **Commit** - release the key over a socket to order the targeted companion; while still
   holding the key, **click** a socket to apply the same order to your **whole squad**
-  (formation bearings included). The job sockets (**Follow + loot**, **Loot here**,
-  **Chop wood**) always go to the targeted companion only, click or release.
+  (formation bearings included). Everything on the **Jobs** page, the patrol trio, the **Roles** and the
+  weapon swaps always go to the targeted companion only, click or release.
 - **Open a submenu** - click it, or simply rest the cursor on it for a beat (the dwell,
   0.4 s by default - a quick pass over it does nothing).
 - **Back out** - rest the cursor on the middle of the wheel and it returns to page 0.
-- **Crouch is a toggle** - the socket reads **Crouch** or **Resume** depending on whether the
-  companion is currently crouch-locked. To make a locked companion stand, say "stand up" or
-  "follow my lead" - resuming while you are standing already stands them up, so there is no
-  separate Stand button on the wheel.
-- **Stance** - Aggressive / Defensive / Hold fire / Disengage.
-- **Distance** - Close (1 m), Normal (2.5 m) and Far (5 m), drawn as the real metres.
+- **Jobs** - Follow + loot, Loot here, Harvest (wood, plants, crops, butcher), Mine (all, rocks,
+  iron, coal, lead, shale, nitrate, clay), Base Repair, Combat Repair and Remember base.
+- **Orders** - Crouch (a toggle: it reads **Crouch** or **Resume** depending on whether the
+  companion is crouch-locked), Stand up, Scout, Guard and return, the patrol trio (Record / Run /
+  Cancel patrol) and **Roles**: Medic, Cook, Blacksmith, Chemist and Crafter, each a toggle (**Cook**
+  or **Stop cook**...). A survivor uses a workstation only with its role (Cook the campfire,
+  Blacksmith the forge, Chemist the chemistry station, Crafter the workbench and cement mixer) and
+  inside your land claim (a campfire anywhere); she crafts from her backpack anywhere.
+- **Stance** - Aggressive / Defensive / Hold fire / Disengage, plus **Weapons** (guns, rifles,
+  shotguns, machine guns, melee, blades, empty hands).
+- **Position** - Close (1 m), Normal (2.5 m) and Far (5 m), drawn as the real metres; Point (she
+  leads 2 m ahead of you); Go there (the spot under your crosshair when the wheel opened); Jump
+  down; Get in / Get out (your vehicle).
 - **Formation** - the eight compass bearings (north at the top). Each companion keeps its own
   distance; the socket sets the direction only.
 
@@ -80,7 +87,7 @@ When you first launch after installing, expect a **15-30 second delay** before t
 
 ### Requirements
 
-This mod targets **7 Days to Die 3.3** and requires **0-SCore 3.3.28 or newer**. A 3.2 build of SCore will not load on game 3.3, and an older 3.3 build of SCore throws an error when you open a companion's inventory. If you are still on game 3.2, use mod version 3.2.06 instead. It does NOT need the older `0-XNPCCore` (v3.1.00) - this mod replaces it (see the top of this file).
+This mod targets **7 Days to Die 3.4** and needs **0-SCore 3.4.3 or newer** (on a server: the server and every player). A newer SCore can rename something the mod patches: the log then names each patch that did not apply (`[SDCS-PATCH] ... NOT applied`) and the rest of the mod still runs. If you are still on game 3.2, use mod version 3.2.06 instead. It does NOT need the older `0-XNPCCore` (v3.1.00) - this mod replaces it (see the top of this file).
 
 ### Multiplayer Status
 
@@ -155,7 +162,7 @@ Open the escape menu (**Esc**) and click **NPC VoiceControl Settings**. Here's w
 | Setting | What It Does |
 |---------|-------------|
 | **Chat Timeout (15–120s)** | How long the NPC stays "in conversation mode" after you speak. After this idle period, the NPC forgets recent context and you'd start a fresh conversation. Default 30s is good for most — higher if you like long pauses between exchanges |
-| **Mod Debug Logging** | Turn on only if troubleshooting — adds lots of console spam |
+| **Mod Debug Logging** | Turn on only if troubleshooting — adds lots of console spam. Saved on this PC: it stays on across mod updates until you turn it off (or type `vcdebug off`) |
 
 ### Test Buttons
 
@@ -384,7 +391,9 @@ This shouldn't happen in the current version. If it does, interrupting an NPC mi
 
 ## Console Commands & Diagnostics
 
-Press **F1** to open the console. Every mod command starts with `vc` (or the longer `voicecontrol`). `dm` is the game's own command and toggles debug logging on or off — turn it on before reproducing a problem.
+Press **F1** to open the console. Every mod command starts with `vc` (or the longer `voicecontrol`). `vcdebug` turns the mod's verbose logging on or off — turn it on before reproducing a problem. `<VerboseLogging>true</VerboseLogging>` in `Mods/0-XNPCCore/Config/Settings.xml` turns it on too; either one is enough, and `vcdebug status` shows both. (`dm` is the game's own debug menu, not this mod's logging.)
+
+On a dedicated server, `vc` and `vcdebug` run on **your own** machine (your speech, captions, faces and log) and any player may use them; to see the server's side, use the server's own console. The `sdcs...` field tools are for single player or a listen host, except `sdcscustom spawn` (admins, from any machine).
 
 **General**
 
@@ -445,74 +454,285 @@ Search for `[1-XNPCVoiceControl]` to see mod-specific messages.
 
 ---
 
-## What's New in 3.4.01
+## What's New in 3.4.02
 
-Targets 7 Days to Die **3.4** with **0-SCore 3.4**, like 3.4.00. Everyone on a server needs the same version, server included.
+Targets 7 Days to Die **3.4**. **Requires 0-SCore 3.4.3 or newer** - an older SCore will not do: it is what keeps a survivor's
+harvest window right on a dedicated server. Everyone on a server needs the same version, server included.
 
-### Humanoid characters ride as gunners
-- **Mod-pack characters hold their gun in a vehicle.** Any Humanoid character (the Mixamo-format rigs mod packs use) now holds its weapon
-  properly in a vehicle seat instead of the plain sitting pose, and turns to aim like the built-in survivors.
-- **For pack authors:** `sdcspose captureall human` captures the hold poses on any Humanoid character in one run; one set serves every
-  Humanoid rig. The shipped set lives in `Config/SeatPoses/Humanoid/`.
+### New: Orders in the hold-E ring
+- Hold **E** on one of your hires: the ring now has **Orders**. Keep holding E and click it (or rest on it) and the order wheel opens
+  on her with E as its key: release E over an order to give it to her, click while holding for the squad. Let go of E on Orders and
+  the wheel stays open; your next E press picks. Only her leader sees it.
 
-### Character authors: choose what text a character shows
-- New `<Subtitles>` in a character's `personalities.xml` entry: `all` shows every line (replies, chat, order acknowledgements, clip
-  captions), `clip` shows only a voice clip's own caption and never the generic reply text, `none` shows no text for that character.
-- Unset, a clips character (`VoiceMode` clips, such as Harley) uses `clip`, so her recorded lines are no longer paired with generic
-  order text that does not match them; set `all` for the old behaviour. Every other character keeps `all`.
+### New: hired survivors craft
+- **E > Craft...** on a hired survivor: pick a category (All, or one of the game's own crafting categories she can make something
+  in now), then a recipe from what she can make right now, then how many. She kneels where you gave the order
+  and makes them one at a time from her own pack and the chests around her, into her harvest window, and earns crafting XP the way you do.
+  Her own unlocks, your server's crafting settings. See the manual, "Hired survivors: crafting".
+- **...and at workstations, as specialists.** Give a survivor a role on the order wheel (**Orders > Roles**, where **Medic** now lives
+  too) or by voice ("be the blacksmith"): **Cook** (campfire), **Blacksmith** (forge), **Chemist** (chemistry station) or **Crafter**
+  (workbench, cement mixer). Stand at her station, inside your or an ally's land claim (a campfire anywhere: it is a field station), and
+  open **Craft...**: its recipes join the
+  list ("Forge: Forged Iron (4)"). She walks over, kneels beside the station facing it, queues them in it the way you do, keeps a forge or campfire fuelled and lit, and moves
+  her finished items into her harvest window, or your nearest chest when it is full. When she is done she walks back to you if you
+  are within 15 m; farther away she stays at the station until you call her. Another order takes her unmade items out of the
+  queue and gives the ingredients back. Without a role she crafts from her backpack, anywhere.
+- **The Blacksmith smelts.** A forge recipe whose units the forge does not hold yet starts with her ore: she puts scrap iron, clay and
+  the rest into the forge, keeps it burning and makes the items once they have melted. She keeps every material she has ore for at
+  1000 units (Settings.xml), restocking when her crafts are done; a cancel gives back her ore that has not melted.
+- **She takes an item's ingredients when she starts it**, so another survivor crafting from the same chests cannot use them up
+  while she works (a forge smelting the base's scrap iron used to leave her backpack item short at the finish, and she made
+  nothing). An order that ends mid-item gives them back to her harvest window; quitting the game puts them in her pack.
 
-### New settings: how survivors follow you, loot, work, keep your base, deal with sleepers and ride
-- `Settings.xml` `<Follow>`: how close she walks beside you (`PaceNearDistMetres` 8), when she runs to catch up (`PaceFarDistMetres` 10)
-  and her walking speed near you (`PaceNearWalkSpeedMps` 2).
-- `modconfig.xml`: her default follow distance (`FollowDistanceDefault` 2.5), how far you may walk from a "stay here" post before she
-  follows (`CommandLeashDist` 45), when she steps up to catch-up speed (`CatchupStartDist` 8), and how close before a survivor greets
-  you unprompted (`ProactiveGreetRange` 10).
-- `Settings.xml` `<Loot>`: how much medical (`BagMaxMedical` 5) and how many ammo stacks per gun (`BagMaxAmmoStacks` 2) she keeps
-  in her own bag before the rest goes to your window, how far above or below you she loots (`VerticalReachMetres` 3, one storey), and
-  the distance beyond which she teleports back after "loot around here" (`ReturnTeleportMetres` 40).
-- `Settings.xml` `<WorkSite>`: how many layers of an ore vein she mines (`MineVeinDepthLayers` 2), how long she swings at one tree,
-  rock or corpse (`SwingBudgetSeconds` 60) and how long she walks to one (`WalkBudgetSeconds` 15) before moving on.
-- `Settings.xml` `<BaseKeeper>`: how often the base keeper rescans for new damage (`RescanSeconds` 30), how big an area she finishes
-  before moving on (`AreaRadiusMetres` 8), how fresh a hit must be for combat repair to chase it (`UnderAttackSeconds` 5) and how far a
-  chest that is not broadcast may sit from her post (`ChestReachMetres` 15).
-- `Settings.xml` `<Sleeper>`: how close a sleeping zombie must be to see one of your survivors (`SightRangeMetres` 16), how far a wild
-  survivor runs past a house that woke on her (`LeaveBeyondMetres` 30) and how long she stays out of it (`HouseAvoidSeconds` 300).
-- `Settings.xml` `<Vehicle>`: the seated gunner's range cap (`GunnerMaxRangeMetres` 40), how long she keeps her gun out after the last
-  enemy (`GunnerIdleHolsterSeconds` 5) and how far from the vehicle a hire walks over to get in (`BoardRangeMetres` 30).
-- Every default is the old fixed value, so nothing changes until you edit one. A value that would break a linked distance (for example
-  a leash beyond the 50 m follow teleport) is refused with a warning in the log, and the default stays.
+### New: see how a survivor is progressing
+- **E > Your progress** on one of your hires: her level, her XP toward the next level, the quality she crafts at, and her roles.
+  It reads the server's numbers, so it is right on a dedicated server too.
+- **Her roles show after her name**: "Xyth - Smith", "Xyth - Cook, Smith" (in the order of the wheel's Roles page). On the
+  "Press E" prompt, the talk window, captions, the order wheel and SCore's companions list, only while she is hired. Her name
+  itself does not change: her memories and voice keep it.
+- On a dedicated server, the Craft... page no longer stays on "..." until you click it.
+
+### Survivors at a workstation
+- **She stays at the workstation after a job.** When a survivor finishes at a forge, campfire or other station she no longer walks
+  back to you: she stays and walks around it, within 5 m (`<Crafting><StationWanderMetres>` in Settings.xml; 0 = she stands still
+  at her spot) until you give her an order. A hire you tell to stay near a workstation walks around it the same way. This replaces
+  `<Crafting><ReturnWithinMetres>`.
+- **"What are you carrying?" now counts her ammo**: the rounds loaded in her guns (one she holsters to talk to you included) as
+  well as the ammo in her pack and on her toolbelt, and she says "I have no ammo." when she carries a gun with nothing for it.
+- **Her station lists every recipe she knows there**, with how many she can make now. One she can't make yet shows `(0)`: pick
+  it and she says what it needs ("I need Murky Water for that.", "I need Cooking Pot for that.").
+- **She brings her own tools.** A cooking pot, grill, beaker, anvil, bellows or crucible she carries (in her pack, or in a chest
+  of yours in reach) counts for her station's recipes: she puts it into the station's own slot when she crafts, and it stays
+  there (`<Crafting><StationTools>`).
+- **Each station has its own tab** in **Craft...**, listed first: a Cook at a campfire finds her cooking under **Campfire**,
+  apart from the backpack's categories.
+- **The hold-E ring's Orders entry has an icon** (eight circles in a ring); it was blank.
+- **Starting ammo is a setting**: a survivor whose class rolls a gun starts with `SdcsSpawnAmmoCount` rounds for it (entity class
+  XML, default 120, 0 = none). Fixed starting items stay in the class's `HarvestItems`.
+- A blood-moon memory now names the day the blood moon began, not the morning after.
+
+### New: survivors learn their craft
+- **A specialist gets better at her craft by doing it.** Every item a workstation makes for her counts toward her skill in the
+  role that uses that station: a Cook's campfire meals, a Blacksmith's forge work, a Chemist's chemistry station, a Crafter's
+  workbench. Every 10 crafts (`Settings.xml` `<CraftSkill><CraftsPerLevel>`) her role's crafting skills go up a level, the same
+  skills a player raises with magazines, so she unlocks recipes and crafts better quality the way you do (a new Cook makes corn
+  on the cob after 20 crafts). Her skill never drops and stays if she gives up the role. **E > Your progress** shows it per role
+  ("Cook skill 2: 20 / 30 crafts"). Which skills each role learns is a list per role in `<CraftSkill>`.
+
+### New: pickpockets
+- **A survivor can be a pickpocket**, per character: a class that sets `SdcsPickpocket` to `true` (no survivor does by default;
+  the test character is `npcSdcsPickpocket` in the spawn menu). Stand within 2 m of her without looking and she may lift one
+  stack from your backpack: something worth having, or up to 100 dukes. Catch her at it and she apologises and backs off.
+  What she takes goes where her loot goes, so you can buy it back. At most once every 10 minutes per pickpocket and every
+  30 minutes per player (`<Pickpocket>`). Single player and the host for now.
+
+### New: sell to wild survivors
+- **A wild survivor now buys from you** in her Trade window: the medical items her heals use (bandages, first aid kits, aloe
+  cream, splints, casts, painkillers) until she carries 10, and ammo for a gun she
+  carries up to what she keeps in her bag, at the game's normal price (your Better Barter counts), paid from her own coins. **Sell** is greyed out
+  for anything else, or for more than she has room for or can pay. A new wild survivor starts with 50 to 150 coins, and
+  what you pay her for her goods goes into the same purse. Settings: `<Trade>`.
+
+### New: keepers learn to repair
+- **A keeper learns by repairing.** Each repair and each rebuilt block pays her the repair XP a player earns for the same
+  materials, into her repair skill and her level. A new hire repairs wood-tier blocks (sandbags, frames, wood); about 25
+  repairs a tier unlock cobblestone (brick, scrap metal), then concrete, then steel. Workstations, traps and electrics are
+  open to every keeper, as before. Her tier and repair XP show on **E > Your progress**. Settings: `<RepairSkill>`.
+
+### New: survivors learn from harvesting
+- Chopping wood, mining, picking plants and crops and butchering now pay a hired survivor the XP a player earns for the same
+  haul (each item's material XP), so a woodcutter or a miner levels up too. Looting and repairing pay nothing yet.
+
+### New: bandits
+- **Two test bandits** in the spawn menu for now: `npcSdcsBanditMelee` (tier 1, a melee weapon) and `npcSdcsBanditRanged` (tier
+  1, a pipe pistol or a pipe rifle). They look like tier 1 survivors but are hostile: they attack you, your survivors and
+  zombies on sight, run at a target their gun cannot reach yet, and come looking when they hear you. No talk, hire or trade.
+- **Loot:** a dead bandit always drops the game's plain zombie loot bag.
+- **Their damage to players** is a setting (`<Bandits><PlayerDamage>`, half by default) that you can change while playing:
+  `sdcsbandit damage 0.75` in the console. `sdcsbandit` alone shows it and lists the bandits in the world.
+- **Their aim is a survivor's at their level** (see *Survivors aim like players*); `<Bandits><SpreadByTier>` can widen it by
+  tier (0 by default).
+- **One target at a time:** a bandit keeps fighting the target she has until it is dead or out of her sight, instead of
+  turning back and forth between you and a zombie.
+- **She hunts:** a bandit who loses sight of the enemy she is fighting, or of whoever just shot her, within 40 m, goes after it.
+  Before, an enemy behind a wall but inside her gun's range left her nothing to do: she wandered off (and could get stuck on a
+  wrecked car) or stood still.
+- Spawn lines come after they have been tried in the field.
+
+### New: survivors aim like players
+- **A survivor's spread is a player's aimed spread with her gun, times a factor for her inexperience:** 3 at level 1, falling to 1
+  at level 10 (`<Progression><AimErrorAtLevel1>` and `<AimErrorAtMaxLevel>`). A level-1 survivor's pipe pistol spreads about as
+  wide as a player firing it from the hip; a level-10 one shoots like a player aiming. Before, a standing survivor's shots spread
+  6 to 30 times less than a player aiming down the sights, from her first day. Moving, running, crouching and firing a burst
+  change her spread the way they change yours.
+- **They aim at the chest of people** (you, survivors, bandits, traders); zombies and animals are still shot in the head. Every
+  shot used to go at the head, so most hits on a player were head hits and a fight between survivors and bandits ended in a
+  moment.
+
+### New: hires get a clear shot
+- **A hire with a gun steps aside when you are in her line of fire.** When an enemy is coming for you and you stand between
+  her and it, she steps 2 m to the side, away from you, then shoots, instead of standing still behind you
+  (`<Combat><ClearShotStepMetres>`, for an enemy within `<ClearShotLeaderRadiusMetres>` 20 m of you).
+
+### New: guards spread out
+- **Survivors told to guard the same spot spread out** instead of crowding onto it: the later ones step aside into a line beside
+  the first, facing your way, then a rank behind, 2 blocks apart (`<Guard><SpacingBlocks>`). A squad click on Guard, or Guard
+  given to one after another from where you stand, used to send them all to the block you stood on.
+- **Guard and return now patrols the spot:** she walks out to a random spot within 6 m of it, looks outward a few seconds, comes
+  back, faces your way, and repeats (`<Guard><PatrolMetres>`, 0 to stand still). In a fight she moves freely, then goes back to
+  the spot first. Plain **Guard** still holds the spot and fights from it.
+
+### New: your leadership reaches your hires
+- **Charismatic Nature now works on your hired survivors**, as it does on other players: rank 1 they regain health faster, rank 2
+  they deal 20% more damage, rank 3 they take 10% less (`<Leadership>` in Settings.xml). It stacks with their own level bonus and
+  stops while you are not in the world.
+
+### New: choose a survivor's ammo
+- **E > Ammo...** lists each ammo type of the gun in her hand she carries, with how many; pick one and she loads it now (the
+  rounds in her gun go back to her pack first). Or say it: "use armor piercing", "use hollow points", "use slugs", "use
+  breaching slugs", "use standard ammo", "use flaming arrows", "use exploding arrows". The choice stays with that gun; when that
+  type runs out she uses any other she has for it.
+
+### New: your squad's stance on the buff bar
+- **The Engage stance your hires share shows on your buff bar**: Defensive, Aggressive or Hold fire, with the order wheel's own
+  icons. Hires on different stances, or no hires: no icon. The old mode icons (Resume, Hunting and the rest) are gone; nothing
+  had set them for a long time, so Resume and Hunting just sat there.
+
+### New: survivors restock ammo at your base
+- A hired survivor inside your land claim (or an ally's) whose spare ammo for her gun drops below one magazine takes more from the
+  base, up to 120 rounds (`<Ammo><RestockTarget>` in Settings.xml; 0 = off): from containers you set to broadcast anywhere in your
+  claims and from your unlocked chests within 15 m of her, never another player's box. She takes it from where she stands, even
+  mid-fight, so a blood-moon defender no longer runs dry with ammo in the base. Away from the base she still loots it.
+
+### The base keeper: doors and traps
+- **A rebuilt door is yours again, and locked if it was.** A door the keeper rebuilt used to come back with no owner and unlocked.
+  Now it comes back owned by you and, when it was locked as it fell, locked (no password).
+- **She puts your spike traps and barbed wire back.** Wood and iron spikes, barbed wire and barbed fence come back when zombies
+  break them, and when zombies only wear them down a stage she restores the stage you built, both at a new trap's full repair cost
+  (10 wood for wood spikes, 2 forged iron for iron spikes, 10 scrap iron for barbed fence). Electrical traps, turrets, mines and
+  workstations are still not rebuilt, and blocks that came with a POI stay as the zombies left them.
+- The base check that finds destroyed blocks now runs only while a keeper is on duty for that base.
 
 ### Fixes
-- A seated gunner fires within her gun's own effective range (a pistol about 17 m, a magnum 27 m, rifles up to the 40 m cap)
-  instead of firing every gun out to 40 m.
-- Survivors no longer fall through the ground and come back badly hurt when you load a save; a survivor who was riding with you
-  when you logged off now stands beside the vehicle, not inside or under it.
-- No more red "Attachments not found" error when a survivor holding a scoped weapon puts out a fire or bandages herself.
-- A wild survivor no longer stays crouched after looting.
-- A survivor's pack window is titled "Backpack" (in every language) instead of `traderNPC`.
-- A survivor whose weapon comes out mid-chat (you pick one from her menu, a roll, a bandage) puts it away again a few seconds later,
-  instead of holding it for the rest of the chat.
-- A medic whose own heal cannot act yet (waiting, or no item that fits) now treats the party instead of standing by.
-- The Korean "stop being the medic" reply reads correctly.
-- German "follow me" subtitles show the follow replies again (they always read "Schon erledigt."); the Spanish "weapons free" reply
-  reads "Entro en combate.".
-- A clips character (such as Harley) answers wheel and squad orders with her own clips instead of a text voice.
-- Harley's voice clips show their captions (they sat in a file the game never loaded), and her laugh has one now.
-- Harley and the other older characters cannot do jobs (loot, pick, chop, mine, dig, butcher, repair, keep the base, be the medic). A
-  job order now gets "I don't know how to do that." (Harley answers with a clip) and she keeps following, instead of taking the order
-  and standing guard at the spot. One still carrying a job from an older save drops it when the save loads, so she fights again
-  instead of holding back to the old job spot.
-- A hire keeps fighting the zombie she is on instead of flipping between two of them every time she closes in or swings: another
-  one takes over only when it is 2 m closer to her, or when hers dies or drops out of the fight. New `modconfig.xml` settings:
-  `TargetSwitchCloserMetres` (2; 0 = the nearest always wins, as before) and `TargetStickMemorySeconds` (3, how long she
-  remembers her zombie through a step back or a pause between swings).
-- A survivor's short status lines ("Base remembered.", "My pack is full.", "I need an axe for that." and the rest) now show their
-  subtitles in your game language. They are still spoken in English, like every other line.
-- A survivor who rode with you no longer ends up under the vehicle when you get out: the follow trail stops while you drive and
-  starts fresh where you step out, so she can no longer hop back to a spot inside the vehicle.
+- **A new voice setting takes effect even when only the core package is updated.** With the voice package installed, a
+  setting it did not have yet used to run on a built-in default until the voice package was updated too; it now uses
+  the core package's value. The boot log still names such settings.
+- **A wandering survivor or bandit no longer loops forever when she is blocked.** Pressed into a car wreck or a corner,
+  the wander kept picking new points and walking her back into it until something else came along. Now, when she has not
+  got 3 m anywhere in 6 s, she gives that wander up and rests 10 s before she wanders again (`<Wander><StuckMetres>`,
+  `<StuckSeconds>`). Hires on Wander get the same.
+- **Your hires defend you when you are attacked from the front.** On the Defensive stance a melee hire is meant to go for an
+  enemy that is coming for you, but following behind you, your own body blocked her view of it, and she stood by while you
+  were hit until you moved or struck back. She now goes for an enemy that is after you within 10 m of you even when she
+  cannot see it yet.
+- **A tier 1 survivor no longer gets free ammo at spawn.** 9mm from her own trade goods went into her pack, and she spawned
+  holding her starting pipe pistol instead of her melee weapon. Her trade goods' ammo now stays for sale; ammo she loots later
+  is hers.
+- **Survivors no longer pick up medical items they cannot use.** A sewing kit, vitamins, antibiotics, a blood bag or the candy
+  drugs went into a survivor's bag as if they were bandages (looted, bought or stolen) and took the room of the ones she heals
+  with. They now go to her trade stock, and she no longer buys them.
+- **One damaged character profile no longer hides all your others.** When the game could not read one of your saved
+  characters, none of them could appear as wild survivors. Now that one is skipped and named in the log.
+- **Every survivor has a name.** A few survivor types (the test classes and npcSdcsXyth) showed their class name on the wheel
+  and in memories. They now roll a name like the others, and one already saved without a name gets one at her next load.
+- **A survivor no longer loses her weapon to a save.** Quitting while her weapon was put away (talking to you, crafting, looting)
+  saved her empty-handed, lost her gun's loaded rounds, and she fought with her fists from then on. Her weapon now goes back in
+  her hand before the world saves; a survivor who loads with empty hands and no gun she can fire takes her melee weapon. And a
+  gun she spawned with no longer counts as empty after she switches to melee at close range, and keeps its loaded rounds when
+  the game is saved while she has it put away.
+- **Hired survivors' XP follows your server's XP multiplier**, as yours does (it ignored the setting). And the pace of the start
+  level is now a setting: `<Progression><StartLevelDaysPerLevel>` (7 world days per level) in Settings.xml.
+- **A hired survivor's weekly pay keeps counting between sessions.** Every load used to restart her contract at week 1, so the
+  price never grew and a reload wiped the grace days. Now the contract carries on; dismissing her ends it, so a new hire starts at
+  week 1. And during the grace days you can now pay: say **pay**, and the grace ends.
+- **A survivor saved inside the floor stands on it after a load.** She used to fall through it each time the load guard caught her,
+  then through the world, and the rescue left her badly hurt.
+- **No more debug smoke over a survivor's target.** Smoke marking the container or block a survivor was heading for showed
+  whenever a player had **Mod Debug Logging** on. It is a developer marker and no longer follows that switch. The switch itself
+  is saved on your PC and stays on across updates until you turn it off (`vcdebug off`).
+- **Players who joined a game see her put her weapon away to talk, and see her bandage herself.** On a dedicated server,
+  or in another player's game, a joined player kept seeing her gun and her armed pose while she talked, and did not see her
+  bandage herself or douse a fire with a water jar; they now see what the host sees.
+- **A mine hurts a survivor as much as it hurts you.** Survivors took about two and a half times a player's blast damage, so a
+  mine under a vehicle killed the riders sitting over it; they now take the player's share.
+- **A dead survivor keeps her medical items.** Her self-heal check kept running on her body and, once its wait was over,
+  could spend a bandage or kit from her pack on herself.
+- **Quieter logs.** A weapon swap no longer warns "no model child" every time, and with verbose logging on, a dead survivor's
+  body no longer repeats its diagnostic lines every second.
+- **A survivor no longer falls through the world when a save loads slowly.** When the ground's collision was late, a
+  survivor could sink into the ground before the load guard took hold; it then held her there, she fell below the world
+  and was rescued beside you, inside your parked vehicle if you stood next to one. The guard now holds her where she was
+  saved.
+- **Her inventory window refreshes** when she adds an item while you have it open (single player): before, the window kept
+  showing the old slots, and an item dropped onto a slot shown as empty replaced what she had just put there.
+- **A voice pack's clips keep their own captions.** Another pack's clip with the same file name ("Laugh01") no longer shows
+  Harley's line. Pack authors: a clip's caption row is keyed `<voice folder>_<file name>` (see the manual).
+- **A program already using one of the AI helpers' ports is no longer taken for the helper.** That helper stays off and
+  the log names the program; on a non-English Windows a helper left over from a crash is now found and closed at start. A
+  leftover helper that no longer answers is restarted instead of reused.
+- **No network clash with other mods:** the voice relay's network message has a name only this mod uses.
+- **The order wheel and the voice settings window speak your game language** (12 languages), the settings window's test
+  results and the "No NPC nearby" note too. The survivor still says the order in English; the caption under it is translated.
+- **A character with her own caption language keeps it everywhere.** A character set to one language (`<ForceLanguage>`)
+  still captioned her canned lines ("I'm done crafting.", "My pack is full.") and her squad order replies in your game
+  language; they now follow her setting, like her replies.
+- **"I don't know how to do that." is captioned in your language** (12 languages); it was English for everyone.
+- **Multiplayer: "I need X for that." names the item in each player's own language.** On a dedicated server the item
+  came out in the server's language for every player. The caption now uses the name your game shows; the spoken line
+  uses the English name, as every spoken line does.
+- **Multiplayer: her inventory no longer loses or duplicates items while you look into it.** On a dedicated server, what a survivor
+  made, harvested or looted while a player had her inventory open vanished when the window closed, and what she used came back. With
+  SCore 3.4.3 the server keeps its own changes when the window closes, and only one player at a time can open it; she stops
+  and faces you while it is open, as in single player.
+- **Multiplayer: switching worlds without restarting the game.** After quitting to the menu and loading another save or joining
+  another server, survivors followed without their breadcrumb trail, a client that had played single player kept doing the
+  server's trail work, your custom characters were not sent to the server you rejoined, and a second server got no version check.
+  All of it now starts fresh with each world.
+- **An SCore or game update can no longer switch off half the mod.** If an update renames something the mod patches, that one
+  patch is skipped with a `[SDCS-PATCH] ... NOT applied` line in the log, and everything else still loads. Before, the first such
+  patch stopped the rest of the survivor mod from starting. Each patch also names the exact method it changes, so an update that
+  only adds a same-name method no longer trips it.
+- **Survivor memories and the remembered base survive a crash.** Both files are written to a temporary file and swapped in, so a
+  crash mid-save can no longer cut them short. An unreadable memory file is set aside (`NPC_Memories.xml.unreadable-<date>`) and
+  the last good copy (`NPC_Memories.xml.bak`) is read instead, where before the next save overwrote it and every relationship's
+  history was gone. A conversation not yet committed to memory (saved at quit) is written the same way.
+- **Captions in your game language.** Order captions, reply subtitles, stories and the AI's subtitle language followed the game's
+  Language option only when you had set it by hand; left at its default (your Steam language) they came out in English. They now
+  follow the language the game shows, Traditional Chinese included (shown in Simplified).
+- **The job tool goes away when the job ends.** A survivor whose harvest or butcher job finished kept the axe, pick or knife in hand
+  while she followed and fought; she now goes back to her weapon within a second.
+- **No duplicated items from a nearly full inventory.** When her inventory could take only part of a looted or harvested stack, that
+  part was also left in the container or paid again later.
+- **Console commands on a dedicated server.** `vc` and `vcdebug` now run on the player's own machine and any player may use them:
+  before, a non-admin was refused and an admin got the server's state (no TTS or STT there), and several `vc` diagnostics never
+  printed to the console at all. `vcdebug` now shows both switches (its own and `Settings.xml` `VerboseLogging`) and the result.
+  `sdcscustom spawn` works from a client, as its help said (admins).
+- **Clearer config warnings.** A broken `Settings.xml` now says the whole file was ignored (with the line the parser stopped at);
+  an invalid order-wheel key says the wheel is off and lists valid key names; a character whose `personality` names no loaded
+  personality is reported once; `<DefaultTacticalMode>` with a bad value warns and falls back instead of failing.
+- **Survivors use only your chests.** Base repair (and the new crafting) take from an unlocked chest near her only when you or one
+  of your allies placed it; a neighbour's open box no longer feeds them.
+- **Base repair takes shared storage only inside your claims.** A broadcast chest between two of your land claims, outside both, no
+  longer feeds her repairs.
+- **An unsupported `TtsEngine` value falls back to audio.cpp**, the default, as `modconfig.xml`'s own comment says; it used to
+  fall back to Supertonic. Ten more voice settings, when missing from both config copies, now use their shipped values instead
+  of older built-in ones: the LLM timeout, conversation memory, typing indicator and typing delay; the lip-sync gain, noise gate
+  and jaw angle; and the speech-to-text beam size, silence length and vocabulary hint.
+- **A custom character wears her outfit for players who joined the game.** On a dedicated server (or in another player's
+  game) a joined player could see a survivor made in the character creator in her underwear: her face arrived with her, her
+  outfit a moment later, and only the face was applied. She now waits for the outfit and puts it on.
+
+### Performance
+- **A survivor walking around her workstation asks for a path at most once a second** while she has none, instead of on every
+  AI tick (up to several hundred path searches a minute near a crowded station).
+- **Survivors cost less per frame, with no change in what they do.** In a fight their checks test the cheap facts first (the
+  order, the weapon's reach) and the line-of-sight test last. The first-aid check skips a survivor who carries no medical item
+  and reads her packs once per frame instead of once per ally. A work-site scan (chop, mine, dig clay, pick) reads the ground a
+  chunk at a time instead of thousands of single lookups in one frame. Several per-frame diagnostics and small memory
+  allocations are gone while verbose logging is off.
 
 ---
 
 ## Earlier Releases
 
-Release notes for 3.4.00 and earlier are in `CHANGELOG.md`, next to this file.
+Release notes for 3.4.01 and earlier are in `CHANGELOG.md`, next to this file.

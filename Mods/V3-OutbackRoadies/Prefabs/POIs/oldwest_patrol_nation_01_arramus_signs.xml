@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<signs version="2">
+  <sign guid="56ba0db9-8d8e-4581-8946-04a3bfc0030a" name="New Sign" modified="2026-11-02 15:05:43Z" next_poly_id="0" next_text_id="1" next_noise_id="0" next_group_id="0">
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.3877067, 0.3877067" color="#000000FF" mode="ColorOnly" font="Stardos Stencil" text="PATROL" direction="0" spacing="1.14" softness="0" dilate="0.26" />
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.3877067, 0.3877067" color="#CDC5C5FF" mode="ColorOnly" font="Stardos Stencil" text="PATROL" direction="0" spacing="1.14" softness="0" dilate="0" />
+    <layer name="Noise 01" type="NoiseSignLayer" pos="0, 0" rot="0" scale="0.3, 0.05244736" color="#B2AFAFFF" mode="ColorOnly" seed="0" detail="4" softness="0" dilate="-0.12" fade="0.5" />
+  </sign>
+  <sign guid="aee2c064-7014-4774-9c7f-22cb37fb84d8" name="New Sign" modified="2026-11-02 15:05:55Z" next_poly_id="0" next_text_id="1" next_noise_id="0" next_group_id="0">
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.3877067, 0.3877067" color="#000000FF" mode="ColorOnly" font="Stardos Stencil" text="NATION" direction="0" spacing="1.14" softness="0" dilate="0.26" />
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.3877067, 0.3877067" color="#CDC5C5FF" mode="ColorOnly" font="Stardos Stencil" text="NATION" direction="0" spacing="1.14" softness="0" dilate="0" />
+    <layer name="Noise 01" type="NoiseSignLayer" pos="0.08021785, 0.1918253" rot="0" scale="0.3, 0.05244736" color="#B2AFAFFF" mode="ColorOnly" seed="0" detail="4" softness="0" dilate="-0.12" fade="0.5" />
+  </sign>
+  <sign guid="cc2ce046-3de9-49d2-a159-37e287ccee81" name="New Sign" modified="2026-11-02 15:06:24Z" next_poly_id="0" next_text_id="0" next_noise_id="1" next_group_id="0">
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.4760022, 0.4760022" color="#CDC5C5FF" mode="ColorOnly" font="Stardos Stencil" text="TRAIL" direction="0" spacing="1.14" softness="0" dilate="0.26" />
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.4760022, 0.4760022" color="#2A3C54FF" mode="ColorOnly" font="Stardos Stencil" text="TRAIL" direction="0" spacing="1.14" softness="0" dilate="0" />
+    <layer name="Noise 01" type="NoiseSignLayer" pos="0, 0" rot="0" scale="0.3, 0.05244736" color="#B2AFAFFF" mode="ColorOnly" seed="0" detail="4" softness="0" dilate="-0.12" fade="0.5" />
+  </sign>
+  <sign guid="1ab9756e-8582-4e1c-9b0c-ad433994ff9c" name="New Sign" modified="2026-11-02 15:06:33Z" next_poly_id="0" next_text_id="0" next_noise_id="0" next_group_id="0">
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.4760022, 0.4760022" color="#CDC5C5FF" mode="ColorOnly" font="Stardos Stencil" text="GOODS" direction="0" spacing="1.14" softness="0" dilate="0.26" />
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.4760022, 0.4760022" color="#2A3C54FF" mode="ColorOnly" font="Stardos Stencil" text="GOODS" direction="0" spacing="1.14" softness="0" dilate="0" />
+    <layer name="Noise 01" type="NoiseSignLayer" pos="-0.2127517, 0.3487734" rot="0" scale="0.3, 0.05244736" color="#B2AFAFFF" mode="ColorOnly" seed="0" detail="4" softness="0" dilate="-0.12" fade="0.5" />
+  </sign>
+  <sign guid="64a6b8d4-b6df-480e-acd3-3f9ff2537a32" name="New Sign" modified="2026-11-02 15:06:05Z" next_poly_id="0" next_text_id="1" next_noise_id="0" next_group_id="0">
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="2.334414, 2.334414" color="#CDC5C5FF" mode="ColorOnly" font="Stardos Stencil" text="P" direction="0" spacing="1.14" softness="0" dilate="0.26" />
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="2.334413, 2.334413" color="#2A3C54FF" mode="ColorOnly" font="Stardos Stencil" text="P" direction="0" spacing="1.14" softness="0" dilate="0" />
+    <layer name="Noise 01" type="NoiseSignLayer" pos="0, 0" rot="0" scale="0.3, 0.05244736" color="#B2AFAFFF" mode="ColorOnly" seed="0" detail="4" softness="0" dilate="-0.12" fade="0.5" />
+  </sign>
+  <sign guid="2e2481b9-944f-4634-a81b-cae52fd0a3f6" name="New Sign" modified="2026-11-02 15:06:15Z" next_poly_id="0" next_text_id="0" next_noise_id="0" next_group_id="0">
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="2.334414, 2.334414" color="#CDC5C5FF" mode="ColorOnly" font="Stardos Stencil" text="N" direction="0" spacing="1.14" softness="0" dilate="0.26" />
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="2.334413, 2.334413" color="#2A3C54FF" mode="ColorOnly" font="Stardos Stencil" text="N" direction="0" spacing="1.14" softness="0" dilate="0" />
+    <layer name="Noise 01" type="NoiseSignLayer" pos="-0.006975459, 1.531115" rot="0" scale="0.3, 0.05244736" color="#B2AFAFFF" mode="ColorOnly" seed="0" detail="4" softness="0" dilate="-0.12" fade="0.5" />
+  </sign>
+  <sign guid="9c57f280-dbab-4cb9-b2d6-41af494afb98" name="New Sign" modified="2026-11-02 15:23:28Z" next_poly_id="1" next_text_id="0" next_noise_id="0" next_group_id="0">
+    <layer name="Poly 01" type="PolygonSignLayer" pos="0, 0" rot="0" scale="1.027437, 1.027438" color="#000000FF" mode="ColorOnly" sides="4" smoothness="0" starify="0" softness="0" dilate="0" frequency="5" shapeMode="Normal" />
+    <layer name="Text 01" type="TextSignLayer" pos="-0.31, 0" rot="0" scale="0.8808993, 0.8808993" color="#CDC5C5FF" mode="ColorOnly" font="Stardos Stencil" text="P" direction="0" spacing="1.14" softness="0" dilate="0.26" />
+    <layer name="Text 01" type="TextSignLayer" pos="-0.31, 0" rot="0" scale="0.880899, 0.880899" color="#2A3C54FF" mode="ColorOnly" font="Stardos Stencil" text="P" direction="0" spacing="1.14" softness="0" dilate="0" />
+    <layer name="Text 01" type="TextSignLayer" pos="0.29, 0" rot="0" scale="0.8808993, 0.8808993" color="#CDC5C5FF" mode="ColorOnly" font="Stardos Stencil" text="N" direction="0" spacing="1.14" softness="0" dilate="0.26" />
+    <layer name="Text 01" type="TextSignLayer" pos="0.29, 0" rot="0" scale="0.880899, 0.880899" color="#2A3C54FF" mode="ColorOnly" font="Stardos Stencil" text="N" direction="0" spacing="1.14" softness="0" dilate="0" />
+    <layer name="Noise 01" type="NoiseSignLayer" pos="0, 0" rot="0" scale="0.162108, 0.01880164" color="#2E2D2DFF" mode="ColorOnly" seed="0" detail="4" softness="0" dilate="-0.18" fade="0.74" />
+  </sign>
+</signs>

@@ -21,26 +21,26 @@
      Progression (NPC progression Phase 1) is read by the controller's
      [SDCS-LEVEL] block: the per-level rates and the level cap behind the
      hidden level buff (SdcsNpcLevelBonus in Config/buffs.xml). HealthPerLevel
-     and DamagePerLevel are perc_add per level; SpreadPerLevel is a negative
-     SpreadMultiplierHip tightener per level above 1 (0 at level 1, so the
-     spawn spread is untouched); MaxLevel is this mod's own level clamp. HarvestPerLevel
+     and DamagePerLevel are perc_add per level. AimErrorAtLevel1 and AimErrorAtMaxLevel
+     set how well a survivor shoots ([SDCS-AIM]): her spread with a gun is a player's
+     AIMED spread with that gun times this factor, 3 at level 1 falling in a straight
+     line to 1 at MaxLevel (a level-1 survivor's pipe pistol spreads about as wide as a
+     player firing it from the hip, a top-level one like a player aiming down the sights;
+     lower = more accurate). MaxLevel is this mod's own level clamp. HarvestPerLevel
      is the extra harvest yield per level above 1 (wood, stone, ore, clay, plants, crops,
      butchering). The
      HealthRegenPerSecond is the slow natural regen on the same buff, in HP per
      SECOND (the engine multiplies by the 0.5 s stat tick), so 0.2 is 1 HP every
      5 s: an NPC tops itself off while it wanders instead of being healed
-     instantly on a level-up. KillXpWorkaround (default true) is the
-     kill switch for the workaround around SCore's broken kill XP postfix
-     (stock SCore 3.2.29.1709 throws "Number of parameters specified does not
-     match the expected number" on every kill by an NPC that has a Progression,
-     and the throw also costs the PLAYER that kill's XP and quest credit). It
-     gates BOTH halves at once: while true, this mod suppresses SCore's broken
-     postfix (the player's credit comes back through SCore's own step 4) and
-     pays the hired NPC its kill XP itself; while false, both stay out and
-     SCore runs as-is. To spot SCore shipping its own fix: set this to false,
-     get a hired NPC a kill, and check Player.log. Their fix is present when
-     the "Error while executing ModEvent "EntityKilled" on mod "0-SCore""
-     line no longer appears with the workaround off. The
+     instantly on a level-up. StartLevelDaysPerLevel (default 7) is the
+     world days per start level: a survivor met on day 8 starts at level 2
+     (clamped 1 to 1000). KillXpWorkaround (default true) picks who pays a
+     hired survivor her kill XP: true, this mod pays it (SCore's own NPC XP
+     postfix is suppressed), so kills and crafts follow one rule; false,
+     SCore's postfix pays instead (that needs SCore 3.2.36.628 or newer: older
+     builds throw on every NPC kill and cost the player the kill's credit).
+     Her XP follows the server's XP Multiplier setting, as yours does; your
+     perks do not apply to her. The
      EFFECTIVE values print unconditionally at boot as the [SDCS-LEVEL] line,
      so a missing node shows up in the log, not just in the file.
      NoWear (default true) is the stopgap kill switch for NPC item wear:
@@ -178,10 +178,10 @@
          HealRollSpeed: how fast the roll plays; a multiplier on the clip,
              1.0 = the clip's own 2.37 s. The commanded move speed scales up with it,
              so the same 5 m is still covered. Clamped 0.5 to 3.0; a missing or corrupt
-             node plays the clip at its own pace (1.0).
-         HealBandageSeconds: how long she holds the bandage before the health is applied;
-             the shipped default is 2.5. Clamped 0.8 to 5.0; a missing or corrupt node
-             keeps 2.5. -->
+             node plays as shipped (1.6).
+         HealBandageSeconds: how long she holds the bandage before the health is applied
+             (the old standing bandage was 2.5). Clamped 0.8 to 5.0; a missing or corrupt
+             node plays as shipped (1.5). -->
     <HealRollSpeed>1.6</HealRollSpeed>
     <HealBandageSeconds>1.5</HealBandageSeconds>
     <!-- [SDCS-ANYWEAPON] The backpack watch. A HIRED
@@ -243,16 +243,18 @@
          outfits that render badly on one, e.g. cloth parts the engine only
          simulates for players. Matching is case-insensitive; an empty node
          excludes nothing. The value is latched once per process with the same
-         lazy, warn-once shape as the other keys; a missing node on an old
-         install keeps the default (no exclusions) with a one-time warning.
+         lazy, warn-once shape as the other keys; a missing node keeps the
+         shipped default (groupPreacher) with a one-time warning.
          Log tag: [SDCS-LOOK]. -->
     <SdcsArmorExcludeGroups>groupPreacher</SdcsArmorExcludeGroups>
     <Progression>
         <HealthPerLevel>0.03</HealthPerLevel>
         <DamagePerLevel>0.02</DamagePerLevel>
-        <SpreadPerLevel>0.02</SpreadPerLevel>
+        <AimErrorAtLevel1>3</AimErrorAtLevel1>
+        <AimErrorAtMaxLevel>1</AimErrorAtMaxLevel>
         <HarvestPerLevel>0.10</HarvestPerLevel>
         <MaxLevel>10</MaxLevel>
+        <StartLevelDaysPerLevel>7</StartLevelDaysPerLevel>
         <HealthRegenPerSecond>0.2</HealthRegenPerSecond>
         <KillXpWorkaround>true</KillXpWorkaround>
     </Progression>
@@ -295,6 +297,62 @@
         <UnderAttackSeconds>5</UnderAttackSeconds>
         <ChestReachMetres>15</ChestReachMetres>
     </BaseKeeper>
+    <!-- [SDCS-CRAFT] The craft order. PostReachMetres: how close to her post
+         she must stand to craft; farther away (after a fight) her Guard
+         order walks her back first. Clamped 1 to 20; a missing or unreadable
+         node warns once and keeps 4. The value in force prints once as the
+         [SDCS-CRAFT] settings line. Her material chests are the base
+         keeper's: ChestReachMetres above.
+         StationReachMetres: how close to where you stand a workstation
+         must be for its recipes to show in Craft (walk to the forge and
+         ask her there). Clamped 1 to 10, default 5.
+         StationFuel: what she feeds a forge or campfire that would run
+         dry before her items are done, the first one found first, a
+         comma list of item names.
+         CookStations, BlacksmithStations, ChemistStations,
+         CrafterStations: the workstations each specialist role may use,
+         a comma list of crafting areas (a recipe's craft_area). Every
+         survivor crafts from her backpack anywhere; a workstation needs
+         the role whose list holds it (toggled on her from the order
+         wheel's Roles page or by voice) and must stand in your or an
+         ally's land claim (a field station also away from one, below).
+         Add a modded station's area to a list to let that role use it.
+         ForgeStockUnits: a Blacksmith keeps each forge material she has
+         ore for at this many units (iron, clay and so on): she puts raw
+         ore in when she starts a forge order and again when her crafts
+         are done, smelting what an order needs first. 0 = only what an
+         order needs. Clamped 0 to 30000.
+         SmeltOre: the raw items she may put in a forge, a comma list of
+         item names (never a tool, weapon or part that also smelts).
+         FieldStations: the workstations she may also use where there is
+         no land claim, but never in another player's claim: the
+         campfire, a field station you place anywhere. A comma list of
+         crafting areas; empty = every workstation needs a claim.
+         StationWanderMetres: when a workstation order ends she stays at
+         the station until you give her an order, walking around within
+         this many metres of it. A hire you tell to stay within this
+         distance of a workstation walks around it the same way. A backpack
+         order always brings her back. 0 = she stands at her spot. Clamped
+         0 to 20, default 5.
+         StationTools: each workstation's tool slots in the game's own order
+         (area=tool,tool,tool; stations separated by ;). A tool a recipe needs
+         that she carries (her pack or a chest in reach) and the station lacks
+         goes into its own slot when she crafts, and stays there. A station
+         or tool not listed here: she never puts one in. -->
+    <Crafting>
+        <PostReachMetres>4</PostReachMetres>
+        <StationReachMetres>5</StationReachMetres>
+        <StationFuel>resourceWood,resourceCoal</StationFuel>
+        <CookStations>campfire</CookStations>
+        <BlacksmithStations>forge</BlacksmithStations>
+        <ChemistStations>chemistryStation</ChemistStations>
+        <CrafterStations>workbench,cementMixer</CrafterStations>
+        <ForgeStockUnits>1000</ForgeStockUnits>
+        <SmeltOre>resourceScrapIron,resourceScrapBrass,resourceScrapLead,resourceCrushedSand,resourceClayLump,resourceRockSmall</SmeltOre>
+        <FieldStations>campfire</FieldStations>
+        <StationWanderMetres>5</StationWanderMetres>
+        <StationTools>campfire=toolCookingPot,toolCookingGrill,toolBeaker;forge=toolBellows,toolAnvil,toolForgeCrucible</StationTools>
+    </Crafting>
     <!-- [SDCS-MEDIC] The low-health lines the medic treats a patient at, in percent of the patient's max health. InCombatHealthPercent applies while an enemy is visible (in combat, only low health counts) and AfterCombatHealthPercent applies once the combat-ended clock has passed its grace. SelfHealHealthPercent is the survivor's own low-health self-heal line, DireHealthPercent the dire line below it (the first aid kit and the pain pills tier), SelfHealCooldownSeconds the wait between low-health self-heals, and BleedRecheckSeconds the wait before a new bleed may trigger another treatment. The three percent lines clamp to 1 to 99 (a dire line at or above the self-heal line warns once and keeps 25), the two seconds lines clamp at 0, and a missing or unreadable node warns once and keeps its default. All six effective values print once at first read as the [SDCS-MEDIC] line. -->
     <Medic>
         <InCombatHealthPercent>50</InCombatHealthPercent>
@@ -325,7 +383,12 @@
              this height above the entity root. Clamped 0.05 to 1.5.
          CrawlerAimBellyMetres: the belly aim point, the same way. It must sit
              BELOW CrawlerAimHeadMetres; if it does not, the mod warns once
-             and uses Head - 0.2. -->
+             and uses Head - 0.2.
+         ClearShotStepMetres: a gun-armed hire whose leader stands in her line of fire
+             to an enemy going for him steps this far aside (away from him) for a
+             clear shot. Clamped 1 to 5.
+         ClearShotLeaderRadiusMetres: only for an enemy this close to the leader.
+             Clamped 2 to 60. -->
     <Combat>
         <WildTargetedRadiusMetres>15</WildTargetedRadiusMetres>
         <CloseMeleeEnterMetres>3</CloseMeleeEnterMetres>
@@ -333,6 +396,8 @@
         <CloseMeleeMinHoldSeconds>3</CloseMeleeMinHoldSeconds>
         <CrawlerAimHeadMetres>0.45</CrawlerAimHeadMetres>
         <CrawlerAimBellyMetres>0.25</CrawlerAimBellyMetres>
+        <ClearShotStepMetres>2</ClearShotStepMetres>
+        <ClearShotLeaderRadiusMetres>20</ClearShotLeaderRadiusMetres>
     </Combat>
     <!-- [SDCS-FOLLOW] How a hired survivor paces herself while following
          you, read once at boot; a missing or unreadable node warns once and
@@ -373,4 +438,167 @@
         <VerticalReachMetres>3</VerticalReachMetres>
         <ReturnTeleportMetres>40</ReturnTeleportMetres>
     </Loot>
+
+    <!-- [SDCS-AMMO] A hired survivor inside your land claim (or an ally's)
+         tops up the ammo for her gun from the base's containers when her
+         spare rounds for it drop below one magazine: broadcast storage
+         anywhere in the claims and the unlocked chests you or your allies
+         placed within BaseKeeper ChestReachMetres of her, never her own pack
+         and never another player's box. She takes it from where she stands,
+         into her pack. Read once at boot; a missing or unreadable node warns
+         once and keeps the value below.
+         RestockTarget: the spare rounds she tops up to, per gun. 0 = she
+             never restocks. Clamped 0 to 5000.
+         RestockCheckSeconds: how often she checks. Clamped 1 to 120.
+         RestockRetrySeconds: after a check that took nothing (no ammo in
+             the base, or she is outside it), the wait before the next.
+             Clamped 5 to 600. -->
+    <Ammo>
+        <RestockTarget>120</RestockTarget>
+        <RestockCheckSeconds>5</RestockCheckSeconds>
+        <RestockRetrySeconds>30</RestockRetrySeconds>
+    </Ammo>
+
+    <!-- [SDCS-LEAD] Your Charismatic Nature perk on your hired survivors (the game's
+         perk reaches only other players): its ranks as the game has them, read from
+         your current rank once a second; nothing while you are not in the world.
+         Read once at boot; a missing or unreadable node warns once and keeps the
+         value below (the game's own number).
+         RegenPerSecond: rank 1 and up, health she regains per second. Clamped 0 to 5.
+         DamageBonus: rank 2 and up, the extra damage she deals (0.2 = 20 percent),
+             to blocks too with a melee weapon. Clamped 0 to 1.
+         DamageResist: rank 3 and up, the share of damage she does not take
+             (0.1 = 10 percent). Clamped 0 to 0.9. -->
+    <Leadership>
+        <RegenPerSecond>0.5</RegenPerSecond>
+        <DamageBonus>0.2</DamageBonus>
+        <DamageResist>0.1</DamageResist>
+    </Leadership>
+
+    <!-- [SDCS-BANDIT] The bandits (npcSdcsBandit* classes).
+         PlayerDamage: the damage a bandit deals to a PLAYER, as a multiplier on
+             her weapon's own (1 = full, 0.5 = half). Only players: survivors,
+             zombies and animals take full damage. Change it while playing with
+             the console command sdcsbandit damage 0.75 (that lasts until the game
+             restarts; edit this value to keep it). Clamped 0 to 5.
+         SpreadByTier: an EXTRA spread for a bandit, by her tier (T1, T2, T3), added to
+             her hip spread on top of the aim every survivor has (Progression
+             AimErrorAtLevel1): 0 = she shoots like a survivor of her level, 1 = one
+             more hip spread of her gun. Clamped 0 to 10 each. -->
+    <Bandits>
+        <PlayerDamage>0.5</PlayerDamage>
+        <SpreadByTier>0,0,0</SpreadByTier>
+    </Bandits>
+
+    <!-- [SDCS-REPAIRSKILL] A hired keeper learns to repair by repairing. Every paid
+         repair swing and every rebuilt block pays her the repair XP a player earns
+         for the same materials, into her repair XP and her level. Her repair XP sets
+         the strongest building material she may work; workstations, traps and
+         electrics are open to every keeper. Read once at boot; a missing or
+         unreadable node warns once and keeps the value below.
+         Enabled: false = every keeper repairs everything (the XP still counts).
+         StartTier: what a new hire may repair: 0 wood, 1 cobblestone, 2 concrete,
+             3 steel.
+         CobblestoneXp, ConcreteXp, SteelXp: the repair XP each tier takes (a full
+             wood repair pays about 4, cobblestone or concrete about 32).
+         WoodMaxDamage, CobblestoneMaxDamage, ConcreteMaxDamage: a block's tier is
+             its material's strength (MaxDamage): up to WoodMaxDamage the wood tier
+             (sandbags, frames, wood), up to CobblestoneMaxDamage cobblestone (brick,
+             scrap metal), up to ConcreteMaxDamage concrete, above that steel. -->
+    <RepairSkill>
+        <Enabled>true</Enabled>
+        <StartTier>0</StartTier>
+        <CobblestoneXp>100</CobblestoneXp>
+        <ConcreteXp>900</ConcreteXp>
+        <SteelXp>1700</SteelXp>
+        <WoodMaxDamage>500</WoodMaxDamage>
+        <CobblestoneMaxDamage>1500</CobblestoneMaxDamage>
+        <ConcreteMaxDamage>5000</ConcreteMaxDamage>
+    </RepairSkill>
+
+    <!-- [SDCS-CRAFTSKILL] A specialist learns her craft by crafting. Every craft a
+         workstation makes for her counts in each role she holds whose stations
+         (Crafting, CookStations and the rest) include that station. Her skill in
+         the role is those crafts divided by CraftsPerLevel, and each of the game's
+         crafting skills on the role's list is raised to at least that level in her
+         own progression: the game's recipe unlocks and craft quality read it there,
+         the same way they read a player's. A skill never drops, and it stays when
+         she drops the role. Backpack crafts do not count. Read once at boot.
+         Enabled: false stops the learning (what she has learned stays).
+         CraftsPerLevel: the crafts a skill level takes, clamped 1 to 1000. With 10,
+             a new Cook can make corn on the cob after 20 crafts at the campfire.
+         CookSkills, BlacksmithSkills, ChemistSkills, CrafterSkills: the game's
+             crafting skills each role learns, a comma list of progression.xml
+             names. The defaults are the skills of the recipes each role's stations
+             make; a name that is not a crafting skill is skipped with a warning. -->
+    <CraftSkill>
+        <Enabled>true</Enabled>
+        <CraftsPerLevel>10</CraftsPerLevel>
+        <CookSkills>craftingFood,craftingMedical</CookSkills>
+        <BlacksmithSkills>craftingWorkstations,craftingExplosives</BlacksmithSkills>
+        <ChemistSkills>craftingMedical,craftingVehicles,craftingExplosives,craftingElectrician,craftingFood</ChemistSkills>
+        <CrafterSkills>craftingArmor,craftingBackpack,craftingBlades,craftingBows,craftingClubs,craftingElectrician,craftingExplosives,craftingHandguns,craftingHarvestingTools,craftingKnuckles,craftingMachineGuns,craftingRepairTools,craftingRifles,craftingRobotics,craftingSalvageTools,craftingShotguns,craftingSledgehammers,craftingSpears,craftingTraps,craftingVehicles,craftingWorkstations</CrafterSkills>
+    </CraftSkill>
+
+    <!-- [SDCS-TRADE] Selling to a wild survivor: she buys what she can use (medical,
+         and ammo for a gun she carries up to her Loot bag cap) at the game's normal
+         price, paid from the coins in her bag. Read once at boot.
+         StartCoinsMin, StartCoinsMax: the coins a NEW wild survivor starts with, an
+             even roll between the two (her purse before anyone buys from her).
+             0 and 0 = she starts with none. Clamped 0 to 20000.
+         BuyMaxMedical: she buys medical items while her bag holds fewer units than
+             this. Keep it above Loot BagMaxMedical: her start kit fills her bag to
+             that cap, so at the same value she never buys medical. Clamped 0 to 100. -->
+    <Trade>
+        <StartCoinsMin>50</StartCoinsMin>
+        <StartCoinsMax>150</StartCoinsMax>
+        <BuyMaxMedical>10</BuyMaxMedical>
+    </Trade>
+
+    <!-- [SDCS-PICKPOCKET] A wild survivor whose class sets SdcsPickpocket="true" (off by
+         default: most survivors never steal) picks a player's pocket: one stack from
+         his backpack, of the wild loot filter's kind (ListedTags, or worth MinValue a
+         unit, dukes always, at most MaxCoins of them). He stops her when he sees her:
+         she says a line and backs off for BackOffSeconds, no fight. What she takes goes
+         where her loot goes: what she can use into her bag, the rest into her stock for
+         sale, so you can buy it back. Single player and the host's own player for now.
+         Read once at boot.
+         SurvivorMinutes: one attempt per thief per this many minutes.
+         VictimMinutes: one attempt on the same player per this many minutes.
+         ReachMetres: how close she must be. -->
+    <Pickpocket>
+        <SurvivorMinutes>10</SurvivorMinutes>
+        <VictimMinutes>30</VictimMinutes>
+        <ReachMetres>2</ReachMetres>
+        <MaxCoins>100</MaxCoins>
+        <MinValue>100</MinValue>
+        <ListedTags>medical,ammo,food,drinks,csm</ListedTags>
+        <BackOffSeconds>5</BackOffSeconds>
+    </Pickpocket>
+
+    <!-- [SDCS-GUARD] Survivors told to guard the same spot (a squad Guard order,
+         or one Guard order after another from where you stand) spread out
+         instead of crowding onto it: the newer posts step aside into a line
+         abreast facing your way, then a rank behind.
+         SpacingBlocks: blocks between neighbouring posts, 1 to 5.
+         PatrolMetres: on Guard and return she walks out to a spot within this
+         many metres of her post, looks outward 4 to 10 s, walks back, faces your
+         way 4 to 10 s, and repeats (a fight or a talk sends her back first).
+         0 = she holds her post. Clamped 0 to 20. -->
+    <Guard>
+        <SpacingBlocks>2</SpacingBlocks>
+        <PatrolMetres>6</PatrolMetres>
+    </Guard>
+    <!-- [SDCS-WANDER] A survivor or bandit wandering (no order, or the Wander
+         order) who gets nowhere, pressed into a car wreck while the wander keeps
+         picking new points, gives that wander up and rests a moment before she
+         wanders again (the hidden SdcsWanderRest buff in buffs.xml, 10 s).
+         StuckMetres: she counts as getting somewhere once she is this far from
+             where she last was. Clamped 1 to 10.
+         StuckSeconds: she gives up when she has not got that far for this long.
+             Clamped 2 to 60. -->
+    <Wander>
+        <StuckMetres>3</StuckMetres>
+        <StuckSeconds>6</StuckSeconds>
+    </Wander>
 </Settings>

@@ -20,19 +20,20 @@
   <property name="SleeperIsQuestExclude" value="False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False" />
   <property name="SleeperVolumeFlags" value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,2,0,0,0" />
   <property name="YOffset" value="-13" />
-  <property name="PrefabSize" value="42, 32, 42" />
+  <property name="PrefabSize" value="42, 45, 42" />
   <property name="SleeperVolumeTriggeredBy" value=" # # #1# # # # # #2# # # # # # # # # # # # # # # # " />
+  <property name="AllowDecorations" value="True" />
   <property class="Stats">
-    <property name="LightsVolume" value="20651.94" />
-    <property name="TotalVertices" value="1559171" />
-    <property name="TotalTriangles" value="627292" />
+    <property name="LightsVolume" value="21100.9" />
+    <property name="TotalVertices" value="1629764" />
+    <property name="TotalTriangles" value="657691" />
     <property class="BlockEntities">
-      <property name="Vertices" value="1453914" />
-      <property name="Triangles" value="554275" />
+      <property name="Vertices" value="1523029" />
+      <property name="Triangles" value="584404" />
     </property>
     <property class="ChunkMeshes0">
-      <property name="Vertices" value="92077" />
-      <property name="Triangles" value="51793" />
+      <property name="Vertices" value="92939" />
+      <property name="Triangles" value="51755" />
     </property>
     <property class="ChunkMeshes1">
       <property name="Vertices" value="0" />
@@ -43,8 +44,8 @@
       <property name="Triangles" value="176" />
     </property>
     <property class="ChunkMeshes3">
-      <property name="Vertices" value="0" />
-      <property name="Triangles" value="0" />
+      <property name="Vertices" value="616" />
+      <property name="Triangles" value="308" />
     </property>
     <property class="ChunkMeshes4">
       <property name="Vertices" value="0" />
@@ -57,7 +58,8 @@
   </property>
   <property class="IndexedBlockOffsets">
     <property class="challenge_polymers">
-      <property name="0" value="39, 13, 3" />
+      <property name="0" value="39, 13, 23" />
+      <property name="1" value="39, 14, 24" />
     </property>
     <property class="quest_wood_trees">
       <property name="0" value="38, 13, 37" />
@@ -78,7 +80,7 @@
       <property name="0" value="3, 13, 38" />
     </property>
     <property class="challenge_cars">
-      <property name="0" value="13, 13, 4" />
+      <property name="0" value="27, 13, 5" />
     </property>
     <property class="POILight">
       <property name="0" value="40, 3, 11" />

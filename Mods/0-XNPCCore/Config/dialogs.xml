@@ -1157,4 +1157,79 @@
             <action type="SayCarrying, 1-XNPCVoiceControl" />
         </response>
     </append>
+    <!-- "Craft..." (crafting): leader only, our survivors whose class runs jobs. The
+         row leads to the Craft Menu statement; the recipe rows (one page of what she
+         can make now, then a More row) and, on the Craft Count statement, the count
+         rows are injected at display time by CraftMenuPatch. The XML keeps the nav
+         row, the two statements and their own rows: Nevermind on the menu, Back on
+         the count page. A count row sends the order and closes the dialog. Grid
+         budget: 8 recipes, More and Nevermind make 10 rows. -->
+    <!-- Before Admin Menu, so the row sits right after Weapon Menu. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='Admin Menu']">
+        <response_entry id="Craft Menu" ref_text="Craft..." />
+    </insertBefore>
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="Craft Menu" text="SdcsNPC_CraftMenu" nextstatementid="Craft Categories" ref_text="Craft...">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
+            <requirement type="NPCCanCraft, 1-XNPCVoiceControl" requirementtype="Hide" />
+            <action type="CraftMenuOpen, 1-XNPCVoiceControl" />
+        </response>
+        <response id="Craft Back" text="SdcsNPC_CraftBack" nextstatementid="Craft Menu" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <response id="Craft Kinds Back" text="SdcsNPC_CraftBack" nextstatementid="Craft Categories" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <statement id="Craft Categories" text="SdcsNPC_CraftKindText" ref_text="What kind of thing?">
+            <response_entry id="done" ref_text="Nevermind." />
+        </statement>
+        <statement id="Craft Menu" text="SdcsNPC_CraftMenuText" ref_text="What should I make?">
+            <response_entry id="Craft Kinds Back" ref_text="Back" />
+        </statement>
+        <statement id="Craft Count" text="SdcsNPC_CraftCountText" ref_text="How many?">
+            <response_entry id="Craft Back" ref_text="Back" />
+        </statement>
+    </append>
+    <!-- "Your progress": leader only, our survivors. The row leads to the Progress
+         statement; its info rows (her level, the XP toward the next one, the quality
+         she crafts at, her roles) are injected at display time by CraftMenuPatch
+         (ProgressMenuRows). The XML keeps the nav row, the statement and its Back
+         row, which returns to the first page. Before Admin Menu, after Craft. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='Admin Menu']">
+        <response_entry id="Progress Menu" ref_text="Your progress" />
+    </insertBefore>
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="Progress Menu" text="SdcsNPC_ProgressMenu" nextstatementid="Progress" ref_text="Your progress">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
+            <action type="ProgressMenuOpen, 1-XNPCVoiceControl" />
+        </response>
+        <response id="Progress Back" text="SdcsNPC_CraftBack" nextstatementid="start" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <statement id="Progress" text="SdcsNPC_ProgressText" ref_text="How am I doing?">
+            <response_entry id="Progress Back" ref_text="Back" />
+        </statement>
+    </append>
+    <!-- "Ammo...": leader only, our survivors. The row leads to the Ammo statement;
+         its rows (each ammo type of the gun in her hand she carries, with the count,
+         the loaded one marked) are injected at display time by CraftMenuPatch
+         (AmmoMenuRows); picking one loads it. Before Admin Menu, after Your progress. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='Admin Menu']">
+        <response_entry id="Ammo Menu" ref_text="Ammo..." />
+    </insertBefore>
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="Ammo Menu" text="SdcsNPC_AmmoMenu" nextstatementid="Ammo" ref_text="Ammo...">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
+            <action type="AmmoMenuOpen, 1-XNPCVoiceControl" />
+        </response>
+        <response id="Ammo Back" text="SdcsNPC_CraftBack" nextstatementid="start" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <statement id="Ammo" text="SdcsNPC_AmmoText" ref_text="Which ammo should I load?">
+            <response_entry id="Ammo Back" ref_text="Back" />
+        </statement>
+    </append>
 </configs>

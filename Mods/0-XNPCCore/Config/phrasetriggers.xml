@@ -9,7 +9,7 @@
     === Leader Requirements ===
       Some actions require the player to be the NPC's leader (hired first):
         FollowPlayer, StopFollow, GuardHere, GuardReturn, Wander, Loot, LootHere, HarvestHere, MineHere, DigClayHere, PickHere, ButcherHere,
-        BaseRepairHere, CombatRepairHere, RepairHere, RememberBase, MedicOn, MedicOff,
+        BaseRepairHere, CombatRepairHere, RepairHere, RememberBase, MedicOn, MedicOff, RoleOn, RoleOff,
         Dismiss, Pickup, OpenInventory, SwapWeapon, SetCombatMode, SetEngage,
         SetCrouch, SetFollowDistance, SetFormation, MoveToPosition, Vehicle
 
@@ -57,6 +57,9 @@
       RememberBase         - "remember the base": the base resolves the leader's claims and takes the base snapshot (budgeted across frames)
       MedicOn              - "be the medic": sets the designated-medic role on this survivor (SdcsMedicRole cvar, leader-only, individual: with the role on she treats the whole party)
       MedicOff             - "stop being the medic": clears the role (back to tending the leader only)
+      RoleOn               - "be the cook" (blacksmith, chemist, crafter): sets that crafting role on this survivor
+                             (ActionParam = the role id; leader-only, individual): the role lets her use its workstations
+      RoleOff              - "stop being the cook" (and so on): clears that role
       Dismiss            - Dismiss the NPC (buffOrderDismiss + ExecuteCMD "Dismiss")
       Pickup             - Pick up the NPC (SCore PickUpNPC)
       Hire               - Open the hire dialog window (SCore OpenDialogSDX)
@@ -66,6 +69,8 @@
                          blade, club, sledge, spear, baton, fists, gun, melee, hands)
       SetCombatMode      - Set combat behavior mode (ActionParam = 0/1/2; DEFERRED)
       SetEngage          - Engagement (ActionParam 0=defensive, 1=aggressive, 2=hold fire, 3=disengage action)
+      SetAmmo            - The ammo for the gun in her hand (ActionParam kind:standard, ap, hp, slug, breaching,
+                           flaming or exploding: her gun's own type of that kind; leader-only, individual)
       SetTacticalMode    - Player-wide tactical mode toggle (ActionParam 0=off, 1=command-only)
       SetCrouch          - CrouchOverride cvar (ActionParam 0=mirror leader, 1=crouch, 2=stand;
                            the order wheel shows only the 0/1 toggle, no stand socket)
@@ -521,6 +526,146 @@
             <Response lang="es">Vale, solo me encargo de ti.;Entendido, me detengo.;Deber médico cancelado.</Response>
             <Response lang="de">Gut, ich kümmere mich nur noch um dich.;Verstanden, ich höre auf.;Medizinische Aufgabe aufgehoben.</Response>
             <ActionType>MedicOff</ActionType>
+        </Trigger>
+
+        <!-- === CRAFTING SPECIALIST ROLES (one survivor, leader-only, never the squad) ===
+             A role lets her use that kind of workstation (Settings.xml Crafting/<Role>Stations);
+             every survivor crafts from her backpack. ActionParam = the role id. -->
+        <Trigger enabled="true">
+            <Phrase>be the cook;you're the cook;be our cook;</Phrase>
+            <Response lang="en">I'll handle the cooking.;Kitchen duty, got it.</Response>
+            <Response lang="zh">我来负责做饭。;厨房的事交给我。</Response>
+            <Response lang="tr">Yemekleri ben hallederim.;Mutfak görevi, anlaşıldı.</Response>
+            <Response lang="ru">Готовка за мной.;Кухня на мне, понял.</Response>
+            <Response lang="pt">Eu cuido da comida.;Cozinha comigo, entendido.</Response>
+            <Response lang="pl">Zajmę się gotowaniem.;Kuchnia, jasne.</Response>
+            <Response lang="ko">요리는 내가 맡을게.;주방 담당, 알았어.</Response>
+            <Response lang="ja">料理は任せて。;台所担当、了解。</Response>
+            <Response lang="it">Mi occupo io della cucina.;Ai fornelli, inteso.</Response>
+            <Response lang="fr">Je m'occupe de la cuisine.;Aux fourneaux, compris.</Response>
+            <Response lang="es">Yo me encargo de cocinar.;Cocina a mi cargo, entendido.</Response>
+            <Response lang="de">Ich übernehme das Kochen.;Küchendienst, verstanden.</Response>
+            <ActionType>RoleOn</ActionType>
+            <ActionParam>cook</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>stop being the cook;no more cooking;</Phrase>
+            <Response lang="en">No more cooking for me.;Understood, I'll stop cooking.</Response>
+            <Response lang="zh">我不再做饭了。;明白，不做饭了。</Response>
+            <Response lang="tr">Artık yemek yapmıyorum.;Anlaşıldı, yemek işini bırakıyorum.</Response>
+            <Response lang="ru">Больше не готовлю.;Понял, кухню оставляю.</Response>
+            <Response lang="pt">Não cozinho mais.;Entendido, paro de cozinhar.</Response>
+            <Response lang="pl">Koniec z gotowaniem.;Jasne, przestaję gotować.</Response>
+            <Response lang="ko">이제 요리는 안 할게.;알겠어, 요리 그만할게.</Response>
+            <Response lang="ja">料理はもうやめるよ。;了解、料理当番は終わり。</Response>
+            <Response lang="it">Niente più cucina per me.;Inteso, smetto di cucinare.</Response>
+            <Response lang="fr">Je ne cuisine plus.;Compris, j'arrête la cuisine.</Response>
+            <Response lang="es">Ya no cocino.;Entendido, dejo de cocinar.</Response>
+            <Response lang="de">Kein Kochen mehr für mich.;Verstanden, ich höre mit dem Kochen auf.</Response>
+            <ActionType>RoleOff</ActionType>
+            <ActionParam>cook</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>be the blacksmith;you're the blacksmith;be our blacksmith;</Phrase>
+            <Response lang="en">I'll run the forge.;Smithing, got it.</Response>
+            <Response lang="zh">锻炉交给我。;打铁的活，我来。</Response>
+            <Response lang="tr">Ocağı ben yönetirim.;Demircilik, anlaşıldı.</Response>
+            <Response lang="ru">Кузня за мной.;Кузнечное дело, понял.</Response>
+            <Response lang="pt">Eu cuido da forja.;Ferraria comigo, entendido.</Response>
+            <Response lang="pl">Zajmę się kuźnią.;Kowalstwo, jasne.</Response>
+            <Response lang="ko">용광로는 내가 맡을게.;대장일, 알았어.</Response>
+            <Response lang="ja">炉は任せて。;鍛冶仕事、了解。</Response>
+            <Response lang="it">Mi occupo io della forgia.;Lavoro di fabbro, inteso.</Response>
+            <Response lang="fr">Je m'occupe de la forge.;Forgeron, compris.</Response>
+            <Response lang="es">Yo me encargo de la forja.;Herrería a mi cargo, entendido.</Response>
+            <Response lang="de">Ich übernehme die Schmiede.;Schmiedearbeit, verstanden.</Response>
+            <ActionType>RoleOn</ActionType>
+            <ActionParam>blacksmith</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>stop being the blacksmith;no more smithing;</Phrase>
+            <Response lang="en">No more smithing for me.;Understood, I'll leave the forge.</Response>
+            <Response lang="zh">我不再打铁了。;明白，离开锻炉。</Response>
+            <Response lang="tr">Artık demircilik yok.;Anlaşıldı, ocağı bırakıyorum.</Response>
+            <Response lang="ru">Больше не кую.;Понял, кузню оставляю.</Response>
+            <Response lang="pt">Não forjo mais.;Entendido, deixo a forja.</Response>
+            <Response lang="pl">Koniec z kowalstwem.;Jasne, zostawiam kuźnię.</Response>
+            <Response lang="ko">이제 대장일은 안 할게.;알겠어, 용광로에서 손 뗄게.</Response>
+            <Response lang="ja">鍛冶はもうやめるよ。;了解、炉から離れる。</Response>
+            <Response lang="it">Niente più forgia per me.;Inteso, lascio la forgia.</Response>
+            <Response lang="fr">Je ne forge plus.;Compris, je quitte la forge.</Response>
+            <Response lang="es">Ya no forjo.;Entendido, dejo la forja.</Response>
+            <Response lang="de">Kein Schmieden mehr für mich.;Verstanden, ich verlasse die Schmiede.</Response>
+            <ActionType>RoleOff</ActionType>
+            <ActionParam>blacksmith</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>be the chemist;you're the chemist;be our chemist;</Phrase>
+            <Response lang="en">I'll handle the chemistry.;Chemistry station, got it.</Response>
+            <Response lang="zh">化学的活交给我。;化学工作台，明白。</Response>
+            <Response lang="tr">Kimya işini ben hallederim.;Kimya istasyonu, anlaşıldı.</Response>
+            <Response lang="ru">Химия за мной.;Химстанция на мне, понял.</Response>
+            <Response lang="pt">Eu cuido da química.;Bancada de química comigo, entendido.</Response>
+            <Response lang="pl">Zajmę się chemią.;Stanowisko chemiczne, jasne.</Response>
+            <Response lang="ko">화학은 내가 맡을게.;화학 작업대, 알았어.</Response>
+            <Response lang="ja">化学は任せて。;化学ステーション、了解。</Response>
+            <Response lang="it">Mi occupo io della chimica.;Banco chimico, inteso.</Response>
+            <Response lang="fr">Je m'occupe de la chimie.;Poste de chimie, compris.</Response>
+            <Response lang="es">Yo me encargo de la química.;Estación de química, entendido.</Response>
+            <Response lang="de">Ich übernehme die Chemie.;Chemiestation, verstanden.</Response>
+            <ActionType>RoleOn</ActionType>
+            <ActionParam>chemist</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>stop being the chemist;no more chemistry;</Phrase>
+            <Response lang="en">No more chemistry for me.;Understood, I'll stop mixing.</Response>
+            <Response lang="zh">我不再做化学了。;明白，不调配了。</Response>
+            <Response lang="tr">Artık kimya yok.;Anlaşıldı, karıştırmayı bırakıyorum.</Response>
+            <Response lang="ru">Больше не химичу.;Понял, химию оставляю.</Response>
+            <Response lang="pt">Chega de química.;Entendido, paro de misturar.</Response>
+            <Response lang="pl">Koniec z chemią.;Jasne, przestaję mieszać.</Response>
+            <Response lang="ko">이제 화학은 안 할게.;알겠어, 조제 그만할게.</Response>
+            <Response lang="ja">化学はもうやめるよ。;了解、調合は終わり。</Response>
+            <Response lang="it">Niente più chimica per me.;Inteso, smetto di miscelare.</Response>
+            <Response lang="fr">Je ne fais plus de chimie.;Compris, j'arrête les mélanges.</Response>
+            <Response lang="es">Ya no hago química.;Entendido, dejo de mezclar.</Response>
+            <Response lang="de">Keine Chemie mehr für mich.;Verstanden, ich höre mit dem Mischen auf.</Response>
+            <ActionType>RoleOff</ActionType>
+            <ActionParam>chemist</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>be the crafter;you're the crafter;be our crafter;</Phrase>
+            <Response lang="en">I'll work the bench.;Workbench duty, got it.</Response>
+            <Response lang="zh">工作台交给我。;工作台的活，明白。</Response>
+            <Response lang="tr">Tezgahı ben hallederim.;Tezgah görevi, anlaşıldı.</Response>
+            <Response lang="ru">Верстак за мной.;Работа за верстаком, понял.</Response>
+            <Response lang="pt">Eu cuido da bancada.;Bancada de trabalho comigo, entendido.</Response>
+            <Response lang="pl">Zajmę się warsztatem.;Stół warsztatowy, jasne.</Response>
+            <Response lang="ko">작업대는 내가 맡을게.;작업대 담당, 알았어.</Response>
+            <Response lang="ja">作業台は任せて。;作業台担当、了解。</Response>
+            <Response lang="it">Mi occupo io del banco da lavoro.;Banco da lavoro, inteso.</Response>
+            <Response lang="fr">Je m'occupe de l'établi.;Établi, compris.</Response>
+            <Response lang="es">Yo me encargo del banco de trabajo.;Banco de trabajo, entendido.</Response>
+            <Response lang="de">Ich übernehme die Werkbank.;Werkbank, verstanden.</Response>
+            <ActionType>RoleOn</ActionType>
+            <ActionParam>crafter</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>stop being the crafter;no more crafting duty;</Phrase>
+            <Response lang="en">No more bench work for me.;Understood, I'll leave the workbench.</Response>
+            <Response lang="zh">我不再用工作台了。;明白，离开工作台。</Response>
+            <Response lang="tr">Artık tezgah işi yok.;Anlaşıldı, tezgahı bırakıyorum.</Response>
+            <Response lang="ru">Больше не работаю за верстаком.;Понял, верстак оставляю.</Response>
+            <Response lang="pt">Chega de bancada.;Entendido, deixo a bancada.</Response>
+            <Response lang="pl">Koniec z warsztatem.;Jasne, zostawiam stół warsztatowy.</Response>
+            <Response lang="ko">이제 작업대 일은 안 할게.;알겠어, 작업대에서 손 뗄게.</Response>
+            <Response lang="ja">作業台はもうやめるよ。;了解、作業台から離れる。</Response>
+            <Response lang="it">Niente più banco da lavoro per me.;Inteso, lascio il banco.</Response>
+            <Response lang="fr">Je ne travaille plus à l'établi.;Compris, je quitte l'établi.</Response>
+            <Response lang="es">Ya no uso el banco de trabajo.;Entendido, dejo el banco.</Response>
+            <Response lang="de">Keine Werkbankarbeit mehr für mich.;Verstanden, ich verlasse die Werkbank.</Response>
+            <ActionType>RoleOff</ActionType>
+            <ActionParam>crafter</ActionParam>
         </Trigger>
 
         <!-- === VEHICLE RIDE (get in / get out) === -->
@@ -2369,6 +2514,129 @@
                         <Response lang="es">Echa un vistazo. Avísame si necesitas algo.;Toma, mira lo que tengo.;Adelante, échale un ojo.;Deja que te enseñe lo que llevo.;Claro, veamos qué se puede hacer.;Por supuesto, tómate tu tiempo.</Response>
                         <Response lang="de">Schau ruhig. Sag Bescheid, wenn du was brauchst.;Hier, schau dir an, was ich hab.;Nur zu, schau dich um.;Lass mich dir zeigen, was ich so dabei hab.;Klar, mal sehen, was sich machen lässt.;Natürlich, lass dir Zeit.</Response>
             <ActionType>OpenInventory</ActionType>
+        </Trigger>
+
+        <!-- The ammo for the gun in her hand (SetAmmo, kind:<kind>): the server picks her gun's own
+             type of that kind (the game's ammo DisplayType) and says a line when she has none of it,
+             holds no gun, or her gun takes no such ammo. The Ammo page (E menu) lists her types. -->
+        <Trigger enabled="true">
+            <Phrase>use armor piercing;load armor piercing;switch to armor piercing;use armor piercing rounds;use ap rounds;use ap ammo;load ap rounds;</Phrase>
+            <Response lang="en">Armor piercing.;Loading AP.</Response>
+            <Response lang="zh">穿甲弹。;装穿甲弹。</Response>
+            <Response lang="tr">Zırh delici.;Zırh delici takıyorum.</Response>
+            <Response lang="ru">Бронебойные.;Заряжаю бронебойные.</Response>
+            <Response lang="pt">Perfurante.;Carregando perfurante.</Response>
+            <Response lang="pl">Przeciwpancerna.;Ładuję przeciwpancerną.</Response>
+            <Response lang="ko">철갑탄.;철갑탄 장전.</Response>
+            <Response lang="ja">徹甲弾。;徹甲弾を装填。</Response>
+            <Response lang="it">Perforanti.;Carico perforanti.</Response>
+            <Response lang="fr">Perforantes.;Je charge des perforantes.</Response>
+            <Response lang="es">Perforantes.;Cargo perforantes.</Response>
+            <Response lang="de">Panzerbrechend.;Lade panzerbrechende.</Response>
+            <ActionType>SetAmmo</ActionType>
+            <ActionParam>kind:ap</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>use hollow points;load hollow points;switch to hollow points;use hollow point rounds;use hp rounds;use hp ammo;</Phrase>
+            <Response lang="en">Hollow points.;Loading hollow points.</Response>
+            <Response lang="zh">空尖弹。;装空尖弹。</Response>
+            <Response lang="tr">Oyuk uçlu.;Oyuk uçlu takıyorum.</Response>
+            <Response lang="ru">Экспансивные.;Заряжаю экспансивные.</Response>
+            <Response lang="pt">Ponta oca.;Carregando ponta oca.</Response>
+            <Response lang="pl">Z wydrążonym czubkiem.;Ładuję z wydrążonym czubkiem.</Response>
+            <Response lang="ko">할로포인트.;할로포인트 장전.</Response>
+            <Response lang="ja">ホローポイント。;ホローポイントを装填。</Response>
+            <Response lang="it">Punta cava.;Carico punta cava.</Response>
+            <Response lang="fr">Pointes creuses.;Je charge des pointes creuses.</Response>
+            <Response lang="es">Punta hueca.;Cargo punta hueca.</Response>
+            <Response lang="de">Hohlspitz.;Lade Hohlspitz.</Response>
+            <ActionType>SetAmmo</ActionType>
+            <ActionParam>kind:hp</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>use standard ammo;use regular ammo;use normal ammo;use standard rounds;use ball ammo;switch to standard ammo;load standard ammo;</Phrase>
+            <Response lang="en">Standard rounds.;Back to standard.</Response>
+            <Response lang="zh">普通弹。;换回普通弹。</Response>
+            <Response lang="tr">Standart mermi.;Standarda dönüyorum.</Response>
+            <Response lang="ru">Обычные патроны.;Возвращаюсь к обычным.</Response>
+            <Response lang="pt">Munição comum.;Voltando à comum.</Response>
+            <Response lang="pl">Zwykła amunicja.;Wracam do zwykłej.</Response>
+            <Response lang="ko">일반탄.;일반탄으로.</Response>
+            <Response lang="ja">通常弾。;通常弾に戻す。</Response>
+            <Response lang="it">Munizioni standard.;Torno alle standard.</Response>
+            <Response lang="fr">Munitions standard.;Retour au standard.</Response>
+            <Response lang="es">Munición normal.;Vuelvo a la normal.</Response>
+            <Response lang="de">Standardmunition.;Zurück zur Standardmunition.</Response>
+            <ActionType>SetAmmo</ActionType>
+            <ActionParam>kind:standard</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>use slugs;load slugs;switch to slugs;use slug rounds;use shotgun slugs;</Phrase>
+            <Response lang="en">Slugs.;Loading slugs.</Response>
+            <Response lang="zh">独头弹。;装独头弹。</Response>
+            <Response lang="tr">Tek kurşun.;Tek kurşun takıyorum.</Response>
+            <Response lang="ru">Пулевые.;Заряжаю пулевые.</Response>
+            <Response lang="pt">Balotes.;Carregando balotes.</Response>
+            <Response lang="pl">Breneki.;Ładuję breneki.</Response>
+            <Response lang="ko">슬러그탄.;슬러그탄 장전.</Response>
+            <Response lang="ja">スラッグ弾。;スラッグ弾を装填。</Response>
+            <Response lang="it">Palla unica.;Carico palle uniche.</Response>
+            <Response lang="fr">Balles slug.;Je charge des slugs.</Response>
+            <Response lang="es">Balas sólidas.;Cargo balas sólidas.</Response>
+            <Response lang="de">Flintenlaufgeschosse.;Lade Flintenlaufgeschosse.</Response>
+            <ActionType>SetAmmo</ActionType>
+            <ActionParam>kind:slug</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>use breaching slugs;load breaching slugs;use breaching rounds;switch to breaching slugs;</Phrase>
+            <Response lang="en">Breaching slugs.;Loading breaching slugs.</Response>
+            <Response lang="zh">破门弹。;装破门弹。</Response>
+            <Response lang="tr">Kapı kırma mermisi.;Kapı kırma mermisi takıyorum.</Response>
+            <Response lang="ru">Штурмовые пули.;Заряжаю штурмовые.</Response>
+            <Response lang="pt">Munição de arrombamento.;Carregando munição de arrombamento.</Response>
+            <Response lang="pl">Pociski wyważające.;Ładuję pociski wyważające.</Response>
+            <Response lang="ko">브리칭탄.;브리칭탄 장전.</Response>
+            <Response lang="ja">ブリーチング弾。;ブリーチング弾を装填。</Response>
+            <Response lang="it">Proiettili da sfondamento.;Carico proiettili da sfondamento.</Response>
+            <Response lang="fr">Balles de brèche.;Je charge des balles de brèche.</Response>
+            <Response lang="es">Balas de brecha.;Cargo balas de brecha.</Response>
+            <Response lang="de">Türbrecher.;Lade Türbrecher.</Response>
+            <ActionType>SetAmmo</ActionType>
+            <ActionParam>kind:breaching</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>use flaming arrows;use fire arrows;load flaming arrows;use flaming bolts;use fire bolts;</Phrase>
+            <Response lang="en">Flaming arrows.;Loading flaming arrows.</Response>
+            <Response lang="zh">火箭矢。;装火箭矢。</Response>
+            <Response lang="tr">Ateşli oklar.;Ateşli ok takıyorum.</Response>
+            <Response lang="ru">Зажигательные стрелы.;Заряжаю зажигательные.</Response>
+            <Response lang="pt">Flechas incendiárias.;Carregando incendiárias.</Response>
+            <Response lang="pl">Płonące strzały.;Ładuję płonące strzały.</Response>
+            <Response lang="ko">불화살.;불화살 장전.</Response>
+            <Response lang="ja">火矢。;火矢をつがえる。</Response>
+            <Response lang="it">Frecce incendiarie.;Carico incendiarie.</Response>
+            <Response lang="fr">Flèches enflammées.;Je charge des flèches enflammées.</Response>
+            <Response lang="es">Flechas incendiarias.;Cargo incendiarias.</Response>
+            <Response lang="de">Brandpfeile.;Lade Brandpfeile.</Response>
+            <ActionType>SetAmmo</ActionType>
+            <ActionParam>kind:flaming</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>use exploding arrows;use explosive arrows;load exploding arrows;use exploding bolts;use explosive bolts;</Phrase>
+            <Response lang="en">Exploding arrows.;Loading explosives.</Response>
+            <Response lang="zh">爆炸箭。;装爆炸箭。</Response>
+            <Response lang="tr">Patlayıcı oklar.;Patlayıcı ok takıyorum.</Response>
+            <Response lang="ru">Взрывные стрелы.;Заряжаю взрывные.</Response>
+            <Response lang="pt">Flechas explosivas.;Carregando explosivas.</Response>
+            <Response lang="pl">Wybuchowe strzały.;Ładuję wybuchowe.</Response>
+            <Response lang="ko">폭발 화살.;폭발 화살 장전.</Response>
+            <Response lang="ja">爆発矢。;爆発矢をつがえる。</Response>
+            <Response lang="it">Frecce esplosive.;Carico esplosive.</Response>
+            <Response lang="fr">Flèches explosives.;Je charge des explosives.</Response>
+            <Response lang="es">Flechas explosivas.;Cargo explosivas.</Response>
+            <Response lang="de">Explosivpfeile.;Lade Explosivpfeile.</Response>
+            <ActionType>SetAmmo</ActionType>
+            <ActionParam>kind:exploding</ActionParam>
         </Trigger>
 
         <!-- === SIMPLE ENGAGEMENT MODEL === -->

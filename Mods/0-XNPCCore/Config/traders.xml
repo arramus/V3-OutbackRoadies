@@ -201,8 +201,9 @@
 	     - reset_interval="-1": TraderManager.TraderInventoryRequested bails on
 	       ResetInterval < 1 (3.3 TraderManager.cs), so the game NEVER restocks this id
 	       (the same idiom the game's own stash trader id 3 uses).
-	     - allow_sell="false": XUiC_ItemActionList never creates the sell action for this id
-	       (sell only - the player buys, never sells).
+	     - allow_sell="true": the player may sell her what she can use (medical, ammo for a
+	       gun she carries, up to her bag caps, paid from her coins); the base mod greys
+	       Sell out for anything else (SdcsTradePatches).
 	     - NO trader_items: an empty item list parses and spawns an empty list without
 	       throwing (TradersFromXml.cs / TraderInfo.Spawn), and the stock is filled at open
 	       from the NPC's harvest window by the base mod's SdcsTradePatches.
@@ -212,6 +213,6 @@
 	     NOTE: do not ship the allow_buy attribute - in the 3.3 parser it writes AllowSell
 	       (TradersFromXml.cs), a landmine. -->
 	<append xpath="/traders">
-		<trader_info id="64" reset_interval="-1" allow_sell="false"/>
+		<trader_info id="64" reset_interval="-1" allow_sell="true"/>
 	</append>
 </configs>

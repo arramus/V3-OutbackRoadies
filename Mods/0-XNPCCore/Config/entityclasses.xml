@@ -4663,6 +4663,9 @@
 		<entity_class name="npcSdcsBase">
 			<!-- SCore's NPC entity, so UAI, orders and hiring work. -->
 			<property name="Class" value="EntityAliveSDXV4, SCore"/>
+			<!-- The names a class without its own Names list rolls from (the three
+			     survivor tiers' male lists); without one SCore shows the class name. -->
+			<property name="Names" value="Austin,Bradley,Caleb,Cedric,Charles,Daniel,David,Dylan,Edward,Eric,Evan,Felix,Gavin,Graham,Harrison,Henry,Howard,Hunter,Jacob,Jeffrey,Jordan,Joseph,Joshua,Julian,Kevin,Kyle,Lawrence,Miles,Nathan,Patrick,Quentin,Raymond,Ronald,Sebastian,Simon,Spencer,Stanley,Vernon"/>
 			<!-- Must match an npc_info id in Config/npc.xml. EntityAliveSDX NREs without it. -->
 			<property name="NPCID" value="npcSdcsTest"/>
 			<!-- Our own SdcsNpcRangedAdvanced replaces the NPCModNPCRangedAdvanced equivalent (Config/utilityai.xml). -->
@@ -4705,17 +4708,44 @@
 			     their own copies of these two properties and are untouched. -->
 			<property name="AttackTimeoutDay" value="0.05"/>
 			<property name="AttackTimeoutNight" value="0.05"/>
-			<!-- ACCURACY. The NPC never aims, IsAiming is false by design.  Tuning knob: raise the values toward 1.0 to make the NPC less accurate. -->
+			<!-- ACCURACY. She shoots like a player: the player's own stance bases (the playerMale
+			     block), so her gun's values apply to her as they do to a player. She never aims
+			     down the sights (IsAiming stays false), so her hip spread is set instead: a
+			     player's AIMED spread with that gun times a factor that shrinks with her level,
+			     through the SdcsAimSpread cvar the controller writes ([SDCS-AIM], Settings.xml
+			     Progression AimErrorAtLevel1 and AimErrorAtMaxLevel). -->
 			<effect_group name="SdcsNpcAccuracy">
-				<passive_effect name="SpreadDegreesHorizontal" operation="perc_set" value="0.35"/>
-				<passive_effect name="SpreadDegreesVertical" operation="perc_set" value="0.35"/>
-				<passive_effect name="SpreadMultiplierIdle" operation="perc_set" value="0.5"/>
-				<passive_effect name="SpreadMultiplierWalking" operation="perc_set" value="0.5"/>
-				<passive_effect name="SpreadMultiplierRunning" operation="perc_set" value="0.5"/>
-				<passive_effect name="WeaponHandling" operation="perc_add" value="0.5"/>
+				<passive_effect name="SpreadMultiplierAiming" operation="base_set" value="1"/>
+				<passive_effect name="SpreadMultiplierCrouching" operation="base_set" value="1"/>
+				<passive_effect name="SpreadMultiplierHip" operation="base_set" value="1"/>
+				<passive_effect name="SpreadMultiplierWalking" operation="base_set" value="1"/>
+				<passive_effect name="SpreadMultiplierRunning" operation="base_set" value="1.05"/>
+				<passive_effect name="SpreadMultiplierIdle" operation="base_set" value="1"/>
+				<passive_effect name="IncrementalSpreadMultiplier" operation="base_set" value="1"/>
+				<passive_effect name="SpreadMultiplierHip" operation="perc_add" value="@SdcsAimSpread"/>
+			</effect_group>
+			<!-- [SDCS-BANDIT] The damage this NPC deals to a PLAYER, scaled by the
+			     SdcsPlayerDamage cvar (0 = unchanged). The server writes it on bandits
+			     only, from Settings.xml Bandits PlayerDamage. The tags filter is what
+			     limits it to players: an entity hit evaluates the attacker's
+			     DamageModifier with the TARGET's class tags. -->
+			<effect_group name="SdcsPlayerDamage">
+				<passive_effect name="DamageModifier" operation="perc_add" value="@SdcsPlayerDamage" tags="player"/>
+			</effect_group>
+			<!-- [SDCS-BANDIT] A bandit's aim: the SdcsBanditSpread cvar widens her hip
+			     spread (0 = unchanged). The server writes it on bandits only, from
+			     Settings.xml Bandits SpreadByTier and her class's SdcsArmorTier. -->
+			<effect_group name="SdcsBanditAim">
+				<passive_effect name="SpreadMultiplierHip" operation="perc_add" value="@SdcsBanditSpread"/>
 			</effect_group>
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
 			<property name="HarvestItems" value="ammo9mmBulletBall=60,medicalFirstAidBandage=5"/>
+			<!-- STARTING AMMO for a survivor whose class rolls a gun (SdcsWeapons): this many
+				rounds of that gun's ammo at first spawn. 0 = none. A class with SdcsSpawnAmmo
+				false gets none whatever this says. Fixed starting items go in HarvestItems
+				above (item=count), and the random starting stock is the sdcsSurvivorStock
+				list in loot.xml. -->
+			<property name="SdcsSpawnAmmoCount" value="120"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
@@ -4778,8 +4808,10 @@
 			<property name="LegCrawlerThreshold" value="0"/>
 			<property name="LegsExplosionDamageMultiplier" value="0"/>
 			<property name="ArmsExplosionDamageMultiplier" value="0"/>
-			<property name="HeadExplosionDamageMultiplier" value="1"/>
-			<property name="ChestExplosionDamageMultiplier" value="1"/>
+			<!-- A blast hurts a survivor as much as it hurts a player: the player class's own 0.41.
+			     The game takes the worst exposed body part, so head and chest set the damage. -->
+			<property name="HeadExplosionDamageMultiplier" value="0.41"/>
+			<property name="ChestExplosionDamageMultiplier" value="0.41"/>
 			<effect_group name="Base Effects">
 				<passive_effect name="HealthMax" operation="base_set" value="150"/>
 				<!-- Survivors are not slowed by spike, barbed wire, web or water tiles; the damage from them still applies. -->
@@ -4807,6 +4839,8 @@
 			     identical lines each. The five children's former Tags lists were byte-identical (48 tags).
 			     CrouchYOffsetFP is deliberately not ported (first-person only). -->
 			<property name="IsMale" value="false"/>
+			<!-- The female survivor tiers' names, for a class without its own list. -->
+			<property name="Names" value="Alice,Angela,Ashley,Audrey,Bianca,Celeste,Crystal,Daisy,Diana,Emily,Erica,Evelyn,Fiona,Holly,Jennifer,Julia,Kelly,Kendra,Kennedy,Layla,Lisa,Marina,Megan,Melissa,Nancy,Natasha,Pamela,Penny,Rachel,Rebecca,Susan,Sylvia,Vanessa,Virginia,Vivian,Whitney"/>
 			<property name="Mass" value="130"/>
 			<property name="SoundHurt" value="player2painlg"/>
 			<property name="SoundHurtSmall" value="player2painsm"/>
@@ -5078,6 +5112,73 @@
 				<property name="GameModeSurvivalSP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 				<property name="GameModeSurvivalMP" value="gunMGT1AK47,ammo762mmBulletBall,meleeWpnBatonT2StunBaton,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 			</property>
+		</entity_class>
+
+		<!-- [SDCS-BANDIT] The bandits: our survivors gone hostile, two test classes spawned
+		     from the menu for now (no spawn lines yet): npcSdcsBanditMelee (a tier 1 male,
+		     melee) and npcSdcsBanditRanged (a tier 1 female with a pipe pistol or a pipe
+		     rifle). They replace the legacy Harley bandits.
+		     Faction bandits: hates everyone except passive animals, and our survivors
+		     hate it back. Fights with SdcsBanditCombat (our combat actions without the
+		     wild defend only gate, plus an approach to an enemy she sees out of range
+		     and a walk toward a player she hears). Never hired, no dialog or trade
+		     (SCore refuses both to an enemy), silent (no_voice), never a player's own
+		     custom character (SdcsCustomCharacters false), gone with enemies turned
+		     off (IsEnemyEntity).
+		     Dead, she always drops the game's zombie loot bag for her tier: plain,
+		     blue (Strong), red (Boss); random ammo plus loot that improves with the
+		     bag. The damage she deals to players follows Settings.xml Bandits
+		     PlayerDamage, changed live with the sdcsbandit console command. -->
+		<entity_class name="npcSdcsBanditMelee" extends="npcSdcsSurvivorMaleT1">
+			<!-- Melee only: no gun in her kit. The tier 1 kit's pipe pistol would be drawn as soon
+			     as 9mm from her trade stock reached her bag. -->
+			<property name="BagItems" value="meleeWpnClubT0WoodenClub"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+			</property>
+			<property name="Faction" value="bandits"/>
+			<property name="Hirable" value="false"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat"/>
+			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="Titles" value="Bandit"/>
+			<property name="ExperienceGain" value="600"/>
+			<property name="SdcsSpawnAmmo" value="true"/>
+			<property name="SdcsSpawnAmmoCount" value="60"/>
+			<property name="SdcsCustomCharacters" value="false"/>
+			<property name="LootDropProb" value="1"/>
+			<property name="LootDropEntityClass" value="EntityLootContainerRegular"/>
+			<!-- [SDCS-BANDIT] She keeps fighting the target she has: any other target
+			     scores this much of hers (1 = no preference), so a player and a
+			     zombie cannot flip her back and forth. Same value on both. -->
+			<property name="SdcsKeepTarget" value="0.7"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditRanged" extends="npcSdcsSurvivorFemaleT1">
+			<!-- Ranged: rolls one of these two (tier 1 survivors roll melee only). -->
+			<property name="SdcsWeapons" value="gunHandgunT0PipePistol,gunRifleT0PipeRifle"/>
+			<property name="Faction" value="bandits"/>
+			<property name="Hirable" value="false"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat"/>
+			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="Titles" value="Bandit"/>
+			<property name="ExperienceGain" value="600"/>
+			<property name="SdcsSpawnAmmo" value="true"/>
+			<property name="SdcsSpawnAmmoCount" value="60"/>
+			<property name="SdcsCustomCharacters" value="false"/>
+			<property name="LootDropProb" value="1"/>
+			<property name="LootDropEntityClass" value="EntityLootContainerRegular"/>
+			<property name="SdcsKeepTarget" value="0.7"/>
+		</entity_class>
+
+		<!-- [SDCS-PICKPOCKET] The pickpocket test class: a T1 survivor whose class steals
+		     (SdcsPickpocket, off on every other class). She picks a player's pocket when
+		     he is within reach and does not see her (Settings.xml Pickpocket). Stands in
+		     for the dedicated pickpocket character until that model is in the mod. -->
+		<entity_class name="npcSdcsPickpocket" extends="npcSdcsSurvivorFemaleT1">
+			<property name="SdcsPickpocket" value="true"/>
 		</entity_class>
 
 		<!-- The shared base for Humanoid player-controller
