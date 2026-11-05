@@ -254,6 +254,11 @@
              Allowed: AboveNormal, Normal, BelowNormal, Lowest. Default: Normal. -->
         <WakeWordThreadPriority>Normal</WakeWordThreadPriority>
 
+        <!-- ONNX threads for each wake word model, with spinning off so idle threads sleep.
+             1 is enough for these small models; each extra thread is added to all three.
+             Range: 1-4. Default: 1. -->
+        <WakeWordThreads>1</WakeWordThreads>
+
         <!-- Max ONNX inference chunks per signal burst.
              Under CPU contention, the ring buffer can pile up many 1280-sample chunks.
              Draining them all at once starves TTS. This cap limits how many chunks
@@ -622,6 +627,18 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <PathReleaseDist>2.5</PathReleaseDist>
     <PathVerticalDist>1.0</PathVerticalDist>
     <PathVerticalRelease>1.0</PathVerticalRelease>
+
+    <!-- The travel re-issue gate will not replace an A* search that is still
+         being calculated, unless it has been pending this long (seconds, default 2.0). A
+         walking leader re-aims the destination about every 0.5 s; each re-aim overwrites
+         the unfinished search in the engine's per-entity search table, so near awkward
+         geometry (a gap, a one-block step) where a search takes longer than that cadence
+         the follower stalled for seconds without ever receiving a route. Raise it to wait
+         longer on a hard search; lower it to re-aim more aggressively. A search pending at
+         least this long is treated as hung and may be replaced, so re-issue cannot be
+         blocked forever.
+    -->
+    <PathPendingMaxSeconds>2.0</PathPendingMaxSeconds>
 
     <!-- Chat-follow distance escape. While an NPC is in a
          chat pause window, the follow action is suppressed while the leader is within this    -->

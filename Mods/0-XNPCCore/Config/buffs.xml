@@ -1244,6 +1244,10 @@
 			<stack_type value="ignore"/>
 			<duration value="10"/>
 		</buff>
+		<buff name="SdcsSeekRest" hidden="true"> <!--  The flag that a bandit just gave up on seeking where she last saw her enemy (searched it, or got nowhere). No effects; while present the SdcsBanditCombat BanditSeek action scores 0, so she stops looking for it until it shows or hits her again.  -->
+			<stack_type value="ignore"/>
+			<duration value="15"/>
+		</buff>
 		<buff name="buffSdcsLootMode" hidden="true"> <!--  The hired follow-and-loot mode setter for the dialog "Loot around here" row, which cannot call C#: the OnActivate makes the same two writes the C# setters do (SdcsLootMode 1, then the Follow order through the stock follow buff).  -->
 			<stack_type value="ignore"/>
 			<duration value="1"/>

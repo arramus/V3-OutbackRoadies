@@ -241,7 +241,7 @@ If no matching `lang` entry exists for the player's language, the system falls b
 | `Patrol` | Yes | Start looping recorded patrol route (SCore ExecuteCMD "Patrol") |
 | `CancelPatrolRecord` | Yes | Cancel recording / stop active patrol, clear points, order→Stay |
 | `Dismiss` | Yes | Dismisses the NPC |
-| `Pickup` | Yes | Picks up the NPC (SCore PickUpNPC) |
+| `Pickup` | Yes | Picks up the NPC (SCore PickUpNPC). Refused while her pack holds anything, the way a vehicle with items in its storage is |
 | `OpenInventory` | Yes* | Opens NPC's trade/inventory window. *Traders are the one exception: opening a trader's inventory needs no leader (it redirects to the trade dialog). |
 | `SwapWeapon` | Yes | Swaps NPC weapon. See SwapWeapon section below. |
 | `SetEngage` | Yes | Engagement. `<ActionParam>` = 0=cover me (defensive, default), 1=weapons free, 2=hold fire, 3=disengage action. |
@@ -518,6 +518,7 @@ All runtime settings live in one file. Most can be adjusted in the in-game confi
 | `<WakeWordThreshold>` | `0.5` | Sensitivity 0-1 (higher = fewer false triggers) |
 | `<VadSilenceMs>` | `400` | Milliseconds of silence before recording stops |
 | `<WakeWordThreadPriority>` | `Normal` | ONNX inference thread priority: AboveNormal, Normal, BelowNormal, Lowest |
+| `<WakeWordThreads>` | `1` | ONNX threads for each wake-word model, with idle threads sleeping (1 to 4). 1 is plenty for these small models; more only adds CPU. |
 | `<WakeWordMaxChunksPerSignal>` | `4` | Max audio chunks processed per wake-word signal burst (1-8) |
 | `<NameMatchPhonetic>` | `true` | Soundex phonetic NPC-name matching (gates tier 3 of name resolver) |
 | `<Prompt>` | *(see config)* | Keyword hints that improve Whisper accuracy for 7DTD context |
@@ -612,6 +613,7 @@ pay, answer yes (or pay) or no; during the grace days, say **pay** to pay what y
 | `<PathFirstFollow>` | `true` | Far-from-leader travel is A*-first; set false for the old servo-first behaviour (A* only on failure). |
 | `<PathReleaseDist>` | `2.5` | Release side of the horizontal hysteresis pair for the path/servo handover (engage side has no key). `PathHandoverDist` is derived from `<TrailHandoverDist>` at load (removed S6, 2026-09-05); an old `<PathHandoverDist>` key in a user config is silently ignored. |
 | `<PathVerticalDist>` / `<PathVerticalRelease>` | `1.0` / `1.0` | Vertical hysteresis pair for the path/servo handover. |
+| `<PathPendingMaxSeconds>` | `2.0` | How long a follower lets a route search that is still running finish before she asks for a new one. Your hire re-aims her route about every half second while you walk; asking again throws the unfinished search away, so near a gap or a step she could stand still. Lower it to re-aim sooner; raise it to wait longer on a hard search. |
 | `<LadderOrderedUseAstar>` | `true` | INERT key (nothing reads it any more): the ladder climb hands A* one exact path unconditionally. The loader still reads the value in case the flag is wired back. |
 | `<PatrolAStarLeg>` | `true` | Recorded-patrol legs between waypoints are A*-owned. |
 | `<ChatFollowEscapeDist>` | `6.0` | While mid-conversation the NPC holds its ground within this distance and resumes following beyond it. |

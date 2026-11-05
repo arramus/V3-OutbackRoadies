@@ -484,10 +484,28 @@
          SpreadByTier: an EXTRA spread for a bandit, by her tier (T1, T2, T3), added to
              her hip spread on top of the aim every survivor has (Progression
              AimErrorAtLevel1): 0 = she shoots like a survivor of her level, 1 = one
-             more hip spread of her gun. Clamped 0 to 10 each. -->
+             more hip spread of her gun. Clamped 0 to 10 each.
+         SeekMemorySeconds: how long a bandit keeps seeking an enemy she lost sight of,
+             from the last moment she saw it (or was hit by it); then she gives up.
+         SeekArriveMetres: close enough to the last-seen spot to count as having got
+             there and start searching.
+         SeekSearchSeconds: how long she searches the spot for it before giving up
+             and resting.
+         SeekHitSeedSeconds: a shot re-seeds the seek only this fresh (measured from
+             the last time she was hit by anyone); a give-up does not re-arm the
+             seek until a new shot lands inside this window.
+         SeekLookTurnSeconds: during the search, her look turns to a fresh random
+             point at this interval.
+         SeekLookMetres: how far away those search look points are. -->
     <Bandits>
         <PlayerDamage>0.5</PlayerDamage>
         <SpreadByTier>0,0,0</SpreadByTier>
+        <SeekMemorySeconds>20</SeekMemorySeconds>
+        <SeekArriveMetres>2</SeekArriveMetres>
+        <SeekSearchSeconds>6</SeekSearchSeconds>
+        <SeekHitSeedSeconds>1.5</SeekHitSeedSeconds>
+        <SeekLookTurnSeconds>1.5</SeekLookTurnSeconds>
+        <SeekLookMetres>5</SeekLookMetres>
     </Bandits>
 
     <!-- [SDCS-REPAIRSKILL] A hired keeper learns to repair by repairing. Every paid

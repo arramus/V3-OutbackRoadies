@@ -1507,6 +1507,21 @@
 				<consideration class="CanSeeTarget, SCore"/>
 			</action>
 
+			<!-- NEVER IDLE MID-FIGHT: the fallback below the
+			     shot and the backups and above every idle and order action. A fight whose shot is
+			     gated off (reload, no sight, the line-of-fire test, out of range, an engage-stance
+			     hold) would otherwise fall through to the 0.5 idle as often as it shoots. The task
+			     keeps the look and rotation on the enemy and never ends by itself: the UAI switches
+			     it away when the shot scores again. Weight 4 is the JOBS band whole number: above
+			     every AMBIENT (0.5-2) and ORDERS (3-3.5) action and below BackupRanged (5). -->
+			<!-- band: JOBS -->
+			<action name="HoldEngaged" weight="4">
+				<task class="HoldEngagedSdcs, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
+				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<consideration class="TargetDistance" flip_x="true" min="0" max="40" curve="threshold"/>
+			</action>
+
 			<!-- MELEE HALF. Modelled on the base game's default melee actions, without the
 				full control mode gates (a buff this mod never applies). Both are gated on class 0
 				so the ranged pair above is silent while a melee weapon or bare hands is held, and
@@ -1637,17 +1652,30 @@
 				<consideration class="CanNotSeeTarget, SCore"/>
 				<consideration class="CanHearTarget, SCore" />
 			</action>
+
+			<!-- NEVER IDLE MID-FIGHT: the survivors' HoldEngaged fallback without the
+			     engage-stance gate (a bandit has none). Weight 3.5, the ORDERS band offset
+			     (the only legal one, the backing-off order's room): below BanditListen (4) so a
+			     bandit's hunting moves still win, above every idle action. -->
+			<!-- band: ORDERS -->
+			<action name="HoldEngaged" weight="3.5">
+				<task class="HoldEngagedSdcs, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
+				<consideration class="TargetDistance" flip_x="true" min="0" max="40" curve="threshold"/>
+			</action>
 			<!-- SEEK. A bandit who lost sight of the enemy she is fighting, or of whoever just hurt
-			     her, within 40 m, goes after it instead of wandering off or standing idle: her other
-			     moves need it in sight (the shot, the approach) or heard (the listen), so a target
-			     behind a wall inside gun range left her with nothing to do. In sight again, her shot
-			     (6) takes over. -->
+			     her, within 40 m, goes where she LAST SAW it instead of wandering off or standing
+			     idle, then searches the spot briefly: her other moves need it in sight (the shot,
+			     the approach) or heard (the listen), so a target behind a wall inside gun range
+			     left her with nothing to do. In sight again, her shot (6) takes over. Once the
+			     record is old she gives up and rests (the SdcsSeekRest flag); a fresh hit from it
+			     starts a new seek. -->
 			<!-- band: ENGAGE -->
 			<action name="BanditSeek" weight="5">
-				<task class="MoveToAttackTargetSDX, SCore" run="true" />
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
+				<task class="SeekLastSeenSdcs, NPCSdcsCharacters" run="true" />
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun,SdcsSeekRest"/>
 				<consideration class="SdcsHuntsTarget, NPCSdcsCharacters" max="40"/>
-				<consideration class="CanNotSeeTarget, SCore"/>
+				<consideration class="SdcsLostSight, NPCSdcsCharacters"/>
 			</action>
 		</ai_package>
 

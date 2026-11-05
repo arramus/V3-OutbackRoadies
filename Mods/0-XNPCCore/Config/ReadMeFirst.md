@@ -459,6 +459,11 @@ Search for `[1-XNPCVoiceControl]` to see mod-specific messages.
 Targets 7 Days to Die **3.4**. **Requires 0-SCore 3.4.3 or newer** - an older SCore will not do: it is what keeps a survivor's
 harvest window right on a dedicated server. Everyone on a server needs the same version, server included.
 
+### Hotfix: high CPU with a voice pack
+- **Fixed:** with the Voice or Complete pack installed and the hands-free wake word on, the game used most of your CPU: the
+  wake word's listener kept a thread on every core busy. It now runs on one thread, a few percent of a core. Replace your
+  **Core** zip; the add-on packs are unchanged. New setting `<WakeWordThreads>` in modconfig.xml (default 1).
+
 ### New: Orders in the hold-E ring
 - Hold **E** on one of your hires: the ring now has **Orders**. Keep holding E and click it (or rest on it) and the order wheel opens
   on her with E as its key: release E over an order to give it to her, click while holding for the squad. Let go of E on Orders and
@@ -554,7 +559,8 @@ harvest window right on a dedicated server. Everyone on a server needs the same 
   tier (0 by default).
 - **One target at a time:** a bandit keeps fighting the target she has until it is dead or out of her sight, instead of
   turning back and forth between you and a zombie.
-- **She hunts:** a bandit who loses sight of the enemy she is fighting, or of whoever just shot her, within 40 m, goes after it.
+- **She hunts:** a bandit who loses sight of the enemy she is fighting, or of whoever just shot her, within 40 m, goes to where she
+  last saw it, searches there for a few seconds, then gives up (`<Bandits><SeekMemorySeconds>`, `<SeekSearchSeconds>`).
   Before, an enemy behind a wall but inside her gun's range left her nothing to do: she wandered off (and could get stuck on a
   wrecked car) or stood still.
 - Spawn lines come after they have been tried in the field.
@@ -614,6 +620,26 @@ harvest window right on a dedicated server. Everyone on a server needs the same 
 - The base check that finds destroyed blocks now runs only while a keeper is on duty for that base.
 
 ### Fixes
+- **A survivor you pick up comes back exactly as she was.** Placing a picked-up survivor again could change her armor (about
+  four armor sets in ten came back as another one), and on a dedicated server she stood without her armor for a few seconds
+  before it appeared. She now keeps her own look and armor, and everyone sees it at once. A survivor picked up before this
+  update almost always gets her own armor back when you place her.
+- **A survivor you pick up and place again keeps her name, her hire and her weapon.** She could come back named and dressed as
+  one of your custom characters, or with her weapon put away for good when you had picked her up from her dialog; on a
+  dedicated server she could also come back under another name (over her head, in her dialog or in chat) and ask to be hired
+  again although you were still her leader. A survivor already affected keeps that name and look.
+- **A survivor with anything in her pack can no longer be picked up**, the way a vehicle with items in its storage cannot: you
+  are told to empty her pack first. On a dedicated server a pickup used to lose everything in her pack and she came back with
+  a fresh set of her starting items; in single player her pack travelled along as extra storage. Every survivor starts with two jars of water in her pack for putting out fires;
+  take those out too and give them back once you have placed her. To free a stuck hire, order her to follow you.
+- **The health bar shows a survivor's name.** With health bars on, looking at a survivor or a bandit showed her class name
+  (such as `npcSdcsPickpocket`); it now shows her name.
+- **Your hires no longer stand idle mid-fight.** When their shot was off for a moment (a bow reloading after every arrow, no
+  clear line of fire, the enemy out of sight), nothing else told them what to do past 10 m, so they dropped to their idle. They
+  now keep facing the enemy, ready, until they can shoot again. Bandits do the same.
+- **A follower no longer freezes behind a gap or a step while you walk on.** Near awkward ground a route search can take longer
+  than the half second after which she asked for a new one as you walked, which threw the unfinished search away, so she could
+  stand for seconds with no route. She now lets a search finish (up to 2 s, `<PathPendingMaxSeconds>` in modconfig.xml).
 - **A new voice setting takes effect even when only the core package is updated.** With the voice package installed, a
   setting it did not have yet used to run on a built-in default until the voice package was updated too; it now uses
   the core package's value. The boot log still names such settings.
