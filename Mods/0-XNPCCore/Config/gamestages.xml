@@ -19,6 +19,10 @@
 		<group name="S_-Group_NPC_Bandits_Melee" spawner="NPCBanditsMeleeHorde"/>
 		<group name="S_-Group_NPC_Bandits_Ranged" spawner="NPCBanditsRangedHorde"/>
 		<group name="S_-Group_NPC_Bandits_Boss" spawner="NPCBanditsBossHorde"/>
+		<!-- Bandit sentry gamestage groups: every bandit from these wakes on her sleeper spot
+		     and holds it (the sentry classes, entityclasses.xml). SentryRanged: guns only. -->
+		<group name="S_-Group_NPC_Bandits_Sentry" spawner="NPCBanditsSentryHorde"/>
+		<group name="S_-Group_NPC_Bandits_SentryRanged" spawner="NPCBanditsSentryRangedHorde"/>
 		<!-- Duke gamestage groups -->
 		<group name="S_-Group_NPC_Duke_All" spawner="NPCDukeAllHorde"/>
 		<group name="S_-Group_NPC_Duke_Melee" spawner="NPCDukeMeleeHorde"/>
@@ -181,6 +185,47 @@
 			</gamestage>
 			<gamestage stage="800">
 				<spawn group="npcBanditsBossGroupGS800" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+		</spawner>
+		<!-- Bandit sentry spawners -->
+		<spawner name="NPCBanditsSentryHorde">
+			<gamestage stage="1">
+				<spawn group="npcBanditsSentryGroupGS01" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="50">
+				<spawn group="npcBanditsSentryGroupGS50" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="100">
+				<spawn group="npcBanditsSentryGroupGS100" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="200">
+				<spawn group="npcBanditsSentryGroupGS200" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="400">
+				<spawn group="npcBanditsSentryGroupGS400" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="800">
+				<spawn group="npcBanditsSentryGroupGS800" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+		</spawner>
+		<spawner name="NPCBanditsSentryRangedHorde">
+			<gamestage stage="1">
+				<spawn group="npcBanditsSentryRangedGroupGS01" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="50">
+				<spawn group="npcBanditsSentryRangedGroupGS50" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="100">
+				<spawn group="npcBanditsSentryRangedGroupGS100" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="200">
+				<spawn group="npcBanditsSentryRangedGroupGS200" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="400">
+				<spawn group="npcBanditsSentryRangedGroupGS400" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="800">
+				<spawn group="npcBanditsSentryRangedGroupGS800" num="1" maxAlive="1" duration="1" />
 			</gamestage>
 		</spawner>
 		<!-- Duke spawners -->

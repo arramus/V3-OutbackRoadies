@@ -124,25 +124,21 @@ By following the above recommendations and guidelines, your Add On Pack will rem
 Refer to the default spawning.xml and entitygroups.xml for further explanations and examples since the game devs add explanatory comments in the code.
 ================================================================= -->
 
-	<append xpath="/spawning/biome[@name='pine_forest']">
-	<!-- <spawn maxcount="1" respawndelay="3" time="Day" entitygroup="npcHarleyGroupGS01" notags="commercial,industrial,downtown" /> Not noob friendly -->
-		<spawn id="nnHarley01" maxcount="1" respawndelay="2" time="Night" entitygroup="npcHarleyGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnHarley02" maxcount="1" respawndelay="2" time="Day" entitygroup="npcHarleyGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnHarley02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
-		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
-		
-		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
+	<!-- WARNING: the game tracks at most 32 spawn lines per biome, the game's own lines
+	     and every mod's together. A biome area keeps one enable bit per line in a 32 bit
+	     mask, so a 33rd line shares the first line's bit and its POI tags gate. Count the
+	     whole biome before adding a line here (BanditSpawnTests pins our share). -->
 
+	<append xpath="/spawning/biome[@name='pine_forest']">
 		<!-- SDCS survivor tier spawns in this biome: T1 (day and night) -->
 
 		<spawn id="dnSdcs01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
 		<spawn id="nnSdcs01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
+
+		<!-- SDCS bandit tier spawns in this biome, the survivors' tiers: T1 (day and night) -->
+
+		<spawn id="dnSdcsBandit01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsBanditGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcsBandit01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsBanditGroupT1" notags="commercial,industrial,downtown" />
 
 		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
 
@@ -154,26 +150,19 @@ Refer to the default spawning.xml and entitygroups.xml for further explanations 
 	</append>
 	
 	<append xpath="/spawning/biome[@name='burnt_forest']">
-		<spawn id="dnHarley01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnHarley01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnHarley02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnHarley02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
-		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
-		
-		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
-
 		<!-- SDCS survivor tier spawns in this biome: T1 and T2 (day and night) -->
 
 		<spawn id="dnSdcs01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
 		<spawn id="nnSdcs01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
 		<spawn id="dnSdcs02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
 		<spawn id="nnSdcs02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+
+		<!-- SDCS bandit tier spawns in this biome, the survivors' tiers: T1 and T2 (day and night) -->
+
+		<spawn id="dnSdcsBandit01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsBanditGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcsBandit01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsBanditGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="dnSdcsBandit02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsBanditGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcsBandit02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsBanditGroupT2" notags="commercial,industrial,downtown" />
 
 		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
 
@@ -184,26 +173,19 @@ Refer to the default spawning.xml and entitygroups.xml for further explanations 
 	</append>
 	
 	<append xpath="/spawning/biome[@name='desert']">
-		<spawn id="dnHarley01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnHarley01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnHarley02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnHarley02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
-		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
-		
-		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
-
 		<!-- SDCS survivor tier spawns in this biome: T1 and T2 (day and night) -->
 
 		<spawn id="dnSdcs01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
 		<spawn id="nnSdcs01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT1" notags="commercial,industrial,downtown" />
 		<spawn id="dnSdcs02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
 		<spawn id="nnSdcs02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
+
+		<!-- SDCS bandit tier spawns in this biome, the survivors' tiers: T1 and T2 (day and night) -->
+
+		<spawn id="dnSdcsBandit01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsBanditGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcsBandit01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsBanditGroupT1" notags="commercial,industrial,downtown" />
+		<spawn id="dnSdcsBandit02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsBanditGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcsBandit02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsBanditGroupT2" notags="commercial,industrial,downtown" />
 
 		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
 
@@ -214,26 +196,19 @@ Refer to the default spawning.xml and entitygroups.xml for further explanations 
 	</append>	
 	
 	<append xpath="/spawning/biome[@name='snow']">
-		<spawn id="dnHarley01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnHarley01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnHarley02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnHarley02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
-		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
-		
-		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
-
 		<!-- SDCS survivor tier spawns in this biome: T2 and T3 (day and night) -->
 
 		<spawn id="dnSdcs02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
 		<spawn id="nnSdcs02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
 		<spawn id="dnSdcs03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT3" notags="commercial,industrial,downtown" />
 		<spawn id="nnSdcs03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT3" notags="commercial,industrial,downtown" />
+
+		<!-- SDCS bandit tier spawns in this biome, the survivors' tiers: T2 and T3 (day and night) -->
+
+		<spawn id="dnSdcsBandit02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsBanditGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcsBandit02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsBanditGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="dnSdcsBandit03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsBanditGroupT3" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcsBandit03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsBanditGroupT3" notags="commercial,industrial,downtown" />
 
 		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
 
@@ -244,26 +219,19 @@ Refer to the default spawning.xml and entitygroups.xml for further explanations 
 	</append>	
 	
 	<append xpath="/spawning/biome[@name='wasteland']">
-		<spawn id="dnHarley01" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnHarley01" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnHarley02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnHarley02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnHarley03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcHarleyGroupGS50" tags="downtown" />
-		<spawn id="nnHarley03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcHarleyGroupGS100" tags="downtown" />
-		
-		<spawn id="dnFriendlyCore01" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" notags="commercial,industrial,downtown" />
-		<spawn id="nnFriendlyCore01" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS50" notags="commercial,industrial,downtown" />
-		<spawn id="dnFriendlyCore02" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS01" tags="commercial,industrial" notags="downtown" />
-		<spawn id="nnFriendlyCore02" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="commercial,industrial" notags="downtown" />
-		<spawn id="dnFriendlyCore03" maxcount="0" respawndelay="1" time="Day" entitygroup="npcFriendlyCoreGroupGS50" tags="downtown" />
-		<spawn id="nnFriendlyCore03" maxcount="0" respawndelay="1" time="Night" entitygroup="npcFriendlyCoreGroupGS100" tags="downtown" />
-
 		<!-- SDCS survivor tier spawns in this biome: T2 and T3 (day and night) -->
 
 		<spawn id="dnSdcs02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
 		<spawn id="nnSdcs02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT2" notags="commercial,industrial,downtown" />
 		<spawn id="dnSdcs03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsSurvivorGroupT3" notags="commercial,industrial,downtown" />
 		<spawn id="nnSdcs03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsSurvivorGroupT3" notags="commercial,industrial,downtown" />
+
+		<!-- SDCS bandit tier spawns in this biome, the survivors' tiers: T2 and T3 (day and night) -->
+
+		<spawn id="dnSdcsBandit02" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsBanditGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcsBandit02" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsBanditGroupT2" notags="commercial,industrial,downtown" />
+		<spawn id="dnSdcsBandit03" maxcount="1" respawndelay="1" time="Day" entitygroup="npcSdcsBanditGroupT3" notags="commercial,industrial,downtown" />
+		<spawn id="nnSdcsBandit03" maxcount="1" respawndelay="1" time="Night" entitygroup="npcSdcsBanditGroupT3" notags="commercial,industrial,downtown" />
 
 		<!-- P3a: merged from option pack 1-XNPCCore-NoCoreHumanNPCs -->
 

@@ -1,16 +1,138 @@
 # NPCCore - Changelog
 
-Release notes, newest first. The current release's notes are also in `ReadMeFirst.md` (What's New), next to this file.
+Release notes, newest first. How to install and use the mod is in `ReadMeFirst.md`, next to this file.
+
+## What's New in 3.4.03
+
+Targets 7 Days to Die **3.4**. **Requires 0-SCore 3.4.14 or newer** (built and tested on 3.4.14.1542). Everyone on a server needs the
+same version, server included.
+
+### Start here: three ways to command your hires
+The menus were reorganised this release. How you reach a hire depends on how far away they are:
+
+| | Reach | Use it for |
+|---|---|---|
+| **Press E** on them | Up close: the game's own "Press E" reach, 3.5 m in a survival game (a game value, not a mod setting) | Talking, **Craft...**, **Read...**, **Your progress**, their inventory and trade, hiring and dismissing |
+| **Hold E** on them | The same reach | Their ring: Talk, **Orders**, **Jobs**, **Roles**, **Weapons**, **Inventory**, **Craft**. One hire's jobs, roles and crafting live here (Jobs, Roles and Craft only on a survivor who can do that work) |
+| **Order wheel**: the **;** key | Any distance | Orders at range; **positioning** (follow distance, formation bearing, take point, go there, jump down, get in / out of your vehicle); and calling a hire back. Press **;** and it stays open: it addresses the hire you look at, else the last one you ordered, else the nearest (their name is in the middle; the mouse wheel cycles your hires). **Click** an order for them, **Shift+click** for the whole squad; click the middle to go back a page; **;** again, right-click or Esc closes it. First page: Follow, Stay, Guard, **Come here** (calls them back from any job), then Orders, Stance, Position, Formation |
+| **Voice** (Voice / Complete packs) | A hire within 40 m, a stranger within 15 m (sliders in the settings menu) | Everything by speech |
+
+The wheel's key is `<FormationRadial><Key>` in modconfig.xml (free keys: Semicolon, Quote, Comma, Period, Slash, RightBracket,
+Backslash; `None` turns the wheel off). Full details: `MANUAL.md`, Order Wheel.
+
+### Includes the 3.4.02 hotfix: high CPU with a voice pack
+- **Fixed:** with the Voice or Complete pack installed and the hands-free wake word on, the game used most of your CPU: the
+  wake word's listener kept a thread on every core busy. It now runs on one thread, a few percent of a core. New setting
+  `<WakeWordThreads>` in modconfig.xml (default 1). The Voice and Complete packs now ship with the wake word OFF; turn it on in
+  the settings menu.
+
+### New: a crafting window for your hires
+- **E > Craft...** now opens a crafting window in the game's own look instead of dialog pages: their stations as tabs first, then the
+  categories. Every recipe they have unlocked is listed; the ones they are short for are greyed, and the panel shows what they have and
+  needs for each ingredient. Pick a count (minus, plus, max) and **Craft**. A row at the bottom shows what they are making and how many
+  are left, with **Cancel**. The hold-E ring's **Craft** opens the same window. It works on a dedicated server.
+
+### New: hires read books
+- Give a hire a **schematic** they have not learned or a **crafting skill magazine**, then **E > Read...** (right after Craft...), or
+  say "read your books". They read it and say what they learned; a schematic's recipe shows in their craft window at once, a magazine
+  raises their crafting skill the way it raises yours. A book that would teach them nothing is not used up. Perk books (the series
+  books) are not read yet. They will not read in a fight.
+- **Their progress page shows their real crafting skill**, so a magazine shows there too.
+- **The Read list offers only books that help them**; their skills have their own page in **Your progress**, grouped (Weapons,
+  Tools and gear, Survival, Building, Other).
+
+### New: emotes
+- **Order wheel > Orders > Emotes:** wave, salute, fist bump, stretch, warm up, whatever, ten dances, and a More page. Shift+click
+  for the whole squad (each picks their own dance). By voice: "wave at me", "salute me", "do a dance", "dance for me", "do a
+  stretch", "bump fists" and the rest (whole phrases: a sentence that only mentions dancing does not start one).
+- **Reactions:** a hire salutes when you hire them, sometimes fist-bumps you after a fight once it is quiet, and survivors sometimes
+  wave with their greeting. Each can be switched off or tuned in Settings.xml (`<Emotes><Reactions>`).
+- **Idle moments:** a hire standing idle (on Stay, Guard, at their post or beside you) now and then stretches, warms up or shrugs,
+  minutes apart (`<Emotes><Idle>` in Settings.xml: how long still first, the wait between, which clips, or off).
+- Their weapon is put away for the emote and comes back after. Any order, any threat or their starting to walk ends an emote at once,
+  and they never start one in a fight. Other players on a server see it.
+- Emote, dance and pose animations by Mumpfy and LittleRedSonja, used with their permission.
+
+### New: hires look like they are working
+- **Animated work:** at a campfire they kneel, strike a match, toss on a log and stand back up; at a workbench or forge they
+  hammer (with a claw hammer in hand) and chisel; at other stations they work with their hands; a backpack craft is done kneeling.
+  They read a book holding it in their hand. They loot low containers and bags kneeling and reach into taller ones standing, and pick
+  plants with their hands. They talk with their hands, and nod or shake their head at orders. Each clip eases in from their pose and back.
+  Humanoid survivors play their own versions of all of these. The work animations come from licensed packs, credited in the mod's README.
+- **At a workstation:** the station waits for them: they walk to a spot in front of it (the side it faced you as you placed it) that
+  can see it, face it, and light a forge or campfire themselves; the forge shows its fire. They walk round workstations, never over
+  them, also on the way there. Their weapon stays put away at the station unless an enemy is near. When their order ends they put out a
+  station they lit, unless something else needs it. Modders: a workstation block can name the side they work from with
+  `<property name="NPCWorkSide" value="Back" />` (`Front`, `Back`, `Left`, `Right`, `Any`).
+
+### Looting
+- **Loot around here** also butchers fresh kills, corpses first, and keeps their post for it. A **full pack pauses** a loot, harvest,
+  mine, clay, pick or butcher job: they come back to you, and go back to the job once you empty their pack to 5 free slots.
+- **Steadier looting:** bags are looted kneeling, a bag or low container within 1 m keeps them kneeling for the next, they face what
+  they loot, a bag stays until they are done with it, a partly taken bag stays a target, bags in a dip are seen, and their weapon no
+  longer flashes out between containers (also right after a fight). Looted weapons are not equipped on their own.
+- **Dead NPCs' bags** can be looted. **Come here** calls a survivor back from any job (order wheel, first page, or voice).
+
+### Bandits
+- **They spawn by biome tier:** tier 1 alone, tiers 2 and 3 with one or two mates; tier 1 at a quarter of the rate, tier 2 at half.
+  The old fixed bandit is replaced by the tiers in every entity group. `sdcsbandit group` spawns a group for testing.
+- **Loadouts by class**, molotovs by tier (none, one, three) thrown only at groups, ranged bandits advance cover to cover and melee
+  bandits bound between covers. A death bag may hold the bandit's weapon or its parts.
+- **Sleeping bandits hear and see you like zombies** in every room; no sleeper or bandit triggers a room's wake on its own.
+- They close in, track you, and do not bandage under fire. They path around walls, fences and thin barriers and open doors on the
+  way. Sentry groups hold their posts; six guard spawn blocks for POI builders (see `POI-BUILDERS.md`, new).
+
+### Hires and survivors
+- **Combat:** an enemy hitting them within reach beats the target they were keeping; a target they cannot reach is given up after 3 s;
+  melee reach is the weapon's own range; swing weapons trace their arc and thrust weapons (spear, knife, knuckles) stab through bars
+  and openings. Survivors' stealth sight scales with distance again, so bandits in the open are engaged. Cover: peeks and a
+  step-out, a defensive hire takes cover only where you can see, and a cover search that found nothing is not repeated until
+  something moves (less CPU in big fights). The dodge never glides, and there is no pause after a fight.
+- **Following hires guard your backpack** when you die, until you come back for it.
+- **"Put your weapon away" lasts** through a save and reload; dismissing them ends it.
+- **Base keepers in an attack:** on **Base** repair they stop repairing while the base is under attack (no repair tool out): they
+  fight what they can reach or shoot, and go back to repairs 10 s after it goes quiet. On **Combat** repair they keep repairing
+  the wall and only fight what hits them. With nothing they can repair (skill or materials) they do not take the tool out at all.
+  The under-attack window is one setting, `<BaseKeeper><UnderAttackSeconds>` (now 10, was 5).
+- **Vehicles:** hires on Follow get in your vehicle on their own when you drive (a melee hire takes the front passenger seat);
+  one in the middle of an emote stops it first. A seated hire now gets out before you log off or the world saves, so they are
+  never lost from the save or left inside the vehicle.
+- Follow-and-loot picks up loot bags; hires head-shot zombies again; a path speed cap (`NpcPathMaxSpeed`).
+
+### Voice and chat
+- **"Hey Nathan, stay"** now goes to Nathan (a greeting before the name used to send it to the nearest hire).
+- **The order wheel** opens with a press: click orders them, Shift+click the squad; Back goes one level up.
+- **One switch for NPC text:** `<Subtitles><NPCText>` in modconfig.xml caps every NPC's on-screen text (`all`, `clip` or `none`);
+  their voice still plays. Vanilla traders are no longer part of the chat (no greeting, banter or speech from them).
+- "Back off", "stand down" and "at ease" each mean one thing now (they belonged to two commands and the second never fired).
+- The settings window's Volume, Speech Rate, Chat Timeout and Max Tokens are kept between launches.
+- With the AI chat off, your saved pending memories are left as they are at boot (they were rewritten every launch).
+- Fixes from a full code review: crashes, a memory-file loss, the voice cache's size cap, the memory pipeline, and multiplayer
+  authority (on a dedicated server a client's dismiss, give item, jump and billing answer now run on the server).
+
+### New: voice effects and the Voice Builder
+- **Pitch and grit per voice:** a voice's line in `SupertonicConfig.xml` can carry `pitch` (semitones, -12 to 12; lower is deeper
+  and slower, like tape) and `grit` (0 to 1, a rough edge that keeps the voice's loudness). Every line that voice speaks gets them,
+  and other players on a server hear the same. Voices without them sound exactly as before. See `MANUAL.md`, Custom voices.
+- **Voice Builder, a separate download for modders:** make a new NPC voice from a recording. Pick the recording, trim it, set pitch
+  and grit, preview a few lines and install it into the game, all in one window; silence in the recording is cut out for you.
+  Needs the Complete add-on, Windows, an NVIDIA GPU and Python 3.10 or newer. `NPCCore-VoiceBuilder-v3.4.03.zip` on the mod's page; its README has the
+  details. Only clone a voice you have the right to use.
+
+### Content and settings
+- Eleven NPC guns show their own colours (a second white tint was overriding them); the wild fox uses its own bite; names instead of
+  raw ids in the creative menu; localization rows that showed English in every language.
+- New settings: the `<Crafting>` station and clip keys (`StationStowMetres`, `StationClearanceMetres`, `StationArriveMetres`,
+  `StationStandInMetres`, `StationWanderPathMetres`, `AnimSets` and the rest), the `<Loot>` kneel and pause keys (`ChainMetres`,
+  `ResumeFreeSlots`, `ResumeMinutes` and the rest; all in MANUAL.md), modconfig.xml `<Subtitles><NPCText>`. Also: `<Emotes>` (reactions and idle moments), `<Cover><FruitlessRescanMoveMetres>` / `<FruitlessRescanSeconds>`, the base keeper's
+  `<BaseKeepRecheckSeconds>` / `<JobFightDwellSeconds>` under `<BaseKeeper>`. Removed: the `sdcsperf scorefix` test switch (SCore 3.4.11 does
+  this itself).
+- Console: `vc anim play <clip id> [seconds]` plays an emote on the survivor in front of you; `vc anim off` stops it.
 
 ## What's New in 3.4.02
 
 Targets 7 Days to Die **3.4**. **Requires 0-SCore 3.4.3 or newer** - an older SCore will not do: it is what keeps a survivor's
 harvest window right on a dedicated server. Everyone on a server needs the same version, server included.
-
-### Hotfix: high CPU with a voice pack
-- **Fixed:** with the Voice or Complete pack installed and the hands-free wake word on, the game used most of your CPU: the
-  wake word's listener kept a thread on every core busy. It now runs on one thread, a few percent of a core. Replace your
-  **Core** zip; the add-on packs are unchanged. New setting `<WakeWordThreads>` in modconfig.xml (default 1).
 
 ### New: Orders in the hold-E ring
 - Hold **E** on one of your hires: the ring now has **Orders**. Keep holding E and click it (or rest on it) and the order wheel opens

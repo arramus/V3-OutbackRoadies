@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!--
+  The clips a survivor can play by id (vc anim play <id> [seconds]).
+  id: the name to ask for (lower case, no spaces). An id that starts with
+  dance_ is a dance: an order to dance picks one of them at random, and the
+  order wheel lists them on its Dances page.
+  bundle: the asset bundle file in this mod's Resources folder.
+  name: the clip's name inside that bundle.
+  femaleName: optional. The clip's name inside the same bundle on a female
+  survivor (her entity class tags her female, the tag her speaking voice is
+  picked by); a male survivor, or a row without it, plays name.
+  profile: emote (her held item is hidden for the clip and put back after) or
+  work (the hand is left to the job). Both play in place, never lock her AI
+  (unless busy, below), and end at once on an attack, a fight, any order to her or when she starts
+  to walk.
+  loop: true plays the clip over and over until maxSeconds; false plays it once
+  unless more seconds are asked for.
+  maxSeconds: the longest the clip may play (default 15, at most 60).
+  holds: optional. The display item (Config/items.xml) her hand shows for the
+  clip's span: the prop goes in at the clip's start and her own item comes
+  back at its end, on the authority and on the clients. Set on the hammer
+  craft rows (the claw hammer prop) and the read rows (the book prop).
+  holdsHand: optional. left or right (default right): which hand the holds
+  item is parented to. left = the rig's LeftWeapon mount under the biped;
+  right = the game's own right hand (its RightWeapon mount, the one
+  emodel's GetRightHandTransform returns).
+  holdsOffset: optional. px,py,pz,rx,ry,rz (metres, degrees, local to the
+  hand mount): overrides the hand's default placement for the holds item.
+  Six numbers only; anything else warns once and the default is used.
+  hand: optional. empty puts her own held item away for the clip's span the
+  way a holds row does (no prop shows) and gives it back at its end; a chained
+  clip that also stows keeps it put away between the two. Set on the bare
+  hand craft rows (the campfire set, the use, the kneel in, idle and out).
+  Any other value warns once and her item is left to the profile.
+  busy: optional, true or false (default false). True holds her still for
+  the clip's length: her AI does not move her until it ends, even for a work
+  clip (the kneel out of the craft clips, so a step after the order ended
+  does not cut it). The in clips chain into their light or loop without a
+  hold: the craft task runs the whole time and its action outweighs the
+  wander, and an attack or an order must cut them at once.
+  Pick filter: the emote wheel offers only its fixed gesture rows plus the
+  rows whose id starts with dance_ (the idle pick only the ids of Settings
+  Emotes/Idle/Clips, a reaction only the ids of its own Clips in Settings
+  Emotes/Reactions). A row with any other id is playable by
+  'vc anim play' only, never offered and never picked: the read_,
+  craft_, loot_ and gather rows sit on this rule.
+-->
+<SdcsAnimClips>
+  <!-- Gestures -->
+  <clip id="wave" bundle="SdcsEmoteGestures.unity3d" name="Wave ok" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="salute" bundle="SdcsEmoteGestures.unity3d" name="Salute" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="fistbump" bundle="SdcsEmoteGestures.unity3d" name="Fist Bump" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="stretch" bundle="SdcsEmoteGestures.unity3d" name="Stretch" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="warmup" bundle="SdcsEmoteGestures.unity3d" name="Warm Up" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="whatever" bundle="SdcsEmoteGestures.unity3d" name="Whatever" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="flipoff" bundle="SdcsEmoteGestures.unity3d" name="Flip Off" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="insult" bundle="SdcsEmoteGestures.unity3d" name="Insult" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="loser" bundle="SdcsEmoteGestures.unity3d" name="Loser" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="threaten" bundle="SdcsEmoteGestures.unity3d" name="Threatening" profile="emote" loop="false" maxSeconds="15"/>
+  <!-- Chat and order gestures (the reactions' Clips in Settings Emotes
+       Reactions): a male and a female variant of each. -->
+  <clip id="talk1" bundle="SdcsGestureClips.unity3d" name="HumanM_Talk01" femaleName="HumanF_Talk01" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="talk2" bundle="SdcsGestureClips.unity3d" name="HumanM_Talk02" femaleName="HumanF_Talk02" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="talk3" bundle="SdcsGestureClips.unity3d" name="HumanM_Talk03" femaleName="HumanF_Talk03" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="nod1" bundle="SdcsGestureClips.unity3d" name="HumanM_HeadNod01" femaleName="HumanF_HeadNod01" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="shake1" bundle="SdcsGestureClips.unity3d" name="HumanM_HeadShake01" femaleName="HumanF_HeadShake01" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="shake2" bundle="SdcsGestureClips.unity3d" name="HumanM_HeadShake02" femaleName="HumanF_HeadShake02" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="handwave1" bundle="SdcsGestureClips.unity3d" name="HumanM_HandWave01" femaleName="HumanF_HandWave01" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="handwave2" bundle="SdcsGestureClips.unity3d" name="HumanM_HandWave02" femaleName="HumanF_HandWave02" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="cheer1" bundle="SdcsGestureClips.unity3d" name="HumanM_Cheer01" femaleName="HumanF_Cheer01" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="cheer2" bundle="SdcsGestureClips.unity3d" name="HumanM_Cheer02" femaleName="HumanF_Cheer02" profile="emote" loop="false" maxSeconds="15"/>
+  <!-- Dances -->
+  <clip id="dance_breakdance" bundle="SdcsEmoteDances.unity3d" name="Breakdance Footwork" profile="emote" loop="true" maxSeconds="15"/>
+  <clip id="dance_brookling" bundle="SdcsEmoteDances.unity3d" name="Brookling" profile="emote" loop="true" maxSeconds="15"/>
+  <clip id="dance_chicken" bundle="SdcsEmoteDances.unity3d" name="Chicken" profile="emote" loop="true" maxSeconds="15"/>
+  <clip id="dance_hiphop" bundle="SdcsEmoteDances.unity3d" name="Hip Hop" profile="emote" loop="true" maxSeconds="15"/>
+  <clip id="dance_hokeypokey" bundle="SdcsEmoteDances.unity3d" name="Hokey Pokey" profile="emote" loop="true" maxSeconds="15"/>
+  <clip id="dance_maraschino" bundle="SdcsEmoteDances.unity3d" name="Maraschino" profile="emote" loop="true" maxSeconds="15"/>
+  <clip id="dance_rumba" bundle="SdcsEmoteDances.unity3d" name="Rumba" profile="emote" loop="true" maxSeconds="15"/>
+  <clip id="dance_salsa" bundle="SdcsEmoteDances.unity3d" name="Salsa" profile="emote" loop="true" maxSeconds="15"/>
+  <clip id="dance_samba" bundle="SdcsEmoteDances.unity3d" name="Samba" profile="emote" loop="true" maxSeconds="15"/>
+  <clip id="dance_snake" bundle="SdcsEmoteDances.unity3d" name="Snake" profile="emote" loop="true" maxSeconds="15"/>
+  <!-- Reading (the read show of the read order): one show per
+       order, emote profile, the book prop held in her LEFT hand. The show's
+       clips come from Settings Emotes/ReadSet; the pick never offers them. -->
+  <clip id="read_in"    bundle="SdcsReadClips.unity3d" name="SpellBook_02_Read_Start" profile="emote" holds="sdcsDisplayBook" holdsHand="left" holdsOffset="0,0,0,0,0,90"/>
+  <clip id="read_loop"  bundle="SdcsReadClips.unity3d" name="SpellBook_02_Read_Loop_01" profile="emote" loop="true" maxSeconds="60" holds="sdcsDisplayBook" holdsHand="left" holdsOffset="0,0,0,0,0,90"/>
+  <clip id="read_loop2" bundle="SdcsReadClips.unity3d" name="SpellBook_02_Read_Loop_02" profile="emote" loop="true" holds="sdcsDisplayBook" holdsHand="left" holdsOffset="0,0,0,0,0,90"/>
+  <clip id="read_out"   bundle="SdcsReadClips.unity3d" name="SpellBook_02_Read_Stop" profile="emote" holds="sdcsDisplayBook" holdsHand="left" holdsOffset="0,0,0,0,0,90"/>
+
+  <!-- Looting (the rummage of the loot job): the low set kneels at a low
+       container or a loot bag (a step in and a reach), the open set leans
+       in at a waist high or taller one with her feet kept. Each plays in,
+       then the loop until the rummage ends, then out; the out holds her
+       still for its length (busy), as the craft outs do. -->
+  <clip id="loot_low_in"    bundle="SdcsGestureClips.unity3d" name="HumanM_Loot01_Begin" femaleName="HumanF_Loot01_Begin" profile="work" loop="false"/>
+  <clip id="loot_low_loop"  bundle="SdcsGestureClips.unity3d" name="HumanM_Loot01_Loop" femaleName="HumanF_Loot01_Loop" profile="work" loop="true" maxSeconds="60"/>
+  <clip id="loot_low_out"   bundle="SdcsGestureClips.unity3d" name="HumanM_Loot01_Stop" femaleName="HumanF_Loot01_Stop" profile="work" loop="false" busy="true"/>
+  <clip id="loot_open_in"   bundle="SdcsGestureClips.unity3d" name="HumanM_Opening01_Begin" femaleName="HumanF_Opening01_Begin" profile="work" loop="false"/>
+  <clip id="loot_open_loop" bundle="SdcsGestureClips.unity3d" name="HumanM_Opening01_Loop" femaleName="HumanF_Opening01_Loop" profile="work" loop="true" maxSeconds="60"/>
+  <clip id="loot_open_out"  bundle="SdcsGestureClips.unity3d" name="HumanM_Opening01_Stop" femaleName="HumanF_Opening01_Stop" profile="work" loop="false" busy="true"/>
+
+  <!-- Gathering (picking plants and crops by hand): three looping picks. -->
+  <clip id="gather1" bundle="SdcsGestureClips.unity3d" name="HumanM_Gathering01" femaleName="HumanF_Gathering01" profile="work" loop="true"/>
+  <clip id="gather2" bundle="SdcsGestureClips.unity3d" name="HumanM_Gathering02" femaleName="HumanF_Gathering02" profile="work" loop="true"/>
+  <clip id="gather3" bundle="SdcsGestureClips.unity3d" name="HumanM_Gathering03" femaleName="HumanF_Gathering03" profile="work" loop="true"/>
+
+  <!-- Crafting -->
+  <clip id="craft_fire_in" bundle="SdcsCraftClips.unity3d" name="StandToKneelCampfire" profile="work" loop="false" hand="empty"/>
+  <clip id="craft_fire_kneel" bundle="SdcsCraftClips.unity3d" name="IdleKneelCampfire" profile="work" loop="true" maxSeconds="60" hand="empty"/>
+  <clip id="craft_fire_light" bundle="SdcsCraftClips.unity3d" name="MatchesLightCampfire" profile="work" loop="false" hand="empty"/>
+  <clip id="craft_fire_toss" bundle="SdcsCraftClips.unity3d" name="KneelTossLogCampfire" profile="work" loop="false" hand="empty"/>
+  <clip id="craft_fire_out" bundle="SdcsCraftClips.unity3d" name="IdleKneelToStandCampfire" profile="work" loop="false" busy="true" hand="empty"/>
+  <clip id="craft_bench_hammer" bundle="SdcsCraftClips.unity3d" name="Item-Hammer-Table" profile="work" loop="true" maxSeconds="60" holds="sdcsDisplayClawHammer"/>
+  <clip id="craft_bench_chisel" bundle="SdcsCraftClips.unity3d" name="Item-Chisel" profile="work" loop="false" holds="sdcsDisplayClawHammer"/>
+  <clip id="craft_use" bundle="SdcsCraftClips.unity3d" name="Item-Use" profile="work" loop="true" maxSeconds="60" hand="empty"/>
+  <clip id="craft_kneel_in" bundle="SdcsCraftClips.unity3d" name="Item-Kneel-Down" profile="work" loop="false" hand="empty"/>
+  <clip id="craft_kneel_hammer" bundle="SdcsCraftClips.unity3d" name="Item-Kneel-Hammer" profile="work" loop="false" holds="sdcsDisplayClawHammer"/>
+  <clip id="craft_kneel_idle" bundle="SdcsCraftClips.unity3d" name="Item-Kneel-Idle" profile="work" loop="true" maxSeconds="60" hand="empty"/>
+  <clip id="craft_kneel_out" bundle="SdcsCraftClips.unity3d" name="Item-Kneel-Stand" profile="work" loop="false" busy="true" hand="empty"/>
+</SdcsAnimClips>

@@ -60,7 +60,8 @@
       Key: key that opens the radial (a Unity KeyCode name, default Semicolon).
            Every letter A-Z has a vanilla default binding, so a letter key collides;
            Semicolon does not. Free keys: Semicolon, Quote, Comma, Period, Slash,
-           RightBracket, Backslash. An empty value disables the radial.
+           RightBracket, Backslash. Set the key to None to disable the radial
+           (an empty value does not disable it: it falls back to the default, Semicolon).
            Legacy: an old <STT><FormationRadialKey> is still read as a fallback, so a
            key set under <STT> is not lost.
       Dwell: seconds the cursor must stay on a navigation socket (or the wheel's
@@ -90,12 +91,6 @@
       MaxResponseLength: hard cap on response characters (prevents very long speeches).
       WildCombatChatCooldownSeconds: seconds a wild NPC stays uninterruptible after its last combat target dies (default 5).
       ContextSize: llama-server KV cache window in tokens. 8192 = default (8 GB+ VRAM). 4096 = low-VRAM (6 GB cards, use with IQ4_NL model). See inline comment for full range.
-
-    === Prompt Section ===
-      BasePrompt: fallback system prompt if SystemPrompt above is empty.
-      TtsRule: injected into the prompt when TTSLanguage is Japanese (j).
-               Forces the LLM to output Kanji/Hiragana/Katakana for proper TTS.
-      ChineseTtsRule: same as TtsRule but for Simplified Chinese (z).
 
     === RAG Section ===
       Enabled: turn memory (embed server + fact extraction) on/off globally.
@@ -174,8 +169,8 @@
              This axis and angle affect bone mode ONLY: procedural lip sync on legacy NPCs is
              untouched, so tuning a SDCS jaw can never move every other NPC's mouth. -->
         <FaceLipSyncBoneJawAxis>x</FaceLipSyncBoneJawAxis>
-        <!-- Bone open angle in degrees (bone mode only). The shipped 10 is a GUESS: the procedural
-             default of 6 was never validated on this rig family, so expect to tune it. A negative
+        <!-- Bone open angle in degrees (bone mode only). Ships at 6, matching the code default
+             (LipSyncBoneRules.DefaultBoneOpenAngle = 6f); expect to tune it per rig. A negative
              value flips the opening direction. Does NOT affect FaceLipSyncProcOpenAngle below. -->
         <FaceLipSyncBoneOpenAngle>6</FaceLipSyncBoneOpenAngle>
 
@@ -283,14 +278,17 @@
     <!-- set under <STT> is not lost.                                      -->
     <!-- ================================================================ -->
     <FormationRadial>
-        <!-- Key that opens the radial (a Unity KeyCode name). Every letter A-Z has a
-             vanilla default binding, so a letter key collides; Semicolon does not.
+        <!-- Key that opens the radial (a Unity KeyCode name): press it once and the
+             wheel stays open. Click an order for the survivor you address, Shift+click
+             for the whole squad; click a page entry to open it, the centre to go back.
+             The same key again, a right click or Esc closes it. Every letter A-Z has
+             a vanilla default binding, so a letter key collides; Semicolon does not.
              Free keys: Semicolon, Quote, Comma, Period, Slash, RightBracket, Backslash.
-             Empty value disables the radial. -->
+             Set to None to disable the radial (empty falls back to Semicolon). -->
         <Key>Semicolon</Key>
-        <!-- Dwell in seconds: hover on a navigation socket (or the centre) this
-             long and it navigates (to that page / back to page 0). A faster transit
-             over a socket never flips the page. -->
+        <!-- Dwell in seconds: rest the cursor this long on the Orders entry (or a
+             page entry) of a survivor's hold-E ring and it opens the wheel. The
+             wheel itself does not use it: its pages open by click. -->
         <Dwell>0.4</Dwell>
         <!-- Border tints (r,g,b,a). NavBorderColor rings the navigation sockets
              (the ones carrying the chevron); CommandBorderColor rings the rest.
@@ -342,6 +340,29 @@
              Values above 32768 waste VRAM with no gameplay benefit for NPC dialog. -->
         <ContextSize>8192</ContextSize>
     </LLM>
+
+    <!-- ================================================================ -->
+    <!-- DeathGuard: when the leader dies, his hires on the Follow order  -->
+    <!-- guard his death spot (the dropped backpack) until he returns or  -->
+    <!-- gives them another order. There is no timeout: the state survives -->
+    <!-- a save and a reload.                                            -->
+    <!-- ResumeMetres: flat distance (clamped 2 to 100) at which a live   -->
+    <!-- leader within range of her post wins her back to Follow.        -->
+    <!-- ================================================================ -->
+    <DeathGuard>
+        <Enabled>true</Enabled>
+        <ResumeMetres>10</ResumeMetres>
+    </DeathGuard>
+
+    <!-- ================================================================ -->
+    <!-- Subtitles: a cap on the on-screen text of every NPC at once.     -->
+    <!-- NPCText: all / clip / none. The stricter of this and each        -->
+    <!-- character's own <Subtitles> wins. none hides all NPC text        -->
+    <!-- (her voice still plays); all is today's behaviour exactly.       -->
+    <!-- ================================================================ -->
+    <Subtitles>
+        <NPCText>all</NPCText>
+    </Subtitles>
 
     <!-- ================================================================ -->
     <!-- RAG: Memory extraction from conversations                        -->
@@ -610,6 +631,10 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <!-- change. A shipping diagnostic: default false; enable it for a patrol-routing field   -->
     <!-- run.                                                                                  -->
     <PatrolDiagLogging>false</PatrolDiagLogging>
+    <!-- Run patrol is refused, out loud, when the nearest point of her recorded route is      -->
+    <!-- farther than this from her (flat metres, default 40, clamped 10 to 500): she says    -->
+    <!-- her route is far and keeps her current order. Record a new route where she is.     -->
+    <PatrolStartMaxMetres>40</PatrolStartMaxMetres>
     <!-- Master switch for stair mode. Kept for an A/B; A* first owns stairs, so it ships OFF. -->
     <!-- When false, stair mode never enters.                                                  -->
     <StairModeEnabled>false</StairModeEnabled>
@@ -714,6 +739,21 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <!-- load and runs at EngageNearRadius + 2. No rebuild needed to change it.        -->
     <EngageReleaseRadius>7</EngageReleaseRadius>
 
+    <!-- Ranged near gate: metres around the NPC itself, GUN-armed Defensive        -->
+    <!-- (stance 0) hires only. Such a hire fights a SEEN hostile enemy within this -->
+    <!-- distance of HERSELF, whatever it targets, instead of waiting for it to    -->
+    <!-- close to EngageNearRadius. The sight test is SCore CanSee. A MELEE-armed   -->
+    <!-- hire keeps EngageNearRadius; hold fire (2) and aggressive never use this;  -->
+    <!-- the disengage window still wins. Clamped 5 to 60 at load. No rebuild       -->
+    <!-- needed to change it.                                                       -->
+    <EngageNearRangedRadius>20</EngageNearRangedRadius>
+
+    <!-- Release line of the ranged near gate: a fight the hire is ALREADY engaging -->
+    <!-- is kept out to this distance without a fresh sight cast. Must be >=        -->
+    <!-- EngageNearRangedRadius: a smaller value warns once at load and runs at     -->
+    <!-- EngageNearRangedRadius + 2. No rebuild needed to change it.                -->
+    <EngageNearRangedReleaseRadius>22</EngageNearRangedReleaseRadius>
+
     <!-- Target stickiness: a hire keeps the enemy she is fighting instead of turning   -->
     <!-- to whichever is nearest each time she moves between closing in and swinging. -->
     <!-- Another enemy takes over only when it is this many metres closer to her than -->
@@ -728,9 +768,10 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <!-- Combat linger, seconds. After the last engaged enemy dies or leaves, the hire -->
     <!-- holds its ground this long before returning to follow (it stands in its idle  -->
     <!-- action; a live enemy still gets fought, a new engage re-stamps it). An        -->
-    <!-- explicit player order releases it early. Clamped 0 to 30; 0 turns it off.     -->
+    <!-- explicit player order releases it early. Clamped 0 to 30; 0 (the shipped      -->
+    <!-- value) turns it off: she follows the moment the fight ends.                   -->
     <!-- No rebuild needed to change it.                                               -->
-    <CombatLingerSeconds>3</CombatLingerSeconds>
+    <CombatLingerSeconds>0</CombatLingerSeconds>
 
     <!-- Disengage break-off window, seconds. The "disengage" order keeps             -->
     <!-- the NPC defending against a LIVE enemy, but the moment the enemy is stunned,  -->
@@ -758,8 +799,10 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <!-- again). 1 up to 20. Default 10.                                                       -->
     <ProactiveGreetRange>10</ProactiveGreetRange>
 
-    <!-- Tactical mode default: if true, new hires start in tactical (command-only) mode. -->
-    <!-- The player can toggle with "go tactical" / "at ease" voice commands. -->
+    <!-- Tactical mode default: if true, every existing hire is put into tactical
+         (command-only) mode once at the start of each session (it is re-applied at boot,
+         not just to brand-new hires). -->
+    <!-- After that the player can toggle freely with "go tactical" / "at ease" voice commands. -->
     <DefaultTacticalMode>false</DefaultTacticalMode>
 
     <FormationDistances>

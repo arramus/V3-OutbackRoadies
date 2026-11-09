@@ -13,10 +13,6 @@
       <window name="windowJoinInformationPopup" anchor="CenterTop"/>
     </window_group>
 
-    <window_group name="EntityInformation">
-      <window name="windowEntityInformationPanel" anchor="CenterTop"/>
-    </window_group>
-
     <window_group name="SetCode">
       <window name="windowPathFindingKeypad"/>
     </window_group>
@@ -42,6 +38,16 @@
         <window_group name="VCFormationRadialGroup" actionset="keyboard" always_update="true"
                       controller="XUiC_VCFormationRadial, 1-XNPCVoiceControl">
             <window name="windowVCFormationRadial"/>
+        </window_group>
+    </append>
+
+    <!-- Her craft window: the game's crafting list and info panel look, her listing
+         and her order (XUiC_NpcCraftWindow). Opened modal, so Escape closes it. -->
+    <append xpath="/xui">
+        <window_group name="NpcCraftGroup" controller="XUiC_NpcCraftWindow, 1-XNPCVoiceControl" always_update="true" close_compass_on_open="true">
+            <window name="windowNpcCraftList"/>
+            <window name="windowNpcCraftInfo"/>
+            <window name="windowNpcCraftJob"/>
         </window_group>
     </append>
 

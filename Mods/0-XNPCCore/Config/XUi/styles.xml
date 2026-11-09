@@ -1,12 +1,5 @@
 ﻿<configs>
   <append xpath="/styles">
-  <style name="SMX.conversation.player.background" type="texture">
-    <style_entry name="depth" value="2" />
-    <style_entry name="pos" value="0,0" />
-    <style_entry name="size" value="856,200" />
-    <style_entry name="texture" value="@modfolder:Textures/trader/smx_player_bg.png" />
-  </style>
-
   <style name="SMX.conversation.trader.background" type="texture">
     <style_entry name="depth" value="2" />
     <style_entry name="pos" value="0,0" />

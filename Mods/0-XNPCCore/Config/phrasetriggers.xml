@@ -8,10 +8,10 @@
 
     === Leader Requirements ===
       Some actions require the player to be the NPC's leader (hired first):
-        FollowPlayer, StopFollow, GuardHere, GuardReturn, Wander, Loot, LootHere, HarvestHere, MineHere, DigClayHere, PickHere, ButcherHere,
+        FollowPlayer, ComeHere, StopFollow, GuardHere, GuardReturn, Wander, Loot, LootHere, HarvestHere, MineHere, DigClayHere, PickHere, ButcherHere,
         BaseRepairHere, CombatRepairHere, RepairHere, RememberBase, MedicOn, MedicOff, RoleOn, RoleOff,
         Dismiss, Pickup, OpenInventory, SwapWeapon, SetCombatMode, SetEngage,
-        SetCrouch, SetFollowDistance, SetFormation, MoveToPosition, Vehicle
+        SetCrouch, SetFollowDistance, SetFormation, MoveToPosition, Vehicle, Emote
 
       Actions that work on ANY NPC (no leader needed):
         Hire, OpenTraderInventory, GiveItem, GiveBuff, CustomDialog
@@ -40,7 +40,9 @@
       OpenInventory      - Open NPC's trade/inventory window (SCore ExecuteCMD)
       OpenTraderInventory  - Open trader's trade dialog (simulates pressing E, no leader required)
       FollowPlayer       - NPC follows the player (buffOrderFollow)
-      StopFollow         - NPC stays where they are (buffOrderStay)
+      ComeHere           - "Come here" recall: the NPC ends her current job and comes back to the player
+                           (she walks when he is near, is teleported beyond the base's return distance; the base's
+                           recall handler runs it through the loot-here done policy)
       GuardHere          - NPC guards where the player is standing (buffOrderGuardHere)
       GuardReturn        - NPC guards and returns to player's position (buffOrderGuard)
       Wander             - NPC patrols around the area (buffOrderWander)
@@ -71,6 +73,10 @@
       SetEngage          - Engagement (ActionParam 0=defensive, 1=aggressive, 2=hold fire, 3=disengage action)
       SetAmmo            - The ammo for the gun in her hand (ActionParam kind:standard, ap, hp, slug, breaching,
                            flaming or exploding: her gun's own type of that kind; leader-only, individual)
+      ReadBooks          - "read your books": she reads every schematic and crafting magazine she carries that
+                           teaches her something, then says one line (leader-only, individual)
+      Emote              - "wave", "salute", "dance": she plays a clip of the base's clip list in place
+                           (ActionParam = the clip id, dance = a random dance; leader-only, the squad too)
       SetTacticalMode    - Player-wide tactical mode toggle (ActionParam 0=off, 1=command-only)
       SetCrouch          - CrouchOverride cvar (ActionParam 0=mirror leader, 1=crouch, 2=stand;
                            the order wheel shows only the 0/1 toggle, no stand socket)
@@ -132,6 +138,23 @@
                         <Response lang="es">Voy. Me quedo cerca.;Vale, vamos juntos.;Justo detrás de ti.</Response>
                         <Response lang="de">Mach ich. Ich bleib dicht bei dir.;Alles klar, gehen wir zusammen.;Direkt hinter dir.</Response>
             <ActionType>FollowPlayer</ActionType>
+        </Trigger>
+
+        <Trigger enabled="true">
+            <Phrase>come here;get back here;return to me;</Phrase>
+                        <Response lang="en">On my way.;Coming right back.;I'll be right there.</Response>
+                        <Response lang="zh">我这就来。;马上回来。;我马上到。</Response>
+                        <Response lang="tr">Az geliyorum.;Hemen geri dönüyorum.;Hemen orada olacağım.</Response>
+                        <Response lang="ru">Я уже иду.;Возвращаюсь.;Буду у тебя.</Response>
+                        <Response lang="pt">Já estou indo.;Voltando já.;Estou chegando.</Response>
+                        <Response lang="pl">Już idę.;Zaraz wracam.;Zaraz tam będę.</Response>
+                        <Response lang="ko"> 가서 올게.;지금 돌아갈게.;금방 갈게.</Response>
+                        <Response lang="ja">行くよ。;すぐ戻る。;すぐそこに行く。</Response>
+                        <Response lang="it">Ci sto arrivando.;Ritorno subito.;Arrivo subito lì.</Response>
+                        <Response lang="fr">J'y vais.;Je reviens tout de suite.;J'arrive.</Response>
+                        <Response lang="es">Ya voy.;Vuelvo enseguida.;Llego ya.</Response>
+                        <Response lang="de">Schon unterwegs.;Ich komme sofort zurück.;Ich bin gleich da.</Response>
+            <ActionType>ComeHere</ActionType>
         </Trigger>
 
         <Trigger enabled="true">
@@ -2639,6 +2662,206 @@
             <ActionParam>kind:exploding</ActionParam>
         </Trigger>
 
+        <!-- === BOOKS (read your books) === -->
+        <!-- She reads every schematic and crafting magazine she carries that teaches her
+             something, then says one line (leader-only, individual, her class runs jobs). -->
+        <Trigger enabled="true">
+            <Phrase>read your books;read the book;read your book;read the books;read those books;</Phrase>
+            <Response lang="en">Let me have a look.;I'll read them.</Response>
+            <Response lang="zh">我看看。;我来读。</Response>
+            <Response lang="tr">Bir bakayım.;Okurum.</Response>
+            <Response lang="ru">Сейчас посмотрю.;Прочитаю.</Response>
+            <Response lang="pt">Deixa eu ver.;Vou ler.</Response>
+            <Response lang="pl">Zaraz zobaczę.;Przeczytam.</Response>
+            <Response lang="ko">한번 볼게.;읽어볼게.</Response>
+            <Response lang="ja">見てみるよ。;読んでみる。</Response>
+            <Response lang="it">Fammi dare un'occhiata.;Li leggo.</Response>
+            <Response lang="fr">Je regarde ça.;Je vais les lire.</Response>
+            <Response lang="es">Déjame ver.;Los leeré.</Response>
+            <Response lang="de">Ich schau mal.;Ich lese sie.</Response>
+            <ActionType>ReadBooks</ActionType>
+        </Trigger>
+
+        <!-- === EMOTES (wave, salute, dance ...) ===
+             A clip from the base's clip list (Config/SdcsAnimClips.xml in the base mod), played in
+             place: her weapon is put away for it and drawn after. ActionParam = the clip id;
+             dance = a random dance. Leader-only; a squad order makes each member play it. Any
+             other order or a threat ends it; refused in a fight.
+             Every phrase is an imperative of two words or more whose only content word is the
+             emote (the rest are the matcher's stop words: do, a, your, me, us, for ...), so the
+             token stages never consider it and it fires only when the whole phrase is said; bump
+             fists is the one two-word pair (both words must be said). -->
+        <Trigger enabled="true">
+            <Phrase>wave at me;wave to me;wave at us;wave for me;</Phrase>
+            <Response lang="en">Hey there!;Hi!</Response>
+            <Response lang="zh">嘿！;你好！</Response>
+            <Response lang="tr">Selam!;Merhaba!</Response>
+            <Response lang="ru">Привет!;Эй, привет!</Response>
+            <Response lang="pt">Oi!;Olá!</Response>
+            <Response lang="pl">Cześć!;Hej!</Response>
+            <Response lang="ko">안녕!;여기야!</Response>
+            <Response lang="ja">やあ！;こんにちは！</Response>
+            <Response lang="it">Ciao!;Ehilà!</Response>
+            <Response lang="fr">Salut !;Coucou !</Response>
+            <Response lang="es">¡Hola!;¡Eh, hola!</Response>
+            <Response lang="de">Hallo!;Hey!</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>wave</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>salute me;salute us;do a salute;</Phrase>
+            <Response lang="en">Yes, sir!;Reporting for duty.</Response>
+            <Response lang="zh">是，长官！;报到！</Response>
+            <Response lang="tr">Emredersiniz!;Göreve hazırım.</Response>
+            <Response lang="ru">Есть!;Прибыла в ваше распоряжение.</Response>
+            <Response lang="pt">Sim, senhor!;Às suas ordens.</Response>
+            <Response lang="pl">Tak jest!;Melduję się.</Response>
+            <Response lang="ko">네, 알겠습니다!;임무 준비 완료.</Response>
+            <Response lang="ja">了解！;任務に就きます。</Response>
+            <Response lang="it">Signorsì!;Ai suoi ordini.</Response>
+            <Response lang="fr">À vos ordres !;Présente.</Response>
+            <Response lang="es">¡Sí, señor!;A sus órdenes.</Response>
+            <Response lang="de">Jawohl!;Melde mich zum Dienst.</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>salute</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>bump fists;bump fists with me;</Phrase>
+            <Response lang="en">Respect.;Nice one.</Response>
+            <Response lang="zh">敬你。;干得好。</Response>
+            <Response lang="tr">Saygılar.;Güzeldi.</Response>
+            <Response lang="ru">Уважаю.;Красавчик.</Response>
+            <Response lang="pt">Respeito.;Mandou bem.</Response>
+            <Response lang="pl">Szacun.;Nieźle.</Response>
+            <Response lang="ko">리스펙트.;잘했어.</Response>
+            <Response lang="ja">リスペクト。;いいね。</Response>
+            <Response lang="it">Rispetto.;Bella lì.</Response>
+            <Response lang="fr">Respect.;Bien joué.</Response>
+            <Response lang="es">Respeto.;Bien hecho.</Response>
+            <Response lang="de">Respekt.;Gut gemacht.</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>fistbump</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>do a stretch;have a stretch;do your stretches;</Phrase>
+            <Response lang="en">Good idea, I'm stiff.;Ahh, that's better.</Response>
+            <Response lang="zh">好主意，我都僵了。;啊，舒服多了。</Response>
+            <Response lang="tr">İyi fikir, tutulmuşum.;Ah, şimdi daha iyi.</Response>
+            <Response lang="ru">Хорошая мысль, я вся затекла.;Ах, так-то лучше.</Response>
+            <Response lang="pt">Boa ideia, estou dura.;Ah, assim é melhor.</Response>
+            <Response lang="pl">Dobry pomysł, zesztywniałam.;Ach, od razu lepiej.</Response>
+            <Response lang="ko">좋아, 몸이 굳었어.;아, 이제 좀 낫다.</Response>
+            <Response lang="ja">いいね、体が固まってた。;ああ、楽になった。</Response>
+            <Response lang="it">Buona idea, sono rigida.;Ah, così va meglio.</Response>
+            <Response lang="fr">Bonne idée, je suis raide.;Ah, ça va mieux.</Response>
+            <Response lang="es">Buena idea, estoy entumecida.;Ah, mucho mejor.</Response>
+            <Response lang="de">Gute Idee, ich bin ganz steif.;Ah, schon besser.</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>stretch</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>do a warm up;do your warm up;do a warmup;do your warmup;</Phrase>
+            <Response lang="en">Limbering up.;Getting the blood moving.</Response>
+            <Response lang="zh">活动一下。;让血液流动起来。</Response>
+            <Response lang="tr">Isınıyorum.;Kanımı dolaştırayım.</Response>
+            <Response lang="ru">Разминаюсь.;Разгоняю кровь.</Response>
+            <Response lang="pt">Me aquecendo.;Fazendo o sangue circular.</Response>
+            <Response lang="pl">Rozgrzewam się.;Krew musi krążyć.</Response>
+            <Response lang="ko">몸 좀 풀게.;피가 돌게 해야지.</Response>
+            <Response lang="ja">ウォームアップ中。;血の巡りを良くしないと。</Response>
+            <Response lang="it">Mi riscaldo.;Faccio girare il sangue.</Response>
+            <Response lang="fr">Je m'échauffe.;Ça fait circuler le sang.</Response>
+            <Response lang="es">Calentando.;Que circule la sangre.</Response>
+            <Response lang="de">Ich wärme mich auf.;Den Kreislauf in Schwung bringen.</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>warmup</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>dance for me;dance for us;do a dance;do your dance;</Phrase>
+            <Response lang="en">Watch this!;Okay, just one dance.</Response>
+            <Response lang="zh">看好了！;好吧，就跳一支。</Response>
+            <Response lang="tr">İzle bakalım!;Peki, bir dans.</Response>
+            <Response lang="ru">Смотри!;Ладно, один танец.</Response>
+            <Response lang="pt">Olha só!;Tá bom, só uma dança.</Response>
+            <Response lang="pl">Patrz!;Dobra, jeden taniec.</Response>
+            <Response lang="ko">잘 봐!;좋아, 한 곡만.</Response>
+            <Response lang="ja">見てて！;いいよ、一曲だけね。</Response>
+            <Response lang="it">Guarda qua!;Va bene, solo un ballo.</Response>
+            <Response lang="fr">Regarde ça !;D'accord, une seule danse.</Response>
+            <Response lang="es">¡Mira esto!;Vale, solo un baile.</Response>
+            <Response lang="de">Schau her!;Na gut, ein Tanz.</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>dance</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>flip me off;flip us off;</Phrase>
+            <Response lang="en">Gladly.;Here's what I think.</Response>
+            <Response lang="zh">乐意之至。;这就是我的想法。</Response>
+            <Response lang="tr">Memnuniyetle.;Düşündüğüm bu.</Response>
+            <Response lang="ru">С удовольствием.;Вот что я думаю.</Response>
+            <Response lang="pt">Com prazer.;É isso que eu acho.</Response>
+            <Response lang="pl">Z przyjemnością.;Oto co myślę.</Response>
+            <Response lang="ko">기꺼이.;내 생각은 이래.</Response>
+            <Response lang="ja">喜んで。;これが私の答え。</Response>
+            <Response lang="it">Volentieri.;Ecco cosa ne penso.</Response>
+            <Response lang="fr">Avec plaisir.;Voilà ce que j'en pense.</Response>
+            <Response lang="es">Con gusto.;Esto es lo que pienso.</Response>
+            <Response lang="de">Mit Vergnügen.;Das halte ich davon.</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>flipoff</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>do an insult;do your insult;</Phrase>
+            <Response lang="en">Hey, ugly!;Is that all you've got?</Response>
+            <Response lang="zh">嘿，丑八怪！;就这点本事？</Response>
+            <Response lang="tr">Hey, çirkin!;Bütün yapabildiğin bu mu?</Response>
+            <Response lang="ru">Эй, урод!;И это всё?</Response>
+            <Response lang="pt">Ei, feioso!;Só isso?</Response>
+            <Response lang="pl">Hej, brzydalu!;To wszystko, co masz?</Response>
+            <Response lang="ko">야, 못난이!;그게 다야?</Response>
+            <Response lang="ja">おい、ブサイク！;それで全部？</Response>
+            <Response lang="it">Ehi, bruttone!;Tutto qui?</Response>
+            <Response lang="fr">Hé, le moche !;C'est tout ce que tu as ?</Response>
+            <Response lang="es">¡Eh, feo!;¿Eso es todo?</Response>
+            <Response lang="de">Hey, du Hässlicher!;Ist das alles?</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>insult</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>do the loser;do a loser;</Phrase>
+            <Response lang="en">Loser!;Total loser.</Response>
+            <Response lang="zh">失败者！;彻头彻尾的失败者。</Response>
+            <Response lang="tr">Ezik!;Tam bir ezik.</Response>
+            <Response lang="ru">Неудачник!;Полный лузер.</Response>
+            <Response lang="pt">Perdedor!;Um perdedor total.</Response>
+            <Response lang="pl">Frajer!;Totalny frajer.</Response>
+            <Response lang="ko">루저!;완전 루저.</Response>
+            <Response lang="ja">負け犬！;完全な負け犬ね。</Response>
+            <Response lang="it">Perdente!;Un perdente totale.</Response>
+            <Response lang="fr">Loser !;Un vrai loser.</Response>
+            <Response lang="es">¡Perdedor!;Un perdedor total.</Response>
+            <Response lang="de">Verlierer!;Totaler Verlierer.</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>loser</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>do a threat;do your threat;</Phrase>
+            <Response lang="en">Come and try it.;You don't want this.</Response>
+            <Response lang="zh">有种就来。;你不会想惹我的。</Response>
+            <Response lang="tr">Gel de dene.;Bunu istemezsin.</Response>
+            <Response lang="ru">Попробуй только.;Тебе это не нужно.</Response>
+            <Response lang="pt">Vem tentar.;Você não quer isso.</Response>
+            <Response lang="pl">Spróbuj tylko.;Nie chcesz tego.</Response>
+            <Response lang="ko">덤벼 봐.;후회할 거야.</Response>
+            <Response lang="ja">かかってきな。;やめといたほうがいいよ。</Response>
+            <Response lang="it">Provaci.;Non ti conviene.</Response>
+            <Response lang="fr">Viens essayer.;Tu ne veux pas ça.</Response>
+            <Response lang="es">Ven a intentarlo.;No te conviene.</Response>
+            <Response lang="de">Versuch's doch.;Das willst du nicht.</Response>
+            <ActionType>Emote</ActionType>
+            <ActionParam>threaten</ActionParam>
+        </Trigger>
+
         <!-- === SIMPLE ENGAGEMENT MODEL === -->
         <!-- vcEngage gates hired combat via MayEngage. Stances: 1=aggressive, 0=defensive, 2=hold fire
              (self-defence only, no leader-assist). This trigger is deliberately NOT named "full
@@ -2664,7 +2887,7 @@
             <ActionParam>1</ActionParam>
         </Trigger>
         <Trigger enabled="true">
-            <Phrase>cover me;defend only;at ease;normal engagement;</Phrase>
+            <Phrase>cover me;defend only;normal engagement;</Phrase>
             <Response lang="en">Covering you.;Defensive only.;Understood.</Response>
             <Response lang="zh">我掩护你。;只守不攻。;明白。</Response>
             <Response lang="tr">Seni örtüyorum.;Sadece savunma.;Anlaşıldı.</Response>
@@ -2686,7 +2909,7 @@
              WARNING: if the SetCombatMode mode-2 trigger is ever enabled, this phrase becomes
              genuinely ambiguous and should be dropped from THIS list again. -->
         <Trigger enabled="true">
-            <Phrase>hold fire;stand down;weapons tight;ignore them;leave it;leave them;full control;</Phrase>
+            <Phrase>hold fire;weapons tight;ignore them;leave it;leave them;full control;</Phrase>
             <Response lang="en">Holding fire.;Your call.;Standing down.</Response>
             <Response lang="zh">不开火。;听你的。;停手。</Response>
             <Response lang="tr">Ateş tuttum.;Karar sende.;Duruyorum.</Response>
@@ -2703,7 +2926,7 @@
             <ActionParam>2</ActionParam>
         </Trigger>
         <Trigger enabled="true">
-            <Phrase>disengage;break off;fall back;retreat;back off;</Phrase>
+            <Phrase>disengage;break off;fall back;retreat;</Phrase>
             <Response lang="en">Breaking off.;Falling back.;Coming back.</Response>
             <Response lang="zh">脱离接敌。;撤回去。;马上回来。</Response>
             <Response lang="tr">Çekiliyorum.;Geriye çekiliyorum.;Dönüyorum.</Response>

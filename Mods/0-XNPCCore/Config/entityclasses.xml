@@ -434,7 +434,6 @@
 			<property name="SoundPlayerLandThump" value="PlayerLandThump"/>			
 			<property name="SoundSleeperSense" value="sleepersense"/>
 			<property name="SoundSleeperBackToSleep" value="sleeperbacktosleep"/>
-			<property name="SoundAlertTime" value="25"/>
 			<property name="SoundRandomTime" value="200"/>
 			<property name="SoundRandom" value="player1stamina"/>
 			<property name="SoundAlertTime" value="200"/> 
@@ -2265,7 +2264,6 @@
 			<property name="Class" value="EntityZombieCop"/>
 			<property name="WalkType" value="1"/>
 			<property name="RightHandJointName" value="Jaw"/>
-			<property name="HandItem" value="meleeHandZombieCop2"/>
 			<property name="AvatarController" value="AvatarZombieController"/>
 			<property name="ModelType" value="Standard"/>
 			<property name="Mass" value="320"/>
@@ -2425,7 +2423,6 @@
 			<property name="UserSpawnType" value="None"/>
 			<property name="EntityType" value="Player"/>
 			<property name="ModelType" value="Standard"/>
-			<property name="Mass" value="150"/>
 			<property name="Weight" value="70"/>
 			<property name="PushFactor" value="30"/>				
 			<property name="Tags" value="entity,npc,mech"/>			
@@ -4218,7 +4215,6 @@
 			<property name="AIPackages" value="NPCModCore, NPCModAnimalMeleeAdvanced, NPCModAnimalHired, NPCModNPCLoot "/>
 			<property name="UserSpawnType" value="Menu"/> 
  			<property name="Tags" value="entity,animal,npc,npcAnimalFox,perkAT03,DRMid"/>
-			<property name="Faction" value="whiteriver"/>
 			<property name="MapIcon" value="ui_game_symbol_tracking_wolf"/>
 			<property name="TrackerIcon" value="ui_game_symbol_tracking_wolf"/>
 			<property name="LookAtAngle" value="0"/> 
@@ -4304,7 +4300,6 @@
 			<property name="SoundAttack" value="wolfattack"/>
 			<property name="SoundSense" value="wolfsense"/>
 			<property name="SoundGiveUp" value="wolfgiveup"/>
-			<property name="HandItem" value="meleeHandAnimalCoyote"/>
 			<property name="ExperienceGain" value="200"/>
 			<property name="DeadBodyHitPoints" value="200"/>
 			<drop event="Harvest" name="foodRawMeat" count="0" tool_category="Butcher"/>
@@ -4681,12 +4676,14 @@
 			<!-- SdcsNpcMedic: the heal-other package (walk to a patient, run the first-aid
 			     sequence). AID band weight 7, below the combat packages: the backup
 			     action in SdcsNpcRangedAdvanced sits in the defence band (8), so a
-			     target in her face keeps winning over a patient. It only scores through
-			     the shared SdcsPatientNeedsAid gate (a patient who needs aid, no
+			     target in her face keeps winning over a patient at or above the dire
+			     line; below it the back-up's SdcsDireWalk term scores the back-up 0
+			     and the walk wins. It only scores through the shared
+			     SdcsPatientNeedsAid gate (a patient who needs aid, no
 			     defend-first block, a held item), so nothing changes until that gate
 			     passes. Placed after SdcsNpcRangedAdvanced in the list. -->
 			<!-- The first and third entries are the SDCS forks (SdcsNpcCore, SdcsNpcHired): copies of the shared NPCModCore / NPCModNPCHired packages banded for our characters, so the legacy templates keep the originals untouched. -->
-			<property name="AIPackages" value="SdcsNpcCore, SdcsNpcRangedAdvanced, SdcsNpcHired, SdcsNpcMedic, SdcsNpcLoot, SdcsNpcLeave"/>
+			<property name="AIPackages" value="SdcsNpcCore, SdcsNpcRangedAdvanced, SdcsNpcHired, SdcsNpcMedic, SdcsNpcLoot, SdcsNpcLeave, SdcsCover"/>
 			<property name="Hirable" value="true"/>
 			<!-- RestoreSpeed and the UAI movement tasks read these.  THESE ARE NOW LITERAL METRES PER SECOND. -->
 			<property name="MoveSpeed" value="1.5"/>
@@ -4695,6 +4692,10 @@
 			<property name="MoveSpeedRand" value="-.2, .2"/>
 			<property name="MaxTurnSpeed" value="300"/>
 			<property name="RootMotion" value="false"/>
+			<!-- The pause, in seconds, before a jump leaves the ground. With RootMotion off the leap
+			     waits out the whole delay, so the game default of 1 s would make her stand a full
+			     second before every jump; 0.1 is the value the game's own animals use. -->
+			<property name="JumpDelay" value="0.1"/>
 			<property name="ModelType" value="SdcsNpc, NPCSdcsCharacters"/>
 			<property name="AvatarController" value="AvatarSdcsNpcController, NPCSdcsCharacters"/>
 			<property name="PhysicsBody" value="PlayerSDCS"/>
@@ -4746,6 +4747,13 @@
 				above (item=count), and the random starting stock is the sdcsSurvivorStock
 				list in loot.xml. -->
 			<property name="SdcsSpawnAmmoCount" value="120"/>
+			<!-- STARTING STOCK and WATER, each once per NPC lifetime. SdcsSpawnStock: the loot
+				container (loot.xml) a wild survivor's rolled starting stock comes from, the
+				goods she sells, food, medical and ammo among them, at most 5 stacks. Blank =
+				no stock. SdcsSpawnWater: drink:count, the water every survivor starts with to
+				put out fire on herself (a drink of the douse list, at most 10). Blank = none. -->
+			<property name="SdcsSpawnStock" value="sdcsSurvivorStock"/>
+			<property name="SdcsSpawnWater" value="drinkJarBoiledWater:2"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,ammo9mmBulletBall,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
@@ -4797,11 +4805,45 @@
 			<property name="SightRange" value="60"/>
 			<property name="MaxViewAngle" value="360"/>
 			<property name="AINoiseSeekDist" value="30"/>
+			<!-- [SDCS-WAKE] A sleeping NPC's senses: the zombie template's seven sleeper
+			     values, so a sleeping bandit hears and sees like a sleeping zombie. The game
+			     reads them only while she sleeps, plus the awake listening of a bandit
+			     (CanHearTarget, her SleeperNoiseToWake), so an awake survivor is unchanged.
+			     Noise: a heard level of SleeperNoiseToSense stirs her, SleeperNoiseToWake wakes
+			     her, each rolled per NPC inside its range. Sight: the light she needs to stir
+			     (ToSense) or wake (ToWake), at point blank (Min) and at the far end of her
+			     light curve (Max). Her sleeping sight range and cone and the curve's length are
+			     Settings.xml Bandits WakeSight*. No AIFeralSense: it would also widen her awake
+			     sight under the feral sense option. -->
+			<property name="SleeperNoiseToSense" value="3,8"/>
+			<property name="SleeperNoiseToSenseSoundChance" value=".5"/>
+			<property name="SleeperNoiseToWake" value="9,12"/>
+			<property name="SleeperSightToSenseMin" value="-10,0"/>
+			<property name="SleeperSightToSenseMax" value="200,300"/>
+			<property name="SleeperSightToWakeMin" value="-40,5"/>
+			<property name="SleeperSightToWakeMax" value="340,480"/>
 			<property name="ExperienceGain" value="500"/>
 			<!-- Entity PROPERTY, not a passive: V4 evaluates the LootDropProb passive on the KILLER
 			     (EntityAliveSDXV4.Lifecycle.cs:187) and uses this property as the base value. A passive
 			     here would do nothing on this NPC's own death and would clobber the killer's loot rate. -->
 			<property name="LootDropProb" value="0.2"/>
+			<!-- WEAPON DROP ([SDCS-LOOTBAG]). When a class drops the game's loot bag
+				(LootDropEntityClass), that bag may also hold her weapon: the one in her hands
+				at death, else her rolled SdcsWeapons weapon (a throwable or bare hands count
+				as none). A weapon the game crafts from parts (the parts ingredient of its own
+				recipe) goes in as those parts, plus a separate chance of the whole weapon; a
+				weapon with no parts goes in whole. A whole weapon is empty and has no mods.
+				Nothing goes in when no bag drops. Her bag's own loot is unchanged.
+				SdcsDropWeaponChance: 0 to 1, the chance the bag holds her weapon. 0 = never.
+				SdcsDropWholeChance: 0 to 1, for a weapon with parts, the separate chance that
+				the whole weapon is in the bag too.
+				SdcsDropQuality: min-max or one number, 1 to 6, a whole weapon's quality.
+				SdcsDropPartsCount: min-max or one number, 1 to 10, how many parts.
+				Off here; the bandit classes turn it on. -->
+			<property name="SdcsDropWeaponChance" value="0"/>
+			<property name="SdcsDropWholeChance" value="0.1"/>
+			<property name="SdcsDropQuality" value="1-2"/>
+			<property name="SdcsDropPartsCount" value="1-2"/>
 			<property name="DismemberMultiplierArms" value="0"/>
 			<property name="DismemberMultiplierLegs" value="0"/>
 			<property name="LegCrippleScale" value="0"/>
@@ -4927,6 +4969,20 @@
 				matches -->
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
+			</effect_group>
+		</entity_class>
+
+		<!-- A TIMID survivor (the $Timid example class): the T1 kit, but she flees an enemy she can
+			see within Settings.xml Combat TimidFleeDistanceMetres instead of fighting (the SdcsNpcCore
+			Flee action). The $Timid cvar is set on the three entry triggers: cvars do not survive a
+			world save, so onSelfEnteredGame is what keeps her timid after a reload, and onSelfRespawn
+			covers a respawn. Hired or not, she flees and then follows again. -->
+		<entity_class name="npcSdcsSurvivorFemaleTimid" extends="npcSdcsSurvivorFemaleT1">
+			<property name="UserSpawnType" value="Menu"/>
+			<effect_group name="Timid">
+				<triggered_effect trigger="onSelfFirstSpawn" action="ModifyCVar" cvar="$Timid" operation="set" value="1" />
+				<triggered_effect trigger="onSelfEnteredGame" action="ModifyCVar" cvar="$Timid" operation="set" value="1" />
+				<triggered_effect trigger="onSelfRespawn" action="ModifyCVar" cvar="$Timid" operation="set" value="1" />
 			</effect_group>
 		</entity_class>
 
@@ -5114,20 +5170,33 @@
 			</property>
 		</entity_class>
 
-		<!-- [SDCS-BANDIT] The bandits: our survivors gone hostile, two test classes spawned
-		     from the menu for now (no spawn lines yet): npcSdcsBanditMelee (a tier 1 male,
-		     melee) and npcSdcsBanditRanged (a tier 1 female with a pipe pistol or a pipe
-		     rifle). They replace the legacy Harley bandits.
+		<!-- [SDCS-BANDIT] The bandits: our survivors gone hostile, by survivor tier. Tier 1:
+		     npcSdcsBanditMelee (a male, melee), which the tier 1 biome lines spawn, and
+		     npcSdcsBanditRanged (a female with a pipe pistol or a pipe rifle), which no
+		     biome line spawns. Tiers 2 and 3 follow below. They replace the legacy
+		     Harley bandits, in the biomes and in the POI sleeper groups (entitygroups.xml,
+		     by gamestage tier), where both tier 1 bandits sleep.
 		     Faction bandits: hates everyone except passive animals, and our survivors
 		     hate it back. Fights with SdcsBanditCombat (our combat actions without the
 		     wild defend only gate, plus an approach to an enemy she sees out of range
 		     and a walk toward a player she hears). Never hired, no dialog or trade
-		     (SCore refuses both to an enemy), silent (no_voice), never a player's own
-		     custom character (SdcsCustomCharacters false), gone with enemies turned
-		     off (IsEnemyEntity).
+		     (SCore refuses both to an enemy), no voice chat or voice orders (no_voice),
+		     never a player's own custom character (SdcsCustomCharacters false), gone
+		     with enemies turned off (IsEnemyEntity).
+		     Her one spoken line: the moment she locks onto a person to fight she says
+		     one cold line from her personality (the personality property, one per sex:
+		     bandit_cold_male, bandit_cold_female in the voice mod's personalities.xml,
+		     which also gives her voice), by text to speech only, at most once per
+		     Settings.xml Bandits LineCooldownSeconds, and only the first of a group
+		     (LineGroupQuietSeconds, LineGroupMetres).
 		     Dead, she always drops the game's zombie loot bag for her tier: plain,
 		     blue (Strong), red (Boss); random ammo plus loot that improves with the
-		     bag. The damage she deals to players follows Settings.xml Bandits
+		     bag. Half the time that bag also holds her weapon (SdcsDropWeaponChance,
+		     the weapon drop on npcSdcsBase): a weapon with parts as 1 or 2 of its parts
+		     (SdcsDropPartsCount), with a 1 in 10 chance of the whole weapon too
+		     (SdcsDropWholeChance); a weapon with no parts whole. A whole weapon's quality
+		     (SdcsDropQuality) is 1 to 2 at tier 1, 2 to 3 at tier 2, 3 to 4 at tier 3.
+		     The damage she deals to players follows Settings.xml Bandits
 		     PlayerDamage, changed live with the sdcsbandit console command. -->
 		<entity_class name="npcSdcsBanditMelee" extends="npcSdcsSurvivorMaleT1">
 			<!-- Melee only: no gun in her kit. The tier 1 kit's pipe pistol would be drawn as soon
@@ -5141,19 +5210,26 @@
 			<property name="Faction" value="bandits"/>
 			<property name="Hirable" value="false"/>
 			<property name="IsEnemyEntity" value="true"/>
-			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat"/>
+			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat, SdcsCover"/>
 			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
 			<property name="Titles" value="Bandit"/>
+			<property name="personality" value="bandit_cold_male"/>
 			<property name="ExperienceGain" value="600"/>
 			<property name="SdcsSpawnAmmo" value="true"/>
 			<property name="SdcsSpawnAmmoCount" value="60"/>
 			<property name="SdcsCustomCharacters" value="false"/>
 			<property name="LootDropProb" value="1"/>
 			<property name="LootDropEntityClass" value="EntityLootContainerRegular"/>
+			<property name="SdcsDropWeaponChance" value="0.5"/>
+			<property name="SdcsDropWholeChance" value="0.1"/>
+			<property name="SdcsDropQuality" value="1-2"/>
+			<property name="SdcsDropPartsCount" value="1-2"/>
 			<!-- [SDCS-BANDIT] She keeps fighting the target she has: any other target
 			     scores this much of hers (1 = no preference), so a player and a
 			     zombie cannot flip her back and forth. Same value on both. -->
 			<property name="SdcsKeepTarget" value="0.7"/>
+			<!-- [SDCS-THROW] No spawn grant of throwables (no SdcsThrowables property): a
+			     tier 1 bandit carries no molotov, and she is melee, so no pipe bombs. -->
 		</entity_class>
 		<entity_class name="npcSdcsBanditRanged" extends="npcSdcsSurvivorFemaleT1">
 			<!-- Ranged: rolls one of these two (tier 1 survivors roll melee only). -->
@@ -5161,16 +5237,202 @@
 			<property name="Faction" value="bandits"/>
 			<property name="Hirable" value="false"/>
 			<property name="IsEnemyEntity" value="true"/>
-			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat"/>
+			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat, SdcsCover"/>
 			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
 			<property name="Titles" value="Bandit"/>
+			<property name="personality" value="bandit_cold_female"/>
 			<property name="ExperienceGain" value="600"/>
 			<property name="SdcsSpawnAmmo" value="true"/>
 			<property name="SdcsSpawnAmmoCount" value="60"/>
 			<property name="SdcsCustomCharacters" value="false"/>
 			<property name="LootDropProb" value="1"/>
 			<property name="LootDropEntityClass" value="EntityLootContainerRegular"/>
+			<property name="SdcsDropWeaponChance" value="0.5"/>
+			<property name="SdcsDropWholeChance" value="0.1"/>
+			<property name="SdcsDropQuality" value="1-2"/>
+			<property name="SdcsDropPartsCount" value="1-2"/>
 			<property name="SdcsKeepTarget" value="0.7"/>
+			<!-- [SDCS-THROW] Her one-shot spawn grant of throwables: two pipe bombs and no
+			     molotov (a tier 1 bandit carries no molotov). -->
+			<property name="SdcsThrowables" value="thrownAmmoPipeBomb:2"/>
+		</entity_class>
+
+		<!-- [SDCS-BANDIT] The tier 2 and tier 3 bandits: that tier's survivor gone hostile. Her
+		     looks, armor tier and weapon pool (melee and guns) come from the survivor class she
+		     extends; the rest is the bandit block of the two bandits above, with her tier's
+		     experience, loot bag (Strong at tier 2, Boss at tier 3) and dropped weapon
+		     quality (SdcsDropQuality 2-3 at tier 2, 3-4 at tier 3). The tier 2 and 3 biome
+		     lines spawn them, and the POI sleeper groups hold them by gamestage tier.
+		     SdcsThrowables: one molotov at tier 2, three at tier 3, no pipe bombs.
+		     SdcsSpawnMates (group:min-max): when a biome line spawns her, min to max mates
+		     (0 to 4) rolled from that entity group spawn beside her (Settings.xml Bandits
+		     Mates keys). A menu, console or POI sleeper spawn comes alone, and so does a
+		     mate. An empty value brings none, for a class that extends one of these. -->
+		<entity_class name="npcSdcsBanditMaleT2" extends="npcSdcsSurvivorMaleT2">
+			<property name="Faction" value="bandits"/>
+			<property name="Hirable" value="false"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat, SdcsCover"/>
+			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="Titles" value="Bandit"/>
+			<property name="personality" value="bandit_cold_male"/>
+			<property name="ExperienceGain" value="1000"/>
+			<property name="SdcsSpawnAmmo" value="true"/>
+			<property name="SdcsSpawnAmmoCount" value="60"/>
+			<property name="SdcsCustomCharacters" value="false"/>
+			<property name="LootDropProb" value="1"/>
+			<property name="LootDropEntityClass" value="EntityLootContainerStrong"/>
+			<property name="SdcsDropWeaponChance" value="0.5"/>
+			<property name="SdcsDropWholeChance" value="0.1"/>
+			<property name="SdcsDropQuality" value="2-3"/>
+			<property name="SdcsDropPartsCount" value="1-2"/>
+			<property name="SdcsKeepTarget" value="0.7"/>
+			<property name="SdcsThrowables" value="thrownAmmoMolotovCocktail:1"/>
+			<property name="SdcsSpawnMates" value="npcSdcsBanditMatesT2:1-2"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditFemaleT2" extends="npcSdcsSurvivorFemaleT2">
+			<property name="Faction" value="bandits"/>
+			<property name="Hirable" value="false"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat, SdcsCover"/>
+			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="Titles" value="Bandit"/>
+			<property name="personality" value="bandit_cold_female"/>
+			<property name="ExperienceGain" value="1000"/>
+			<property name="SdcsSpawnAmmo" value="true"/>
+			<property name="SdcsSpawnAmmoCount" value="60"/>
+			<property name="SdcsCustomCharacters" value="false"/>
+			<property name="LootDropProb" value="1"/>
+			<property name="LootDropEntityClass" value="EntityLootContainerStrong"/>
+			<property name="SdcsDropWeaponChance" value="0.5"/>
+			<property name="SdcsDropWholeChance" value="0.1"/>
+			<property name="SdcsDropQuality" value="2-3"/>
+			<property name="SdcsDropPartsCount" value="1-2"/>
+			<property name="SdcsKeepTarget" value="0.7"/>
+			<property name="SdcsThrowables" value="thrownAmmoMolotovCocktail:1"/>
+			<property name="SdcsSpawnMates" value="npcSdcsBanditMatesT2:1-2"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditMaleT3" extends="npcSdcsSurvivorMaleT3">
+			<property name="Faction" value="bandits"/>
+			<property name="Hirable" value="false"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat, SdcsCover"/>
+			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="Titles" value="Bandit"/>
+			<property name="personality" value="bandit_cold_male"/>
+			<property name="ExperienceGain" value="1400"/>
+			<property name="SdcsSpawnAmmo" value="true"/>
+			<property name="SdcsSpawnAmmoCount" value="60"/>
+			<property name="SdcsCustomCharacters" value="false"/>
+			<property name="LootDropProb" value="1"/>
+			<property name="LootDropEntityClass" value="EntityLootContainerBoss"/>
+			<property name="SdcsDropWeaponChance" value="0.5"/>
+			<property name="SdcsDropWholeChance" value="0.1"/>
+			<property name="SdcsDropQuality" value="3-4"/>
+			<property name="SdcsDropPartsCount" value="1-2"/>
+			<property name="SdcsKeepTarget" value="0.7"/>
+			<property name="SdcsThrowables" value="thrownAmmoMolotovCocktail:3"/>
+			<property name="SdcsSpawnMates" value="npcSdcsBanditMatesT3:1-2"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditFemaleT3" extends="npcSdcsSurvivorFemaleT3">
+			<property name="Faction" value="bandits"/>
+			<property name="Hirable" value="false"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="AIPackages" value="SdcsNpcCore, SdcsBanditCombat, SdcsCover"/>
+			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="Titles" value="Bandit"/>
+			<property name="personality" value="bandit_cold_female"/>
+			<property name="ExperienceGain" value="1400"/>
+			<property name="SdcsSpawnAmmo" value="true"/>
+			<property name="SdcsSpawnAmmoCount" value="60"/>
+			<property name="SdcsCustomCharacters" value="false"/>
+			<property name="LootDropProb" value="1"/>
+			<property name="LootDropEntityClass" value="EntityLootContainerBoss"/>
+			<property name="SdcsDropWeaponChance" value="0.5"/>
+			<property name="SdcsDropWholeChance" value="0.1"/>
+			<property name="SdcsDropQuality" value="3-4"/>
+			<property name="SdcsDropPartsCount" value="1-2"/>
+			<property name="SdcsKeepTarget" value="0.7"/>
+			<property name="SdcsThrowables" value="thrownAmmoMolotovCocktail:3"/>
+			<property name="SdcsSpawnMates" value="npcSdcsBanditMatesT3:1-2"/>
+		</entity_class>
+
+		<!-- [SDCS-SENTRY] The sentries: bandits that hold a post. A POI builder names the
+		     sleeper group S_-Group_NPC_Bandits_Sentry (melee and guns) or
+		     S_-Group_NPC_Bandits_SentryRanged (guns only) in a sleeper volume of any trigger
+		     type; each sentry wakes on her sleeper spot the moment the room spawns her, faces
+		     the way the spot faces, and takes the Stay order there (the SdcsSentry class
+		     property). She sees you with her normal awake sight. In a fight she may step
+		     about one block (Settings.xml Bandits SentryLeashMetres) for cover or a clear
+		     shot, never off her post's level; she shoots, throws and swings from there, and
+		     walks back to her post if she is knocked off it. A sentry spawned any other way
+		     (the menu, the console) takes the Stay order where she stands. Each class extends
+		     its tier's bandit and is that bandit in every other way; the SentryRanged
+		     classes of tiers 2 and 3 roll only the guns of their tier's pool (in the pool's
+		     own order, no bows). -->
+		<entity_class name="npcSdcsBanditSentryMelee" extends="npcSdcsBanditMelee">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditSentryRanged" extends="npcSdcsBanditRanged">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditSentryMaleT2" extends="npcSdcsBanditMaleT2">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditSentryFemaleT2" extends="npcSdcsBanditFemaleT2">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditSentryRangedMaleT2" extends="npcSdcsBanditMaleT2">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+			<property name="SdcsWeapons" value="gunHandgunT0PipePistol,gunShotgunT0PipeShotgun,gunRifleT0PipeRifle,gunMGT0PipeMachineGun,gunHandgunT1Pistol"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditSentryRangedFemaleT2" extends="npcSdcsBanditFemaleT2">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+			<property name="SdcsWeapons" value="gunHandgunT0PipePistol,gunShotgunT0PipeShotgun,gunRifleT0PipeRifle,gunMGT0PipeMachineGun,gunHandgunT1Pistol"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditSentryMaleT3" extends="npcSdcsBanditMaleT3">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditSentryFemaleT3" extends="npcSdcsBanditFemaleT3">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditSentryRangedMaleT3" extends="npcSdcsBanditMaleT3">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,male,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+			<property name="SdcsWeapons" value="gunMGT1AK47,gunRifleT1HuntingRifle,gunShotgunT1DoubleBarrel,gunHandgunT2Magnum44,gunRifleT2LeverActionRifle,gunShotgunT2PumpShotgun,gunMGT2TacticalAR,gunHandgunT3SMG5,gunHandgunT3DesertVulture,gunRifleT3SniperRifle,gunShotgunT3AutoShotgun,gunMGT3M60"/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditSentryRangedFemaleT3" extends="npcSdcsBanditFemaleT3">
+			<property name="Faction" value="bandits"/>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="Tags" value="entity,female,npc,human,sdcsnpc,sdcsSwap_meleeWpnBladeT1HuntingKnife,sdcsSwap_meleeWpnBladeT3Machete,sdcsSwap_meleeWpnClubT0WoodenClub,sdcsSwap_meleeWpnClubT1BaseballBat,sdcsSwap_meleeToolAxeT1IronFireaxe,sdcsSwap_meleeWpnSpearT1IronSpear,sdcsSwap_gunHandgunT3SMG5,sdcsSwap_gunHandgunT0PipePistol,sdcsSwap_gunShotgunT0PipeShotgun,sdcsSwap_gunRifleT0PipeRifle,sdcsSwap_gunMGT0PipeMachineGun,sdcsSwap_gunMGT3M60,sdcsSwap_gunHandgunT1Pistol,sdcsSwap_gunHandgunT3DesertVulture,sdcsSwap_gunMGT1AK47,sdcsSwap_gunMGT2TacticalAR,sdcsSwap_gunRifleT1HuntingRifle,sdcsSwap_gunRifleT3SniperRifle,sdcsSwap_gunBowT1WoodenBow,sdcsSwap_gunBowT1IronCrossbow,sdcsSwap_gunShotgunT2PumpShotgun,sdcsSwap_gunShotgunT3AutoShotgun,sdcsSwap_gunExplosivesT3RocketLauncher,sdcsSwap_meleeWpnBladeT0BoneKnife,sdcsSwap_meleeWpnClubT3SteelClub,sdcsSwap_meleeWpnBatonT0PipeBaton,sdcsSwap_meleeWpnBatonT2StunBaton,sdcsSwap_meleeWpnKnucklesT0LeatherKnuckles,sdcsSwap_meleeWpnKnucklesT1IronKnuckles,sdcsSwap_meleeWpnKnucklesT3SteelKnuckles,sdcsSwap_meleeToolAxeT2SteelAxe,sdcsSwap_meleeToolAxeT3Chainsaw,sdcsSwap_meleeWpnSledgeT0StoneSledgehammer,sdcsSwap_meleeWpnSledgeT1IronSledgehammer,sdcsSwap_meleeWpnSledgeT3SteelSledgehammer,sdcsSwap_meleeWpnSpearT0StoneSpear,sdcsSwap_meleeWpnSpearT3SteelSpear,sdcsSwap_gunHandgunT2Magnum44,sdcsSwap_gunRifleT2LeverActionRifle,sdcsSwap_gunShotgunT1DoubleBarrel,sdcsSwap_gunBowT0PrimitiveBow,sdcsSwap_gunBowT3CompoundBow,sdcsSwap_gunBowT3CompoundCrossbow,bandit,no_voice"/>
+			<property name="SdcsSentry" value="true"/>
+			<property name="SdcsWeapons" value="gunMGT1AK47,gunRifleT1HuntingRifle,gunShotgunT1DoubleBarrel,gunHandgunT2Magnum44,gunRifleT2LeverActionRifle,gunShotgunT2PumpShotgun,gunMGT2TacticalAR,gunHandgunT3SMG5,gunHandgunT3DesertVulture,gunRifleT3SniperRifle,gunShotgunT3AutoShotgun,gunMGT3M60"/>
 		</entity_class>
 
 		<!-- [SDCS-PICKPOCKET] The pickpocket test class: a T1 survivor whose class steals

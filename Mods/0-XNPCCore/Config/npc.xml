@@ -1,16 +1,6 @@
 <configs>
 	<insertAfter xpath="/npc/npc_info[@id='NPCjunkDrone']" >
 			<npc_info
-				id="NPCSampleDialog"
-				name="NPC"
-				name_key="npc_traitorJoel"
-				faction="whiteriver"
-				portrait="npc_joel"
-				greeting_type="nearby"
-				stance="Like" voice_set=""
-				trader_id="1" dialog_id="GenericNPCWithQuest" 
-				localization_id="npcTraderBob" />
-			<npc_info
 				id="spheretest"
 				name="NPC"
 				name_key="npc_traitorJoel"

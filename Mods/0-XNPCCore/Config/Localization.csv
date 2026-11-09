@@ -1,11 +1,11 @@
 Key,File,Type,UsedInMainMenu,NoTranslate,KeepLoaded,english,Context / Alternate Text,german,spanish,french,italian,japanese,koreana,polish,brazilian,russian,turkish,schinese,tchinese
-MechFactionSchematic,items,Item,,,,Master of disguse,,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
-VaultDwellersFactionSchematic,items,Item,,,,Master of disguse,,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
-RedteamFactionSchematic,items,Item,,,,Master of disguse,,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
-BlueteamFactionSchematic,items,Item,,,,Master of disguse,,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
-GreenteamFactionSchematic,items,Item,,,,Master of disguse,,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
-MechFactionSchematicDesc,items,Item,,,,Read this to switch over to the bandit faction!,,"Lies dies, um zur Banditenfraktion zu wechseln!",¡Lee esto para cambiarte a la facción de los bandidos!,Lisez ceci pour basculer dans la faction des Mech!,Leggi questo per passare alla fazione dei banditi!,派閥変更・メカ,이것을 읽으면 도적 세력으로 전환합니다!,"Przeczytaj to, aby przejść do frakcji bandytów!",Leia isto para mudar para a facção dos bandidos!,"Прочтите это, чтобы перейти во фракцию бандитов!",Haydut grubuna geçmek için bunu oku!,阅读此书以加入强盗阵营！,閱讀此書以加入強盜陣營！
-VaultDwellersFactionSchematicDesc,items,Item,,,,Read this to switch over to the undead faction!,,"Lies dies, um zur Fraktion der Untoten zu wechseln!",¡Lee esto para cambiarte a la facción de los no muertos!,Lisez ceci pour basculer dans la faction des VaultDwellers!,Leggi questo per passare alla fazione dei non morti!,派閥変更・ボルト住人,이것을 읽으면 언데드 세력으로 전환합니다!,"Przeczytaj to, aby przejść do frakcji nieumarłych!",Leia isto para mudar para a facção dos mortos-vivos!,"Прочтите это, чтобы перейти во фракцию нежити!",Ölümsüzler grubuna geçmek için bunu oku!,阅读此书以加入亡灵阵营！,閱讀此書以加入亡靈陣營！
+MechFactionSchematic,items,Item,,,,Master of Disguise (Mechs),,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
+VaultDwellersFactionSchematic,items,Item,,,,Master of Disguise (Vault),,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
+RedteamFactionSchematic,items,Item,,,,Master of Disguise (Red team),,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
+BlueteamFactionSchematic,items,Item,,,,Master of Disguise (Blue team),,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
+GreenteamFactionSchematic,items,Item,,,,Master of Disguise (Green Team),,Meister der Verkleidung,Maestro del disfraz,Maitre de l'écoeurement,Maestro del travestimento,変装の名人,변장의 달인,Mistrz przebrania,Mestre do disfarce,Мастер маскировки,Kılık Değiştirme Ustası,伪装大师,偽裝大師
+MechFactionSchematicDesc,items,Item,,,,Read this to switch over to the Mech faction!,,"Lies dies, um zur Banditenfraktion zu wechseln!",¡Lee esto para cambiarte a la facción de los bandidos!,Lisez ceci pour basculer dans la faction des Mech!,Leggi questo per passare alla fazione dei banditi!,派閥変更・メカ,이것을 읽으면 도적 세력으로 전환합니다!,"Przeczytaj to, aby przejść do frakcji bandytów!",Leia isto para mudar para a facção dos bandidos!,"Прочтите это, чтобы перейти во фракцию бандитов!",Haydut grubuna geçmek için bunu oku!,阅读此书以加入强盗阵营！,閱讀此書以加入強盜陣營！
+VaultDwellersFactionSchematicDesc,items,Item,,,,Read this to switch over to the VaultDwellers faction!,,"Lies dies, um zur Fraktion der Untoten zu wechseln!",¡Lee esto para cambiarte a la facción de los no muertos!,Lisez ceci pour basculer dans la faction des VaultDwellers!,Leggi questo per passare alla fazione dei non morti!,派閥変更・ボルト住人,이것을 읽으면 언데드 세력으로 전환합니다!,"Przeczytaj to, aby przejść do frakcji nieumarłych!",Leia isto para mudar para a facção dos mortos-vivos!,"Прочтите это, чтобы перейти во фракцию нежити!",Ölümsüzler grubuna geçmek için bunu oku!,阅读此书以加入亡灵阵营！,閱讀此書以加入亡靈陣營！
 RedteamFactionSchematicDesc,items,Item,,,,Read this to switch over to the Red team!,,"Lies dies, um zum roten Team zu wechseln!",¡Lee esto para cambiarte al equipo rojo!,Lisez ceci pour basculer dans la faction Redteam!,Leggi questo per passare alla squadra rossa!,チーム変更・赤,이것을 읽으면 레드 팀으로 전환합니다!,"Przeczytaj to, aby przejść do czerwonej drużyny!",Leia isto para mudar para a equipe vermelha!,"Прочтите это, чтобы перейти в красную команду!",Kırmızı takıma geçmek için bunu oku!,阅读此书以加入红队！,閱讀此書以加入紅隊！
 BlueteamFactionSchematicDesc,items,Item,,,,Read this to switch over to the Blue team!,,"Lies dies, um zum blauen Team zu wechseln!",¡Lee esto para cambiarte al equipo azul!,Lisez ceci pour basculer dans la faction Blue team!,Leggi questo per passare alla squadra blu!,チーム変更・青,이것을 읽으면 블루 팀으로 전환합니다!,"Przeczytaj to, aby przejść do niebieskiej drużyny!",Leia isto para mudar para a equipe azul!,"Прочтите это, чтобы перейти в синюю команду!",Mavi takıma geçmek için bunu oku!,阅读此书以加入蓝队！,閱讀此書以加入藍隊！
 GreenteamFactionSchematicDesc,items,Item,,,,Read this to switch over to the Green Team!,,"Lies dies, um zum grünen Team zu wechseln!",¡Lee esto para cambiarte al equipo verde!,Lisez ceci pour basculer dans la faction Green Team!,Leggi questo per passare alla squadra verde!,チーム変更・緑,이것을 읽으면 그린 팀으로 전환합니다!,"Przeczytaj to, aby przejść do zielonej drużyny!",Leia isto para mudar para a equipe verde!,"Прочтите это, чтобы перейти в зелёную команду!",Yeşil takıma geçmek için bunu oku!,阅读此书以加入绿队！,閱讀此書以加入綠隊！
@@ -55,7 +55,6 @@ npcNurseXBow,entityclasses,Entity,,,,Nurse,,Krankenschwester,Enfermera,L’infir
 npcNurseLBow,entityclasses,Entity,,,,Nurse,,Krankenschwester,Enfermera,L’infirmière,Infermiera,ナース,간호사,Pielęgniarka,Enfermeira,Медсестра,Hemşire,护士,護士
 npcNurseRocketL,entityclasses,Entity,,,,Nurse,,Krankenschwester,Enfermera,L’infirmière,Infermiera,ナース,간호사,Pielęgniarka,Enfermeira,Медсестра,Hemşire,护士,護士
 npcHarleyEmptyHand,entityclasses,Entity,,,,Harley,,Harley,Harley,Harley,Harley,ハーレー,할리,Harley,Harley,Харли,Harley,哈莉,哈莉
-npcHarleyBMEmptyHand,entityclasses,Entity,,,,Harley,,Harley,Harley,Harley,Harley,ハーレー,할리,Harley,Harley,Харли,Harley,哈莉,哈莉
 npcHarleyClub,entityclasses,Entity,,,,Harley,,Harley,Harley,Harley,Harley,ハーレー,할리,Harley,Harley,Харли,Harley,哈莉,哈莉
 npcHarleyKnife,entityclasses,Entity,,,,Harley,,Harley,Harley,Harley,Harley,ハーレー,할리,Harley,Harley,Харли,Harley,哈莉,哈莉
 npcHarleyAxe,entityclasses,Entity,,,,Harley,,Harley,Harley,Harley,Harley,ハーレー,할리,Harley,Harley,Харли,Harley,哈莉,哈莉
@@ -124,20 +123,10 @@ zombieFemaleTutorialT21,entityclasses,Entity,,,,Dead Girl,,Totes Mädchen,Chica 
 zombieFemaleTutorialT5,entityclasses,Entity,,,,Dead Girl,,Totes Mädchen,Chica muerta,Fille morte,Ragazza morta,死んだ女の子,죽은 소녀,Martwa dziewczyna,Garota morta,Мёртвая девушка,Ölü Kız,死去的女孩,死去的女孩
 zombieFemaleTutorialT6,entityclasses,Entity,,,,Dead Girl,,Totes Mädchen,Chica muerta,Fille morte,Ragazza morta,死んだ女の子,죽은 소녀,Martwa dziewczyna,Garota morta,Мёртвая девушка,Ölü Kız,死去的女孩,死去的女孩
 zombieFemaleTutorialT7,entityclasses,Entity,,,,Dead Girl,,Totes Mädchen,Chica muerta,Fille morte,Ragazza morta,死んだ女の子,죽은 소녀,Martwa dziewczyna,Garota morta,Мёртвая девушка,Ölü Kız,死去的女孩,死去的女孩
-zombieFemaleTutorialT21,entityclasses,Entity,,,,Dead Girl,,Totes Mädchen,Chica muerta,Fille morte,Ragazza morta,死んだ女の子,죽은 소녀,Martwa dziewczyna,Garota morta,Мёртвая девушка,Ölü Kız,死去的女孩,死去的女孩
+zombieFemaleTutorialT22,entityclasses,Entity,,,,Dead Girl,,Totes Mädchen,Chica muerta,Fille morte,Ragazza morta,死んだ女の子,죽은 소녀,Martwa dziewczyna,Garota morta,Мёртвая девушка,Ölü Kız,死去的女孩,死去的女孩
 
 start,Quest,Dialogs,,,,Are you the undead?,,Bist du ein Untoter?,¿Eres un no muerto?,Êtes-vous un mort-vivant ?,Sei un non morto?,あなたはアンデッドですか？,당신은 언데드인가요?,Jesteś nieumarłym?,Você é um morto-vivo?,Ты нежить?,Sen bir ölümsüz müsün?,你是亡灵吗？,你是亡靈嗎？
-statement_-1684104497,Quest,Dialogs,,,,Maybe not but a bar of soap wouldn't kill ya none either.,,"Vielleicht nicht, aber ein Stück Seife würde dich auch nicht umbringen.","Quizá no, pero una pastilla de jabón tampoco te mataría.","Peut-être pas, mais un savon ne te tuerait pas non plus.","Forse no, ma una saponetta non ti ucciderebbe di certo.",そうじゃないかもね。でも石鹸くらい使っても死にはしないよ。,"아닐지도 모르지만, 비누 정도는 써도 안 죽어.","Może nie, ale kostka mydła też by cię nie zabiła.","Talvez não, mas um sabonete também não ia te matar.","Может, и нет, но кусок мыла тебя тоже не убьёт.",Belki değil ama bir kalıp sabun da seni öldürmezdi.,也许不是，但一块肥皂也要不了你的命。,也許不是，但一塊肥皂也要不了你的命。
-responseID_1595140464,Quest,Dialogs,,,,No I'm not dead yet.,,"Nein, ich bin noch nicht tot.","No, todavía no estoy muerto.","Non, je ne suis pas encore mort.","No, non sono ancora morto.",いいえ、まだ死んではいません。,"아니요, 아직 안 죽었어요.","Nie, jeszcze nie umarłem.","Não, ainda não estou morto.","Нет, я ещё не умер.","Hayır, henüz ölmedim.",不，我还没死。,不，我還沒死。
-response_-24413466,Quest,Dialogs,,,,Gee thanks.,,"Na, danke.","Vaya, gracias.",Merci bien.,Grazie tante.,ありがとうございます。,"어휴, 고마워.",No dzięki.,"Valeu, hein.",Ну спасибо.,Sağ ol be.,真是谢了。,真是謝了。
-responseID_-307220871,Quest,Dialogs,,,,Be safe friend.,,"Pass auf dich auf, Freund.","Cuídate, amigo.","Prends soin de toi, l'ami.","Stai attento, amico.",お気をつけて。,"조심해, 친구.","Uważaj na siebie, przyjacielu.","Se cuida, amigo.","Береги себя, друг.","Kendine dikkat et, dostum.",保重，朋友。,保重，朋友。
 
-start,Quest,Dialogs,,,,Hello there,,Hallo,Hola,Bonjour,Ciao,こんにちは,안녕하세요,Witaj,Olá,Привет,Merhaba,你好,你好
-statement_-1333722013,Quest,Dialogs,,,,Im just a farmer type guy,,Ich bin nur so ein Bauerntyp.,Solo soy un tipo granjero.,Je suis juste un genre de fermier.,Sono solo un tipo da fattoria.,私は農夫です。,난 그냥 농부 같은 사람이야.,Jestem po prostu takim rolnikiem.,Sou só um cara do tipo fazendeiro.,Я просто простой фермер.,Ben sadece çiftçi tipi biriyim.,我就是个种地的。,我就是個種地的。
-statement_1334552027,Quest,Dialogs,,,,"Naz, funny name eh?",,"Naz, komischer Name, was?","Naz, nombre gracioso, ¿eh?","Naz, drôle de nom, hein ?","Naz, nome buffo, eh?",ナズ、変な名前でしょ？,"나즈, 이름 웃기지?","Naz, zabawne imię, co?","Naz, nome engraçado, né?","Наз, забавное имя, да?","Naz, komik bir isim, değil mi?",纳兹，名字挺怪吧？,納茲，名字挺怪吧？
-responseID_-1128936168,Quest,Dialogs,,,,Tell me about yourself,,Erzähl mir von dir,Háblame de ti,Parlez-moi de vous,Parlami di te,あなたの事をおしえてください。,당신에 대해 말해 주세요,Opowiedz mi o sobie,Me fale sobre você,Расскажи о себе,Bana kendinden bahset,说说你自己吧,說說你自己吧
-responseID_-1290029400,Quest,Dialogs,,,,Whats this place called?,,Wie heißt dieser Ort?,¿Cómo se llama este lugar?,Comment s'appelle cet endroit ?,Come si chiama questo posto?,この場所の名前は何ですか？,여기는 뭐라고 불러요?,Jak nazywa się to miejsce?,Como se chama este lugar?,Как называется это место?,Burasının adı ne?,这地方叫什么？,這地方叫什麼？
-responseID_1101680756,Quest,Dialogs,,,,OK Bye,,"OK, tschüss","Vale, adiós","OK, au revoir","Ok, ciao",分かりました、さようなら,"알았어요, 안녕","OK, cześć","Ok, tchau","Ладно, пока","Tamam, hoşça kal",好的，再见,好的，再見
 
 itemNPCModHelp,items,Item,,,,NPC Action: Help,,NPC-Aktion: Hilfe,Acción PNJ: Ayuda,Action PNJ: Aide,Azione PNG: Aiuto,NPCアクション： 手助け,NPC 행동: 도움,Akcja NPC: Pomoc,Ação do NPC: Ajuda,Действие NPC: помощь,NPC Eylemi: Yardım,NPC动作：帮助,NPC動作：幫助
 itemNPCModStop,items,Item,,,,NPC Action: Stop,,NPC-Aktion: Stopp,Acción PNJ: Detener,Action PNJ: Arrêt,Azione PNG: Ferma,NPCアクション： 停止,NPC 행동: 정지,Akcja NPC: Stop,Ação do NPC: Parar,Действие NPC: стоп,NPC Eylemi: Dur,NPC动作：停止,NPC動作：停止
@@ -156,7 +145,7 @@ buffNPCModThreatControlModeDisplayDesc,items,Item,,,,"While in this mode, your h
 buffNPCModFullControlModeDisplayName,items,Item,,,,Full Control Mode,,Vollkontrollmodus,Modo control total,Mode de contrôle complet,Modalità Controllo totale,完全制御モード,완전 제어 모드,Tryb pełnej kontroli,Modo Controle Total,Режим полного контроля,Tam Kontrol Modu,完全控制模式,完全控制模式
 buffNPCModFullControlModeDisplayDesc,items,Item,,,,"While in this mode, your hired NPCs will not engage, unless:\n • You attack\n • You get attacked and took damage",,"In diesem Modus greifen deine angeheuerten NPCs nicht an, außer:\n • Du greifst an\n • Du wirst angegriffen und erleidest Schaden","En este modo, tus PNJ contratados no atacarán, salvo que:\n • Tú ataques\n • Te ataquen y recibas daño","Dans ce mode, vos your PNJs embauchés n'initieront pas le combat, à moins que:\n • Vous attaquiez\n • Vous vous fassiez attaquer et prenez du dommage","In questa modalità, i PNG assoldati non attaccheranno, a meno che:\n • Tu attacchi\n • Tu venga attaccato e subisca danni",このモードでは、雇ったNPCは交戦しません。ただし以下の場合を除きます:\n • あなたが攻撃した\n • あなたが攻撃されダメージを受けた,"이 모드에서는 고용한 NPC가 교전하지 않습니다. 단, 다음의 경우는 예외입니다:\n • 당신이 공격할 때\n • 당신이 공격받아 피해를 입었을 때","W tym trybie wynajęci NPC nie walczą, chyba że:\n • Ty zaatakujesz\n • Zostaniesz zaatakowany i otrzymasz obrażenia","Neste modo, seus NPCs contratados não vão atacar, a menos que:\n • Você ataque\n • Você seja atacado e sofra dano","В этом режиме нанятые NPC не вступают в бой, если только:\n • Вы не атакуете\n • На вас не напали и вы не получили урон","Bu modda kiralık NPC'lerin çatışmaz, şu durumlar hariç:\n • Sen saldırırsan\n • Saldırıya uğrayıp hasar alırsan",在此模式下，你雇佣的NPC不会交战，除非：\n • 你发起攻击\n • 你遭到攻击并受到伤害,在此模式下，你僱用的NPC不會交戰，除非：\n • 你發起攻擊\n • 你遭到攻擊並受到傷害
 
-spherePickUpNPC,items,Item,,,,Placeable NPC,,Platzierbarer NPC,PNJ colocable,PNJ plaçable,PNG posizionabile,設置可能なNPC,배치 가능한 NPC,NPC do postawienia,NPC posicionável,Размещаемый NPC,Yerleştirilebilir NPC,可放置的NPC,可放置的NPC,
+spherePickUpNPC,items,Item,,,,Placeable NPC,,Platzierbarer NPC,PNJ colocable,PNJ plaçable,PNG posizionabile,設置可能なNPC,배치 가능한 NPC,NPC do postawienia,NPC posicionável,Размещаемый NPC,Yerleştirilebilir NPC,可放置的NPC,可放置的NPC
 bakerPickUpNPC,items,item,,,,Baker (Resting),,Bäcker (ruht),Panadero (descansando),Boulanger (au repos),Fornaio (a riposo),ベーカー（休憩中）,제빵사 (휴식 중),Piekarz (odpoczywa),Padeiro (descansando),Пекарь (отдыхает),Fırıncı (Dinleniyor),面包师（休息中）,麵包師（休息中）
 bakerPickUpNPCDesc,items,item,,,,You are carrying your hired baker helper. Put him in your active toolbelt slot to place him down using [action:local:Secondary].,,Du trägst deinen angeheuerten Bäcker bei dir. Lege ihn in den aktiven Gürtelplatz und setze ihn mit [action:local:Secondary] ab.,Llevas a tu ayudante panadero contratado. Ponlo en la ranura activa del cinturón para dejarlo con [action:local:Secondary].,Vous portez votre boulanger embauché. Placez-le dans l'emplacement actif de votre ceinture pour le poser avec [action:local:Secondary].,Stai trasportando il fornaio che hai assoldato. Mettilo nello slot attivo della cintura per posarlo con [action:local:Secondary].,雇ったベーカーを運んでいます。ツールベルトのアクティブスロットに入れ、[action:local:Secondary]で降ろします。,고용한 제빵사를 데리고 있습니다. 활성 도구 벨트 칸에 넣고 [action:local:Secondary]로 내려놓으세요.,Niesiesz wynajętego piekarza. Umieść go w aktywnym miejscu na pasku narzędzi i postaw za pomocą [action:local:Secondary].,Você está carregando seu padeiro contratado. Coloque-o no espaço ativo do cinto para posicioná-lo com [action:local:Secondary].,Вы несёте нанятого пекаря. Поместите его в активную ячейку пояса и поставьте с помощью [action:local:Secondary].,Kiraladığın fırıncıyı taşıyorsun. Onu aktif kemer yuvasına koy ve [action:local:Secondary] ile yere bırak.,你正带着雇佣的面包师。将他放入工具栏的当前栏位，用[action:local:Secondary]放下。,你正帶著僱用的麵包師。將他放入工具列的當前欄位，用[action:local:Secondary]放下。
 nursePickUpNPC,items,item,,,,Nurse (Resting),,Krankenschwester (ruht),Enfermera (descansando),Infirmière (au repos),Infermiera (a riposo),ナース（休憩中）,간호사 (휴식 중),Pielęgniarka (odpoczywa),Enfermeira (descansando),Медсестра (отдыхает),Hemşire (Dinleniyor),护士（休息中）,護士（休息中）
@@ -166,7 +155,7 @@ foxPickUpNPCDesc,items,item,,,,You are carrying your friendly fox. Put it in you
 
 GenericNPC_start,Quest,Dialogs,,,,"Hello friend, how can I help you?",,"Hallo Freund, wie kann ich dir helfen?","Hola, amigo, ¿en qué puedo ayudarte?","Bonjour ami, comment puis-je vous aider?","Ciao amico, come posso aiutarti?",こんにちは友達、どのようにあなたを助けることができますか？,"안녕, 친구. 무엇을 도와줄까?","Witaj, przyjacielu, jak mogę ci pomóc?","Olá, amigo, como posso te ajudar?","Привет, друг, чем могу помочь?","Merhaba dostum, sana nasıl yardım edebilirim?",你好，朋友，有什么可以帮你的吗？,你好，朋友，有什麼可以幫你的嗎？
 GenericNPC_Command Menu,Quest,Dialogs,,,,Command Menu,,Befehlsmenü,Menú de órdenes,Menu de commandes,Menu comandi,コマンドメニュー,명령 메뉴,Menu poleceń,Menu de comandos,Меню команд,Komut Menüsü,命令菜单,命令選單
-GenericNPC_Admin Menu,Quest,Dialogs,,,,Admin Menu,,Admin-Menü,Menú de administración,Menu de administration,Menu amministratore,管理メニュー,관리자 메뉴,Menu administratora,Menu de administração,Меню администратора,Yönetici Menüsü,管理员菜单,管理員選單,
+GenericNPC_Admin Menu,Quest,Dialogs,,,,Admin Menu,,Admin-Menü,Menú de administración,Menu de administration,Menu amministratore,管理メニュー,관리자 메뉴,Menu administratora,Menu de administração,Меню администратора,Yönetici Menüsü,管理员菜单,管理員選單
 GenericNPC_Weapon Classes,Quest,Dialogs,,,,Weapon Classes,,Waffenklassen,Clases de armas,Classes d'armes,Classi di armi,武器クラス,무기 종류,Klasy broni,Classes de armas,Классы оружия,Silah Sınıfları,武器类别,武器類別
 GenericNPC_Melee Menu,Quest,Dialogs,,,,Melee Weapons,,Nahkampfwaffen,Armas cuerpo a cuerpo,Armes de mêlée,Armi da mischia,近接武器,근접 무기,Broń do walki wręcz,Armas corpo a corpo,Оружие ближнего боя,Yakın Dövüş Silahları,近战武器,近戰武器
 GenericNPC_Pistol Menu,Quest,Dialogs,,,,Pistols,,Pistolen,Pistolas,Pistolets,Pistole,ピストル,권총,Pistolety,Pistolas,Пистолеты,Tabancalar,手枪,手槍
@@ -178,11 +167,8 @@ GenericNPC_FollowMe,Quest,Dialogs,,,,Follow me,,Folge mir,Sígueme,Suivez-moi,Se
 GenericNPC_Dump2Log,Quest,Dialogs,,,,Dump Values to Log,,Werte ins Protokoll schreiben,Volcar valores al registro,Vider les valeurs dans le journal,Scrivi i valori nel registro,ログに値をダンプする,값을 로그에 기록,Zapisz wartości do logu,Gravar valores no log,Записать значения в журнал,Değerleri Günlüğe Yaz,将数值写入日志,將數值寫入日誌
 GenericNPC_ShowMe,Quest,Dialogs,,,,Show me your inventory,,Zeig mir dein Inventar,Enséñame tu inventario,Montrez-moi votre inventaire,Mostrami il tuo inventario,あなたの在庫を見せてください,소지품을 보여 줘,Pokaż mi swój ekwipunek,Me mostre seu inventário,Покажи свой инвентарь,Envanterini göster,给我看看你的物品,給我看看你的物品
 GenericNPC_StayHere,Quest,Dialogs,,,,Stay where you are standing,,"Bleib, wo du stehst",Quédate donde estás,Restez où vous êtes debout,Resta dove sei,立っている場所にとどまってください,지금 그 자리에 있어,"Zostań tam, gdzie stoisz",Fique onde você está,Стой на месте,Durduğun yerde kal,待在原地,待在原地
-GenericNPC_Wander,Quest,Dialogs,,,,Patrol around here,,Patrouilliere hier in der Gegend,Patrulla por aquí,Patrouillez autour d'ici,Pattuglia qui intorno,ここを巡回してください,이 근처를 순찰해,Patroluj okolicę,Patrulhe por aqui,Патрулируй здесь,Buralarda devriye gez,在附近巡逻,在附近巡邏
-GenericNPC_Patrol,Quest,Dialogs,,,,Patrol your coded route,,Patrouilliere deine programmierte Route,Patrulla tu ruta programada,Patrouillez votre itinéraire codé,Pattuglia il tuo percorso programmato,コード化されたルートを巡回してください,지정된 경로를 순찰해,Patroluj zaprogramowaną trasę,Patrulhe sua rota programada,Патрулируй заданный маршрут,Kodlu rotanda devriye gez,按设定路线巡逻,按設定路線巡邏
 GenericNPC_GuardHere,Quest,Dialogs,,,,Stay where I am standing,,"Bleib dort, wo ich stehe",Quédate donde estoy yo,Restez où je suis debout,Resta dove sono io,私が立っている場所にとどまってください,내가 서 있는 곳에 있어,"Zostań tam, gdzie stoję",Fique onde eu estou,"Стой там, где стою я",Durduğum yerde kal,待在我站的地方,待在我站的地方
 GenericNPC_GuardReturnHere,Quest,Dialogs,,,,Guard and return to where I am standing,,"Bewache und kehre dorthin zurück, wo ich stehe",Vigila y vuelve a donde estoy yo,Gardez et revenez où je suis debout,Fai la guardia e torna dove sono io,私が立っている場所に戻って警備してください,경계하다가 내가 서 있는 곳으로 돌아와,"Pilnuj i wracaj tam, gdzie stoję",Vigie e volte para onde eu estou,"Охраняй и возвращайся туда, где стою я",Nöbet tut ve durduğum yere dön,警戒并回到我站的地方,警戒並回到我站的地方
-GenericNPC_SetCode,Quest,Dialogs,,,,Here is your Patrol Code,,Hier ist dein Patrouillencode,Aquí tienes tu código de patrulla,Voici votre code de patrouille,Ecco il tuo codice di pattuglia,こちらがあなたの巡回コードです,여기 순찰 코드야,Oto twój kod patrolu,Aqui está seu código de patrulha,Вот твой код патруля,İşte devriye kodun,这是你的巡逻代码,這是你的巡邏代碼
 GenericNPC_Loot,Quest,Dialogs,,,,Loot around here,,Plündere hier in der Gegend,Saquea por aquí,Pillez autour d'ici,Saccheggia qui intorno,ここで略奪してください,이 근처를 약탈해,Przeszukaj okolicę,Saqueie por aqui,Обыщи всё вокруг,Buraları yağmala,在附近搜刮,在附近搜刮
 GenericNPC_Dismiss,Quest,Dialogs,,,,Dismiss,,Entlassen,Despedir,Congédier,Congeda,解雇する,해고,Odpraw,Dispensar,Уволить,Görevden al,解雇,解僱
 GenericNPC_Pickup,Quest,Dialogs,,,,Pick Me up!,,Heb mich auf!,¡Cógeme!,Ramassez-moi!,Prendimi in braccio!,私を拾ってください！,나를 들어 줘!,Podnieś mnie!,Me pegue!,Подними меня!,Beni al!,把我带上！,把我帶上！
@@ -282,16 +268,11 @@ SdcsNPC_FollowMe,dialogs,Dialogs,,,,Follow me,,Folge mir,Sígueme,Suivez-moi,Seg
 SdcsNPC_GuardHere,dialogs,Dialogs,,,,Stay where I am standing,,"Bleib dort, wo ich stehe",Quédate donde estoy yo,Restez où je suis debout,Resta dove sono io,私が立っている場所にとどまってください,내가 서 있는 곳에 있어,"Zostań tam, gdzie stoję",Fique onde eu estou,"Стой там, где стою я",Durduğum yerde kal,待在我站的地方,待在我站的地方
 SdcsNPC_GuardReturnHere,dialogs,Dialogs,,,,Guard and return to where I am standing,,"Bewache und kehre dorthin zurück, wo ich stehe",Vigila y vuelve a donde estoy yo,Gardez et revenez où je suis debout,Fai la guardia e torna dove sono io,私が立っている場所に戻って警備してください,경계하다가 내가 서 있는 곳으로 돌아와,"Pilnuj i wracaj tam, gdzie stoję",Vigie e volte para onde eu estou,"Охраняй и возвращайся туда, где стою я",Nöbet tut ve durduğum yere dön,警戒并回到我站的地方,警戒並回到我站的地方
 SdcsNPC_Hire,dialogs,Dialogs,,,,I am interested in hiring you.,,Ich möchte dich anheuern.,Me interesa contratarte.,Je suis intéressé à vous embaucher.,Mi interessa assoldarti.,あなたを雇うことに興味があります。,당신을 고용하고 싶어요.,Chcę cię wynająć.,Tenho interesse em te contratar.,Я хочу тебя нанять.,Seni kiralamak istiyorum.,我想雇佣你。,我想僱用你。
-SdcsNPC_Melee,dialogs,Dialogs,,,,Melee Menu,,Nahkampfmenü,Menú cuerpo a cuerpo,Menu de mêlée,Menu mischia,近接メニュー,근접 메뉴,Menu walki wręcz,Menu corpo a corpo,Меню ближнего боя,Yakın Dövüş Menüsü,近战菜单,近戰選單
-SdcsNPC_Melee Menu,dialogs,Dialogs,,,,Melee Weapons,,Nahkampfwaffen,Armas cuerpo a cuerpo,Armes de mêlée,Armi da mischia,近接武器,근접 무기,Broń do walki wręcz,Armas corpo a corpo,Оружие ближнего боя,Yakın Dövüş Silahları,近战武器,近戰武器
-SdcsNPC_Patrol,dialogs,Dialogs,,,,Patrol your coded route,,Patrouilliere deine programmierte Route,Patrulla tu ruta programada,Patrouillez votre itinéraire codé,Pattuglia il tuo percorso programmato,コード化されたルートを巡回してください,지정된 경로를 순찰해,Patroluj zaprogramowaną trasę,Patrulhe sua rota programada,Патрулируй заданный маршрут,Kodlu rotanda devriye gez,按设定路线巡逻,按設定路線巡邏
 SdcsNPC_Pickup,dialogs,Dialogs,,,,Pick Me up!,,Heb mich auf!,¡Cógeme!,Ramassez-moi!,Prendimi in braccio!,私を拾ってください！,나를 들어 줘!,Podnieś mnie!,Me pegue!,Подними меня!,Beni al!,把我带上！,把我帶上！
 SdcsNPC_Pistol Menu,dialogs,Dialogs,,,,Pistols,,Pistolen,Pistolas,Pistolets,Pistole,ピストル,권총,Pistolety,Pistolas,Пистолеты,Tabancalar,手枪,手槍
 SdcsNPC_Pistols,dialogs,Dialogs,,,,Pistol Menu,,Pistolenmenü,Menú de pistolas,Menu des pistolets,Menu pistole,ピストルメニュー,권총 메뉴,Menu pistoletów,Menu de pistolas,Меню пистолетов,Tabanca Menüsü,手枪菜单,手槍選單
-SdcsNPC_SetCode,dialogs,Dialogs,,,,Here is your Patrol Code,,Hier ist dein Patrouillencode,Aquí tienes tu código de patrulla,Voici votre code de patrouille,Ecco il tuo codice di pattuglia,こちらがあなたの巡回コードです,여기 순찰 코드야,Oto twój kod patrolu,Aqui está seu código de patrulha,Вот твой код патруля,İşte devriye kodun,这是你的巡逻代码,這是你的巡邏代碼
 SdcsNPC_ShowMe,dialogs,Dialogs,,,,Show me your inventory,,Zeig mir dein Inventar,Enséñame tu inventario,Montrez-moi votre inventaire,Mostrami il tuo inventario,あなたの在庫を見せてください,소지품을 보여 줘,Pokaż mi swój ekwipunek,Me mostre seu inventário,Покажи свой инвентарь,Envanterini göster,给我看看你的物品,給我看看你的物品
 SdcsNPC_StayHere,dialogs,Dialogs,,,,Stay where you are standing,,"Bleib, wo du stehst",Quédate donde estás,Restez où vous êtes debout,Resta dove sei,立っている場所にとどまってください,지금 그 자리에 있어,"Zostań tam, gdzie stoisz",Fique onde você está,Стой на месте,Durduğun yerde kal,待在原地,待在原地
-SdcsNPC_Wander,dialogs,Dialogs,,,,Patrol around here,,Patrouilliere hier in der Gegend,Patrulla por aquí,Patrouillez autour d'ici,Pattuglia qui intorno,ここを巡回してください,이 근처를 순찰해,Patroluj okolicę,Patrulhe por aqui,Патрулируй здесь,Buralarda devriye gez,在附近巡逻,在附近巡邏
 SdcsNPC_Weapon Classes,dialogs,Dialogs,,,,Weapon Classes,,Waffenklassen,Clases de armas,Classes d'armes,Classi di armi,武器クラス,무기 종류,Klasy broni,Classes de armas,Классы оружия,Silah Sınıfları,武器类别,武器類別
 SdcsNPC_Weapon Menu,dialogs,Dialogs,,,,Weapon Menu,,Waffenmenü,Menú de armas,Menu des armes,Menu armi,武器メニュー,무기 메뉴,Menu broni,Menu de armas,Меню оружия,Silah Menüsü,武器菜单,武器選單
 SdcsNPC_Carried Weapons,dialogs,Dialogs,,,,Carried Weapons,,Mitgeführte Waffen,Armas que lleva,Armes portées,Armi trasportate,所持している武器,소지한 무기,Noszona broń,Armas carregadas,Носимое оружие,Taşınan Silahlar,携带的武器,攜帶的武器
@@ -325,15 +306,44 @@ SdcsNPC_Clubs,dialogs,Dialogs,,,,Clubs Menu,,Knüppelmenü,Menú de garrotes,Men
 SdcsNPC_Heavy,dialogs,Dialogs,,,,Heavy Menu,,Menü schwere Waffen,Menú de armas pesadas,Menu des armes lourdes,Menu armi pesanti,重火器メニュー,중화기 메뉴,Menu broni ciężkiej,Menu de armas pesadas,Меню тяжёлого оружия,Ağır Silah Menüsü,重武器菜单,重武器選單
 SdcsNPC_PickupPackNotEmpty,UI,Tooltip,,,,You must empty the survivor's pack before picking them up.,,"Du musst den Rucksack des Überlebenden leeren, bevor du ihn aufheben kannst.",Debe vaciar la mochila del superviviente antes de recogerlo.,Vous devez vider le sac à dos du survivant avant de le prendre.,Devi svuotare lo zaino del sopravvissuto prima di raccoglierlo.,サバイバーのバックパックを空にしてからでなければ、拾うことはできません。,집어들기 전 생존자의 백팩을 비워야 합니다.,"Aby podnieść ocalałego, najpierw musisz opróżnić jego plecak.",É preciso esvaziar a mochila do sobrevivente antes de apanhá-lo.,"Прежде чем поднять выжившего, необходимо опустошить его рюкзак.",Almadan önce hayatta kalanın sırt çantasını boşaltman gerek.,你必须先清空幸存者的背包才能将其拾取。,拿起倖存者之前你必須清空背包內的東西。
 traderNPC,entityclasses,Entity Info,,,,Backpack,,Rucksack,Mochila,Sac à dos,Zaino,バックパック,백팩,Plecak,Mochila,Рюкзак,Sırt Çantası,背包,背包
-Harley_Iseeyou,sounds,Voice Clip,,,,"I see you"
-Harley_Wannaplay,sounds,Voice Clip,,,,"Wanna play?"
-Harley_Teehee,sounds,Voice Clip,,,,"Tee-hee!"
-Harley_Woopee,sounds,Voice Clip,,,,"Whoopee!"
-Harley_Ididit,sounds,Voice Clip,,,,"I did it!"
-Harley_Onemore,sounds,Voice Clip,,,,"One more time!"
-Harley_Nutzo,sounds,Voice Clip,,,,"That's Nutzo!"
-Harley_Ominous,sounds,Voice Clip,,,,"ominous ominus ipso facto"
-Harley_Laugh01,sounds,Voice Clip,,,,"Hahaha!"
+Harley_Iseeyou,sounds,Voice Clip,,,,"I see you",,,,,,,,,,,,,
+Harley_Wannaplay,sounds,Voice Clip,,,,"Wanna play?",,,,,,,,,,,,,
+Harley_Teehee,sounds,Voice Clip,,,,"Tee-hee!",,,,,,,,,,,,,
+Harley_Woopee,sounds,Voice Clip,,,,"Whoopee!",,,,,,,,,,,,,
+Harley_Ididit,sounds,Voice Clip,,,,"I did it!",,,,,,,,,,,,,
+Harley_Onemore,sounds,Voice Clip,,,,"One more time!",,,,,,,,,,,,,
+Harley_Nutzo,sounds,Voice Clip,,,,"That's Nutzo!",,,,,,,,,,,,,
+Harley_Ominous,sounds,Voice Clip,,,,"ominous ominus ipso facto",,,,,,,,,,,,,
+Harley_Laugh01,sounds,Voice Clip,,,,"Hahaha!",,,,,,,,,,,,,
+SpawnCubeBanditT1Stay,blocks,Block,,,,"Bandit Guard Spawn, Tier 1 (Stay)",,,,,,,,,,,,,
+SpawnCubeBanditT1Guard,blocks,Block,,,,"Bandit Guard Spawn, Tier 1 (Guard)",,,,,,,,,,,,,
+SpawnCubeBanditT2Stay,blocks,Block,,,,"Bandit Guard Spawn, Tier 2 (Stay)",,,,,,,,,,,,,
+SpawnCubeBanditT2Guard,blocks,Block,,,,"Bandit Guard Spawn, Tier 2 (Guard)",,,,,,,,,,,,,
+SpawnCubeBanditT3Stay,blocks,Block,,,,"Bandit Guard Spawn, Tier 3 (Stay)",,,,,,,,,,,,,
+SpawnCubeBanditT3Guard,blocks,Block,,,,"Bandit Guard Spawn, Tier 3 (Guard)",,,,,,,,,,,,,
+IsInfected4PlayerSchematic,items,Item,,,,Infect (Player),,,,,,,,,,,,,
+IsInfected4NPCSchematic,items,Item,,,,Infect (NPC),,,,,,,,,,,,,
+IsInfected4ZombiesSchematic,items,Item,,,,Infect (Zombie),,,,,,,,,,,,,
+IsInfectedCure,items,Item,,,,Cure Infection,,,,,,,,,,,,,
+IsInfected4ZombieStage5Schematic,items,Item,,,,Infect to Stage 5,,,,,,,,,,,,,
+ZombieW7WalkStyle0Schematic,items,Item,,,,Zombie Walk Style 0,,,,,,,,,,,,,
+ZombieW7WalkStyle0blend1Schematic,items,Item,,,,Zombie Walk Style 0 Blend 1,,,,,,,,,,,,,
+ZombieW7WalkStyle1Schematic,items,Item,,,,Zombie Walk Style 1,,,,,,,,,,,,,
+HumantoWerewolfSchematic,items,Item,,,,Human to Werewolf,,,,,,,,,,,,,
+WerewolftoHumanSchematic,items,Item,,,,Werewolf to Human,,,,,,,,,,,,,
+BeZombieSchematicDesc,items,Item,,,,A test schematic: use it on the target to infect it.,,,,,,,,,,,,,
+BeHumanSchematicDesc,items,Item,,,,A test schematic: use it on the target to change its form.,,,,,,,,,,,,,
+BeWolfSchematicDesc,items,Item,,,,A test schematic: use it on the target to shift it between human and werewolf.,,,,,,,,,,,,,
+BeInfectedSchematicDesc,items,Item,,,,A test schematic: use it on the target to change its form.,,,,,,,,,,,,,
+SpawnCubeNurseX,blocks,Block,,,,Nurse Spawn,,,,,,,,,,,,,
+GenericNPCAnimal_Hire,Quest,Dialogs,,,,"Hey little one, You look lost.  Want to come with me?  I have snacks!",,,,,,,,,,,,,
+GenericNPCAnimal_FollowMe,Quest,Dialogs,,,,Follow Me,,,,,,,,,,,,,
+GenericNPCAnimal_ShowMe,Quest,Dialogs,,,,Whats in your pack?,,,,,,,,,,,,,
+GenericNPCAnimal_StayHere,Quest,Dialogs,,,,Stay right there,,,,,,,,,,,,,
+GenericNPCAnimal_Wander,Quest,Dialogs,,,,Go play around here,,,,,,,,,,,,,
+GenericNPCAnimal_Loot,Quest,Dialogs,,,,Loot around here,,,,,,,,,,,,,
+GenericNPCAnimal_GuardHere,Quest,Dialogs,,,,Stay over here,,,,,,,,,,,,,
+GenericNPCAnimal_Dismiss,Quest,Dialogs,,,,Abandon,,,,,,,,,,,,,
 VCPatrol_Scout,,,,,,Scout around here,,Erkunde die Gegend,Explora por aquí,Explorez les environs,Esplora qui intorno,この辺りを偵察して,이 근처를 정찰해,Przeprowadź zwiad w okolicy,Explore por aqui,Разведай местность,Buraları keşfet,在附近侦察,在附近偵察
 VCPatrol_SetPatrolPoint,,,,,,Show me a route,,Ich zeige dir eine Route,Te enseñaré una ruta,Je vais vous montrer un itinéraire,Ti mostro un percorso,ルートを教える,경로를 알려 줄게,Pokażę ci trasę,Vou te mostrar uma rota,Я покажу тебе маршрут,Sana bir rota göstereyim,我来给你指条路线,我來給你指條路線
 VCPatrol_Patrol,,,,,,Patrol your route,,Patrouilliere deine Route,Patrulla tu ruta,Patrouillez votre itinéraire,Pattuglia il tuo percorso,ルートを巡回して,네 경로를 순찰해,Patroluj swoją trasę,Patrulhe sua rota,Патрулируй свой маршрут,Rotanda devriye gez,按你的路线巡逻,按你的路線巡邏
@@ -349,6 +359,10 @@ SdcsNPC_CraftAll,,,,,,All,,Alle,Todos,Tous,Tutti,全部,전부,Wszystkie,Todos,�
 SdcsNPC_CraftMore,,,,,,More...,,Mehr...,Más...,Plus...,Altro...,もっと...,더 보기...,Więcej...,Mais...,Ещё...,Daha fazla...,更多...,更多...
 SdcsNPC_CraftWait,,,,,,...,,...,...,...,...,...,...,...,...,...,...,...,...
 SdcsNPC_CraftNone,,,,,,I can't make anything with what's here.,,"Mit dem, was hier ist, kann ich nichts herstellen.",No puedo fabricar nada con lo que hay aquí.,Je ne peux rien fabriquer avec ce qu'il y a ici.,Non posso fabbricare niente con quello che c'è qui.,ここにある物では何も作れない。,여기 있는 걸로는 아무것도 못 만들어.,"Z tego, co tu jest, nic nie wytworzę.",Não consigo fabricar nada com o que tem aqui.,"Из того, что здесь есть, ничего не сделать.",Buradakilerle hiçbir şey yapamam.,用这里的东西我什么都做不了。,用這裡的東西我什麼都做不了。
+SdcsNPC_CraftWindowJob,,,,,,Making {0}: {1} left,,Stellt {0} her: noch {1},Fabricando {0}: quedan {1},Fabrique {0} : encore {1},Crea {0}: ne mancano {1},{0}を製作中: 残り{1},{0} 제작 중: {1}개 남음,Wytwarza {0}: zostało {1},Fabricando {0}: faltam {1},Изготавливает {0}: осталось {1},{0} yapılıyor: {1} kaldı,正在制作{0}：剩余{1},正在製作{0}：剩餘{1}
+SdcsNPC_CraftWindowNoJob,,,,,,Not crafting,,Stellt nichts her,No está fabricando,Ne fabrique rien,Non sta creando,製作していない,제작 중 아님,Nic nie wytwarza,Não está fabricando,Ничего не изготавливает,Bir şey yapmıyor,未在制作,未在製作
+SdcsNPC_CraftWindowToolMissing,,,,,,Tool missing,,Werkzeug fehlt,Falta la herramienta,Outil manquant,Manca l'attrezzo,道具がない,도구 없음,Brak narzędzia,Falta a ferramenta,Нет инструмента,Alet eksik,缺少工具,缺少工具
+SdcsNPC_CraftWindowShort,,,,,,Not enough,,Nicht genug,No alcanza,Pas assez,Non basta,材料不足,재료 부족,Za mało,Não é suficiente,Не хватает,Yetersiz,材料不足,材料不足
 SdcsNPC_ProgressMenu,,,,,,Your progress,,Dein Fortschritt,Tu progreso,Ta progression,I tuoi progressi,君の成長,너의 성장,Twoje postępy,Seu progresso,Твой прогресс,İlerlemen,你的成长,你的成長
 SdcsNPC_ProgressText,,,,,,How am I doing?,,Wie stehe ich da?,¿Cómo voy?,Où en suis-je ?,Come sto andando?,私の成長はどう？,내 성장은 어때?,Jak mi idzie?,Como estou indo?,Как у меня дела?,Nasıl gidiyorum?,我成长得怎么样？,我成長得怎麼樣？
 SdcsNPC_ProgressLevel,,,,,,Level {0},,Stufe {0},Nivel {0},Niveau {0},Livello {0},レベル {0},레벨 {0},Poziom {0},Nível {0},Уровень {0},Seviye {0},等级 {0},等級 {0}
@@ -364,6 +378,16 @@ SdcsNPC_RepairTier_concrete,,,,,,concrete,,Beton,hormigón,béton,calcestruzzo,�
 SdcsNPC_RepairTier_steel,,,,,,steel,,Stahl,acero,acier,acciaio,鋼鉄,강철,stal,aço,сталь,çelik,钢,鋼
 SdcsNPC_ProgressRoles,,,,,,Roles: {0},,Rollen: {0},Funciones: {0},Rôles : {0},Ruoli: {0},役割: {0},역할: {0},Role: {0},Funções: {0},Роли: {0},Roller: {0},职责：{0},職責：{0}
 SdcsNPC_ProgressNoRoles,,,,,,No roles,,Keine Rollen,Sin funciones,Aucun rôle,Nessun ruolo,役割なし,역할 없음,Brak ról,Sem funções,Нет ролей,Rol yok,没有职责,沒有職責
+SdcsNPC_ProgressCraftSkill,,,,,,{0} {1}/{2},,{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2}
+SdcsNPC_ProgressMore,,,,,,+{0} more,,+{0} weitere,+{0} más,+{0} de plus,+{0} altri,他 {0} 件,+{0}개 더,+{0} więcej,+{0} a mais,ещё {0},+{0} daha,还有 {0} 个,還有 {0} 個
+SdcsNPC_ProgressSkillsMenu,,,,,,Her skills...,,Ihre Fertigkeiten...,Sus habilidades...,Ses compétences...,Le sue abilità...,彼女のスキル...,그녀의 기술...,Jej umiejętności...,Habilidades dela...,Её навыки...,Becerileri...,她的技能...,她的技能...
+SdcsNPC_SkillsText,,,,,,Here's what I've learned.,,Das habe ich gelernt.,Esto es lo que he aprendido.,Voici ce que j'ai appris.,Ecco cosa ho imparato.,これが私の覚えたことだ。,내가 배운 건 이거야.,Oto czego się nauczyłam.,Isto é o que aprendi.,Вот чему я научилась.,Öğrendiklerim bunlar.,这是我学到的。,這是我學到的。
+SdcsNPC_ProgressSkillGroup,,,,,,{0} ({1}),,{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1})
+SdcsNPC_SkillGroup_weapons,,,,,,Weapons,,Waffen,Armas,Armes,Armi,武器,무기,Broń,Armas,Оружие,Silahlar,武器,武器
+SdcsNPC_SkillGroup_tools,,,,,,Tools and gear,,Werkzeuge und Ausrüstung,Herramientas y equipo,Outils et équipement,Strumenti e attrezzatura,道具と装備,도구와 장비,Narzędzia i sprzęt,Ferramentas e equipamento,Инструменты и снаряжение,Aletler ve teçhizat,工具与装备,工具與裝備
+SdcsNPC_SkillGroup_survival,,,,,,Survival,,Überleben,Supervivencia,Survie,Sopravvivenza,サバイバル,생존,Przetrwanie,Sobrevivência,Выживание,Hayatta kalma,生存,生存
+SdcsNPC_SkillGroup_building,,,,,,Building,,Bauen,Construcción,Construction,Costruzione,建築,건축,Budowanie,Construção,Строительство,İnşaat,建造,建造
+SdcsNPC_SkillGroup_other,,,,,,Other,,Sonstiges,Otros,Autres,Altro,その他,기타,Inne,Outros,Другое,Diğer,其他,其他
 SdcsNPC_TitleMedic,,,,,,Medic,,Sanitäter,Médico,Médecin,Medico,衛生兵,의무병,Medyk,Médico,Медик,Sıhhiyeci,医疗兵,醫療兵
 SdcsNPC_TitleCook,,,,,,Cook,,Koch,Cocinero,Cuisinier,Cuoco,料理人,요리사,Kucharz,Cozinheiro,Повар,Aşçı,厨师,廚師
 SdcsNPC_TitleBlacksmith,,,,,,Smith,,Schmied,Herrero,Forgeron,Fabbro,鍛冶屋,대장장이,Kowal,Ferreiro,Кузнец,Demirci,铁匠,鐵匠
@@ -371,7 +395,13 @@ SdcsNPC_TitleChemist,,,,,,Chemist,,Chemiker,Químico,Chimiste,Chimico,化学者,
 SdcsNPC_TitleCrafter,,,,,,Crafter,,Handwerker,Artesano,Artisan,Artigiano,職人,제작자,Rzemieślnik,Artesão,Ремесленник,Zanaatkâr,工匠,工匠
 SdcsNPC_TitleFormat,,,,,,{0} - {1},,{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1}
 entitycommand_vcorders,,,,,,Orders,,Befehle,Órdenes,Ordres,Ordini,命令,명령,Rozkazy,Ordens,Приказы,Emirler,命令,命令
+entitycommand_vcjobs,,,,,,Jobs,,Aufgaben,Trabajos,Tâches,Lavori,仕事,작업,Zadania,Trabalhos,Работа,İşler,工作,工作
+entitycommand_vcroles,,,,,,Roles,,Rollen,Roles,Rôles,Ruoli,役割,역할,Role,Funções,Роли,Roller,职责,職責
+entitycommand_vcweapons,,,,,,Weapons,,Waffen,Armas,Armes,Armi,武器,무기,Broń,Armas,Оружие,Silahlar,武器,武器
+entitycommand_vcinventory,,,,,,Inventory,,Inventar,Inventario,Inventaire,Inventario,所持品,인벤토리,Ekwipunek,Inventário,Инвентарь,Envanter,物品栏,物品欄
+entitycommand_vccraft,,,,,,Craft,,Herstellen,Fabricar,Fabriquer,Fabbrica,クラフト,제작,Wytwórz,Fabricar,Изготовить,Üret,制作,製作
 vcWheel_Follow,,,,,,Follow,,Folgen,Seguir,Suivre,Seguire,追従,따라오기,Podążaj,Seguir,Следовать,Takip et,跟随,跟隨
+vcWheel_ComeHere,,,,,,Come here,,Komm her,Acércate,Viens ici,Vieni qui,こっちに来て,여기 와,Przyjdź,Vem cá,Иди сюда,Buraya gel,过来,過來
 vcWheel_Stay,,,,,,Stay,,Bleiben,Quedarse,Rester,Restare,待機,대기,Zostań,Ficar,Стоять,Bekle,待命,待命
 vcWheel_Guard,,,,,,Guard,,Bewachen,Vigilar,Garder,Sorvegliare,警備,경계,Pilnuj,Vigiar,Охранять,Nöbet tut,警戒,警戒
 vcWheel_Jobs,,,,,,Jobs,,Aufgaben,Trabajos,Tâches,Lavori,仕事,작업,Zadania,Trabalhos,Работа,İşler,工作,工作
@@ -410,6 +440,7 @@ vcWheel_MachineGuns,,,,,,Machine guns,,Maschinengewehre,Ametralladoras,Mitraille
 vcWheel_Melee,,,,,,Melee,,Nahkampf,Cuerpo a cuerpo,Mêlée,Mischia,近接,근접,Walka wręcz,Corpo a corpo,Ближний бой,Yakın dövüş,近战,近戰
 vcWheel_Blades,,,,,,Blades,,Klingen,Hojas,Lames,Lame,刃物,날붙이,Ostrza,Lâminas,Клинки,Bıçaklar,刀刃,刀刃
 vcWheel_EmptyHands,,,,,,Empty hands,,Leere Hände,Manos vacías,Mains nues,Mani nude,素手,맨손,Puste ręce,Mãos vazias,Пустые руки,Boş eller,空手,空手
+vcWheel_Ammo,,,,,,Ammo,,Munition,Munición,Munitions,Munizioni,弾薬,탄약,Amunicja,Munição,Патроны,Mermi,弹药,彈藥
 vcWheel_Close,,,,,,Close,,Nah,Cerca,Près,Vicino,近い,가까이,Blisko,Perto,Близко,Yakın,近,近
 vcWheel_Normal,,,,,,Normal,,Normal,Normal,Normal,Normale,普通,보통,Normalnie,Normal,Обычно,Normal,正常,正常
 vcWheel_Far,,,,,,Far,,Weit,Lejos,Loin,Lontano,遠い,멀리,Daleko,Longe,Далеко,Uzak,远,遠
@@ -445,6 +476,30 @@ vcWheel_Butcher,,,,,,Butcher,,Ausweiden,Despiezar,Dépecer,Macellare,解体,도�
 vcWheel_BaseRepair,,,,,,Base Repair,,Basis reparieren,Reparar base,Réparer la base,Ripara la base,拠点修理,기지 수리,Naprawa bazy,Reparar base,Ремонт базы,Üs onarımı,基地维修,基地維修
 vcWheel_CombatRepair,,,,,,Combat Repair,,Kampfreparatur,Reparar en combate,Réparer au combat,Ripara in combattimento,戦闘中修理,전투 중 수리,Naprawa w walce,Reparar em combate,Ремонт в бою,Savaşta onarım,战斗维修,戰鬥維修
 vcWheel_RememberBase,,,,,,Remember base,,Basis merken,Recordar base,Mémoriser la base,Ricorda la base,拠点を記憶,기지 기억,Zapamiętaj bazę,Lembrar base,Запомнить базу,Üssü hatırla,记住基地,記住基地
+vcWheel_Emotes,,,,,,Emotes,,Emotes,Gestos,Emotes,Emote,エモート,이모트,Emotki,Emotes,Эмоции,İfadeler,表情动作,表情動作
+vcWheel_Wave,,,,,,Wave,,Winken,Saludar,Saluer de la main,Saluta,手を振る,손 흔들기,Pomachaj,Acenar,Помахать,El salla,挥手,揮手
+vcWheel_Salute,,,,,,Salute,,Salutieren,Saludo militar,Salut militaire,Saluto militare,敬礼,경례,Salutuj,Continência,Отдать честь,Selam ver,敬礼,敬禮
+vcWheel_FistBump,,,,,,Fist bump,,Faustcheck,Choque de puños,Check du poing,Pugno contro pugno,グータッチ,주먹 인사,Żółwik,Soquinho,Удар кулаками,Yumruk tokuşturma,碰拳,碰拳
+vcWheel_Stretch,,,,,,Stretch,,Dehnen,Estirarse,S'étirer,Stiracchiarsi,ストレッチ,스트레칭,Rozciąganie,Alongar,Потянуться,Esneme,伸展,伸展
+vcWheel_WarmUp,,,,,,Warm up,,Aufwärmen,Calentar,S'échauffer,Riscaldamento,ウォームアップ,몸풀기,Rozgrzewka,Aquecer,Разминка,Isınma,热身,熱身
+vcWheel_Whatever,,,,,,Whatever,,Egal,Me da igual,Peu importe,Fa niente,どうでもいい,아무렴,Nieważne,Tanto faz,Пофиг,Neyse,随便,隨便
+vcWheel_Dances,,,,,,Dances,,Tänze,Bailes,Danses,Balli,ダンス,춤,Tańce,Danças,Танцы,Danslar,舞蹈,舞蹈
+vcWheel_More,,,,,,More,,Mehr,Más,Plus,Altro,もっと,더보기,Więcej,Mais,Ещё,Daha fazla,更多,更多
+vcWheel_FlipOff,,,,,,Flip off,,Stinkefinger,Peineta,Doigt d'honneur,Dito medio,中指を立てる,가운뎃손가락,Środkowy palec,Dedo do meio,Показать палец,Orta parmak,竖中指,比中指
+vcWheel_Insult,,,,,,Insult,,Beleidigen,Insultar,Insulter,Insultare,罵る,모욕,Obraź,Insultar,Оскорбить,Hakaret et,辱骂,辱罵
+vcWheel_Loser,,,,,,Loser,,Verlierer,Perdedor,Loser,Perdente,負け犬,루저,Frajer,Perdedor,Неудачник,Ezik,失败者,失敗者
+vcWheel_Threaten,,,,,,Threaten,,Drohen,Amenazar,Menacer,Minacciare,脅す,위협,Groź,Ameaçar,Угрожать,Tehdit et,威胁,威脅
+vcWheel_BreakdanceFootwork,,,,,,Breakdance Footwork,,Breakdance-Footwork,Breakdance,Breakdance,Breakdance,ブレイクダンス,브레이크댄스,Breakdance,Breakdance,Брейк-данс,Breakdance,霹雳舞,霹靂舞
+vcWheel_Brookling,,,,,,Brookling,,Brookling,Brookling,Brookling,Brookling,ブルックリング,브루클링,Brookling,Brookling,Бруклинг,Brookling,布鲁克林,布魯克林
+vcWheel_Chicken,,,,,,Chicken,,Hühnertanz,Baile del pollito,Danse du poulet,Danza del pollo,チキンダンス,치킨 댄스,Kurczak,Dança da galinha,Цыплёнок,Tavuk dansı,小鸡舞,小雞舞
+vcWheel_HipHop,,,,,,Hip Hop,,Hip-Hop,Hip hop,Hip-hop,Hip hop,ヒップホップ,힙합,Hip-hop,Hip-hop,Хип-хоп,Hip hop,嘻哈,嘻哈
+vcWheel_HokeyPokey,,,,,,Hokey Pokey,,Hokey Pokey,Hokey Pokey,Hokey Pokey,Hokey Pokey,ホーキーポーキー,호키포키,Hokey Pokey,Hokey Pokey,Хоки-поки,Hokey Pokey,霍基波基,霍基波基
+vcWheel_Maraschino,,,,,,Maraschino,,Maraschino,Maraschino,Maraschino,Maraschino,マラスキーノ,마라스키노,Maraschino,Maraschino,Мараскино,Maraschino,马拉斯奇诺,馬拉斯奇諾
+vcWheel_Rumba,,,,,,Rumba,,Rumba,Rumba,Rumba,Rumba,ルンバ,룸바,Rumba,Rumba,Румба,Rumba,伦巴,倫巴
+vcWheel_Salsa,,,,,,Salsa,,Salsa,Salsa,Salsa,Salsa,サルサ,살사,Salsa,Salsa,Сальса,Salsa,萨尔萨,薩爾薩
+vcWheel_Samba,,,,,,Samba,,Samba,Samba,Samba,Samba,サンバ,삼바,Samba,Samba,Самба,Samba,桑巴,桑巴
+vcWheel_Snake,,,,,,Snake,,Schlange,Serpiente,Serpent,Serpente,スネーク,스네이크,Wąż,Cobra,Змейка,Yılan,蛇舞,蛇舞
+vcWheel_Back,,,,,,Back,,Zurück,Atrás,Retour,Indietro,戻る,뒤로,Wstecz,Voltar,Назад,Geri,返回,返回
 vcSettings_Title,,,,,,NPC AI Chat Configuration,,NPC-KI-Chat-Einstellungen,Configuración del chat IA de NPC,Configuration du chat IA des PNJ,Configurazione chat IA degli NPC,NPC AIチャット設定,NPC AI 대화 설정,Konfiguracja czatu AI postaci,Configuração do chat de IA dos NPCs,Настройки ИИ-чата NPC,NPC Yapay Zeka Sohbet Ayarları,NPC AI 聊天设置,NPC AI 聊天設定
 vcSettings_Tts,,,,,,Text-to-Speech,,Sprachausgabe,Texto a voz,Synthèse vocale,Sintesi vocale,音声読み上げ,음성 합성,Synteza mowy,Texto para fala,Озвучка текста,Metinden sese,文字转语音,文字轉語音
 vcSettings_Volume,,,,,,Volume,,Lautstärke,Volumen,Volume,Volume,音量,음량,Głośność,Volume,Громкость,Ses düzeyi,音量,音量
@@ -492,3 +547,14 @@ SdcsNPC_AmmoMenu,,,,,,Ammo...,,Munition...,Munición...,Munitions...,Munizioni..
 SdcsNPC_AmmoText,,,,,,Which ammo should I load?,,Welche Munition soll ich laden?,¿Qué munición cargo?,Quelles munitions je charge ?,Quali munizioni carico?,どの弾を込める？,어떤 탄약을 넣을까?,Jaką amunicję załadować?,Que munição eu carrego?,Какие патроны зарядить?,Hangi mermiyi takayım?,装哪种弹药？,裝哪種彈藥？
 SdcsNPC_AmmoLoaded,,,,,,{0} ({1}) - loaded,,{0} ({1}) - geladen,{0} ({1}) - cargada,{0} ({1}) - chargée,{0} ({1}) - caricata,{0}（{1}）- 装填中,{0} ({1}) - 장전됨,{0} ({1}) - załadowana,{0} ({1}) - carregada,{0} ({1}) - заряжено,{0} ({1}) - takılı,{0}（{1}）- 已装填,{0}（{1}）- 已裝填
 SdcsNPC_AmmoNoGun,,,,,,I'm not holding a gun.,,Ich halte keine Schusswaffe.,No tengo un arma de fuego en la mano.,Je n'ai pas d'arme à feu en main.,Non ho un'arma da fuoco in mano.,銃を持ってない。,총을 들고 있지 않아.,Nie trzymam broni palnej.,Não estou segurando uma arma.,У меня в руках нет оружия.,Elimde silah yok.,我手里没有枪。,我手裡沒有槍。
+SdcsNPC_AmmoWheelLoaded,,,,,,{0} - loaded,,{0} - geladen,{0} - cargada,{0} - chargée,{0} - caricata,{0} - 装填中,{0} - 장전됨,{0} - załadowana,{0} - carregada,{0} - заряжено,{0} - takılı,{0} - 已装填,{0} - 已裝填
+SdcsNPC_ReadMenu,,,,,,Read...,,Lesen...,Leer...,Lire...,Leggi...,読む...,읽기...,Czytaj...,Ler...,Читать...,Oku...,阅读...,閱讀...
+SdcsNPC_ReadText,,,,,,Which one should I read?,,Welches soll ich lesen?,¿Cuál debo leer?,Lequel dois-je lire ?,Quale devo leggere?,どれを読めばいい？,어떤 걸 읽을까?,Które mam przeczytać?,Qual devo ler?,Что мне прочитать?,Hangisini okuyayım?,我该读哪一本？,我該讀哪一本？
+SdcsNPC_ReadNothingNew,,,,,,{0} (nothing new),,{0} (nichts Neues),{0} (nada nuevo),{0} (rien de nouveau),{0} (niente di nuovo),{0}（新しいことなし）,{0} (새로운 것 없음),{0} (nic nowego),{0} (nada novo),{0} (ничего нового),{0} (yeni bir şey yok),{0}（没有新内容）,{0}（沒有新內容）
+SdcsNPC_ReadNone,,,,,,I don't have anything to read.,,Ich habe nichts zu lesen.,No tengo nada para leer.,Je n'ai rien à lire.,Non ho niente da leggere.,読むものがない。,읽을 게 없어.,Nie mam nic do czytania.,Não tenho nada para ler.,Мне нечего читать.,Okuyacak bir şeyim yok.,我没有可读的东西。,我沒有可讀的東西。
+SdcsNPC_ReadKnown,,,,,,{0} (already known),,{0} (schon bekannt),{0} (ya conocido),{0} (déjà connu),{0} (già noto),{0}（習得済み）,{0} (이미 앎),{0} (już znane),{0} (já conhecido),{0} (уже известно),{0} (zaten biliniyor),{0}（已掌握）,{0}（已掌握）
+SdcsNPC_ReadAtMax,,,,,,{0} (at max),,{0} (Maximum erreicht),{0} (al máximo),{0} (au maximum),{0} (al massimo),{0}（最大）,{0} (최대),{0} (maksimum),{0} (no máximo),{0} (максимум),{0} (azami),{0}（已满级）,{0}（已滿級）
+SdcsNPC_ReadNeedsRole,,,,,,{0} (needs the {1} role),,{0} (braucht die Rolle {1}),{0} (necesita la función {1}),{0} (nécessite le rôle {1}),{0} (serve il ruolo {1}),{0}（{1}の役割が必要）,{0} ({1} 역할 필요),{0} (wymaga roli: {1}),{0} (precisa da função {1}),{0} (нужна роль: {1}),{0} ({1} rolü gerekli),{0}（需要{1}角色）,{0}（需要{1}角色）
+SdcsNPC_ReadPerkBook,,,,,,{0} (a perk book: not yet),,{0} (Perk-Buch: noch nicht),{0} (libro de ventaja: aún no),{0} (livre d'atout : pas encore),{0} (libro di abilità: non ancora),{0}（パーク本：まだ）,{0} (퍽 책: 아직),{0} (książka atutu: jeszcze nie),{0} (livro de vantagem: ainda não),{0} (книга навыка: пока нет),{0} (yetenek kitabı: henüz değil),{0}（天赋书：暂不）,{0}（天賦書：暫不）
+SdcsNPC_ReadNoUse,,,,,,{0} (won't help her),,{0} (hilft ihr nicht),{0} (no le sirve),{0} (ne l'aidera pas),{0} (non le serve),{0}（彼女の役に立たない）,{0} (그녀에게 도움 안 됨),{0} (nie pomoże jej),{0} (não vai ajudá-la),{0} (ей не поможет),{0} (ona yardımı olmaz),{0}（对她没用）,{0}（對她沒用）
+vcMenu_SettingsButton,,,,,,NPC VoiceControl Settings,,,,,,,,,,,,,

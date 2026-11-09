@@ -77,9 +77,18 @@
 		You can place military NPCs in the military group, even if they are in the whiteriver faction.
 		(In fact, you could even put them in the friendl animals group, though you shouldn't.)
 
-		Since entity groups cannot be empty, sample NPCs are added to all groups:
+		Since entity groups cannot be empty, every group holds NPCs of this mod:
 		
-		* Harley NPCs are added to the bandit, enemy, and deco trap groups.
+		* This mod's bandits fill the bandit, enemy and deco trap groups, and the Duke,
+		  Whisperers, Mech and Fantasy groups, by gamestage tier:
+			* GS01 and GS50: tier 1. npcSdcsBanditMelee for melee, npcSdcsBanditRanged (a pipe
+			  gun) for ranged: a Melee group holds the first, a Ranged group the second, an All
+			  or deco trap group both.
+			* GS100 and GS200: tier 2, npcSdcsBanditMaleT2 and npcSdcsBanditFemaleT2.
+			* GS400 and GS800: tier 3, npcSdcsBanditMaleT3 and npcSdcsBanditFemaleT3.
+			* Every Boss group: tier 3.
+		  A bandit is the first entry of each of these groups. Keep it first: the game reads
+		  a group's first entry to decide whether the group is an enemy group.
 		
 		* Nurse and Baker NPCs are added to the whiteriver, friendly, and deco rescue groups.
 		
@@ -90,11 +99,6 @@
 				* Military
 				* Vault
 				* Deco Trader
-			* Harleys are added to the enemy entity groups:
-				* Duke
-				* Whisperers
-				* Mech
-				* Fantasy
 			(Note: enemy and non-enemy are not fixed terms - modders can make them whatever
 			alignment they want. If they do, they should remove inappropriate sample NPCs.)
 		
@@ -108,34 +112,13 @@
 
 		The entity probabilities are gamestaged, even when they spawn at a low probability.
 
-		All probabilities have only one significant digit.
-
-		This is designed so that NPC pack creators can target those probabilities when inserting their own NPCs.
-		
-		* For Core NPCs that are in appropriate entity groups, target their probabilities, and match them.
-
-			Example: You have a bandit NPC with a weapon that is the general equivalent of a machete.
-			Match the Harley NPC armed with a machete, and spawn in with the same probability:
-			<insertAfter xpath="//entitygroup[starts-with(@name, 'npcBandit')]/entity[@name='npcHarleyMachete' and @prob="'0.1']">
-				whateverMyBanditIsNamed, 0.1 
-			</insertAfter>
-			<insertAfter xpath="//entitygroup[starts-with(@name, 'npcBandit')]/entity[@name='npcHarleyMachete' and @prob="'0.2']">
-				whateverMyBanditIsNamed, 0.2 
-			</insertAfter>
-			...etc.
-
-		* For Core NPCs that are not in appropriate entity groups, target their probabilities,
-		  but make your own NPCs 100x their probabilities.
-
-			Example: You have a Mech NPC with a weapon that is the general equivalent of a pistol.
-			Match the Harley NPC armed with a pistol, and spawn in with 100x their probability:
-			<insertAfter xpath="//entitygroup[starts-with(@name, 'npcMech')]/entity[@name='npcHarleyPistol' and @prob="'0.001']">
-				whateverMyMechIsNamed, 0.1 
-			</insertAfter>
-			<insertAfter xpath="//entitygroup[starts-with(@name, 'npcMech')]/entity[@name='npcHarleyPistol' and @prob="'0.002']">
-				whateverMyMechIsNamed, 0.2 
-			</insertAfter>
-			...etc.
+		To add NPCs of your own, append them to a group by the group's name. The weights are
+		relative within a group and this mod's entries are small, so an NPC added at 0.1 spawns
+		far more often than they do. Example, a bandit of your own in the tier 1 melee group:
+			<append xpath="/entitygroups/entitygroup[@name='npcBanditsMeleeGroupGS01']">
+				<e n="myBanditNPC" p="0.1"/>
+			</append>
+		Append; never insert before the first entry (see above).
     -->
 	
 	
@@ -144,47 +127,21 @@
 	<insertAfter xpath="/entitygroups/entitygroup[last()]">
 		
 		<entitygroup name="npcHarleyGroupGS01">
-			<e n="npcHarleyAxe" p="0.1"/>
-			<e n="npcHarleyBat" p="0.1"/>
-			<e n="npcHarleyClub" p="0.2"/>
-			<e n="npcHarleyEmptyHand" p="0.2"/>
-			<e n="npcHarleyKnife" p="0.2"/>
-			<e n="npcHarleyMachete" p="0.1"/>
-			<e n="npcHarleySpear" p="0.1"/>
+			<e n="npcSdcsBanditMelee" p="1"/>
 			<e n="none" p="99.0"/>
 			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
 			<e n="none" p="100.0"/>
 		</entitygroup>
 		<entitygroup name="npcHarleyGroupGS50">
-			<e n="npcHarleyAxe" p="0.25"/>
-			<e n="npcHarleyBat" p="0.5"/>
-			<e n="npcHarleyKnife" p="0.25"/>
-			<e n="npcHarleyMachete" p="0.25"/>
-			<e n="npcHarleyPipeMG" p="0.25"/>
-			<e n="npcHarleyPipePistol" p="0.25"/>
-			<e n="npcHarleyPipeRifle" p="0.25"/>
-			<e n="npcHarleyPipeShotgun" p="0.25"/>
-			<e n="npcHarleySpear" p="0.25"/>
-			<e n="npcHarleyXBow" p="0.25"/>
+			<e n="npcSdcsBanditMelee" p="1.5"/>
+			<e n="npcSdcsBanditRanged" p="1.25"/>
 			<e n="none" p="97.0"/>
 			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
 			<e n="none" p="99.75"/>
 		</entitygroup>
 		<entitygroup name="npcHarleyGroupGS100">
-			<e n="npcHarleyAK47" p="0.25"/>
-			<e n="npcHarleyAShotgun" p="0.25"/>
-			<e n="npcHarleyBat" p="0.5"/>
-			<e n="npcHarleyDPistol" p="0.25"/>
-			<e n="npcHarleyHRifle" p="0.25"/>
-			<e n="npcHarleyM60" p="0.25"/>
-			<e n="npcHarleyMachete" p="0.25"/>
-			<e n="npcHarleyPistol" p="0.25"/>
-			<e n="npcHarleyPShotgun" p="0.25"/>
-			<e n="npcHarleyRocketL" p="0.25"/>
-			<e n="npcHarleySMG" p="0.25"/>
-			<e n="npcHarleySRifle" p="0.25"/>
-			<e n="npcHarleyTRifle" p="0.25"/>
-			<e n="npcHarleyXBow" p="0.25"/>
+			<e n="npcSdcsBanditMaleT2" p="1.875"/>
+			<e n="npcSdcsBanditFemaleT2" p="1.875"/>
 			<e n="none" p="96.0"/>
 			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
 			<e n="none" p="99.75"/>
@@ -297,6 +254,46 @@
 			<e n="none" p="100.0"/>
 		</entitygroup>
 
+		<!-- SDCS bandit tier groups, for the bandit biome lines: shaped like the survivor tier
+		     groups, with the bandit weight a quarter of the survivors' at tier 1, half at tier 2
+		     and the same at tier 3. Tier 1 is the melee bandit alone. The FIRST entry must be a
+		     bandit: the game makes a line an enemy line from its group's first entry, so these
+		     lines stop with enemies off, at the enemy cap and in a blood moon. -->
+
+		<entitygroup name="npcSdcsBanditGroupT1">
+			<e n="npcSdcsBanditMelee" p="0.75"/>
+			<e n="none" p="99.25"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.0"/>
+		</entitygroup>
+		<entitygroup name="npcSdcsBanditGroupT2">
+			<e n="npcSdcsBanditMaleT2" p="0.75"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.75"/>
+			<e n="none" p="98.5"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.0"/>
+		</entitygroup>
+		<entitygroup name="npcSdcsBanditGroupT3">
+			<e n="npcSdcsBanditMaleT3" p="1.5"/>
+			<e n="npcSdcsBanditFemaleT3" p="1.5"/>
+			<e n="none" p="97.0"/>
+			<!-- Halve the biome spawn rate for this group: a second none entry equal to the group's full total weight doubles the total, so every entity's roll chance is cut in half -->
+			<e n="none" p="100.0"/>
+		</entitygroup>
+
+		<!-- SDCS bandit mates groups: who comes with a tier 2 or 3 bandit from a biome line
+		     (her class's SdcsSpawnMates names the group and how many). Every roll is a mate,
+		     so a mates group carries no none entry. -->
+
+		<entitygroup name="npcSdcsBanditMatesT2">
+			<e n="npcSdcsBanditMaleT2" p="1"/>
+			<e n="npcSdcsBanditFemaleT2" p="1"/>
+		</entitygroup>
+		<entitygroup name="npcSdcsBanditMatesT3">
+			<e n="npcSdcsBanditMaleT3" p="1"/>
+			<e n="npcSdcsBanditFemaleT3" p="1"/>
+		</entitygroup>
+
 		<!-- Merged from option pack 1-XNPCCore-NoCoreHumanNPCs: animals only -->
 		
 		<entitygroup name="npcAnimalsAny">
@@ -309,810 +306,242 @@
 		<!-- Bandits NPC entity groups -->	
 		
 		<entitygroup name="npcBanditsAllGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsAllGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsAllGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0075"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0075"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsAllGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsAllGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsAllGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsRangedGroupGS01">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsRangedGroupGS50">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsRangedGroupGS100">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsRangedGroupGS200">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsRangedGroupGS400">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsRangedGroupGS800">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsBossGroupGS01">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsBossGroupGS50">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsBossGroupGS100">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsBossGroupGS200">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsBossGroupGS400">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsBossGroupGS800">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
+		</entitygroup>
+
+		<!-- [SDCS-SENTRY] Bandit sentry NPC entity groups, for the sleeper groups
+		     S_-Group_NPC_Bandits_Sentry and S_-Group_NPC_Bandits_SentryRanged (gamestages.xml):
+		     the Bandits All and Ranged groups above with each bandit replaced by her sentry,
+		     the same tiers by gamestage and the same weights. The Ranged sentries of tiers 2 and
+		     3 roll guns only. No none entries: every roll is a sentry. -->
+		<entitygroup name="npcBanditsSentryGroupGS01">
+			<e n="npcSdcsBanditSentryMelee" p="0.007"/>
+			<e n="npcSdcsBanditSentryRanged" p="0.008"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryGroupGS50">
+			<e n="npcSdcsBanditSentryMelee" p="0.007"/>
+			<e n="npcSdcsBanditSentryRanged" p="0.008"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryGroupGS100">
+			<e n="npcSdcsBanditSentryMaleT2" p="0.0075"/>
+			<e n="npcSdcsBanditSentryFemaleT2" p="0.0075"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryGroupGS200">
+			<e n="npcSdcsBanditSentryMaleT2" p="0.0115"/>
+			<e n="npcSdcsBanditSentryFemaleT2" p="0.0115"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryGroupGS400">
+			<e n="npcSdcsBanditSentryMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditSentryFemaleT3" p="0.0115"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryGroupGS800">
+			<e n="npcSdcsBanditSentryMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditSentryFemaleT3" p="0.0115"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryRangedGroupGS01">
+			<e n="npcSdcsBanditSentryRanged" p="0.016"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryRangedGroupGS50">
+			<e n="npcSdcsBanditSentryRanged" p="0.016"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryRangedGroupGS100">
+			<e n="npcSdcsBanditSentryRangedMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditSentryRangedFemaleT2" p="0.008"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryRangedGroupGS200">
+			<e n="npcSdcsBanditSentryRangedMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditSentryRangedFemaleT2" p="0.008"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryRangedGroupGS400">
+			<e n="npcSdcsBanditSentryRangedMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditSentryRangedFemaleT3" p="0.008"/>
+		</entitygroup>
+		<entitygroup name="npcBanditsSentryRangedGroupGS800">
+			<e n="npcSdcsBanditSentryRangedMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditSentryRangedFemaleT3" p="0.008"/>
 		</entitygroup>
 
 		<!-- Duke NPC entity groups -->
 		<entitygroup name="npcDukeAllGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcDukeAllGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcDukeAllGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0075"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0075"/>
 		</entitygroup>
 		<entitygroup name="npcDukeAllGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcDukeAllGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcDukeAllGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcDukeRangedGroupGS01">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcDukeRangedGroupGS50">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcDukeRangedGroupGS100">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcDukeRangedGroupGS200">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcDukeRangedGroupGS400">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcDukeRangedGroupGS800">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcDukeBossGroupGS01">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcDukeBossGroupGS50">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcDukeBossGroupGS100">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcDukeBossGroupGS200">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcDukeBossGroupGS400">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcDukeBossGroupGS800">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 
 		<!-- Military NPC entity groups -->
@@ -1925,406 +1354,96 @@
 
 		<!-- Whisperers NPC entity groups -->
 		<entitygroup name="npcWhisperersAllGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersAllGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersAllGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0075"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0075"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersAllGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersAllGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersAllGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersRangedGroupGS01">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersRangedGroupGS50">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersRangedGroupGS100">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersRangedGroupGS200">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersRangedGroupGS400">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersRangedGroupGS800">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersBossGroupGS01">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersBossGroupGS50">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersBossGroupGS100">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersBossGroupGS200">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersBossGroupGS400">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersBossGroupGS800">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 
 		<!-- Whiteriver NPC entity groups -->
@@ -3087,406 +2206,96 @@
 
 		<!-- Enemy NPC entity groups -->
 		<entitygroup name="npcEnemyAllGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyAllGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyAllGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0075"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0075"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyAllGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyAllGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyAllGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyRangedGroupGS01">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyRangedGroupGS50">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyRangedGroupGS100">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyRangedGroupGS200">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyRangedGroupGS400">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyRangedGroupGS800">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyBossGroupGS01">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyBossGroupGS50">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyBossGroupGS100">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyBossGroupGS200">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyBossGroupGS400">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyBossGroupGS800">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 
 		<!-- Friendly NPC entity groups -->
@@ -3595,810 +2404,190 @@
 
 		<!-- Mech NPC entity groups -->
 		<entitygroup name="npcMechAllGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcMechAllGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcMechAllGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0075"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0075"/>
 		</entitygroup>
 		<entitygroup name="npcMechAllGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcMechAllGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcMechAllGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcMechRangedGroupGS01">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcMechRangedGroupGS50">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcMechRangedGroupGS100">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcMechRangedGroupGS200">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcMechRangedGroupGS400">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcMechRangedGroupGS800">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcMechBossGroupGS01">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcMechBossGroupGS50">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcMechBossGroupGS100">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcMechBossGroupGS200">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcMechBossGroupGS400">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcMechBossGroupGS800">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 
 		<!-- Fantasy NPC entity groups -->
 		<entitygroup name="npcFantasyAllGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyAllGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyAllGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0075"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0075"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyAllGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyAllGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyAllGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyRangedGroupGS01">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyRangedGroupGS50">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditRanged" p="0.016"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyRangedGroupGS100">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyRangedGroupGS200">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyRangedGroupGS400">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyRangedGroupGS800">
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.008"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyBossGroupGS01">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyBossGroupGS50">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyBossGroupGS100">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyBossGroupGS200">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyBossGroupGS400">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyBossGroupGS800">
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
-			<e n="npcHarleyRocketL" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
 		</entitygroup>
 
 		<!-- Enemy animal entity groups -->
@@ -4730,154 +2919,28 @@
 
 		<!-- Deco entity groups -->
 		<entitygroup name="npcDecoTrapGroupGS01">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcDecoTrapGroupGS50">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMelee" p="0.007"/>
+			<e n="npcSdcsBanditRanged" p="0.008"/>
 		</entitygroup>
 		<entitygroup name="npcDecoTrapGroupGS100">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.0005"/>
-			<e n="npcHarleyPipeRifle" p="0.0005"/>
-			<e n="npcHarleyPipeMG" p="0.0005"/>
-			<e n="npcHarleyPipeShotgun" p="0.0005"/>
-			<e n="npcHarleySMG" p="0.0005"/>
-			<e n="npcHarleyM60" p="0.0005"/>
-			<e n="npcHarleyPistol" p="0.0005"/>
-			<e n="npcHarleyDPistol" p="0.0005"/>
-			<e n="npcHarleyAK47" p="0.0005"/>
-			<e n="npcHarleyTRifle" p="0.0005"/>
-			<e n="npcHarleyHRifle" p="0.0005"/>
-			<e n="npcHarleySRifle" p="0.0005"/>			
-			<e n="npcHarleyPShotgun" p="0.0005"/>
-			<e n="npcHarleyAShotgun" p="0.0005"/>
-			<e n="npcHarleyLBow" p="0.0005"/>
-			<e n="npcHarleyXBow" p="0.0005"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0075"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0075"/>
 		</entitygroup>
 		<entitygroup name="npcDecoTrapGroupGS200">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT2" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT2" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcDecoTrapGroupGS400">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcDecoTrapGroupGS800">
-			<e n="npcHarleyEmptyHand" p="0.001"/>
-			<e n="npcHarleyClub" p="0.001"/>
-			<e n="npcHarleyKnife" p="0.001"/>
-			<e n="npcHarleyBat" p="0.001"/>
-			<e n="npcHarleyMachete" p="0.001"/>
-			<e n="npcHarleyAxe" p="0.001"/>
-			<e n="npcHarleySpear" p="0.001"/>
-			<e n="npcHarleyPipePistol" p="0.001"/>
-			<e n="npcHarleyPipeRifle" p="0.001"/>
-			<e n="npcHarleyPipeMG" p="0.001"/>
-			<e n="npcHarleyPipeShotgun" p="0.001"/>
-			<e n="npcHarleySMG" p="0.001"/>
-			<e n="npcHarleyM60" p="0.001"/>
-			<e n="npcHarleyPistol" p="0.001"/>
-			<e n="npcHarleyDPistol" p="0.001"/>
-			<e n="npcHarleyAK47" p="0.001"/>
-			<e n="npcHarleyTRifle" p="0.001"/>
-			<e n="npcHarleyHRifle" p="0.001"/>
-			<e n="npcHarleySRifle" p="0.001"/>			
-			<e n="npcHarleyPShotgun" p="0.001"/>
-			<e n="npcHarleyAShotgun" p="0.001"/>
-			<e n="npcHarleyLBow" p="0.001"/>
-			<e n="npcHarleyXBow" p="0.001"/>
+			<e n="npcSdcsBanditMaleT3" p="0.0115"/>
+			<e n="npcSdcsBanditFemaleT3" p="0.0115"/>
 		</entitygroup>
 		<entitygroup name="npcDecoRescueGroupGS01">
 			<e n="npcBakerEmptyHand" p="0.001"/>

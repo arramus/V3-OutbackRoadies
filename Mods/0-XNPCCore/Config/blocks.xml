@@ -74,6 +74,52 @@
 		<property name="Model" value="#@modfolder:Resources/XythNPCs.unity3d?NurseNancySpawnBlock_X"/>
 		<property name="ModelOffset" value="0,0,0"/>
 	</block>
+
+	<!-- Ready made bandit guard spawn blocks. Each block spawns ONE SDCS
+		     bandit from its tier group the first time it ticks (MaxSpawned stays 1, the class default).
+		     Her post is the spot she spawns on. Stay holds it; Guard patrols it out of a fight, out
+		     and back within Settings.xml Guard PatrolMetres on the post's own floor. In a fight she
+		     steps at most Settings.xml Bandits SentryLeashMetres from it, never off its level, and
+		     walks back when the fight is over. The tier is the group's
+		     (the T1/T2/T3 classes in npcSdcsBandit*), NOT the player's gamestage. To make your own, copy one
+		     block and set Config: eg=<entity group> or ec=<class name>, then task=stay or task=guard, with ;
+		     between the settings. -->
+	<block name="SpawnCubeBanditT1Stay">
+		<property name="CreativeMode" value="Player"/>
+		<property name="Extends" value="SpawnCube"/> <!-- loads from SCore mod  -->
+		<property name="Class" value="SpawnCube2SDX, SCore" />
+		<property name="Config" value="eg=npcBanditsAllGroupGS01;task=stay" />
+	</block>
+	<block name="SpawnCubeBanditT1Guard">
+		<property name="CreativeMode" value="Player"/>
+		<property name="Extends" value="SpawnCube"/> <!-- loads from SCore mod  -->
+		<property name="Class" value="SpawnCube2SDX, SCore" />
+		<property name="Config" value="eg=npcBanditsAllGroupGS01;task=guard" />
+	</block>
+	<block name="SpawnCubeBanditT2Stay">
+		<property name="CreativeMode" value="Player"/>
+		<property name="Extends" value="SpawnCube"/> <!-- loads from SCore mod  -->
+		<property name="Class" value="SpawnCube2SDX, SCore" />
+		<property name="Config" value="eg=npcBanditsAllGroupGS100;task=stay" />
+	</block>
+	<block name="SpawnCubeBanditT2Guard">
+		<property name="CreativeMode" value="Player"/>
+		<property name="Extends" value="SpawnCube"/> <!-- loads from SCore mod  -->
+		<property name="Class" value="SpawnCube2SDX, SCore" />
+		<property name="Config" value="eg=npcBanditsAllGroupGS100;task=guard" />
+	</block>
+	<block name="SpawnCubeBanditT3Stay">
+		<property name="CreativeMode" value="Player"/>
+		<property name="Extends" value="SpawnCube"/> <!-- loads from SCore mod  -->
+		<property name="Class" value="SpawnCube2SDX, SCore" />
+		<property name="Config" value="eg=npcBanditsAllGroupGS400;task=stay" />
+	</block>
+	<block name="SpawnCubeBanditT3Guard">
+		<property name="CreativeMode" value="Player"/>
+		<property name="Extends" value="SpawnCube"/> <!-- loads from SCore mod  -->
+		<property name="Class" value="SpawnCube2SDX, SCore" />
+		<property name="Config" value="eg=npcBanditsAllGroupGS400;task=guard" />
+	</block>
 	</append>
 
 </configs>

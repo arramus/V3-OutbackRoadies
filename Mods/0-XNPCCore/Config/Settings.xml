@@ -57,6 +57,12 @@
      line (NoWear=...), so a missing node shows up in the log, not just in the file. -->
 <Settings>
     <VerboseLogging>false</VerboseLogging>
+    <!-- [SDCS-UAI] UaiDecisionSeconds: how often an SDCS NPC re-scores what to do,
+         in seconds, on her own clock. Without it the game ties the pace to the frame
+         rate: a dedicated server re-decided about three times as often as single
+         player, at three times the cost. 0.6 is the single-player pace every test ran
+         at. Lower reacts faster and costs more. 0 = the game's own pace. -->
+    <UaiDecisionSeconds>0.6</UaiDecisionSeconds>
     <!-- [PLAYERCTRL] own-controller switch (PlayerHumanoidOverride). The
          default is ON since release 3.3.01: Humanoid NPCs get the mod's OWN
          full player controller assets (PlayerHumanoidMale /
@@ -73,7 +79,8 @@
     <!-- [SDCS-SLEEPER] An SDCS survivor standing in a sleeper volume's trigger box makes
          the volume spawn/wake the way a player at that position would (the check mirrors
          the game's own SleeperVolume.CheckTouching with the survivor's position, once per
-         second, only while a real player is within 96 m). While false the check never runs
+         second, only while a real player is within 96 m). A bandit never triggers a volume,
+         and no NPC does while she is asleep in one. While false the check never runs
          and a lone survivor in a house stays asleep-safe. The EFFECTIVE value is read with the
          same lazy, warn-once, ParseBool shape as the other keys here; a
          missing node on an old install warns once and keeps the default
@@ -225,12 +232,16 @@
     <SdcsModelYOffset>0.08</SdcsModelYOffset>
     <!-- [SDCS-PATH] The NPC path rules: while true, the mod's own traversal provider replaces the game's for the SDCS survivors' paths. -->
     <NpcPathRules>true</NpcPathRules>
-    <!-- [SDCS-PATH] The cost (A* penalty units) a hazard-marked node (spikes, barbed wire, cactus) costs on a survivor path: expensive, never forbidden, so a wall of spikes is crossed only when it is the only way. -->
+    <!-- [SDCS-PATH] The cost (A* penalty units) a hazard-marked node (spikes, barbed wire, cactus) costs on a survivor path: expensive, never forbidden, so a wall of spikes is crossed only when it is the only way. The same cost also keeps her paths off workstations (a campfire, a workbench): she walks round one and steps over it only when it is the only way. -->
     <NpcPathSpikeCost>1000000</NpcPathSpikeCost>
+    <!-- [SDCS-PATH] The extra cost (A* penalty units) every survivor's path pays to step into a wall cell, one with a block where her head would be, hired, wild or bandit alike since none of them can break a block: an opening or a way round always wins, and a wall that is the only route stays usable. While it is on, a thin barrier (a shanty wall, a railing, a thin fence: a blocking block that does not fill its cell) is never crossed at all; she goes round it through a door or an opening. 0 disables both. -->
+    <NpcPathWallCost>1000000</NpcPathWallCost>
     <!-- [SDCS-PATH] The plan-time drop cap in blocks: a grid step that drops more than this many blocks is not routed (0 disables the cap). -->
     <NpcPathMaxDropBlocks>5</NpcPathMaxDropBlocks>
-    <!-- [SDCS-PATH] Extra cost (A* penalty units) a clean node pays when one of its four linked grid neighbours is a hazard column, so the search keeps a one cell buffer off spikes where there is room (0 disables the margin). -->
+    <!-- [SDCS-PATH] Extra cost (A* penalty units) a clean node pays when one of its four linked grid neighbours is a hazard or workstation column, so the search keeps a one cell buffer off spikes and workstations where there is room (0 disables the margin). -->
     <NpcPathHazardMargin>4000</NpcPathHazardMargin>
+    <!-- [SDCS-PATH] The top speed (m/s) an SDCS survivor's body moves at while she follows a navigator path: the path takes a point only when she comes within about 0.33 m of it at a game tick (20 a second), so above about 6.6 m/s she can step past points and swings wide at corners, off the side of a narrow stair. Off a path (open ground) she keeps her full speed. 0 disables the cap; the loader clamps it 0 to 10. -->
+    <NpcPathMaxSpeed>6</NpcPathMaxSpeed>
     <!-- [SDCS-PATH] The move speed (m/s) an SDCS survivor is capped to while a contact damage block sits in her 3 x 3 feet neighbourhood (feet level and one below): the move helper cuts corners at speed, so this slows her where she can still clip a spike in short clusters. 0 disables the cap. -->
     <NpcHazardWalkSpeed>1.0</NpcHazardWalkSpeed>
     <!-- [SDCS-PATH] The standing step-out: when a NOT moving SDCS survivor's body box is in contact with a contact damage block (spikes that powered on under her, a spawn into spikes), she is walked to the nearest standable, contact free cell centre, re-issued every 0.25 s probe while she stays in contact. false disables the step-out entirely (the moving rules above are untouched). -->
@@ -258,9 +269,9 @@
         <HealthRegenPerSecond>0.2</HealthRegenPerSecond>
         <KillXpWorkaround>true</KillXpWorkaround>
     </Progression>
-    <!-- Work-site scan radii in metres around the worker's post: HarvestRadius is how far the chop-wood, mine-stone and pick-plants scans reach; ClayRadius does the same for dig-clay (clay is everywhere, so it stays smaller). Both are clamped to 4-40 m by the loader, so a hand-typed 0 or 500 cannot break a scan. -->
+    <!-- Work-site scan radii in metres around the worker's post: HarvestRadius is how far the chop-wood, mine-stone and pick-plants scans reach; ClayRadius does the same for dig-clay (clay is everywhere, so it stays smaller). HarvestRadius is clamped to 20 to 40 m and ClayRadius to 4 to 40 m by the loader, so a hand-typed 0 or 500 cannot break a scan. -->
     <WorkSite>
-        <HarvestRadius>20</HarvestRadius>
+        <HarvestRadius>30</HarvestRadius>
         <ClayRadius>8</ClayRadius>
         <!-- MineVeinDepthLayers: how many layers of an ore vein she mines,
              counted down from the surface as she first saw it. Clamped 1 to 10.
@@ -268,10 +279,14 @@
              plant or corpse before skipping it (harvest and butcher). Clamped
              5 to 600. WalkBudgetSeconds: how long she keeps walking to one
              target before skipping it (harvest, butcher and the base keeper).
-             Clamped 5 to 120. -->
+             Clamped 5 to 120. HarvestPickSeconds: picking a plant or crop,
+             she plays a gather clip and her hand lands this many seconds
+             into it (then once per loop of the clip while the plant stands).
+             Clamped 0.2 to 5. -->
         <MineVeinDepthLayers>2</MineVeinDepthLayers>
         <SwingBudgetSeconds>60</SwingBudgetSeconds>
         <WalkBudgetSeconds>15</WalkBudgetSeconds>
+        <HarvestPickSeconds>0.8</HarvestPickSeconds>
     </WorkSite>
     <!-- [SDCS-BASEKEEP] The priority a plain "repair the base" order uses:
          base (the most damaged repairable block first) or combat (a block
@@ -287,15 +302,31 @@
              AreaRadiusMetres: how far her worked area reaches; she finishes it
              before moving on to the next worst cluster, and two keepers stay
              this far apart. Clamped 2 to 40.
-             UnderAttackSeconds: in combat repair, a block hit within this many
-             seconds counts as under attack and comes first. Clamped 1 to 60.
+             UnderAttackSeconds: the one under-attack window. In combat
+             repair, a block hit within this many seconds is worked first;
+             the base counts as UNDER ATTACK this long after the newest hit
+             on any tracked block of it, and while it is, the base-repair
+             duty stands down with the weapon out (one timestamp read from
+             the damage tracker, no scan). Clamped 1 to 60.
              ChestReachMetres: how far a chest that is not broadcast may sit from
              her post and still feed her repairs (broadcast chests anywhere in the
-             claims always count). Clamped 2 to 40. -->
+             claims always count). Clamped 2 to 40.
+             BaseKeepRecheckSeconds: how often the "is there anything she can
+             actually repair" answer (skill plus materials, the task's own
+             per-candidate decision) is re-checked for the duty and the combat
+             hold; while nothing is repairable no repair tool comes out.
+             Clamped 0.5 to 10.
+             JobFightDwellSeconds: the commitment between the duty and a fight
+             - once one side won the action decision, the other does not win
+             back for this long, broken at once by a fresh attacker in her
+             reach or a gun in her hand (survival first). Clamped 0 to 15;
+             0 = off. -->
         <RescanSeconds>30</RescanSeconds>
         <AreaRadiusMetres>8</AreaRadiusMetres>
-        <UnderAttackSeconds>5</UnderAttackSeconds>
+        <UnderAttackSeconds>10</UnderAttackSeconds>
         <ChestReachMetres>15</ChestReachMetres>
+        <BaseKeepRecheckSeconds>2</BaseKeepRecheckSeconds>
+        <JobFightDwellSeconds>3</JobFightDwellSeconds>
     </BaseKeeper>
     <!-- [SDCS-CRAFT] The craft order. PostReachMetres: how close to her post
          she must stand to craft; farther away (after a fight) her Guard
@@ -333,12 +364,56 @@
          this many metres of it. A hire you tell to stay within this
          distance of a workstation walks around it the same way. A backpack
          order always brings her back. 0 = she stands at her spot. Clamped
-         0 to 20, default 5.
+         0 to 20, default 2.
+         StationWanderPathMetres: each walk around the station is checked once
+         its path is planned: a path with any point farther than this many
+         metres from the station (a long way round a wall), or farther than
+         she already is, when she starts outside it, is refused and she stays
+         where she is until the next walk. Clamped 1 to 20, default 4.
+         StationStowMetres: while a workstation order runs, and while she
+         stays at the station afterwards, her weapon stays stowed while she
+         is within this many metres of it (the station holds the chat
+         holster): farther, or on a new order, a follow or the job's end,
+         her weapon comes back; an enemy target draws it at once and it is
+         stowed again when the target is gone and she is still there.
+         Clamped 2 to 10, default 4.
+         StationClearanceMetres: she never walks over a workstation; her walk
+         is kept this far from any workstation block (her body's width).
+         Clamped 0 to 1, default 0.3.
+         StationArriveMetres: how close to her spot beside a workstation she
+         walks before she kneels. Clamped 0.15 to 0.7, default 0.3.
+         StationStandInMetres: her spot beside a workstation sits this far
+         from the middle of its cell, toward the station. Clamped 0 to 0.2,
+         default 0.1.
          StationTools: each workstation's tool slots in the game's own order
          (area=tool,tool,tool; stations separated by ;). A tool a recipe needs
          that she carries (her pack or a chest in reach) and the station lacks
          goes into its own slot when she crafts, and stays there. A station
-         or tool not listed here: she never puts one in. -->
+         or tool not listed here: she never puts one in.
+         AnimStations: the craft clip set each station area plays (a set id
+         from AnimSets), in the same area=value shape as StationTools. An
+         area with no set here plays the rummage pose (a line, once).
+         AnimSets: the clip sets, set id then its clips by slot
+         (in:clip,loop:clip,accent:clip,light:clip,refuel:clip,out:clip; a
+         slot may be left out). in plays when she starts working, loop
+         plays while she works (it restarts at its cap), accent plays once
+         now and then while the loop runs, light plays once when she lights
+         the station, refuel plays once when she feeds it fuel, and out
+         plays once when the order ends. A set id with no row plays the
+         rummage pose (a line, once).
+         AnimBackpackSet: the set id a backpack order plays.
+         AnimAccentSeconds: the gap between accents, min and max in
+         seconds, clamped 5 to 600; the next one is rolled in between.
+         AnimLightAtSeconds: a forge or campfire waits for her: she lights
+         it when she is at her spot, this many seconds into her light clip
+         (0 = as the clip starts); a station whose clip set has no light
+         clip is lit as she arrives. Clamped 0 to 30, default 4.
+         HomeStationReachMetres: the station she last crafted at is her
+         home (it stays her home through any order until she crafts at
+         another one). A station recipe you order away from a station of
+         its kind is made at her home station when it is within this many
+         metres of her: she walks there and uses the chests near it.
+         Clamped 5 to 200, default 60. -->
     <Crafting>
         <PostReachMetres>4</PostReachMetres>
         <StationReachMetres>5</StationReachMetres>
@@ -350,10 +425,21 @@
         <ForgeStockUnits>1000</ForgeStockUnits>
         <SmeltOre>resourceScrapIron,resourceScrapBrass,resourceScrapLead,resourceCrushedSand,resourceClayLump,resourceRockSmall</SmeltOre>
         <FieldStations>campfire</FieldStations>
-        <StationWanderMetres>5</StationWanderMetres>
+        <StationWanderMetres>2</StationWanderMetres>
+        <StationWanderPathMetres>4</StationWanderPathMetres>
+        <StationStowMetres>4</StationStowMetres>
+        <StationClearanceMetres>0.3</StationClearanceMetres>
+        <StationArriveMetres>0.3</StationArriveMetres>
+        <StationStandInMetres>0.1</StationStandInMetres>
         <StationTools>campfire=toolCookingPot,toolCookingGrill,toolBeaker;forge=toolBellows,toolAnvil,toolForgeCrucible</StationTools>
+        <AnimStations>campfire=fire;forge=bench;workbench=bench;combineStation=bench;chemistryStation=use;cementMixer=use</AnimStations>
+        <AnimSets>fire=in:craft_fire_in,loop:craft_fire_kneel,accent:craft_fire_toss,light:craft_fire_light,refuel:craft_fire_toss,out:craft_fire_out;bench=loop:craft_bench_hammer,accent:craft_bench_chisel;use=loop:craft_use;pack=in:craft_kneel_in,loop:craft_kneel_hammer,accent:craft_kneel_idle,out:craft_kneel_out</AnimSets>
+        <AnimBackpackSet>pack</AnimBackpackSet>
+        <AnimAccentSeconds>20,40</AnimAccentSeconds>
+        <AnimLightAtSeconds>4</AnimLightAtSeconds>
+        <HomeStationReachMetres>60</HomeStationReachMetres>
     </Crafting>
-    <!-- [SDCS-MEDIC] The low-health lines the medic treats a patient at, in percent of the patient's max health. InCombatHealthPercent applies while an enemy is visible (in combat, only low health counts) and AfterCombatHealthPercent applies once the combat-ended clock has passed its grace. SelfHealHealthPercent is the survivor's own low-health self-heal line, DireHealthPercent the dire line below it (the first aid kit and the pain pills tier), SelfHealCooldownSeconds the wait between low-health self-heals, and BleedRecheckSeconds the wait before a new bleed may trigger another treatment. The three percent lines clamp to 1 to 99 (a dire line at or above the self-heal line warns once and keeps 25), the two seconds lines clamp at 0, and a missing or unreadable node warns once and keeps its default. All six effective values print once at first read as the [SDCS-MEDIC] line. -->
+    <!-- [SDCS-MEDIC] The low-health lines the medic treats a patient at, in percent of the patient's max health. InCombatHealthPercent applies while an enemy is visible (in combat, only low health counts) and AfterCombatHealthPercent applies once the combat-ended clock has passed its grace. SelfHealHealthPercent is the survivor's own low-health self-heal line, DireHealthPercent the dire line below it (the first aid kit and the pain pills tier), SelfHealCooldownSeconds the wait between low-health self-heals, BleedRecheckSeconds the wait before a new bleed may trigger another treatment, and WalkRetrySeconds how long she skips the patient after a walk to him stalled before she may seek him again. The three percent lines clamp to 1 to 99 (a dire line at or above the self-heal line warns once and keeps 25), the three seconds lines clamp at 0, and a missing or unreadable node warns once and keeps its default. All seven effective values print once at first read as the [SDCS-MEDIC] line. -->
     <Medic>
         <InCombatHealthPercent>50</InCombatHealthPercent>
         <AfterCombatHealthPercent>50</AfterCombatHealthPercent>
@@ -361,6 +447,7 @@
         <DireHealthPercent>25</DireHealthPercent>
         <SelfHealCooldownSeconds>30</SelfHealCooldownSeconds>
         <BleedRecheckSeconds>10</BleedRecheckSeconds>
+        <WalkRetrySeconds>10</WalkRetrySeconds>
     </Medic>
     <!-- [SDCS-COMBAT] The six combat rules, read once at boot with the same
          lazy, warn-once shape as the other sections; a missing or unreadable
@@ -378,6 +465,22 @@
          CloseMeleeMinHoldSeconds: minimum seconds on the melee swap before an
              exit is allowed, so a poking enemy cannot ping-pong the hand.
              Clamped 0 to 30.
+         CloseMeleeClosingMetres: the close-melee ENTER guard. A target earns
+             the swap only if it is within her melee reach OR its distance to
+             her fell by at least this many metres over CloseMeleeClosingSeconds
+             (a target parked at a one-block opening is neither, so she keeps
+             the gun). 0 = the guard is off (reach only). Clamped to not
+             negative.
+         CloseMeleeClosingSeconds: the window, in seconds, over which that
+             closing drop is measured (her distance history, sampled on the
+             close-melee tick's 0.2 s grid). 0 = the guard is off (reach
+             only). Clamped to not negative.
+         CloseMeleeWallReenterSeconds: after the wall term (a SOLID block on
+             the swing's own ray) ended a running melee swap, no ENTER for
+             this many seconds: a target whose chest ray alternately clips
+             the wall's edge would otherwise swap the hand every 0.2-0.4 s
+             (enter on a miss, wall exit on a clip). 0 = the latch is off.
+             Clamped to not negative.
          CrawlerAimHeadMetres: on a dedicated server (where a crawler's
              skeleton is never animated) the head aim point is replaced with
              this height above the entity root. Clamped 0.05 to 1.5.
@@ -388,16 +491,172 @@
              to an enemy going for him steps this far aside (away from him) for a
              clear shot. Clamped 1 to 5.
          ClearShotLeaderRadiusMetres: only for an enemy this close to the leader.
-             Clamped 2 to 60. -->
+             Clamped 2 to 60.
+         HealGunThreatMetres: a survivor or a bandit does not stop to bandage
+             herself while an enemy holding a gun has her in sight this close
+             (her gunfire threat list, the one cover uses): she keeps fighting
+             and asks again a second later. Nothing is spent while she waits. A
+             melee enemy never holds the heal (in melee reach she rolls away
+             first, as before), and while she is on fire she heals anyway.
+             0 = never held.
+             Clamped 0 to 60.
+         BreakThroughDoors: before every melee swing she checks that nothing
+             solid stands between her and her target. A closed unlocked door
+             she opens (never another player's). A door she cannot open, a
+             window or bars: true = she breaks through with the melee item she
+             carries that does the most block damage, and switches to her gun
+             the moment the opening gives it a line of fire; false = she does
+             not swing at it. A wall she never swings at.
+         HoldUnseenGiveUpSeconds: a hire holding on an enemy she has not
+             seen gives it up (the hold ends, her engagement commitment is
+             dropped, she follows again) after this long unseen, when the
+             enemy has not hit her. She takes it up again only when she sees
+             it or it hits her. Clamped 2 to 60.
+         MeleeUnreachableSeconds: a melee holder (her held item's first
+             action is not ranged) whose attack target sits outside her
+             melee reach and whose own position makes no progress (at least
+             1 m of movement resets the clock) gets the pair marked
+             unreachable after this long, so her combat actions stop
+             scoring that target and a reachable enemy wins (a hire with no
+             reachable enemy falls back to her follow / stay / guard). The
+             mark drops early when she is within reach of that target.
+             0 = the feature is off. Clamped to not negative.
+         AttackerPrioritySeconds: seconds after a hit at which the enemy
+             that did the damaging still beats the keep-target preference:
+             while fresh, an attacker within her melee reach (or a gun in
+             the hand, which shoots through the gap) scores the same as her
+             current target, so she turns and fights back instead of
+             holding on a target that is not hitting her. The hit read is
+             the game's own revenge target (set on every hit, its 25 s
+             timer re-armed each time). 0 = the exception is off.
+             Clamped 0 to 15.
+         MeleeUnreachableForgetSeconds: how long a marked pair stays
+             ignored before she tries that target again (with a fresh
+             no-progress window). Clamped to not negative.
+         MeleeUnreachableNearMetres: how close a melee holder must be to
+             her OUT-OF-REACH target for a STILL trying tick to count:
+             standing at an opening, she sees her target and cannot close
+             to it, so the stuck time runs while she holds, whatever
+             action she is in (a hold, a crouch, a blast, cover). Walking
+             within any distance still counts as before. 0 = off (only a
+             walking holder bills the stuck time). Clamped to not negative.
+         TimidFleeDistanceMetres: the radius in metres at which a class that
+             sets the $Timid cvar (the SdcsNpcCore Flee action) flees an
+             enemy it can see instead of fighting; npcSdcsSurvivorFemaleTimid
+             is the example class. 0 = never flee (the kill switch).
+             Clamped to not negative.
+         SightStealthOnlyWhileLeaderCrouches: the sight hold SCore puts
+             on a hired survivor while her player leader is invisible to
+             an enemy (the enemy cannot see the leader at this distance
+             and light level) applies ONLY while the leader crouches.
+             Standing, the hold is skipped and she fights normally.
+             false = SCore's own answer (the hold applies whether the
+             leader crouches or stands).
+         SightThroughPlants: her sight ray passes see-through plants
+             (grass, bushes, flowers, crops; never a tree trunk, the
+             same rule her aim and melee reach use) up to a bounded
+             number of plants, so an enemy standing in tall grass is
+             seen. false = SCore's own answer (the first plant her ray
+             hits blocks her sight).
+         SightStealth: for a player or one of our NPCs (the ELIGIBLE
+             targets), her sight test uses the game's stealth value on
+             the SIGHT target itself (the player's or the survivor's
+             player-like light level, crouch and speed included), the
+             way the stealth indicator does, instead of SCore's own step
+             which tests only its ATTACK target and never an NPC sight
+             target (while she picks a target, stealth never counts).
+             Seen when the target's light, lowered per plant, is above
+             her own class's SightLightThreshold at that distance
+             (CanSeeStealth: per class, no global multiplier). The
+             answer goes both ways: a target SCore's own true answer
+             cached is lost when its light drops, within the see cache
+             life (30 ticks). false = the plain sight fix (SCore's own
+             step, the hard plant-hidden block).
+         SightPlantStealthFactor: the factor ONE see-through plant in
+             the sight line lowers an eligible target's stealth light
+             by (each plant multiplies again: two plants is the factor
+             squared). 0 = any plant in the line hides the target
+             completely; 1 = plants do not lower the light (the plain
+             see-through). Clamped to not negative.
+         SightPlantStealthFactorHidden: the stronger per-plant factor
+             that applies INSTEAD of SightPlantStealthFactor while the
+             target carries $HidesInPlants AND crouches (the hard
+             plant-hidden block, its effect carried by this factor;
+             standing exposes the target to the plain factor). Clamped
+             to not negative.
+         DeathGuardLeashMetres: the leash radius of the DEATH-GUARD
+             hire (her leader died, she guards his dropped bag: every
+             fight move of hers stays this far flat of his death spot,
+             the level band staying the bandit's, SentryLevelMetres).
+             Her own radius, wider than the bandit's SentryLeashMetres:
+             there is no 1.5 m of cover at a bag, but real cover within
+             a few metres of one. Bandits keep SentryLeashMetres.
+             Clamped 2 to 30. -->
     <Combat>
         <WildTargetedRadiusMetres>15</WildTargetedRadiusMetres>
         <CloseMeleeEnterMetres>3</CloseMeleeEnterMetres>
         <CloseMeleeExitMetres>5</CloseMeleeExitMetres>
         <CloseMeleeMinHoldSeconds>3</CloseMeleeMinHoldSeconds>
+        <CloseMeleeClosingMetres>0.5</CloseMeleeClosingMetres>
+        <CloseMeleeClosingSeconds>1</CloseMeleeClosingSeconds>
+        <CloseMeleeWallReenterSeconds>1</CloseMeleeWallReenterSeconds>
         <CrawlerAimHeadMetres>0.45</CrawlerAimHeadMetres>
         <CrawlerAimBellyMetres>0.25</CrawlerAimBellyMetres>
         <ClearShotStepMetres>2</ClearShotStepMetres>
         <ClearShotLeaderRadiusMetres>20</ClearShotLeaderRadiusMetres>
+        <HealGunThreatMetres>25</HealGunThreatMetres>
+        <BreakThroughDoors>true</BreakThroughDoors>
+        <HoldUnseenGiveUpSeconds>5</HoldUnseenGiveUpSeconds>
+        <TimidFleeDistanceMetres>15</TimidFleeDistanceMetres>
+        <MeleeUnreachableSeconds>3</MeleeUnreachableSeconds>
+        <MeleeUnreachableForgetSeconds>20</MeleeUnreachableForgetSeconds>
+        <MeleeUnreachableNearMetres>3</MeleeUnreachableNearMetres>
+        <AttackerPrioritySeconds>3</AttackerPrioritySeconds>
+        <!-- [SDCS-MELEEREACH] The swing arc. A swinging
+             weapon (a club, a sledge, a bat) models its arc: MeleeArcRays
+             rays spread across the weapon's own SwingDegrees, swept about
+             her up axis when the weapon's action is IsHorizontalSwing, else
+             about her right axis, each rolled by the weapon's SwingAngle
+             about the eye-to-chest line and cast with the weapon's Sphere
+             thickness, each only as long as the distance to the target.
+             Any arc ray meeting a solid block blocks the swing (the target
+             counts unreachable, she retargets or switches to a thrusting
+             weapon or a gun). A thrusting weapon (spear, knife, knuckles by
+             the tag lists below) keeps the single eye-to-chest ray and
+             NpcThrustPiercesBars lets it cast with the arrow mask, so bars
+             and anything an arrow passes do not stop it (its real swing
+             then uses the arrow hit mask for the length of one cast).
+             A weapon joins either side by its own property: an item with
+             <property name="SdcsMeleeStyle" value="thrust"/> (or
+             value="swing") reads that over both tag lists. MeleeThrustTags
+             is a comma list of item tags that make a weapon thrust; a tag
+             in MeleeSwingTags forces swing and beats the thrust list. -->
+        <MeleeArcRays>5</MeleeArcRays>
+        <MeleeThrustTags>perkJavelinMaster,perkDeepCuts,perkBrawler</MeleeThrustTags>
+        <MeleeSwingTags></MeleeSwingTags>
+        <!-- [SDCS-MELEEREACH] A blocked swing may hit the blocking block:
+             on, and the held weapon's block damage at or above
+             MeleeSwingBlockDamageMin, she swings at the solid block and
+             damages it (hires and bandits alike); below the threshold, or
+             off, she does not swing at all and the target counts
+             unreachable. Only high block damage weapons hit block, the
+             way a player with a sledge hammer would. -->
+        <MeleeSwingHitsBlocks>false</MeleeSwingHitsBlocks>
+        <MeleeSwingBlockDamageMin>30</MeleeSwingBlockDamageMin>
+        <!-- [SDCS-MELEEREACH] Thrust through bars: NPCs (on) and the
+             LOCAL player (off: it makes base defence much easier, so it is
+             a deliberate choice). The player's own vanilla melee never
+             pierces bars; with the key on, YOUR thrusting weapons use the
+             arrow hit mask on your own client only (a remote player's copy
+             is never touched). -->
+        <NpcThrustPiercesBars>true</NpcThrustPiercesBars>
+        <PlayerThrustPiercesBars>false</PlayerThrustPiercesBars>
+        <SightStealthOnlyWhileLeaderCrouches>true</SightStealthOnlyWhileLeaderCrouches>
+        <SightThroughPlants>true</SightThroughPlants>
+        <SightStealth>true</SightStealth>
+        <SightPlantStealthFactor>0.7</SightPlantStealthFactor>
+        <SightPlantStealthFactorHidden>0.35</SightPlantStealthFactorHidden>
+        <DeathGuardLeashMetres>8</DeathGuardLeashMetres>
     </Combat>
     <!-- [SDCS-FOLLOW] How a hired survivor paces herself while following
          you, read once at boot; a missing or unreadable node warns once and
@@ -429,14 +688,65 @@
              storey by default, so she clears the room above or below you
              but not the whole building. The horizontal reach is the loot
              action's own leaderRange. Clamped 1 to 20.
+         BagRangeMetres: how far from you, flat, she still takes a loot bag
+             on the ground: the bag is her top priority and it despawns, so
+             it gets its own range, wider than the container leaderRange.
+             Unlike the container it has no vertical limit: she takes a bag
+             on any floor she has a path to. Clamped 1 to 100.
          ReturnTeleportMetres: after "loot around here" ends, within this
              distance she walks back to you; beyond it she teleports. Kept
-             below the stay-post leash 45. Clamped 5 to 44. -->
+             below the stay-post leash 45. Clamped 5 to 44.
+         LowTopMetres: a container whose top is at most this far above
+             her feet is looted kneeling (a step in, a low reach) when she
+             stands far enough back; a taller one, waist high and up, she
+             leans into on her feet. A loot bag on the ground is always
+             looted kneeling, however close she stands. Clamped 0.3 to 3.
+         ChainMetres: when her next bag or low container is this close
+             (flat, from where she knelt), she stays kneeling and steps or
+             turns to it: the stand up clip plays only when the chain ends.
+             0 turns chaining off. Clamped 0 to 4.
+         BagSightLift: a loot bag's eye line is checked to a point this far
+             above the bag, so a bag lying in a dip of the ground is still
+             seen; the ground right at the bag never hides it, a wall or a
+             hill between her and it still does. Clamped 0 to 1.5.
+         ChainHoldSeconds: after a rummage with a close target left, how long
+             she stays kneeling for the next one before she stands up after
+             all. Clamped 0 to 10.
+         FaceWaitSeconds: the longest she turns toward a bag or container
+             before her rummage starts anyway. Clamped 0 to 5.
+         TurnDegreesPerSecond: how fast she turns to face what she loots, in
+             degrees per second. Clamped 90 to 1080.
+         RummageBreakMetres: while she follows you and rummages a bag or a
+             container, she stays at it as long as you are within this many
+             metres; farther away she breaks off and follows (the items stay
+             where they were). Clamped 4 to 40.
+         DrawGraceSeconds: after a rummage ends her weapon stays stowed this
+             long; the next container she opens inside it keeps the stow, so
+             the gun does not flash out between containers. A fight draws at
+             once. 0 draws as soon as the rummage ends. Clamped 0 to 30.
+         ResumeFreeSlots: when her pack fills, a loot, harvest, mine, clay,
+             pick or butcher job pauses instead of ending: she comes back to
+             you as before, and once you empty her pack to at least this many
+             free slots she goes back to the job and its post. Clamped 1 to 100.
+         ResumeMinutes: how long the pause waits for an empty pack; after
+             that, or when you give her any other order, it is plain follow.
+             0 turns the pause off (a full pack ends the job). Clamped 0 to 240. -->
     <Loot>
         <BagMaxMedical>5</BagMaxMedical>
         <BagMaxAmmoStacks>2</BagMaxAmmoStacks>
         <VerticalReachMetres>3</VerticalReachMetres>
+        <BagRangeMetres>25</BagRangeMetres>
         <ReturnTeleportMetres>40</ReturnTeleportMetres>
+        <LowTopMetres>1.1</LowTopMetres>
+        <DrawGraceSeconds>3</DrawGraceSeconds>
+        <ResumeFreeSlots>5</ResumeFreeSlots>
+        <ResumeMinutes>10</ResumeMinutes>
+        <ChainMetres>1</ChainMetres>
+        <BagSightLift>0.5</BagSightLift>
+        <ChainHoldSeconds>3</ChainHoldSeconds>
+        <FaceWaitSeconds>1.5</FaceWaitSeconds>
+        <TurnDegreesPerSecond>360</TurnDegreesPerSecond>
+        <RummageBreakMetres>12</RummageBreakMetres>
     </Loot>
 
     <!-- [SDCS-AMMO] A hired survivor inside your land claim (or an ally's)
@@ -489,6 +799,10 @@
              from the last moment she saw it (or was hit by it); then she gives up.
          SeekArriveMetres: close enough to the last-seen spot to count as having got
              there and start searching.
+         SeekArriveHeightMetres: and no farther above or below the spot than this, so a
+             bandit on the floor above or below it keeps walking her path instead of
+             stopping over it. Kept below one storey. Also used by an Aggressive hire's
+             seek. Clamped 1 to 10.
          SeekSearchSeconds: how long she searches the spot for it before giving up
              and resting.
          SeekHitSeedSeconds: a shot re-seeds the seek only this fresh (measured from
@@ -496,16 +810,102 @@
              seek until a new shot lands inside this window.
          SeekLookTurnSeconds: during the search, her look turns to a fresh random
              point at this interval.
-         SeekLookMetres: how far away those search look points are. -->
+         SeekLookMetres: how far away those search look points are. These Seek* keys also
+             time an Aggressive hire's seek of a bandit she lost sight of (the hire seek
+             reuses the bandits' seek task and these settings; its leash is Cover
+             GunThreatLeashMetres, not a key here).
+         MatesMinMetres, MatesMaxMetres: when a biome line spawns a bandit whose class
+             names mates (SdcsSpawnMates), each mate spawns this far from her, in whole
+             metres, on a spot a zombie could spawn on. Clamped 0 to 31 and 1 to 32;
+             the maximum is kept above the minimum.
+         MatesMinPlayerMetres: a mate's spot is at least this far from every player, so
+             she does not appear in front of one. The console test command
+             sdcsbandit group places its mates beside the player and ignores it.
+             Clamped 0 to 100.
+         LineCooldownSeconds: the moment a bandit locks onto a person to fight (a
+             player or an NPC, never a zombie or an animal) she says one cold line
+             from her personality's CombatLines (the voice mod's personalities.xml),
+             then not again for this long. Spoken by text to speech only: with it
+             off she stays silent. Clamped 0 to 3600.
+         LineGroupQuietSeconds, LineGroupMetres: after a bandit's line, every other
+             bandit within LineGroupMetres of where she said it stays quiet for
+             LineGroupQuietSeconds, so only the first of a group speaks. Clamped 0
+             to 3600 and 0 to 200.
+         SleepWake: true = a sleeping bandit wakes when she hears or sees someone,
+             the way a sleeping zombie does, in a room you have not entered too:
+             your noise (a gunshot carries far, a crouched step barely), or you in
+             her sleeping view; she wakes with you as her target and goes to where
+             she noticed you. A survivor she hears or sees wakes her the same way.
+             Walking into her room still wakes the room. false = she wakes only
+             when her room wakes, when she is hurt or when a blast hits her. Her
+             hearing and sleeping sight thresholds are her class's Sleeper*
+             properties (entityclasses.xml npcSdcsBase, the zombie's own values).
+         WakeCheckSeconds: how often a sleeping bandit's senses run. Clamped 0.25
+             to 2.
+         WakeSightMetres: how far she sees while asleep. Clamped 2 to 20.
+         WakeSightAngle: her sleeping view cone, in degrees, around the way she
+             faces. Clamped 30 to 360.
+         WakeSightCurveMetres: the distance over which the light she needs to
+             wake rises from her point blank value to her far one, so a lit player
+             wakes her from farther than a dark one. Clamped 10 to 60, and never
+             below WakeSightMetres.
+         NoCoverRetrySeconds: a melee bandit with no cover to hop to charges her
+             target instead (her approach while she sees him, her seek while she
+             does not), and looks for cover again only after this long. Clamped
+             0.5 to 30.
+         SeekTrackMetres: a bandit who cannot see the enemy she is fighting goes to
+             where he IS while he is this close, not to where she last saw him; the
+             moment she sees him, she attacks. Farther away, the last seen seek
+             above. 0 = never. Clamped 0 to 40.
+         SentryLeashMetres: a posted bandit holds her post in a fight. Posted: a
+             sentry (the Bandits Sentry and SentryRanged sleeper groups: she wakes on
+             her sleeper spot on the Stay order, her post there) or any bandit on the
+             Stay or Guard order (the guard spawn blocks). She may step this far, flat,
+             from her post for cover or a clear shot, never off its level (more than
+             SentryLevelMetres up or down); she does not approach, back off, seek
+             or follow a noise, and she still shoots, throws and fights in melee from
+             there. Knocked off it she walks back. Clamped 0.5 (her own cell only)
+             to 6.
+         SentryLevelMetres: how far above or below her post's floor still counts as on
+             it for a posted bandit (the leash's height band, separate from the
+             seek's SeekArriveHeightMetres): her cover spot, her cover path, her step
+             out and her dodge step all stay within it of the post's floor, and
+             knocked farther off she walks back. A full block is 1.0 m, so at the
+             default only her own floor counts. Clamped 0.25 to 2.5.
+         PoiTierFloors: a POI's difficulty tier (the skulls the game shows) sets a
+             floor on the bandits its sleeper volumes spawn: the Bandits sleeper groups
+             pick their spawn step by the larger of the gamestage and the floor for the
+             POI's tier, so a hard POI holds hard bandits even at a low gamestage, and a
+             high gamestage still raises them. Pairs of tier:gamestage, comma separated.
+             The steps: below 100 tier 1 bandits, from 100 tier 2, from 400 tier 3. A tier
+             with no pair has no floor, and zombies and every other group are untouched.
+             A bad pair is skipped with a warning. -->
     <Bandits>
         <PlayerDamage>0.5</PlayerDamage>
         <SpreadByTier>0,0,0</SpreadByTier>
         <SeekMemorySeconds>20</SeekMemorySeconds>
         <SeekArriveMetres>2</SeekArriveMetres>
+        <SeekArriveHeightMetres>2.5</SeekArriveHeightMetres>
         <SeekSearchSeconds>6</SeekSearchSeconds>
         <SeekHitSeedSeconds>1.5</SeekHitSeedSeconds>
         <SeekLookTurnSeconds>1.5</SeekLookTurnSeconds>
         <SeekLookMetres>5</SeekLookMetres>
+        <MatesMinMetres>2</MatesMinMetres>
+        <MatesMaxMetres>6</MatesMaxMetres>
+        <MatesMinPlayerMetres>20</MatesMinPlayerMetres>
+        <LineCooldownSeconds>60</LineCooldownSeconds>
+        <LineGroupQuietSeconds>10</LineGroupQuietSeconds>
+        <LineGroupMetres>32</LineGroupMetres>
+        <SleepWake>true</SleepWake>
+        <WakeCheckSeconds>0.5</WakeCheckSeconds>
+        <WakeSightMetres>6</WakeSightMetres>
+        <WakeSightAngle>180</WakeSightAngle>
+        <WakeSightCurveMetres>30</WakeSightCurveMetres>
+        <NoCoverRetrySeconds>3</NoCoverRetrySeconds>
+        <SeekTrackMetres>20</SeekTrackMetres>
+        <SentryLeashMetres>1.5</SentryLeashMetres>
+        <SentryLevelMetres>0.6</SentryLevelMetres>
+        <PoiTierFloors>1:1,2:1,3:100,4:100,5:400,6:400</PoiTierFloors>
     </Bandits>
 
     <!-- [SDCS-REPAIRSKILL] A hired keeper learns to repair by repairing. Every paid
@@ -581,10 +981,13 @@
          where her loot goes: what she can use into her bag, the rest into her stock for
          sale, so you can buy it back. Single player and the host's own player for now.
          Read once at boot.
+         Enabled: false turns pickpocketing off for every survivor, whatever her class
+             sets (thief-class survivors still spawn and act as survivors).
          SurvivorMinutes: one attempt per thief per this many minutes.
          VictimMinutes: one attempt on the same player per this many minutes.
          ReachMetres: how close she must be. -->
     <Pickpocket>
+        <Enabled>true</Enabled>
         <SurvivorMinutes>10</SurvivorMinutes>
         <VictimMinutes>30</VictimMinutes>
         <ReachMetres>2</ReachMetres>
@@ -619,4 +1022,375 @@
         <StuckMetres>3</StuckMetres>
         <StuckSeconds>6</StuckSeconds>
     </Wander>
+
+    <!-- Cover (the cover spot scan, [SDCS-COVER]): the scan builds a ring
+         of standable cells around her and probes the sides that face the
+         threat, by block facts first and short bullet-stop rays second.
+         SearchRadiusBlocks: the ring radius in blocks (Chebyshev) around
+             her cell. Clamped 1 to 12.
+         MaxCandidates: the most spots one scan keeps before it stops. Clamped
+             1 to 40.
+         MaxRaysPerScan: the most cover rays one scan spends before it stops.
+             Clamped 10 to 2000.
+         LowCoverMinMetres: a side is low cover (she is hidden crouched) when
+             its blocked run from the floor reaches this height in metres.
+         StandCoverMinMetres: a side is standing cover (she is hidden
+             standing) when its blocked run reaches this height in metres.
+         OverShotMetres: the sample height in metres of the over-the-top
+             shot test for low cover (her shot toward the threat from
+             standing height, blocked within the first 0.6 m or not).
+         ThreatRadiusMetres: the true distance in metres the threat scan
+             looks for gunfire threats (players, bandits, gun-armed
+             survivors; zombies never count).
+         ThreatMemorySeconds: how long a threat she stopped seeing stays
+             on her list before it expires.
+         MaxThreats: the most threats her list keeps, nearest first.
+             Clamped 1 to 8.
+         ThreatRefreshSeconds: the most often the threat list refreshes,
+             in seconds.
+         ThreatHitWindowSeconds: a threat scan runs while she was hit
+             within this many seconds.
+         LeanBodyDegrees: the full lean-out-to-fire in degrees at a lean
+             amount of 1, spread across the three spine bones. Clamped
+             0 to 45.
+         LeanSpeed: the lean amount per second the lean eases at. Clamped
+             0.5 to 20.
+         LeanWallMarginMetres: the clearance in metres the lean keeps
+             between her head and a wall (the wall stop).
+         LeanHeadOffsetMetres: the sideways head shift in metres at a
+             full lean, which LeanBodyDegrees produces (change the two
+             together). The wall stop limits the lean with it, and the
+             cover scan puts her lean peek this far to each side.
+         ArriveMetres: the flat distance in metres to the spot that counts
+             as arrived; the last metre is walked directly.
+         MinHoldSeconds: how long she holds a spot before she may leave it
+             when she is not flanked.
+         AdvanceHoldSeconds: the shorter hold while advancing between
+             spots (P4c1 holds the base hold for everyone).
+         ReentryCooldownSeconds: the no-cover wait after she leaves a
+             spot, so a flanked leave does not re-commit at once.
+         FollowAreaMetres: the area radius for a hired follow order,
+             around her leader.
+         FlankCheckSeconds: the most often the held spot is re-traced for
+             a flank, in seconds.
+         NoSpotCooldownSeconds: the no-cover wait after a scan finds no
+             spot, so a spotless fight does not rescan every second. -->
+    <Cover>
+        <SearchRadiusBlocks>6</SearchRadiusBlocks>
+        <MaxCandidates>12</MaxCandidates>
+        <MaxRaysPerScan>200</MaxRaysPerScan>
+        <LowCoverMinMetres>0.94</LowCoverMinMetres>
+        <StandCoverMinMetres>1.9</StandCoverMinMetres>
+        <OverShotMetres>1.3</OverShotMetres>
+        <ThreatRadiusMetres>40</ThreatRadiusMetres>
+        <ThreatMemorySeconds>10</ThreatMemorySeconds>
+        <MaxThreats>4</MaxThreats>
+        <ThreatRefreshSeconds>0.5</ThreatRefreshSeconds>
+        <ThreatHitWindowSeconds>5</ThreatHitWindowSeconds>
+        <!-- GunThreatMemorySeconds: after a threat has engaged (it targeted her, her leader or a squad mate; a bandit, another bandit; or it hurt her), it still counts as a GUN THREAT for this long, s. -->
+        <GunThreatMemorySeconds>15</GunThreatMemorySeconds>
+        <!-- GunThreatLeashMetres: how far from her leader a gun threat may sit and still authorise a Defensive hire to answer it, and holds her engagement commitment to it, m. -->
+        <GunThreatLeashMetres>40</GunThreatLeashMetres>
+        <LeanBodyDegrees>25</LeanBodyDegrees>
+        <LeanSpeed>4</LeanSpeed>
+        <LeanWallMarginMetres>0.1</LeanWallMarginMetres>
+        <LeanHeadOffsetMetres>0.18</LeanHeadOffsetMetres>
+        <ArriveMetres>0.5</ArriveMetres>
+        <MinHoldSeconds>6</MinHoldSeconds>
+        <AdvanceHoldSeconds>3</AdvanceHoldSeconds>
+        <ReentryCooldownSeconds>2</ReentryCooldownSeconds>
+        <FollowAreaMetres>8</FollowAreaMetres>
+        <!-- LeaderMoveMarginMetres: slack beyond her follow cover area; her held spot is left and re-picked at the leader's current position when the leader is this far past it, m. -->
+        <LeaderMoveMarginMetres>2</LeaderMoveMarginMetres>
+        <FlankCheckSeconds>0.5</FlankCheckSeconds>
+        <NoSpotCooldownSeconds>3</NoSpotCooldownSeconds>
+        <!-- HideSeconds: how long she stays hidden in cover before she pops out to fire, s. -->
+        <HideSeconds>2</HideSeconds>
+        <!-- FireMinSeconds: the shortest out-of-cover firing window one cycle rolls, s. -->
+        <FireMinSeconds>1</FireMinSeconds>
+        <!-- FireMaxSeconds: the longest out-of-cover firing window one cycle rolls, s. -->
+        <FireMaxSeconds>2.5</FireMaxSeconds>
+        <!-- LeanSettleSeconds: how long her lean gets to reach out before she aims, s. -->
+        <LeanSettleSeconds>0.3</LeanSettleSeconds>
+        <!-- PeekMaxSeconds: the longest she stays out of cover without seeing the target before she goes back, and a blind loss longer than this ends the firing window early, s. -->
+        <PeekMaxSeconds>1.5</PeekMaxSeconds>
+        <!-- PeekCheckSeconds: the cadence of her head-to-target sight check while out of cover, s. -->
+        <PeekCheckSeconds>0.1</PeekCheckSeconds>
+        <!-- PeekMissesBeforeMove: pop-outs in a row that never see the target before she leaves the spot and re-picks one she can fire from. -->
+        <PeekMissesBeforeMove>2</PeekMissesBeforeMove>
+        <!-- BadSpotSeconds: how long a spot she left for no sight stays skipped by her re-picks, s. -->
+        <BadSpotSeconds>10</BadSpotSeconds>
+        <!-- RetakeAfterSeconds: a holder without cover re-takes a shot position (moves to a cell that sees the last-seen point) after this long unseen, s. -->
+        <RetakeAfterSeconds>1</RetakeAfterSeconds>
+        <!-- RetakeCooldownSeconds: the wait between two re-take attempts for one holder, s. -->
+        <RetakeCooldownSeconds>3</RetakeCooldownSeconds>
+        <!-- RetakeMoveMaxSeconds: a re-take walk that has not arrived after this long gives up (stall or timeout), s. -->
+        <RetakeMoveMaxSeconds>5</RetakeMoveMaxSeconds>
+        <!-- PeekLookSeconds: how long a melee holder (Wait mode) looks at the threat once she sees it before she goes back behind cover, s. -->
+        <PeekLookSeconds>0.75</PeekLookSeconds>
+        <!-- BoundStepMetres: the farthest a Bound-mode hop (the Aggressive melee holder) may be from her, m. -->
+        <BoundStepMetres>12</BoundStepMetres>
+        <!-- BoundMinGainMetres: the flat distance a Bound-mode hop must cut toward the threat to be eligible, m. -->
+        <BoundMinGainMetres>3</BoundMinGainMetres>
+        <!-- BoundHoldSeconds: how long a Bound-mode holder holds crouched behind a hop before she picks the next one, s. -->
+        <BoundHoldSeconds>1.5</BoundHoldSeconds>
+        <!-- MeleeCloseMetres: the flat distance at which an Aggressive melee holder steps out of cover to fight the threat, m. -->
+        <MeleeCloseMetres>6</MeleeCloseMetres>
+        <!-- ShelterMetres: how close to her leader a sheltering (spotless, Wait-mode) hired holder crouches, m. -->
+        <ShelterMetres>2</ShelterMetres>
+        <!-- ShelterRescanSeconds: how often a sheltering holder re-scans for a cover spot, s. -->
+        <ShelterRescanSeconds>3</ShelterRescanSeconds>
+        <!-- FruitlessRescanMoveMetres: after a cover scan that found nothing, she does not scan again until she, her threat or her cover area centre has moved this far (or her threat, mode or order changed, or FruitlessRescanSeconds passed); meanwhile she takes the same no-cover exit, m (0.5 to 10). -->
+        <FruitlessRescanMoveMetres>2</FruitlessRescanMoveMetres>
+        <!-- FruitlessRescanSeconds: the longest a cover scan that found nothing is trusted when nothing moves; it saves scans only when longer than NoSpotCooldownSeconds and ShelterRescanSeconds, s (0.5 to 15). -->
+        <FruitlessRescanSeconds>9</FruitlessRescanSeconds>
+    </Cover>
+
+    <!-- [SDCS-THROW] NPCs throw the explosives they carry: a bandit rolls
+         a few at spawn from her class's SdcsThrowables property, a hire
+         throws what is in her pack, and each throw uses one up. Nobody
+         throws near friends: the predicted blast must not reach the
+         thrower, her leader, a squad mate (bandits spare bandits), and a
+         hire never throws when it reaches her leader's land claim. Timed
+         charges only at long range. Hold fire never throws.
+         HiresThrow: a hired NPC may throw on her own, by stance.
+         BanditsThrow: a bandit may throw.
+         MinRangeMetres: the closest target distance a throw may aim at, m.
+         MaxRangeMetres: the farthest target distance a throw may aim at, m.
+         CooldownSeconds: the rest between two throws by the same NPC, s.
+         SafetyMarginMetres: the clearance the blast keeps beyond its own
+             radius, from the thrower and from every friend, m.
+         ChargeExtraMarginMetres: the timed charge's own clearance on top
+             of the blast radius and the safety margin: it only flies at
+             or beyond the sum, m.
+         GroupRadiusMetres: enemies within this many metres of the target
+             count as one group, the case where fire is worth it, m.
+         GroupMinCount: at least this many enemies within GroupRadiusMetres
+             of the target count as a group, the second case a throw is
+             worth it.
+         GroupClaimSeconds: while a friend's throw claim is this fresh,
+             nobody else throws at that group (one thrower per group), s.
+         RefusedRetrySeconds: after a refused wind-up she does not try
+             again for this long, s.
+         ThrowSpeed: the MINIMUM launch speed in metres per second the
+             throw's arc is solved for.
+         ThrowSpeedMax: the maximum launch speed; the distance-fitted
+             speed (ThrowSpeed x a margin that grows with the range)
+             is clamped to this.
+         ThrowSpeedMargin: the multiplier on the distance-fitted speed,
+             the clearance over the exact reach.
+         WindUpSeconds: the wind-up before the release, s.
+         FaceDegrees: the turn phase starts the wind-up when she is facing
+             the aim point within this angle, degrees (1 to 179).
+         TurnMaxSeconds: the turn phase gives up after this long and the
+             wind-up starts anyway, s.
+         ThrowPlanCacheSeconds: how long the throw consideration's verdict
+             is reused per target before it resolves again, s. -->
+    <Throw>
+        <HiresThrow>true</HiresThrow>
+        <BanditsThrow>true</BanditsThrow>
+        <!-- BanditMolotovGroupsOnly: true, a bandit saves her molotov for a group
+             (GroupMinCount enemies within GroupRadiusMetres of the target) and never
+             throws it at a lone target hiding in cover; a pipe bomb still goes at a
+             lone hider. false, her molotov also goes at a lone target she lost sight
+             of. Hires are not affected. -->
+        <BanditMolotovGroupsOnly>true</BanditMolotovGroupsOnly>
+        <MinRangeMetres>5</MinRangeMetres>
+        <MaxRangeMetres>25</MaxRangeMetres>
+        <CooldownSeconds>12</CooldownSeconds>
+        <SafetyMarginMetres>2</SafetyMarginMetres>
+        <ChargeExtraMarginMetres>3</ChargeExtraMarginMetres>
+        <GroupRadiusMetres>4</GroupRadiusMetres>
+        <!-- GroupMinCount: the group size a throw is worth it from (2 to 10). -->
+        <GroupMinCount>3</GroupMinCount>
+        <!-- GroupClaimSeconds: one thrower per group, the claim's life, s. -->
+        <GroupClaimSeconds>4</GroupClaimSeconds>
+        <!-- RefusedRetrySeconds: the back-off after a refused wind-up, s. -->
+        <RefusedRetrySeconds>3</RefusedRetrySeconds>
+        <!-- ThrowSpeed: the minimum launch speed, m/s. -->
+        <ThrowSpeed>14</ThrowSpeed>
+        <!-- ThrowSpeedMax: the maximum launch speed, m/s. -->
+        <ThrowSpeedMax>20</ThrowSpeedMax>
+        <!-- ThrowSpeedMargin: the multiplier on the distance-fitted speed. -->
+        <ThrowSpeedMargin>1.1</ThrowSpeedMargin>
+        <WindUpSeconds>1</WindUpSeconds>
+        <!-- FaceDegrees: close enough to count as facing the aim point. -->
+        <FaceDegrees>15</FaceDegrees>
+        <!-- TurnMaxSeconds: the turn phase's give-up clock, s. -->
+        <TurnMaxSeconds>1</TurnMaxSeconds>
+        <!-- ThrowPlanCacheSeconds: the consideration verdict's lifetime, s. -->
+        <ThrowPlanCacheSeconds>0.5</ThrowPlanCacheSeconds>
+        <!-- MeleeChargeMetres: how far outside the blast limit a melee friend whose
+             target is in the blast still blocks the throw, m (the scan box widens by it). -->
+        <MeleeChargeMetres>12</MeleeChargeMetres>
+        <!-- FriendPathMetres: how far along the launch line from the release point a
+             friend's head or chest refuses or cancels the throw, m (0 to 10; 0 turns
+             the test off). -->
+        <FriendPathMetres>3</FriendPathMetres>
+        <!-- FriendBodyRadius: how close to that line a friend's head or chest counts
+             as in the throw's path, m (0.1 to 1.5). -->
+        <FriendBodyRadius>0.45</FriendBodyRadius>
+    </Throw>
+
+    <!-- Dodge: the live-explosive dodge (a player's, a hire's or a
+         bandit's thrown bomb is a danger to everyone in its radius).
+         HiresDodge: hired and wild survivors dodge. A wild survivor
+             (unhired) dodges with this switch, the bandits' does not
+             cover her.
+         BanditsDodge: the SDCS bandits dodge (grenades included).
+         MarginMetres: the margin added to the blast radius for the
+             danger test, metres (perks enlarge the radius, the int
+             radius rounds).
+         LookAheadSeconds: how far ahead the landing of an explode-on-hit
+             item (contact grenade, molotov) is predicted while it is in
+             flight, s.
+         CheckIntervalSeconds: the per-NPC danger recheck, s (0.05 to 1).
+         InFlightSpeed: a timed bomb whose speed is above this, m/s, takes
+             its predicted landing as the danger point; at or below it the
+             bomb is at rest and its own position is. -->
+    <Dodge>
+        <HiresDodge>true</HiresDodge>
+        <BanditsDodge>true</BanditsDodge>
+        <MarginMetres>1.5</MarginMetres>
+        <LookAheadSeconds>2</LookAheadSeconds>
+        <CheckIntervalSeconds>0.2</CheckIntervalSeconds>
+        <InFlightSpeed>0.5</InFlightSpeed>
+        <!-- MolotovFireSeconds: how long a detonated molotov's fire zone stays a danger, s. -->
+        <MolotovFireSeconds>8</MolotovFireSeconds>
+    </Dodge>
+
+    <!-- Emotes: short gestures a survivor plays on her own.
+         Reactions: one group per event.
+             Hire: she salutes right after you hire her.
+             FightEnd: a hire fist bumps when a fight she was in is over
+                 (bandits never do).
+             Greet: she waves with her greeting when it plays toward you.
+         Each group: Enabled (true or false), Chance (0 to 1, how often it
+         plays when it may) and CooldownSeconds (per survivor, s; 0 = none).
+         A reaction is skipped, never saved for later, while she fights,
+         walks, plays another animation, works a job, sits in a vehicle or
+         has an enemy near. The one exception is the hire salute:
+         Hire PendingSeconds (0 to 10, s) is how long it waits for her to be
+         free after the hire before it is dropped. A survivor already hired
+         when the world loads never salutes. -->
+    <Emotes>
+        <!-- Reactions: short gestures on events. Each block: Enabled (true
+             or false), Chance (0 to 1), CooldownSeconds (per survivor) and
+             Clips (clip ids from SdcsAnimClips.xml, comma separated, one
+             picked at random each time; an unknown id is skipped with a
+             warning). A reaction never plays in a fight, with an enemy
+             near, while she walks, works a job, sits in a vehicle or plays
+             another animation: it is skipped, never queued.
+             Hire: she was just hired. FightEnd: a fight she was in is over
+             (hires only). Greet: her greeting plays toward you.
+             Talk: a chat reply of hers starts playing as speech.
+             Nod: she accepts an order (an order wheel or voice order is
+             answered, or she speaks one of the Lines). Shake: she refuses
+             one (the same, or one of its Lines). Lines: the spoken line ids
+             that nod or shake, comma separated; an entry ending in a colon
+             covers every line id that starts with it. A line in both lists
+             shakes. -->
+        <Reactions>
+            <Hire>
+                <Enabled>true</Enabled>
+                <Chance>1</Chance>
+                <CooldownSeconds>0</CooldownSeconds>
+                <PendingSeconds>3</PendingSeconds>
+                <Clips>salute</Clips>
+            </Hire>
+            <FightEnd>
+                <Enabled>true</Enabled>
+                <Chance>0.5</Chance>
+                <CooldownSeconds>60</CooldownSeconds>
+                <Clips>fistbump,cheer1,cheer2</Clips>
+            </FightEnd>
+            <Greet>
+                <Enabled>true</Enabled>
+                <Chance>0.5</Chance>
+                <CooldownSeconds>120</CooldownSeconds>
+                <Clips>wave,handwave1,handwave2</Clips>
+            </Greet>
+            <Talk>
+                <Enabled>true</Enabled>
+                <Chance>0.7</Chance>
+                <CooldownSeconds>6</CooldownSeconds>
+                <Clips>talk1,talk2,talk3</Clips>
+            </Talk>
+            <Nod>
+                <Enabled>true</Enabled>
+                <Chance>1</Chance>
+                <CooldownSeconds>3</CooldownSeconds>
+                <Clips>nod1</Clips>
+                <Lines>ammo.switched,basekeep.remembered,vehicle.wait,book.later,give.atfeet,comehere.ack,loot.resume</Lines>
+            </Nod>
+            <Shake>
+                <Enabled>true</Enabled>
+                <Chance>1</Chance>
+                <CooldownSeconds>3</CooldownSeconds>
+                <Clips>shake1,shake2</Clips>
+                <Lines>job.refused,patrol.none,patrol.far,craft.cant,craft.busy,craft.fuel,craft.noclaim:,craft.trader:,craft.inuse:,ammo.same,ammo.none,ammo.nogun,ammo.unknown,vehicle.noroom,vehicle.far,basekeep.nobase,book.nothing,book.notbook,book.none,harvest.notool,mine.notool,clay.notool,butcher.notool,basekeep.notool</Lines>
+            </Shake>
+        </Reactions>
+        <!-- FollowBreakDistance: while she follows, a survivor's emote
+             ends when her leader is farther than this, m (1 to 30); the
+             clip holds while she follows and her leader is near, so a small
+             step does not cancel the dance. On any other order (Stay,
+             Guard, wild) the emote completes; the distance is not used.
+             A threat or an order still ends any emote. -->
+        <FollowBreakDistance>6</FollowBreakDistance>
+        <!-- ClipDrawDelaySeconds: a clip that put her item away (a held
+             prop such as the craft hammer or the book, or an emote) keeps it
+             away this long after it ends on its own or is stopped to make
+             way for the next clip, s (0 to 2). A held prop clip that starts
+             in that time keeps it away for its own length, so chained clips
+             never show her item in between; otherwise it comes back when the
+             time is up. 0 brings it back the moment a clip ends. A threat,
+             an order, a move or her death brings it back at once. -->
+        <ClipDrawDelaySeconds>0.25</ClipDrawDelaySeconds>
+        <!-- ClipBlendSeconds: a listed clip (an emote, an idle clip, a craft
+             or a read clip) eases in from the pose she shows and, when it
+             ends, back out to her normal pose over this long, s (0 to 1).
+             Two clips in a row ease into each other the same way. 0 snaps,
+             as before. A threat, her death or a rebuilt body ends a clip at
+             once with no ease, and rolls, dodges, bandages and throws never
+             ease. -->
+        <ClipBlendSeconds>0.3</ClipBlendSeconds>
+        <!-- Idle: a hire who stands still and free now and then plays a short
+             idle clip (a stretch, a warm up). Never in a fight, with an enemy
+             near, while she walks, works a job, sits in a vehicle, plays
+             another animation or chats with you, or while the leader she
+             follows walks. Stay, Guard and a still leader count as idle.
+             Enabled: true or false.
+             StillSeconds: how long she stands still and free first, s.
+             MinIntervalSeconds and MaxIntervalSeconds: the random wait between
+             two idle clips of hers, s (each survivor rolls her own).
+             StillMetres: a move of more than this between two looks, once a
+             second (hers, or her leader's while she follows), counts as
+             walking, m.
+             Clips: clip ids from SdcsAnimClips.xml, comma separated; an
+             unknown id is skipped with a warning. -->
+        <Idle>
+            <Enabled>true</Enabled>
+            <StillSeconds>20</StillSeconds>
+            <MinIntervalSeconds>120</MinIntervalSeconds>
+            <MaxIntervalSeconds>300</MaxIntervalSeconds>
+            <StillMetres>0.5</StillMetres>
+            <Clips>stretch,warmup,whatever</Clips>
+        </Idle>
+        <!-- Read (the read show): a read order that reads at
+             least one book plays a short book-reading show, one show per
+             order however many books were read (the learning itself is
+             instant, as it is now). The show behaves like an emote (emote
+             profile: a threat, an order or a start of walking ends it at
+             once). ReadSeconds: how long the show lasts, s (2 to 60); the
+             show ends with its out clip playing. ReadSet: the show's clips
+             by slot (in, loop, accent, out), clip ids from
+             SdcsAnimClips.xml, "slot:clip,slot:clip"; a slot whose id is
+             unknown or missing is skipped, the show still plays with what
+             it has. The in and the out are one shots, the loop plays until
+             the accent or the end, the accent (an optional second loop
+             clip) plays once mid-show. -->
+        <ReadSeconds>4</ReadSeconds>
+        <ReadSet>in:read_in,loop:read_loop,accent:read_loop2,out:read_out</ReadSet>
+    </Emotes>
 </Settings>

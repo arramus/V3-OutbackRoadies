@@ -54,6 +54,13 @@
                 <Greeting lang="de">Hallo, Reisender!</Greeting>
             </Greetings>
 
+             CombatLines: a bandit's fixed lines. One is spoken, unchanged, the moment she
+                 locks onto a person to fight (the base mod's npcSdcsBandit classes name their
+                 personality with the personality property). Text to speech only, English.
+            <CombatLines>
+                <Line>Time to die.</Line>
+            </CombatLines>
+
              FaceOverride: per-character facial-animation tuning for procedural lip-sync and bone
                  jaw (SDCS rigs). All child elements are optional. Omitted values use global
                  modconfig.xml defaults. Use when a non-human mesh (bat, demon, etc.) needs different
@@ -81,7 +88,12 @@
         personality that still names one logs a warning and the NPC falls back
         to the default voice (on the default audiocpp engine the line is
         refused).
+      - Or MaleVoice / FemaleVoice random: one of the voices of the NPC's own sex that
+        this install can speak (the SupertonicConfig.xml VoiceMap rows marked with a sex),
+        picked from her entity id, so she keeps it and every machine picks the same. The
+        SDCS bandits use it; name a voice instead to pin one.
       - Greetings are optional. Omit the entire <Greetings> block if not needed.
+      - CombatLines are optional. Only a bandit says them; omit the block for everyone else.
       - Use excludeFromRandom="true" for personalities that should not auto-assign.
       - FaceOverride is optional. Omit the entire block if global defaults work for this NPC's mesh.
 
@@ -683,6 +695,53 @@
         <FemaleVoice>P13</FemaleVoice>
         <TTSLanguage>en</TTSLanguage>
         <ProactiveGreetingChance>0.0</ProactiveGreetingChance>
+    </Personality>
+
+    <!--
+      The SDCS bandits' own personalities, one per sex: the base mod's npcSdcsBandit classes
+      name theirs with the personality property. A bandit never chats (no_voice); she says one
+      of her CombatLines, unchanged and calm, the moment she locks onto a person to fight (base
+      mod Settings.xml Bandits Line keys), by text to speech only. excludeFromRandom: only her
+      class hands them out, so bandit_hostile stays the pick for any other bandit class.
+      Voice random: each bandit speaks in one of the voices of her sex, picked from her entity
+      id, so the bandits of a group sound like different people. Name a voice to pin one.
+    -->
+    <Personality id="bandit_cold_male" excludeFromRandom="true">
+        <Name>Cold Bandit (Male)</Name>
+        <Traits>You are a bandit who kills for what others carry. You are calm, cold and quiet about it: you never shout and never explain yourself.</Traits>
+        <Backstory></Backstory>
+        <MaleVoice>random</MaleVoice>
+        <TTSLanguage>en</TTSLanguage>
+        <ProactiveGreetingChance>0.0</ProactiveGreetingChance>
+        <CombatLines>
+            <Line>Time to die.</Line>
+            <Line>Should've kept walking.</Line>
+            <Line>Nothing personal.</Line>
+            <Line>Wrong place, wrong time.</Line>
+            <Line>This won't take long.</Line>
+            <Line>Don't bother running.</Line>
+            <Line>You picked the wrong road.</Line>
+            <Line>Hand it over. Or don't.</Line>
+        </CombatLines>
+    </Personality>
+
+    <Personality id="bandit_cold_female" excludeFromRandom="true">
+        <Name>Cold Bandit (Female)</Name>
+        <Traits>You are a bandit who kills for what others carry. You are calm, cold and quiet about it: you never shout and never explain yourself.</Traits>
+        <Backstory></Backstory>
+        <FemaleVoice>random</FemaleVoice>
+        <TTSLanguage>en</TTSLanguage>
+        <ProactiveGreetingChance>0.0</ProactiveGreetingChance>
+        <CombatLines>
+            <Line>Time to die.</Line>
+            <Line>Nothing personal.</Line>
+            <Line>Wrong place, wrong time.</Line>
+            <Line>You picked the wrong road.</Line>
+            <Line>You should have stayed home.</Line>
+            <Line>Bad day to be you.</Line>
+            <Line>Hold still. This won't take long.</Line>
+            <Line>Don't make this hard.</Line>
+        </CombatLines>
     </Personality>
 
     <Personality id="wanderer_mysterious">

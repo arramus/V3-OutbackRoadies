@@ -41,13 +41,16 @@
 				<!-- FLEE DISABLED. The action below is commented out in all four NPCModCore
 				variants pending a proper trigger, which will be an entity and/or
 				personality property rather than this cvar.
-				WHY: it gated on SelfHasCVar $Timid=1, and $Timid has NO WRITER ANYWHERE:
-				the framework's own writer is commented out upstream, so the gate can
-				never score, and commenting the action out is BEHAVIOUR NEUTRAL.
+				WHY: it gated on SelfHasCVar $Timid=1. $Timid DOES have a writer: the SDCS
+				class npcSdcsSurvivorFemaleTimid (base entityclasses.xml, three entry triggers)
+				sets it, and the live SdcsNpcCore Flee action (SdcsMayAct plus $Timid) uses it.
+				No legacy NPCModCore class sets it, so for these four legacy variants the
+				gate can never score, and commenting the action out is BEHAVIOUR NEUTRAL.
 				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
 				within 15 m", and weight 6 outranks MeleeAttack (5) and ties RangedMeleeAttack
 				(6). Ungated, a hired NPC would flee from essentially every fight. The gate is
-				an opt-in personality flag doing its job; what is missing is any way to set it.
+				an opt-in personality flag; the existing writer only covers the SDCS class, so
+				these legacy variants still have no way to set it.
 				-->
 				<!--
 				<action name="Flee" weight="6" entity_filter="IsEnemy">
@@ -83,54 +86,39 @@
 			     gate: at weight 3 they would beat Chat (2) while a player talks to her and
 			     she would stop turning to talk; the gate keeps today's outcome. -->
 			<ai_package name="SdcsNpcCore" >  <!-- SDCS characters only: the banded fork of the shared core package  -->
-				<!-- Weight .5, off the band's whole numbers on purpose: the idle
-				     floor must stay below every other action, and the band's own
-				     minimum is 0.5. -->
-				<!-- band: AMBIENT -->
-				<action name="DefaultAction" weight=".5" entity_filter="IsSelf">
-					<task class="IdleSDX, SCore" />
+				<!-- Weight 12, the top of the file: while the forced roll or bandage
+				     plays, no other action may fight the playback's move order. With the
+				     cvar absent (the common case) the single consideration scores 0 and
+				     the action is inert. -->
+				<!-- band: SAFETY -->
+				<action name="SdcsAnimBusy" weight="12" entity_filter="IsSelf">
+					<task class="SdcsAnimBusy, 1-XNPCVoiceControl"/>
+					<consideration class="SelfHasCVar, SCore" cvar="SdcsAnimBusy" value="1"/>
 				</action>
-				<!-- WanderSdcs: the wander that gives up when she gets nowhere (Settings.xml Wander);
-				     the SdcsWanderRest buff keeps her off it a moment after. Checked first, so a
-				     resting NPC skips the enemy scan. -->
-				<!-- band: AMBIENT -->
-				<action name="Wander" weight="1" entity_filter="IsSelf">
-					<task class="WanderSdcs, NPCSdcsCharacters"/>
-					<consideration class="SelfNotHasBuff, SCore" buffs="SdcsWanderRest"/>
-					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="30" />
-                    <consideration class="NotHasOrder, SCore" order="Stay"/>
-                    <consideration class="NotHasOrder, SCore" order="Follow"/>
-				<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+				<!-- Weight 10: an explicit jump order must beat the fight (the highest
+				     ENGAGE weight is 6, and the DEFENCE backup actions sit below this),
+				     so she drops over the edge even mid-combat. -->
+				<!-- band: DEFENCE -->
+				<action name="JumpDownOrder" weight="10" entity_filter="IsSelf">
+					<task class="JumpDownSDX, 1-XNPCVoiceControl" OnStopAddBuffs="XVC_JumpCooldown" />
+					<consideration class="SelfHasCVar, SCore" cvar="$XVC_PendingCommand" value="2"/>
+					<consideration class="SelfNotHasBuff, SCore" buffs="XVC_JumpCooldown"/>
 				</action>
-				<!-- band: AMBIENT -->
-				<action name="Chat" weight="2" entity_filter="IsPlayer">
-					<task class="IdleSDX, SCore" OnStartAddBuffs="RandomIdle" OnStopRemoveBuffs="RandomIdle" />
-					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="10" />
-					<consideration class="TargetDistance" flip_x="true" min="1" max="4" curve="threshold" />
-				<consideration class="HasActiveChat, 1-XNPCVoiceControl" />
-				</action>
-				<!-- Weight 3 (the orders band) plus the NoActiveChat gate:
-				     without the gate, at 3 she would hold the point and stop turning to
-				     talk while a player is within the chat distance; today weight 2 ties
-				     Chat (2) and the package order lets her talk. The gate keeps that. -->
-				<!-- The guard task is ours (GuardSdcs): SCore's guard, except beside a
-				     workstation with nothing to do, where she walks around it within
-				     Settings.xml Crafting/StationWanderMetres. -->
-				<!-- band: ORDERS -->
-				<action name="Stay" weight="3" entity_filter="IsSelf">
-                    <task class="GuardSdcs, NPCSdcsCharacters" />
-                    <consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" />
-                    <consideration class="HasOrder, SCore" order="Stay"/>
-					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
-                </action>
-				<!-- Weight 3 (the orders band) plus the NoActiveChat gate:
-				     same reason as Stay above - at 3 an unguarded Guard would beat Chat
-				     (2) and she would stop turning to talk mid-conversation. -->
-				<!-- band: ORDERS -->
-				<action name="Guard" weight="3" entity_filter="IsSelf">
-					<task class="GuardSdcs, NPCSdcsCharacters" />
-					<consideration class="HasOrder, SCore" order="Guard" />
-					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+				<!-- A TIMID class (the $Timid cvar, set on its three entry triggers; npcSdcsSurvivorFemaleTimid
+				     is the example) runs from an enemy it can see within Settings.xml Combat
+				     TimidFleeDistanceMetres instead of fighting, hired or not: weight 9, the DEFENCE band,
+				     above every ENGAGE action (6.5, the throw) and every DEFENCE back-up (8), below
+				     JumpDownOrder (10) and SAFETY (12). The $Timid gate sits before the distance and the
+				     sight ray, so a non-timid NPC pays only the stun read and the cvar read; with no enemy
+				     in radius the action scores 0 and following resumes. The legacy NPCModCore variants
+				     keep their Flee commented out. -->
+				<!-- band: DEFENCE -->
+				<action name="Flee" weight="9" entity_filter="IsEnemy">
+					<task class="FleeFromTarget" max_distance="30"/>
+					<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+					<consideration class="SelfHasCVar, SCore" cvar="$Timid" value="1"/>
+					<consideration class="SdcsFleeDistance, NPCSdcsCharacters"/>
+					<consideration class="CanSeeTarget, SCore"/>
 				</action>
 				<!-- A pickpocket caught at it backs away from the player for a few seconds:
 				     the base sets SdcsBackOff (Settings.xml Pickpocket BackOffSeconds) on a
@@ -141,42 +129,69 @@
 					<consideration class="SelfHasCVar, SCore" cvar="SdcsBackOff" value="1"/>
 					<consideration class="TargetDistance" flip_x="true" min="0" max="8" curve="threshold"/>
 				</action>
-				<!-- FLEE DISABLED. The action below is commented out in all four NPCModCore
-				variants pending a proper trigger, which will be an entity and/or
-				personality property rather than this cvar.
-				WHY: it gated on SelfHasCVar $Timid=1, and $Timid has NO WRITER ANYWHERE:
-				the framework's own writer is commented out upstream, so the gate can
-				never score, and commenting the action out is BEHAVIOUR NEUTRAL.
-				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
-				within 15 m", and weight 6 outranks MeleeAttack (5) and ties RangedMeleeAttack
-				(6). Ungated, a hired NPC would flee from essentially every fight. The gate is
-				an opt-in personality flag doing its job; what is missing is any way to set it.
-				-->
-				<!--
-				<action name="Flee" weight="6" entity_filter="IsEnemy">
-					<task class="FleeFromTarget" max_distance="30"/>
-					<consideration class="SelfHasCVar, SCore" cvar="$Timid" value="1"/>
-					<consideration class="TargetDistance" min="0" max="15" curve="threshold"/>
-					<consideration class="SelfVisible"/>
+				<!-- A posted bandit (a sentry, or a bandit on Stay or Guard) knocked
+				     off her post walks back to it mid fight: outside her leash
+				     (Settings.xml Bandits SentryLeashMetres flat of her post, or more
+				     than SentryLevelMetres up or down) the Stay task takes her
+				     home. A bandit on the Guard order patrols her post out of a fight
+				     (Guard PatrolMetres, her own floor): her legs pass the leash, so
+				     this waits for a fight. Weight 4, the JOBS whole number: above the never idle hold
+				     (3.5), below every shot, cover, throw and melee swing, so she still
+				     fights when she can. Everyone else scores 0 at the one consideration,
+				     a cached flag. -->
+				<!-- band: JOBS -->
+				<action name="PostReturn" weight="4" entity_filter="IsSelf">
+					<task class="GuardSdcs, NPCSdcsCharacters" />
+					<consideration class="SdcsOffPost, NPCSdcsCharacters" />
 				</action>
-				-->
-				<!-- Weight 10: an explicit jump order must beat the fight (the highest
-				     ENGAGE weight is 6, and the DEFENCE backup actions sit below this),
-				     so she drops over the edge even mid-combat. -->
-				<!-- band: DEFENCE -->
-				<action name="JumpDownOrder" weight="10" entity_filter="IsSelf">
-					<task class="JumpDownSDX, 1-XNPCVoiceControl" OnStopAddBuffs="XVC_JumpCooldown" />
-					<consideration class="SelfHasCVar, SCore" cvar="$XVC_PendingCommand" value="2"/>
-					<consideration class="SelfNotHasBuff, SCore" buffs="XVC_JumpCooldown"/>
+				<!-- Weight 3 (the orders band) plus the NoActiveChat gate:
+				     without the gate, at 3 she would hold the point and stop turning to
+				     talk while a player is within the chat distance (Chat is 2 and cannot
+				     beat 3); the gate scores her 0 during the chat, so the chat wins. -->
+				<!-- The guard task is ours (GuardSdcs): SCore's guard, except beside a
+				     workstation with nothing to do, where she walks around it within
+				     Settings.xml Crafting/StationWanderMetres. -->
+				<!-- band: ORDERS -->
+				<action name="Stay" weight="3" entity_filter="IsSelf">
+                    <task class="GuardSdcs, NPCSdcsCharacters" />
+                    <consideration class="HasOrder, SCore" order="Stay"/>
+					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+                    <consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" />
+                </action>
+				<!-- Weight 3 (the orders band) plus the NoActiveChat gate:
+				     same reason as Stay above - at 3 an unguarded Guard would beat Chat
+				     (2) and she would stop turning to talk mid-conversation. -->
+				<!-- band: ORDERS -->
+				<action name="Guard" weight="3" entity_filter="IsSelf">
+					<task class="GuardSdcs, NPCSdcsCharacters" />
+					<consideration class="HasOrder, SCore" order="Guard" />
+					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
 				</action>
-				<!-- Weight 12, the top of the file: while the forced roll or bandage
-				     plays, no other action may fight the playback's move order. With the
-				     cvar absent (the common case) the single consideration scores 0 and
-				     the action is inert. -->
-				<!-- band: SAFETY -->
-				<action name="SdcsAnimBusy" weight="12" entity_filter="IsSelf">
-					<task class="SdcsAnimBusy, 1-XNPCVoiceControl"/>
-					<consideration class="SelfHasCVar, SCore" cvar="SdcsAnimBusy" value="1"/>
+				<!-- band: AMBIENT -->
+				<action name="Chat" weight="2" entity_filter="IsPlayer">
+					<task class="IdleSDX, SCore" OnStartAddBuffs="RandomIdle" OnStopRemoveBuffs="RandomIdle" />
+					<consideration class="TargetDistance" flip_x="true" min="1" max="4" curve="threshold" />
+				<consideration class="HasActiveChat, 1-XNPCVoiceControl" />
+					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="10" />
+				</action>
+				<!-- WanderSdcs: the wander that gives up when she gets nowhere (Settings.xml Wander);
+				     the SdcsWanderRest buff keeps her off it a moment after. Checked first, so a
+				     resting NPC skips the enemy scan. -->
+				<!-- band: AMBIENT -->
+				<action name="Wander" weight="1" entity_filter="IsSelf">
+					<task class="WanderSdcs, NPCSdcsCharacters"/>
+					<consideration class="SelfNotHasBuff, SCore" buffs="SdcsWanderRest"/>
+                    <consideration class="NotHasOrder, SCore" order="Stay"/>
+                    <consideration class="NotHasOrder, SCore" order="Follow"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="30" />
+				</action>
+				<!-- Weight .5, off the band's whole numbers on purpose: the idle
+				     floor must stay below every other action, and the band's own
+				     minimum is 0.5. -->
+				<!-- band: AMBIENT -->
+				<action name="DefaultAction" weight=".5" entity_filter="IsSelf">
+					<task class="IdleSDX, SCore" />
 				</action>
 			</ai_package>
 
@@ -207,13 +222,16 @@
 				<!-- FLEE DISABLED. The action below is commented out in all four NPCModCore
 				variants pending a proper trigger, which will be an entity and/or
 				personality property rather than this cvar.
-				WHY: it gated on SelfHasCVar $Timid=1, and $Timid has NO WRITER ANYWHERE:
-				the framework's own writer is commented out upstream, so the gate can
-				never score, and commenting the action out is BEHAVIOUR NEUTRAL.
+				WHY: it gated on SelfHasCVar $Timid=1. $Timid DOES have a writer: the SDCS
+				class npcSdcsSurvivorFemaleTimid (base entityclasses.xml, three entry triggers)
+				sets it, and the live SdcsNpcCore Flee action (SdcsMayAct plus $Timid) uses it.
+				No legacy NPCModCore class sets it, so for these four legacy variants the
+				gate can never score, and commenting the action out is BEHAVIOUR NEUTRAL.
 				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
 				within 15 m", and weight 6 outranks MeleeAttack (5) and ties RangedMeleeAttack
 				(6). Ungated, a hired NPC would flee from essentially every fight. The gate is
-				an opt-in personality flag doing its job; what is missing is any way to set it.
+				an opt-in personality flag; the existing writer only covers the SDCS class, so
+				these legacy variants still have no way to set it.
 				-->
 				<!--
 				<action name="Flee" weight="6" entity_filter="IsEnemy">
@@ -278,23 +296,6 @@
 				    <consideration class="TargetDistance" flip_x="true" min="0" max="2" />
 				    <consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="20" />     <!-- Expensive, last -->
                 </action>
-
-				<!-- The unified follow task: servos to vcFollowMin with
-				     dead-band hysteresis; the task owns distance internally, the action
-				     always wins on Follow order. The CombatLinger consideration scores 0
-				     for the configured seconds after the last ENGAGE authorisation, so the
-				     hire holds the fight site (the SdcsNpcCore idle wins at 0.5) instead of
-				     turning back to the leader after every kill of a bursty fight; an
-				     explicit order releases it early (the command router clears the stamp).
-				     SDCS hired package only: the legacy NPCMod packages never get it. -->
-				<!-- band: AMBIENT -->
-				<action name="DynamicFollow" weight="2">
-					<task class="DynamicFollow, 1-XNPCVoiceControl"/>
-					<consideration class="HasOrder, SCore" order="Follow"/>
-					<consideration class="CanFollowNow, 1-XNPCVoiceControl" />
-					<consideration class="NoActiveChatOrLeaderFar, 1-XNPCVoiceControl" />
-					<consideration class="CombatLinger, 1-XNPCVoiceControl" />
-				</action>
 				<!-- band: ORDERS -->
 				<action name="PatrolRecord" weight="3" >
 					<task class="FollowSDX, SCore" max_distance="50"/>
@@ -306,6 +307,24 @@
 					<task class="PatrolRecorded, 1-XNPCVoiceControl"/>
 					<consideration class="HasOrder, SCore" order="Patrol"/>
 					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+				</action>
+
+				<!-- The unified follow task: servos to vcFollowMin with
+				     dead-band hysteresis; the task owns distance internally, the action
+				     always wins on Follow order. The CombatLinger consideration scores 0
+				     for the configured seconds (modconfig.xml CombatLingerSeconds, shipped
+				     0 = off, a constant 1) after the last ENGAGE authorisation, so the
+				     hire holds the fight site (the SdcsNpcCore idle wins at 0.5) instead of
+				     turning back to the leader after every kill of a bursty fight; an
+				     explicit order releases it early (the command router clears the stamp).
+				     SDCS hired package only: the legacy NPCMod packages never get it. -->
+				<!-- band: AMBIENT -->
+				<action name="DynamicFollow" weight="2">
+					<task class="DynamicFollow, 1-XNPCVoiceControl"/>
+					<consideration class="HasOrder, SCore" order="Follow"/>
+					<consideration class="NoActiveChatOrLeaderFar, 1-XNPCVoiceControl" />
+					<consideration class="CanFollowNow, 1-XNPCVoiceControl" />
+					<consideration class="CombatLinger, 1-XNPCVoiceControl" />
 				</action>
 			</ai_package>
 
@@ -345,14 +364,14 @@
 					  <consideration class="NotHasOrder, SCore" order="Stay"/>                         <!-- Fail first if ordered -->
 					  <consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>  <!-- Wrong weapon? fail -->
 					  <consideration class="SelfNotHasBuff, SCore" buffs="IsHealing,buffHitStun"/> <!-- Can't act? fail -->
-					  <consideration class="NotInWeaponRange, SCore" action_index="0" />               <!-- Finally check range (cheap) -->
+					  <consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="0" />               <!-- Finally check range (cheap) -->
 					  <consideration class="CanSeeTarget, SCore"/>                                     <!-- Can't see? fail (expensive) -->
 				</action>
 				<action name="MeleeAttackEntityBasic" weight="5">
 					<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
 					  <consideration class="SelfNotHasBuff, SCore" buffs="IsHealing,buffHitStun"/> <!-- 1. Can't act? fail -->
 					  <consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>  <!-- 2. Wrong weapon? fail -->
-					  <consideration class="InWeaponRange, SCore" action_index="0" />                  <!-- 3. In range? (cheap) -->
+					  <consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0" />                  <!-- 3. In range? (cheap) -->
 					  <consideration class="CanSeeTarget, SCore"/>                                     <!-- 4. Can't see? fail (expensive) -->
 				</action>
 			</ai_package>
@@ -362,21 +381,21 @@
 					<task class="MoveToAttackTargetSDX, SCore" run="false" action_index="1" />
 					<consideration class="NotHasOrder, SCore" order="Stay" />
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/> <!-- not melee -->
-					<consideration class="NotInWeaponRange, SCore" action_index="1" />  <!-- weapon-aware range -->
+					<consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="1" />  <!-- weapon-aware range -->
 					<consideration class="CanSeeTarget, SCore" />
 				</action>
 				<action name="RangedMeleeAttack" weight="6">
 					<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 					<consideration class="SelfNotHasBuff, SCore" buffs="IsHealing,buffHitStun"/>
-					<consideration class="InWeaponRange, SCore"  action_index="0"  />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters"  action_index="0"  />
 					<consideration class="CanSeeTarget, SCore"/>
 				</action>
 				<action name="RangedAttack" weight="5">
 					<task class="AttackTargetEntitySDX, SCore" action_index="1" />
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>  <!-- 1. Not melee (cheap) -->
 					<consideration class="SelfNotHasBuff, SCore" buffs="RandomIdle,buffBurstDelay,IsHealing,buffReload2,buffReloadDelay,buffReload3,buffHitStun"/>
-					<consideration class="InWeaponRange, SCore" action_index="1" />                      <!-- 3. In range? (cheap) -->
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="1" />                      <!-- 3. In range? (cheap) -->
 					<consideration class="CanSeeTarget, SCore" />                                        <!-- 4. Can see? (expensive) -->
 				</action>
 				<action name="BackupRanged" weight="3">
@@ -384,7 +403,7 @@
 					<consideration class="NotHasOrder, SCore" order="Stay"/>
 					<consideration class="SelfNotHasBuff, SCore" buffs="buffHitStun,IsHealing"/>
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/> <!-- not melee -->
-					<consideration class="InWeaponRange, SCore" action_index="1"/>                     <!-- weapon-aware trigger -->
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="1"/>                     <!-- weapon-aware trigger -->
 					<consideration class="CanSeeTarget, SCore"/>
 				</action>
 			</ai_package>
@@ -399,7 +418,7 @@
 					<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>  <!-- 2. Cheap - dict lookup -->
 					<consideration class="SelfNotHasBuff, SCore" buffs="buffHitStun"/> <!-- 3. Medium - split + loop -->
 					<consideration class="MayEngage, 1-XNPCVoiceControl" advance="true"/>      <!-- 4. Combat engagement gate -->
-					<consideration class="NotInWeaponRange, SCore" action_index="0" />    <!-- 5. Math/range check (cheap) -->
+					<consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="0" />    <!-- 5. Math/range check (cheap) -->
 					<consideration class="CanSeeTarget, SCore"/>                          <!-- 5. Expensive - raycast -->
 				  </action>
 				<action name="MeleeAttackEntity" weight="5">
@@ -407,7 +426,7 @@
 				  <consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 				  <consideration class="SelfNotHasBuff, SCore" buffs="IsHealing,buffHitStun"/>
 				  <consideration class="MayEngage, 1-XNPCVoiceControl"/>      <!-- Combat engagement gate -->
-				  <consideration class="InWeaponRange, SCore" action_index="0" />          <!-- cheap -->
+				  <consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0" />          <!-- cheap -->
 				  <consideration class="CanSeeTarget, SCore"/>                             <!-- expensive -->
 			  </action>
 
@@ -421,7 +440,7 @@
 					<consideration class="NotHasOrder, SCore" order="Stay" />                        <!-- cheap -->
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/> <!-- not melee -->
 					<consideration class="MayEngage, 1-XNPCVoiceControl" advance="true"/>                <!-- engagement gate -->
-					<consideration class="NotInWeaponRange, SCore" action_index="1" />               <!-- weapon-aware range -->
+					<consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="1" />               <!-- weapon-aware range -->
 					<consideration class="CanSeeTarget, SCore" />                                    <!-- expensive, last -->
 				</action>
 				<action name="RangedMeleeAttack" weight="6">
@@ -429,7 +448,7 @@
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 					<consideration class="MayEngage, 1-XNPCVoiceControl"/>                 <!-- engagement gate -->
 					<consideration class="SelfNotHasBuff, SCore" buffs="IsHealing,buffHitStun"/>
-					<consideration class="InWeaponRange, SCore"  action_index="0"  />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters"  action_index="0"  />
 					<consideration class="CanSeeTarget, SCore"/>
 				</action>
 				<action name="RangedAttack" weight="5">
@@ -437,7 +456,7 @@
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 					<consideration class="MayEngage, 1-XNPCVoiceControl"/>                 <!-- engagement gate -->
 					<consideration class="SelfNotHasBuff, SCore" buffs="buffBurstDelay,IsHealing,buffReload2,buffReloadDelay,buffReload3,buffHitStun" />
-					<consideration class="InWeaponRange, SCore" action_index="1" />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="1" />
 					<consideration class="CanSeeTarget, SCore" />
 				</action>
 				<action name="BackupRanged" weight="3">
@@ -445,7 +464,7 @@
 					<consideration class="NotHasOrder, SCore" order="Stay"/>
 					<consideration class="MayEngage, 1-XNPCVoiceControl"/>                 <!-- engagement gate -->
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/> <!-- not melee -->
-					<consideration class="InWeaponRange, SCore" action_index="1"/>                     <!-- weapon-aware trigger -->
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="1"/>                     <!-- weapon-aware trigger -->
 					<consideration class="CanSeeTarget, SCore"/>
 				</action>
 
@@ -461,7 +480,7 @@
 					<consideration class="NotHasOrder, SCore" order="Stay"/>
 					<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 					<consideration class="SelfNotHasBuff, SCore" buffs="buffNPCModFullControlMode,IsHealing"/>
-					<consideration class="NotInWeaponRange, SCore" action_index="0" />
+					<consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="0" />
 					<consideration class="CanSeeTarget, SCore"/>
 				</action>
 				 <action name="MoveToRandomTarget" weight="3" entity_filter="IsPlayer" >
@@ -471,13 +490,13 @@
                     <consideration class="CanNotSeeTarget, SCore"/>
 					<consideration class="CanHearTarget, SCore" />
 					<consideration class="NotPathBlockedSDX, SCore"  />
-                    <consideration class="NotInWeaponRange, SCore" action_index="0" />
+                    <consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="0" />
                  </action>
 				<action name="MeleeAttackEntity" weight="5" entity_filter="IsEnemy">
 					<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
 					<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 					<consideration class="SelfNotHasBuff, SCore" buffs="buffNPCModFullControlMode,IsHealing,buffHitStun"/>
-					<consideration class="InWeaponRange, SCore" action_index="0" />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0" />
 					<consideration class="CanSeeTarget, SCore"/>
 				</action>
 				<!-- <action name="MeleeAttackBlock" weight="4">
@@ -514,20 +533,20 @@
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
                     <consideration class="CanNotSeeTarget, SCore"/>
 					<consideration class="CanHearTarget, SCore" />
-					<consideration class="InWeaponRange, SCore"  action_index="1"  />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters"  action_index="1"  />
                  </action>
 				<action name="RangedMeleeAttack" weight="7" entity_filter="IsEnemy">
 					<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 					<consideration class="SelfNotHasBuff, SCore" buffs="IsHealing,buffHitStun"/>
-					<consideration class="InWeaponRange, SCore"  action_index="0"  />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters"  action_index="0"  />
 					<consideration class="CanSeeTarget, SCore"/>
 				</action>
 				<action name="RangedAttack" weight="6" entity_filter="IsEnemy">
 					<task class="AttackTargetEntitySDX, SCore" action_index="1" />
 					<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 					<consideration class="SelfNotHasBuff, SCore" buffs="RandomIdle,buffBurstDelay,IsHealing,buffReload2,buffReloadDelay,buffReload3,buffHitStun" />
-					<consideration class="InWeaponRange, SCore" action_index="1" />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="1" />
 					<consideration class="CanSeeTarget, SCore" />
 				</action>
 				<action name="BackupShortRanged" weight="3" entity_filter="IsEnemy" >
@@ -679,7 +698,7 @@
                 <action name="MoveToEnemyRunMeleeControlAttacked" weight="4">
                     <consideration class="TargetHasBuff, SCore" buffs="buffNPCModAttacking"/>
 					<task class="MoveToAttackTargetSDX, SCore" run="true" />
-                    <consideration class="NotInWeaponRange, SCore" action_index="0" />
+                    <consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="0" />
                     <consideration class="CanSeeTarget, SCore"/>
                     <consideration class="SelfNotHasBuff, SCore" buffs="buffNPCModStopAttacking"/>
                     <consideration class="NotHasOrder, SCore" order="Stay"/>
@@ -687,7 +706,7 @@
                 <action name="MeleeAttackEntityControlAttacked" weight="5">
                     <consideration class="TargetHasBuff, SCore" buffs="buffNPCModAttacking"/>
                     <task class="AttackTargetEntitySDX, SCore" action_index="0"/>
-                     <consideration class="InWeaponRange, SCore" action_index="0" />
+                     <consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0" />
                     <consideration class="CanSeeTarget, SCore"/>
                     <consideration class="SelfNotHasBuff, SCore" buffs="buffNPCModStopAttacking"/>
                 </action>
@@ -762,7 +781,7 @@
 				<action name="RangedMeleeAttack" weight="6">
 					<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
 					<consideration class="FailOnDistanceToLeader, SCore" max_distance="30"/>
-					<consideration class="InWeaponRange, SCore"  action_index="0"  />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters"  action_index="0"  />
 					<consideration class="TargetVisible" />
 					<consideration class="SelfNotHasBuff, SCore" buffs="IsHealing"/>
 				</action>
@@ -770,7 +789,7 @@
 					<task class="AttackTargetEntitySDX, SCore" action_index="1" />
 					<consideration class="FailOnDistanceToLeader, SCore" max_distance="30" />
 					<consideration class="TargetVisible" />
-					<consideration class="InWeaponRange, SCore" action_index="1" />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="1" />
 					<consideration class="SelfNotHasBuff, SCore" buffs="buffBurstDelay,IsHealing" />
 				</action>
 			</ai_package>	-->
@@ -813,13 +832,16 @@
             <!-- FLEE DISABLED. The action below is commented out in all four NPCModCore
 				variants pending a proper trigger, which will be an entity and/or
 				personality property rather than this cvar.
-				WHY: it gated on SelfHasCVar $Timid=1, and $Timid has NO WRITER ANYWHERE:
-				the framework's own writer is commented out upstream, so the gate can
-				never score, and commenting the action out is BEHAVIOUR NEUTRAL.
+				WHY: it gated on SelfHasCVar $Timid=1. $Timid DOES have a writer: the SDCS
+				class npcSdcsSurvivorFemaleTimid (base entityclasses.xml, three entry triggers)
+				sets it, and the live SdcsNpcCore Flee action (SdcsMayAct plus $Timid) uses it.
+				No legacy NPCModCore class sets it, so for these four legacy variants the
+				gate can never score, and commenting the action out is BEHAVIOUR NEUTRAL.
 				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
 				within 15 m", and weight 6 outranks MeleeAttack (5) and ties RangedMeleeAttack
 				(6). Ungated, a hired NPC would flee from essentially every fight. The gate is
-				an opt-in personality flag doing its job; what is missing is any way to set it.
+				an opt-in personality flag; the existing writer only covers the SDCS class, so
+				these legacy variants still have no way to set it.
 				-->
 				<!--
 				<action name="Flee" weight="6" entity_filter="IsEnemy">
@@ -862,13 +884,16 @@
             <!-- FLEE DISABLED. The action below is commented out in all four NPCModCore
 				variants pending a proper trigger, which will be an entity and/or
 				personality property rather than this cvar.
-				WHY: it gated on SelfHasCVar $Timid=1, and $Timid has NO WRITER ANYWHERE:
-				the framework's own writer is commented out upstream, so the gate can
-				never score, and commenting the action out is BEHAVIOUR NEUTRAL.
+				WHY: it gated on SelfHasCVar $Timid=1. $Timid DOES have a writer: the SDCS
+				class npcSdcsSurvivorFemaleTimid (base entityclasses.xml, three entry triggers)
+				sets it, and the live SdcsNpcCore Flee action (SdcsMayAct plus $Timid) uses it.
+				No legacy NPCModCore class sets it, so for these four legacy variants the
+				gate can never score, and commenting the action out is BEHAVIOUR NEUTRAL.
 				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
 				within 15 m", and weight 6 outranks MeleeAttack (5) and ties RangedMeleeAttack
 				(6). Ungated, a hired NPC would flee from essentially every fight. The gate is
-				an opt-in personality flag doing its job; what is missing is any way to set it.
+				an opt-in personality flag; the existing writer only covers the SDCS class, so
+				these legacy variants still have no way to set it.
 				-->
 				<!--
 				<action name="Flee" weight="6" entity_filter="IsEnemy">
@@ -1360,7 +1385,7 @@
 				</action>
 				<action name="VomitAttackClose" weight="5">
 					<task class="AttackTargetEntitySDX, SCore" action_index="2" />
-					<!-- <consideration class="InWeaponRange, SCore" action_index="2" /> -->
+					<!-- <consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="2" /> -->
 					<consideration class="SelfNotHasBuff, SCore" buffs="IsHealing,buffHitStun" />
 					<consideration class="CanSeeTarget, SCore" />
 				</action>
@@ -1368,7 +1393,7 @@
 					<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
 					<consideration class="SelfNotHasBuff, SCore" buffs="IsHealing,buffHitStun"/>
 					<consideration class="CanSeeTarget, SCore"/>
-					<consideration class="InWeaponRange, SCore"  action_index="0"  />
+					<consideration class="SdcsInWeaponRange, NPCSdcsCharacters"  action_index="0"  />
 				</action>
 			</ai_package>
 
@@ -1414,44 +1439,23 @@
 				gates come first and the sight ray last. The order gate reads the CurrentOrder
 				cvar directly (2 is Stay; an unset cvar reads as not Stay, the same answer as
 				SCore's NotHasOrder, whose order lookup builds a log string on every call), and
-				the melee pair tests its weapon range before its sight. -->
-			<!-- SdcsKeepTarget, just before the sight ray in the attack and approach actions,
+				the melee pair tests its weapon range before its sight. SdcsNotPosted, right
+				after the order gate on the back-ups and the melee approach, is 1 for every
+				survivor (a cached flag); it is there so the bandits' copies stay in step and
+				hold a posted bandit on her post. -->
+			<!-- SdcsKeepTarget, after the engage gate and before the range and sight checks in the attack and approach actions,
 				keeps a fighter on her current target when her class sets SdcsKeepTarget below
 				1. Only the bandit classes do, so for a survivor it scores 1 and changes
 				nothing; it is here so the bandit package stays in step with these five. -->
 
-			<!-- The ranged attack. Index 0 is FIRE on a player ranged weapon. On a melee weapon
-				this action is silenced by the class 0 gate below, and the MeleeAttack pair does
-				the job instead. Gate-exclusive pair: this action and MeleeAttack below are
-				class-exclusive (this requires a non-class-0 weapon, that one requires class 0),
-				and with the same weapon only one of the range gates can score, so exactly one
-				attack action can run at a time. -->
-			<!-- band: ENGAGE -->
-			<action name="RangedMeleeAttack" weight="6">
-				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
-				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<!-- Self-heal lives in the SdcsStatusCheck buff chain, so the heal-gate watches
-				     our own SdcsIsHealing. NPCCore gates its attack packages on IsHealing the same way, but
-				     our NPC never carries that buff (it rides on buffNPCStatusCheck, which this class
-				     does not get), so a gate on the old name would be dead. -->
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<!-- Do not try to shoot while reloading. A v5 NPC gets this free, because its
-					reload is a buff chain and its attack is gated on not having those buffs.
-					Ours is the vanilla reload, which sets no buffs, so the controller publishes
-					SdcsReloading as a cvar and this reads it. With the attack silent during a
-					reload, BackupRanged below becomes the highest scoring action and the NPC
-					retreats while it reloads - which is the emergent v5 behaviour, reproduced
-					rather than scripted. -->
-				<consideration class="SelfNotHasCVar, SCore" cvar="SdcsReloading" value="1"/>
-				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
-				<consideration class="InWeaponRange, SCore" action_index="0"/>
-				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
-				<consideration class="CanSeeTarget, SCore"/>
-			</action>
 
 			<!-- KEEP A SHOOTING DISTANCE. Weight 8 beats the attack's 6, so inside 4 m this
 				action wins and the NPC backs off instead of firing; beyond 4 m the threshold
-				band scores nothing and the attack resumes. The task is our own
+				band scores nothing and the attack resumes. One exception: while her patient
+				decision is scoring a patient below the dire line beyond the 3.5 m walk band,
+				the SdcsDireWalk term scores this action 0 and the weight 7 walk to him wins
+				(a wounded leader gets the bandage instead of the back-off); at or above the
+				line, and against a hire with no dire patient, this action is exactly as before. The task is our own
 				BackupFromTargetPaced, not SCore's
 				BackupFromTargetSDX: it draws up to six away-points and takes the first within 25
 				degrees of straight back (the stock task allowed 80, which reads as a half-circle
@@ -1466,12 +1470,96 @@
 			<!-- band: DEFENCE -->
 			<action name="BackupKeepDistance" weight="8">
 				<task class="BackupFromTargetPaced, 1-XNPCVoiceControl" max_distance="10" pace="1" max_speed="2.4" spread="25" tries="6"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="back-up"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<!-- The base keeper's job/fight commitment: 0 while the repair duty won the last decision within the dwell window and no fresh attacker (in her reach or a gun in hand) breaks in; 1 for everyone else (it scores 1 outside the two repair modes). Mirrored in SdcsBanditCombat at its old position (no MayEngage there). -->
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<consideration class="TargetDistance" flip_x="true" min="0" max="4" curve="threshold"/>
+				<!-- The dire-walk term: one dictionary read of the shared answer the medic
+				     package's patient decision writes (no second patient scan). Below the dire
+				     line it scores 0 and the weight 7 walk to the patient wins; above it, or
+				     with no dire patient, it scores 1 and this action is unchanged. It sits
+				     before the sight ray on purpose: a suppressed back-up skips the ray too.
+				     Self-defence is untouched: a defend-first flip clears the answer on the
+				     same pass, so the back-up resumes the moment an enemy is on her. -->
+				<consideration class="SdcsDireWalk, NPCSdcsCharacters"/>
 				<consideration class="CanSeeTarget, SCore"/>
+			</action>
+
+			<!-- THROW THE EXPLOSIVES SHE CARRIES. A lost-sight gun threat on her cover list
+				 (she lobs where she last saw it) or a group of at least GroupMinCount inside
+				 GroupRadiusMetres is worth a throw; a lone visible target is not - the gun does
+				 that job. Stance-gated by the consideration (Hold fire never), one side switch
+				 each in Settings.xml, and the shared SdcsThrow gate keeps the blast off herself,
+				 her friends and (a hire) her leader's land claim. Weight 6.5, the ENGAGE offset
+				 (5-6.5): it beats the shot (6) and the cover (6) and loses to the medic (7) and
+				 BackupKeepDistance (8). -->
+			<!-- band: ENGAGE -->
+			<action name="ThrowExplosive" weight="6.5">
+				<task class="ThrowExplosiveSdcs, NPCSdcsCharacters" action_index="0"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,SdcsThrowCooldown"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<consideration class="SdcsThrowWanted, NPCSdcsCharacters"/>
+			</action>
+			<!-- The ranged attack. Index 0 is FIRE on a player ranged weapon. On a melee weapon
+				this action is silenced by the class 0 gate below, and the MeleeAttack pair does
+				the job instead. Gate-exclusive pair: this action and MeleeAttack below are
+				class-exclusive (this requires a non-class-0 weapon, that one requires class 0),
+				and with the same weapon only one of the range gates can score, so exactly one
+				attack action can run at a time. -->
+			<!-- band: ENGAGE -->
+			<action name="RangedMeleeAttack" weight="6">
+				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
+				<!-- Self-heal lives in the SdcsStatusCheck buff chain, so the heal-gate watches
+				     our own SdcsIsHealing. NPCCore gates its attack packages on IsHealing the same way, but
+				     our NPC never carries that buff (it rides on buffNPCStatusCheck, which this class
+				     does not get), so a gate on the old name would be dead. -->
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<!-- Do not try to shoot while reloading. A v5 NPC gets this free, because its
+					reload is a buff chain and its attack is gated on not having those buffs.
+					Ours is the vanilla reload, which sets no buffs, so the controller publishes
+					SdcsReloading as a cvar and this reads it. With the attack silent during a
+					reload, BackupRanged below becomes the highest scoring action and the NPC
+					retreats while it reloads - which is the emergent v5 behaviour, reproduced
+					rather than scripted. -->
+				<consideration class="SelfNotHasCVar, SCore" cvar="SdcsReloading" value="1"/>
+				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<!-- The shot's range and line of fire: in range and some body point clear of blocks
+				     (head, chest, pelvis; SdcsAimPoint, the point the shot itself aims at). Through a
+				     gap in a broken door she shoots the part she can hit, and holds when none is clear. -->
+				<consideration class="SdcsLineOfFire, NPCSdcsCharacters"/>
+				<!-- SCore's sight, plus her engaged target whose aim moved off a blocked head (or a
+				     person's blocked chest) onto a clear point: the head to head sight ray meets the
+				     same block. -->
+				<consideration class="SdcsSeesShot, NPCSdcsCharacters"/>
+			</action>
+
+			<!-- STEP ASIDE FOR A CLEAR SHOT. A gun-armed hire whose leader stands in her line of
+			     fire to an enemy that is going for him steps aside, away from him (Settings.xml
+			     Combat ClearShotStepMetres), then her shot takes over. Weight 5.5, between the shot
+			     (6) and the backing off (5): with a clear line she just shoots. Leader-only, so the
+			     bandits' package has no copy. -->
+			<!-- band: ENGAGE -->
+			<action name="ClearShot" weight="5.5">
+				<task class="ClearShotSdcs, NPCSdcsCharacters" />
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<!-- The job/fight commitment gate: cheap (one dictionary read), so it sits before the leader line-of-sight ray - the cost-order pin. -->
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<consideration class="SdcsLeaderInLine, NPCSdcsCharacters"/>
+				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0"/>
 			</action>
 
 			<!-- BACK OFF WHEN THE TARGET IS TOO CLOSE. InWeaponRange at index 1 is the trigger,
@@ -1492,9 +1580,11 @@
 					degree arc; and the task's Stop cancels the path when the action
 					changes, so this retreat cannot outlive the moment the class gate flips it off. -->
 				<task class="BackupFromTargetPaced, 1-XNPCVoiceControl" max_distance="10" pace="1" max_speed="2.4" spread="25" tries="6"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="back-up"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
 				<!-- MAINTAIN A SHOOTING DISTANCE. The naive trigger (InWeaponRange action_index 1)
 					is Zoom on a PLAYER weapon: it declares no Range, falls back to about 1.5 m, and
 					the NPC only backs off once a zombie is already on top of it. An explicit band is
@@ -1503,7 +1593,80 @@
 					higher, thresholded. Our pistol reaches 40 m, so 10 m is comfortably inside
 					its range and the NPC keeps shooting the whole way back. -->
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<consideration class="TargetDistance" flip_x="true" min="1" max="10" curve="threshold"/>
+				<consideration class="CanSeeTarget, SCore"/>
+			</action>
+
+			<!-- AN AGGRESSIVE HIRE'S SEEK. She lost sight of the bandit she was fighting and goes
+			     where she LAST SAW it: the bandits' seek task, subclassed rather than copied
+			     (the one-seeker-per-target claim and the leash from her leader are the subclass's
+			     additions; the walk, the search and the look timings are the Bandits Seek* settings,
+			     as in BanditSeek). SdcsHireSeekAllowed rules the seek: Aggressive only, her order
+			     not Stay or Guard, the claim on that target free or hers, and the last-seen spot
+			     within GunThreatLeashMetres of the leader. No weapon gate: an Aggressive melee
+			     hire seeks too. Weight 5, listed AFTER BackupRanged: a tie in this package goes
+			     to the first listed, so the back-off and the melee pair keep theirs; it beats
+			     HoldEngaged (4) and loses to the shot and the cover (6). -->
+			<!-- band: ENGAGE -->
+			<action name="HireSeek" weight="5">
+				<task class="HireSeekSdcs, NPCSdcsCharacters" run="true" />
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,SdcsSeekRest"/>
+				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsHireSeekAllowed, NPCSdcsCharacters"/>
+				<consideration class="SdcsLostSight, NPCSdcsCharacters"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<!-- The melee-unreachable pair gate: 0 while this target is marked unreachable (the 1 Hz pass owns the mark; a gun holder keeps her marks, and the gate scores 1 while a ranged weapon is held). LAST, after the state-keeping SdcsLostSight: scoring stops at the first 0, so ahead of it the kept last-seen record would go stale while the mark lasts. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
+			</action>
+
+			<!-- MELEE HALF. Modelled on the base game's default melee actions, without the
+				full control mode gates (a buff this mod never applies). Both are gated on class 0
+				so the ranged pair above is silent while a melee weapon or bare hands is held, and
+				vice versa: exactly one pair can score at a time. Weight 5 with the
+				MeleeApproach: the gate-exclusive approach pair (class 0 vs not, outside
+				weapon range vs inside, the attack half), so no weight offset is needed
+				between them. -->
+			<!-- band: ENGAGE -->
+			<action name="MeleeApproach" weight="5">
+				<task class="MoveToAttackTargetSDX, SCore" run="true" />
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="melee approach"/>
+				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<!-- A melee mate does not walk her fight into a live blast or a
+				     molotov fire zone: 0 while the target sits in one and she does not. -->
+				<consideration class="SdcsTargetClearOfBlast, NPCSdcsCharacters"/>
+				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<!-- The melee-unreachable pair gate: 0 while this target is marked unreachable (the 1 Hz pass owns the mark; a gun holder keeps her marks, and the gate scores 1 while a ranged weapon is held). AFTER the state-keeping MayEngage: scoring stops at the first 0, so ahead of it the engage bookkeeping would stop while the mark lasts. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
+				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="0" />
+				<!-- A hire also approaches an enemy going for her leader within 10 m of him unseen:
+				     the leader himself blocks her sight line when she follows behind him. -->
+				<consideration class="SdcsSeesOrDefendsLeader, 1-XNPCVoiceControl"/>
+			</action>
+			<!-- band: ENGAGE -->
+			<action name="MeleeAttack" weight="5">
+				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<!-- The melee-unreachable pair gate: 0 while this target is marked unreachable (the 1 Hz pass owns the mark; a gun holder keeps her marks, and the gate scores 1 while a ranged weapon is held). AFTER the state-keeping MayEngage: scoring stops at the first 0, so ahead of it the engage bookkeeping would stop while the mark lasts. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
+				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0" />
+				<!-- The reach test before every swing, right after the range gate: it casts
+				     its ray only inside her melee reach, so the sight ray stays last. 0 when
+				     a block stands between her and the target (a door to open first, a
+				     barrier her gun can shoot through, a wall); 1 on a clear line, or while
+				     she breaks through a barrier on purpose. -->
+				<consideration class="SdcsMeleeReach, NPCSdcsCharacters"/>
 				<consideration class="CanSeeTarget, SCore"/>
 			</action>
 
@@ -1517,56 +1680,19 @@
 			<!-- band: JOBS -->
 			<action name="HoldEngaged" weight="4">
 				<task class="HoldEngagedSdcs, NPCSdcsCharacters"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<!-- The engage gate, the other combat actions' own: she holds while she
+				     may engage a target; with none left, the follow or the idle takes over. -->
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<!-- The melee-unreachable pair gate: the hold must not keep her on a melee
+				     target she cannot close to (no weapon gate here, so this is the only copy
+				     that sees it; a gun holder keeps her marks, and the gate scores 1 while a ranged weapon is held). AFTER the
+				     state-keeping MayEngage: scoring stops at the first 0, so ahead of it
+				     the engage bookkeeping would stop while the mark lasts. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
 				<consideration class="TargetDistance" flip_x="true" min="0" max="40" curve="threshold"/>
-			</action>
-
-			<!-- MELEE HALF. Modelled on the base game's default melee actions, without the
-				full control mode gates (a buff this mod never applies). Both are gated on class 0
-				so the ranged pair above is silent while a melee weapon or bare hands is held, and
-				vice versa: exactly one pair can score at a time. Weight 5 with the
-				MeleeApproach: the gate-exclusive approach pair (class 0 vs not, outside
-				weapon range vs inside, the attack half), so no weight offset is needed
-				between them. -->
-			<!-- band: ENGAGE -->
-			<action name="MeleeApproach" weight="5">
-				<task class="MoveToAttackTargetSDX, SCore" run="true" />
-				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
-				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
-				<consideration class="NotInWeaponRange, SCore" action_index="0" />
-				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
-				<!-- A hire also approaches an enemy going for her leader within 10 m of him unseen:
-				     the leader himself blocks her sight line when she follows behind him. -->
-				<consideration class="SdcsSeesOrDefendsLeader, 1-XNPCVoiceControl"/>
-			</action>
-			<!-- band: ENGAGE -->
-			<action name="MeleeAttack" weight="5">
-				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
-				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
-				<consideration class="InWeaponRange, SCore" action_index="0" />
-				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
-				<consideration class="CanSeeTarget, SCore"/>
-			</action>
-
-			<!-- STEP ASIDE FOR A CLEAR SHOT. A gun-armed hire whose leader stands in her line of
-			     fire to an enemy that is going for him steps aside, away from him (Settings.xml
-			     Combat ClearShotStepMetres), then her shot takes over. Weight 5.5, between the shot
-			     (6) and the backing off (5): with a clear line she just shoots. Leader-only, so the
-			     bandits' package has no copy. -->
-			<!-- band: ENGAGE -->
-			<action name="ClearShot" weight="5.5">
-				<task class="ClearShotSdcs, NPCSdcsCharacters" />
-				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<consideration class="SdcsLeaderInLine, NPCSdcsCharacters"/>
-				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
-				<consideration class="InWeaponRange, SCore" action_index="0"/>
 			</action>
 		</ai_package>
 		<!-- [SDCS-BANDIT] The bandit's combat: SdcsNpcRangedAdvanced's five actions
@@ -1577,37 +1703,64 @@
 			in with MeleeApproach), and BanditListen walks toward
 			a player she hears but cannot see (CanHearTarget is the player's noise
 			against her SleeperNoiseToWake, so a crouching player stays unheard).
+			A POSTED bandit (a sentry, or a bandit on the Stay or Guard order) holds
+			her post: the back-ups, the approaches, the listen and the seek score 0
+			for her (SdcsNotPosted, and SdcsHuntsTarget for the seek); she shoots,
+			throws and swings from there.
 			Keep the five in step with SdcsNpcRangedAdvanced: a change to the
 			survivors' actions belongs here too (a test pins it). -->
 		<ai_package name="SdcsBanditCombat" entity_filter="IsEnemy">
 
-			<!-- band: ENGAGE -->
-			<action name="RangedMeleeAttack" weight="6">
-				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
-				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<consideration class="SelfNotHasCVar, SCore" cvar="SdcsReloading" value="1"/>
-				<consideration class="InWeaponRange, SCore" action_index="0"/>
-				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
-				<consideration class="CanSeeTarget, SCore"/>
-			</action>
-
 			<!-- band: DEFENCE -->
 			<action name="BackupKeepDistance" weight="8">
 				<task class="BackupFromTargetPaced, 1-XNPCVoiceControl" max_distance="10" pace="1" max_speed="2.4" spread="25" tries="6"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="back-up"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<consideration class="TargetDistance" flip_x="true" min="0" max="4" curve="threshold"/>
 				<consideration class="CanSeeTarget, SCore"/>
+			</action>
+
+			<!-- THROW THE EXPLOSIVES SHE ROLLS AT SPAWN (her class's SdcsThrowables
+				 grant). The same consideration as the survivors' copy: a lost-sight threat on
+				 her cover list or a group is worth it, the shared SdcsThrow gate spares the
+				 other bandits, the BanditsThrow switch. Weight 6.5, the ENGAGE offset (5-6.5):
+				 it beats the shot (6) and the cover (6) and loses to the medic (7) and
+				 BackupKeepDistance (8). -->
+			<!-- band: ENGAGE -->
+			<action name="ThrowExplosive" weight="6.5">
+				<task class="ThrowExplosiveSdcs, NPCSdcsCharacters" action_index="0"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,SdcsThrowCooldown"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<consideration class="SdcsThrowWanted, NPCSdcsCharacters"/>
+			</action>
+
+			<!-- band: ENGAGE -->
+			<action name="RangedMeleeAttack" weight="6">
+				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="SdcsReloading" value="1"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<consideration class="SdcsLineOfFire, NPCSdcsCharacters"/>
+				<consideration class="SdcsSeesShot, NPCSdcsCharacters"/>
 			</action>
 
 			<!-- band: ENGAGE -->
 			<action name="BackupRanged" weight="5">
 				<task class="BackupFromTargetPaced, 1-XNPCVoiceControl" max_distance="10" pace="1" max_speed="2.4" spread="25" tries="6"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="back-up"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<consideration class="TargetDistance" flip_x="true" min="1" max="10" curve="threshold"/>
 				<consideration class="CanSeeTarget, SCore"/>
 			</action>
@@ -1615,53 +1768,58 @@
 			<!-- band: ENGAGE -->
 			<action name="MeleeApproach" weight="5">
 				<task class="MoveToAttackTargetSDX, SCore" run="true" />
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="melee approach"/>
 				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<consideration class="NotInWeaponRange, SCore" action_index="0" />
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<!-- The melee-unreachable pair gate, mirrored: 0 while this target is marked
+				     unreachable. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
+				<!-- The survivors' melee approach, mirrored: out of the live
+				     blast and the fire zones. -->
+				<consideration class="SdcsTargetClearOfBlast, NPCSdcsCharacters"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="0" />
 				<consideration class="SdcsSeesOrDefendsLeader, 1-XNPCVoiceControl"/>
 			</action>
 			<!-- band: ENGAGE -->
 			<action name="MeleeAttack" weight="5">
 				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<consideration class="InWeaponRange, SCore" action_index="0" />
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<!-- The melee-unreachable pair gate, mirrored. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
 				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0" />
+				<!-- The survivors' reach test, mirrored. -->
+				<consideration class="SdcsMeleeReach, NPCSdcsCharacters"/>
 				<consideration class="CanSeeTarget, SCore"/>
 			</action>
 
 			<!-- band: ENGAGE -->
 			<action name="BanditApproach" weight="5">
 				<task class="MoveToAttackTargetSDX, SCore" run="true" />
+				<!-- A posted bandit (a sentry, or on Stay or Guard) never leaves her post to close in. -->
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="approach"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<consideration class="NotInWeaponRange, SCore" action_index="0" />
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<!-- The melee-unreachable pair gate: this action is the ranged bandit's
+				     close-in, and a gun holder keeps her marks with the gate scoring 1 while a
+				     ranged weapon is held, so it scores 1 in practice; it is kept so the
+				     packages stay in step. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
+				<!-- The bandit's own approach (the survivors' melee approach,
+				     mirrored, plus the distance band): the same blast and fire gate. -->
+				<consideration class="SdcsTargetClearOfBlast, NPCSdcsCharacters"/>
 				<consideration class="TargetDistance" min="10" max="40" curve="threshold" />
 				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="0" />
 				<consideration class="CanSeeTarget, SCore"/>
-			</action>
-
-			<!-- A bandit has no jobs: hunting by ear takes the JOBS weight, below every
-			     fight (ENGAGE 5-6) and above the ambient actions. -->
-			<!-- band: JOBS -->
-			<action name="BanditListen" weight="4">
-				<task class="MoveToInvestigate, SCore" run="true" />
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<consideration class="CanNotSeeTarget, SCore"/>
-				<consideration class="CanHearTarget, SCore" />
-			</action>
-
-			<!-- NEVER IDLE MID-FIGHT: the survivors' HoldEngaged fallback without the
-			     engage-stance gate (a bandit has none). Weight 3.5, the ORDERS band offset
-			     (the only legal one, the backing-off order's room): below BanditListen (4) so a
-			     bandit's hunting moves still win, above every idle action. -->
-			<!-- band: ORDERS -->
-			<action name="HoldEngaged" weight="3.5">
-				<task class="HoldEngagedSdcs, NPCSdcsCharacters"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun"/>
-				<consideration class="TargetDistance" flip_x="true" min="0" max="40" curve="threshold"/>
 			</action>
 			<!-- SEEK. A bandit who lost sight of the enemy she is fighting, or of whoever just hurt
 			     her, within 40 m, goes where she LAST SAW it instead of wandering off or standing
@@ -1673,9 +1831,61 @@
 			<!-- band: ENGAGE -->
 			<action name="BanditSeek" weight="5">
 				<task class="SeekLastSeenSdcs, NPCSdcsCharacters" run="true" />
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,buffHitStun,SdcsSeekRest"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,SdcsSeekRest"/>
 				<consideration class="SdcsHuntsTarget, NPCSdcsCharacters" max="40"/>
 				<consideration class="SdcsLostSight, NPCSdcsCharacters"/>
+				<!-- The melee-unreachable pair gate: a marked target is not worth walking to
+				     its last-seen spot. LAST, after the state-keeping SdcsLostSight: scoring
+				     stops at the first 0, so ahead of it the kept last-seen record would go
+				     stale while the mark lasts. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
+			</action>
+
+			<!-- A bandit has no jobs: hunting by ear takes the JOBS weight, below every
+			     fight (ENGAGE 5-6) and above the ambient actions. -->
+			<!-- band: JOBS -->
+			<action name="BanditListen" weight="4">
+				<task class="MoveToInvestigate, SCore" run="true" />
+				<!-- A posted bandit hears you and holds her post. -->
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="listen"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<consideration class="CanNotSeeTarget, SCore"/>
+				<consideration class="CanHearTarget, SCore" />
+			</action>
+
+			<!-- NEVER IDLE MID-FIGHT: the survivors' HoldEngaged fallback without the
+			     engage-stance gate (a bandit has none). Weight 3.5, the ORDERS band offset
+			     (the only legal one, the backing-off order's room): below BanditListen (4) so a
+			     bandit's hunting moves still win, above every idle action. -->
+			<!-- band: ORDERS -->
+			<action name="HoldEngaged" weight="3.5">
+				<task class="HoldEngagedSdcs, NPCSdcsCharacters"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<!-- The melee-unreachable pair gate: the hold must not keep her on a melee
+				     target she cannot close to (no weapon gate here; a gun holder keeps her marks, and the gate scores 1
+				     while a ranged weapon is held). -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
+				<consideration class="TargetDistance" flip_x="true" min="0" max="40" curve="threshold"/>
+			</action>
+		</ai_package>
+
+		<!-- COVER. Its own package with NO package filter: the action targets herself (IsSelf), and a package-level IsEnemy filter would drop
+		     that target. Listed LAST in each NPC class's AIPackages: across packages the last one wins a tie, so TakeCover (6) beats the
+		     shot (6) whenever its gates pass, while BackupKeepDistance (8) and the medic (7) still beat it. Gun AND melee holders run it:
+		     the base SdcsCoverWanted trigger (cheapest, so the melee gate below is not paid for a non-self or cooldowned candidate) and
+		     LAST the voice SdcsCoverMeleeGate (1 = in cover, 0 = step out and fight; a gun holder scores 1, no effect). -->
+		<ai_package name="SdcsCover">
+			<!-- band: ENGAGE -->
+			<action name="TakeCover" weight="6" entity_filter="IsSelf">
+				<task class="TakeCoverSdcs, NPCSdcsCharacters" action_index="0"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,SdcsCoverNone"/>
+				<consideration class="SdcsCoverWanted, NPCSdcsCharacters"/>
+				<consideration class="SdcsCoverMeleeGate, 1-XNPCVoiceControl"/>
 			</action>
 		</ai_package>
 
@@ -1689,7 +1899,9 @@
 			harvest window because takeAll is true; what fits nowhere stays in the container.
 			When the harvest window is full the task clears the mode (the order is already
 			Follow), sets the plain cvar SdcsLootFull and, with the voice mod installed, says
-			so through the XNPCCore.Loot.SayFull bridge. The task class is in the base assembly (it owns the
+			so through the XNPCCore.Loot.SayFull bridge. The job is PAUSED first (Settings.xml Loot
+			ResumeFreeSlots and ResumeMinutes): once you empty her pack she loots again and says so.
+			The task class is in the base assembly (it owns the
 			bag, the ammo rules and the harvest window); the class attribute resolves to UAI.
 			UAITaskLootSdcs in NPCSdcsCharacters. Wild survivors (L3) reuse the SAME package
 			shape with takeAll false, listedTags and minValue: the remainder then goes to the
@@ -1706,8 +1918,8 @@
 			SphereCache for the task's Start. The task lines therefore carry no TargetType
 			attribute any more, and the task reads nothing from it.
 
-			Both actions carry the NoActiveChat gate as their SECOND consideration (cost
-			ordered, after the identity gate and before the buff and enemy lookups): while
+			Both actions carry the NoActiveChat gate behind the stun and mode or identity
+			gates, before the buff and enemy lookups (cost order): while
 			the local player's E dialog or trade window is open on her, or a voice chat is,
 			the interaction hold (the NPCChatComponent chat pause, extended by
 			InteractionHoldRules.HoldActive) scores this 0 and the loot task cannot start.
@@ -1750,6 +1962,7 @@
 			<action name="LootSdcs" weight="4" entity_filter="IsSelf">
 				<!-- priorityLootLists (the task's pile rank): the loose-loot pile loot lists (verified against the game's loot.xml). A picked container whose loot list is in this CSV ranks ahead of the rest of the pick, distance order within each class; the pick's random spread stays inside the leading class when it has five or more. -->
 				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="true" leaderRange="15" leaderAbortRange="20" priorityLootLists="ammoPileSmall,ammoPileMed,ammoPileLarge,medicalPileSmall,medicalPileMedium,medicalPileLarge,bookPile,singleBooks,foodPileSmall,foodPileMed,foodPileLarge,chemPileSmall,chemPileMed,chemPileLarge,liquorPileSmall,liquorPileMed,liquorPileLarge"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="1"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SdcsLeaderStill, NPCSdcsCharacters"/>
@@ -1774,6 +1987,7 @@
 			<!-- band: JOBS -->
 			<action name="ButcherSdcsAuto" weight="4" entity_filter="IsSelf">
 				<task class="ButcherSdcs, NPCSdcsCharacters" auto="true"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SdcsLeaderStill, NPCSdcsCharacters"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
@@ -1792,10 +2006,13 @@
 			   leader-still gate (the area does
 			   not move) and no leader-left abort. When a fresh scan finds nothing
 			   left, or her pack fills, she says one line, goes back on Follow and
-			   is teleported to the leader beyond 40 m.  -->
+			   is teleported to the leader beyond 40 m. A full pack PAUSES the job:
+			   once you empty her pack she goes back to the same post and carries on.
+			   Animal corpses in the area come first (the butcher action below).  -->
 			<!-- band: JOBS -->
 			<action name="LootSdcsHere" weight="4" entity_filter="IsSelf">
 				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="true" leaderRange="15" anchor="pin" priorityLootLists="ammoPileSmall,ammoPileMed,ammoPileLarge,medicalPileSmall,medicalPileMedium,medicalPileLarge,bookPile,singleBooks,foodPileSmall,foodPileMed,foodPileLarge,chemPileSmall,chemPileMed,chemPileLarge,liquorPileSmall,liquorPileMed,liquorPileLarge"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="2"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
@@ -1812,6 +2029,7 @@
 			<!-- band: JOBS -->
 			<action name="HarvestSdcsHere" weight="4" entity_filter="IsSelf">
 				<task class="HarvestSdcs, NPCSdcsCharacters"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="3"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
@@ -1831,6 +2049,7 @@
 			<!-- band: JOBS -->
 			<action name="MineSdcsHere" weight="4" entity_filter="IsSelf">
 				<task class="HarvestSdcs, NPCSdcsCharacters" kind="stone"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="4"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
@@ -1849,6 +2068,7 @@
 			<!-- band: JOBS -->
 			<action name="DigClaySdcsHere" weight="4" entity_filter="IsSelf">
 				<task class="HarvestSdcs, NPCSdcsCharacters" kind="clay"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="5"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
@@ -1866,6 +2086,7 @@
 			<!-- band: JOBS -->
 			<action name="PickSdcsHere" weight="4" entity_filter="IsSelf">
 				<task class="HarvestSdcs, NPCSdcsCharacters" kind="plant"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="6"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
@@ -1884,10 +2105,29 @@
 			<!-- band: JOBS -->
 			<action name="ButcherSdcsHere" weight="4" entity_filter="IsSelf">
 				<task class="ButcherSdcs, NPCSdcsCharacters"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="7"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
 				<consideration class="SdcsHasButcherTarget, NPCSdcsCharacters"/>
+			</action>
+			<!--  LOOT AROUND HERE ALSO BUTCHERS (loot-here, SdcsLootMode 2): the
+				   same butcher task inside the loot-here area, AHEAD of its
+				   containers and bags (a carcass is eaten or despawns), only
+				   when she carries a blade. The container action scores 0 while
+				   a corpse is left, so this one wins; a rummage already going
+				   is finished first. A started run keeps scoring until it ends,
+				   so the Guard order at the post cannot take it over.
+				   lootHere="true" tells the consideration this action exists,
+				   so loot-here waits for the corpses before its done line.  -->
+			<!-- band: JOBS -->
+			<action name="ButcherSdcsLootHere" weight="4" entity_filter="IsSelf">
+				<task class="ButcherSdcs, NPCSdcsCharacters"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="2"/>
+				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15"/>
+				<consideration class="SdcsHasButcherTarget, NPCSdcsCharacters" lootHere="true"/>
 			</action>
 			<!--  BASE REPAIR, THE BASE KEEPER STANDING DUTY (SdcsLootMode 8):
 			   she stays at the base on Guard and repairs damage whenever it
@@ -1906,8 +2146,13 @@
 			<!-- band: JOBS -->
 			<action name="BaseKeepSdcsBase" weight="4" entity_filter="IsSelf">
 				<task class="BaseKeepSdcs, NPCSdcsCharacters"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="8"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<!-- The job side of the keeper's commitment: 0 while a fight won the last decision within the dwell window (the flip-flop pin). It sits before the enemy scan and the repairable answer, so a held duty pays neither. -->
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="job"/>
+				<!-- The attack gate: while a tracked block was hit within the quiet window, base mode stands down with the weapon out - one timestamp compare, no scan, and the repairable answer below never scores. -->
+				<consideration class="SdcsBaseNotUnderAttack, NPCSdcsCharacters" mode="8"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15" sight="block"/>
 				<consideration class="SdcsHasRepairTarget, NPCSdcsCharacters"/>
 			</action>
@@ -1919,8 +2164,11 @@
 			<!-- band: JOBS -->
 			<action name="BaseKeepSdcsCombat" weight="4" entity_filter="IsSelf">
 				<task class="BaseKeepSdcs, NPCSdcsCharacters"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfHasCVarV4, SCore" cvar="SdcsLootMode" value="9"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<!-- The job side of the keeper's commitment: combat repair works the wall THROUGH the attack (no attack gate here), so its off-switch is a fight that won recently - and the fight side breaks on a fresh attacker (survival first), so a zombie that hits her wins at once. -->
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="job"/>
 				<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v4" distance="15" sight="block"/>
 				<consideration class="SdcsHasRepairTarget, NPCSdcsCharacters"/>
 			</action>
@@ -1941,8 +2189,9 @@
 			<!-- band: JOBS -->
 			<action name="CraftSdcsHere" weight="4" entity_filter="IsSelf">
 				<task class="CraftSdcs, NPCSdcsCharacters"/>
-				<consideration class="SdcsCraftReady, NPCSdcsCharacters" distance="15" sight="block"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
+				<consideration class="SdcsCraftReady, NPCSdcsCharacters" distance="15" sight="block"/>
 			</action>
 			<!--  The WILD survivor loots on her own. One container per
 			   60 s (the SdcsLootWildCooldown buff, added by the task after the
@@ -1957,6 +2206,7 @@
 			<!-- band: AMBIENT -->
 			<action name="LootSdcsWild" weight="1" entity_filter="IsSelf">
 				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="false" minValue="100" listedTags="medical,ammo,food,drinks,csm" cooldownBuff="SdcsLootWildCooldown" priorityLootLists="ammoPileSmall,ammoPileMed,ammoPileLarge,medicalPileSmall,medicalPileMedium,medicalPileLarge,bookPile,singleBooks,foodPileSmall,foodPileMed,foodPileLarge,chemPileSmall,chemPileMed,chemPileLarge,liquorPileSmall,liquorPileMed,liquorPileLarge"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SdcsUnhired, NPCSdcsCharacters"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SelfNotHasBuffV4, SCore" buffs="ActivityCoolDown"/>
@@ -1988,19 +2238,22 @@
 			</action>
 		</ai_package>
 
-		<!-- [SDCS-MEDIC] The medic package: walk to an ally who needs aid, then run the first-aid sequence. One consideration, SdcsPatientNeedsAid, is the whole decision (the cached combat clock, the defend-first gate, the patient gate, the condition, the held item). The two actions share it: MoveToPatientSdcs scores only beyond 3 m (the game's plain MoveToTarget, which only walks and does NOT attack), FirstAidSdcs only within 3.5 m, and both are gated by SdcsIsHealing (her own heal running) and NoActiveChat (an open dialog holds her). AID band weight 7. FirstAidSdcs tests the distance before the medic check (most allies stand beyond 3.5 m); MoveToPatientSdcs keeps the medic check first on purpose: it reads her combat clock for every ally at any distance, so the clock keeps watching the fight and the after-combat wait counts from the fight's real end. -->
+		<!-- [SDCS-MEDIC] The medic package: walk to an ally who needs aid, then run the first-aid sequence. One consideration, SdcsPatientNeedsAid, is the whole decision (the cached combat clock, the defend-first gate, the patient gate, the condition, the held item, the walk retry window). The two actions share it: MoveToPatientSdcs scores only beyond 3.5 m (it walks on the seek's walk seam, SdcsPointWalk, which only walks and does NOT attack: it re-paths as the patient moves, and a walk that stalls gives up and skips that patient for Medic WalkRetrySeconds), FirstAidSdcs only within 3.5 m, and both are gated by SdcsIsHealing (her own heal running) and NoActiveChat (an open dialog holds her). AID band weight 7. FirstAidSdcs tests the distance before the medic check (most allies stand beyond 3.5 m); MoveToPatientSdcs keeps the medic check first on purpose: it reads her combat clock for every ally at any distance, so the clock keeps watching the fight and the after-combat wait counts from the fight's real end. -->
 		<ai_package name="SdcsNpcMedic" entity_filter="IsAlly">
 			<!-- band: AID -->
 			<action name="MoveToPatientSdcs" weight="7">
-				<task class="MoveToTarget" distance="3"/>
+				<task class="MoveToPatientSdcs, NPCSdcsCharacters" distance="3"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SdcsPatientNeedsAid, NPCSdcsCharacters"/>
-				<consideration class="TargetDistance" min="3" max="30" curve="threshold"/>
+				<!-- The walk scores only beyond 3.5 m, the first aid reach, so the two never tie: a tie goes to the first listed action, the walk, which restarts and arrives every tick while she stands inside its 3 m stop. -->
+				<consideration class="TargetDistance" min="3.5" max="30" curve="threshold"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SelfNotHasBuffV4, SCore" buffs="SdcsIsHealing"/>
 			</action>
 			<!-- band: AID -->
 			<action name="FirstAidSdcs" weight="7">
 				<task class="FirstAidSdcs, NPCSdcsCharacters"/>
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<!-- The distance first: most allies stand beyond 3.5 m, and the medic check is the costly one. A threshold, not a decay: full score anywhere inside 3.5 m. A decaying curve drops below follow and jobs at the 3 m walk stop and she drifts back to following. -->
 				<consideration class="TargetDistance" flip_x="true" min="0" max="3.5" curve="threshold"/>
 				<consideration class="SdcsPatientNeedsAid, NPCSdcsCharacters"/>

@@ -327,48 +327,26 @@
  
    <dialog id="GenericNPCAnimal" startstatementid="start">
       <statement id="start" text="dialog_trader_statement_start">
-        <response_entry id="TellMe" />
         <response_entry id="FollowMe" />
 		<response_entry id="Pickup" />
         <response_entry id="ShowMe" />
         <response_entry id="StayHere" />
         <response_entry id="GuardHere" />
         <response_entry id="Wander" />
-        <response_entry id="SetPatrol" />
-        <response_entry id="Patrol" />
 		<response_entry id="Loot" />
         <response_entry id="Hire" />
         <response_entry id="Dismiss" />
         <response_entry id="done" />
       </statement>
 
-      <!-- Quest Lines Entries -->
-      <statement id="currentjobs" text="Do any of these tasks sound like something you can do?">
-        <requirement type="HasQuestSDX, SCore" requirementtype="Hide" />
-        <quest_entry id="npcquest" type="add" listindex="0" />
-        <response_entry id="nevermind" />
-      </statement>
-
-      <response id="jobsnone" text="dialog_trader_response_jobsnone" nextstatementid="nojobs" >
-        <requirement type="HasQuestSDX, SCore" requirementtype="Hide" />
-        <requirement type="QuestStatus" value="InProgress" requirementtype="Hide" />
-      </response>
-      
-      <response id="jobshave" text="dialog_trader_response_jobshave" nextstatementid="currentjobs" >
-        <requirement type="HasQuestSDX, SCore" requirementtype="Hide" />
-        <requirement type="QuestStatus" value="NotStarted" requirementtype="Hide" />
-        <!-- <action type="AddJournalEntry" id="questTip" /> -->
-      </response>
-      <!-- End Quest Lines Entries -->
-
       <!-- If the NPC is not hired ( not the value="not" ), then display this option, allowing a hire dialog box o be opened. --> 
-      <response id="Hire" text="Hey little one, You look lost.  Want to come with me?  I have snacks!" >
+      <response id="Hire" text="GenericNPCAnimal_Hire" >
         <requirement type="HiredSDX, SCore" requirementtype="Hide" value="not"/>
         <action type="OpenDialogSDX, SCore" id="Hire" />
       </response>
 
       <!-- If the entity is hired, you can order the NPCs to do the following: -->
-     <response id="FollowMe" text="Follow Me" >
+     <response id="FollowMe" text="GenericNPCAnimal_FollowMe" >
         <requirement type="Leader, SCore" requirementtype="Hide"/>
         <action type="ExecuteCommandSDX, SCore" id="FollowMe" />
       </response> 
@@ -378,17 +356,17 @@
         <action type="ExecuteCommandSDX, SCore" id="TellMe" />
       </response> -->
 	  
-      <response id="ShowMe" text="Whats in your pack?" >
+      <response id="ShowMe" text="GenericNPCAnimal_ShowMe" >
         <requirement type="Leader, SCore" requirementtype="Hide" />
         <action type="ExecuteCommandSDX, SCore" id="OpenInventory" />
       </response>
 
-	  <response id="StayHere" text="Stay right there" >
+	  <response id="StayHere" text="GenericNPCAnimal_StayHere" >
         <requirement type="Leader, SCore" requirementtype="Hide" />
         <action type="AddBuffSDX, SCore" value="Self" id="buffOrderStay" />
       </response>
 	  
-	  <response id="Wander" text="Go play around here" >
+	  <response id="Wander" text="GenericNPCAnimal_Wander" >
         <requirement type="Leader, SCore" requirementtype="Hide" />
         <action type="AddBuffSDX, SCore" value="Self" id="buffOrderWander" />
       </response>
@@ -398,19 +376,19 @@
         <action type="AddBuffSDX, SCore" value="Self" id="buffOrderPatrol" />
       </response> -->
 	  
-	  <response id="Loot" text="Loot around here" >
+	  <response id="Loot" text="GenericNPCAnimal_Loot" >
         <requirement type="Leader, SCore" requirementtype="Hide" />
         <!--<action type="AddBuffSDX, SCore" value="Self" id="buffGatherResources" /> -->
 		<action type="AddBuffSDX, SCore" value="Self" id="buffOrderLoot" />
       </response>	 
 	
-	  <response id="GuardHere" text="Stay over here" >
+	  <response id="GuardHere" text="GenericNPCAnimal_GuardHere" >
         <requirement type="Leader, SCore" requirementtype="Hide" />
         <requirement type="HasTask, SCore" requirementtype="Hide" value="Stay" />
         <action type="AddBuffSDX, SCore" value="Self" id="buffOrderGuardHere" /> 
       </response>
   
-	  <response id="Dismiss" text="Abandon" >
+	  <response id="Dismiss" text="GenericNPCAnimal_Dismiss" >
         <requirement type="Leader, SCore" requirementtype="Hide" />
         <action type="ExecuteCommandSDX, SCore" id="Dismiss" />
         <action type="AddBuffSDX, SCore" value="Self" id="buffOrderDismiss" />
@@ -424,99 +402,6 @@
       <response id="done" text="dialog_trader_response_nevermind" />
 
     </dialog>	
-	
-	<dialog id="GenericNPCNurse" startstatementid="startNurse">
-		<statement id="startNurse" text="dialog_nurse_response_startNurse" ref_text="Hello, traveler. What can I assist you with in these perilous times?">
-			<response_entry id="startsubmenu" ref_text="startsubmenu" />
-			<response_entry id="TellMeAboutYourself" ref_text="Tell me about yourself." />
-			<response_entry id="FindBandages" ref_text="I could use some bandages. Any spare?" />
-			<response_entry id="FindWater" ref_text="I'm thirsty. Do you have any water?" />
-			<response_entry id="AskForQuest" ref_text="Do you need help with something?" />
-			<response_entry id="Bye" ref_text="GoodBye." />
-		</statement>
-		<statement id="NurseBackstory" text="dialog_nurse_response_NurseBackstory" ref_text="Before the world went under, I was a nurse at the Phoenix Children's Hospital. I've been wandering Arizona ever since, helping where I can. I'm a member of the WhiteRiver faction. We believe in mutual aid and survival.">
-			<response_entry id="FindBandages" ref_text="I could use some bandages. Any spare?" />
-			<response_entry id="FindWater" ref_text="I'm thirsty. Do you have any water?" />
-			<response_entry id="AskForQuest" ref_text="Do you need help with something?" />
-			<response_entry id="Bye" ref_text="GoodBye." />
-		</statement>
-		<statement id="BandagesLocation" text="dialog_nurse_response_BandagesLocation" ref_text="I can spare a few bandages. Here you go, but use them wisely.">
-			<response_entry id="FindWater" ref_text="I'm thirsty. Do you have any water?" />
-			<response_entry id="AskForQuest" ref_text="Do you need help with something?" />
-			<response_entry id="Bye" ref_text="GoodBye." />
-		</statement>
-		<statement id="WaterLocation" text="dialog_nurse_response_WaterLocation" ref_text="I have some clean water. Here, take this bottle. Stay hydrated, it's important.">
-			<response_entry id="FindBandages" ref_text="I could use some bandages. Any spare?" />
-			<response_entry id="AskForQuest" ref_text="Do you need help with something?" />
-			<response_entry id="Bye" ref_text="GoodBye." />
-		</statement>
-		<statement id="QuestOffer" text="dialog_nurse_response_QuestOffer" ref_text="I am trying to reach a nearby clinic, but it's overrun by the undead. If you could clear it, I'd be able to gather more medical supplies. Will you help?">
-			<response_entry id="FindBandages" ref_text="I could use some bandages. Any spare?" />
-			<response_entry id="FindWater" ref_text="I'm thirsty. Do you have any water?" />
-			<response_entry id="Bye" ref_text="GoodBye." />
-		</statement>
-		
-		<response id="TellMeAboutYourself" text="dialog_nurse_response_TellMeAboutYourself" nextstatementid="NurseBackstory" ref_text="Tell me about yourself." />
-		<response id="FindBandages" text="dialog_nurse_response_FindBandages" nextstatementid="BandagesLocation" ref_text="I could use some bandages. Any spare?" >
-			<action type="AddItemSDX, SCore" id="itemBandages" />
-		</response>
-		<response id="FindWater" text="dialog_nurse_response_FindWater" nextstatementid="WaterLocation" ref_text="I'm thirsty. Do you have any water?" >
-			<action type="AddItemSDX, SCore" id="drinkJarBoiledWater" />
-		</response>
-		<response id="AskForQuest" text="dialog_nurse_response_AskForQuest" nextstatementid="QuestOffer" ref_text="Do you need help with something?" />
-		<response id="Bye" text="Take Care, Stay Safe!" nextstatementid="done" ref_text="Take Care, Stay Safe!" />
-		<response id="startsubmenu" text="Hire Menu" nextstatementid="startsubmenu" ref_text="You looking for work?" />
-	<!--  Start Hire Submenu  -->
-		<statement id="startsubmenu" text="dialog_trader_statement_start">
-			<response_entry id="Hire" />
-			<response_entry id="FollowMe" />
-			<response_entry id="ShowMe" />
-			<response_entry id="StayHere" />
-			<response_entry id="GuardHere" />
-			<response_entry id="Wander" />
-			<response_entry id="Loot" />
-			<response_entry id="Dismiss" />
-			<response_entry id="done" />
-		</statement>
-		<response id="Hire" text="I am interested in hiring you." nextstatementid="starthiremenu">
-			<requirement type="HiredSDX, SCore" requirementtype="Hide" value="not"/>
-			<action type="OpenDialogSDX, SCore" id="Hire" />
-		</response>
-		<response id="FollowMe" text="Follow me" >
-			<requirement type="Leader, SCore" requirementtype="Hide"/>
-			<action type="AddBuffSDX, SCore" value="Self" id="buffOrderFollow" />
-		</response>
-		<response id="ShowMe" text="Show Me your inventory" >
-			<requirement type="Leader, SCore" requirementtype="Hide" />
-			<action type="ExecuteCommandSDX, SCore" id="OpenInventory" />
-		</response>
-		<response id="StayHere" text="Stay where you are standing" >
-			<requirement type="Leader, SCore" requirementtype="Hide" />
-			<action type="AddBuffSDX, SCore" value="Self" id="buffOrderStay" />
-		</response>
-		<response id="GuardHere" text="Stay where I am standing" >
-			<requirement type="Leader, SCore" requirementtype="Hide" />
-			<requirement type="HasTask, SCore" requirementtype="Hide" value="Stay" />
-			<action type="AddBuffSDX, SCore" value="Self" id="buffOrderGuardHere" />
-		</response>
-		<response id="Wander" text="Patrol around here" >
-			<requirement type="Leader, SCore" requirementtype="Hide" />
-			<action type="AddBuffSDX, SCore" value="Self" id="buffOrderWander" />
-		</response>
-		<response id="Loot" text="Loot around here" >
-			<requirement type="Leader, SCore" requirementtype="Hide" />
-			<requirement type="HasTask, SCore" requirementtype="Hide" value="LootBasic" />
-			<action type="AddBuffSDX, SCore" value="Self" id="buffOrderLoot" />
-		</response>  
-		<response id="Dismiss" text="Dismiss" >
-			<requirement type="Leader, SCore" requirementtype="Hide" />
-			<action type="ExecuteCommandSDX, SCore" id="Dismiss" />
-			<action type="AddBuffSDX, SCore" value="Self" id="buffOrderDismiss" />
-		</response>
-		<response id="done" text="dialog_trader_response_nevermind" />
-	<!--  End Hire Submenu  -->
-
-	</dialog>	
 	
 		<dialog id="SdcsNPC" startstatementid="start">
 			<statement id="start" text="SdcsNPC_start" ref_text="Hello friend, how can I help you?">
@@ -1191,6 +1076,29 @@
             <response_entry id="Craft Back" ref_text="Back" />
         </statement>
     </append>
+    <!-- "Read...": leader only, our survivors whose class runs jobs (the Craft row's gate).
+         The row leads to the Read Books statement; its rows (each book she carries, greyed
+         when it teaches her nothing) are injected at display time by CraftMenuPatch
+         (BookMenuRows); picking one has her read it. Right after Craft: the rows inserted
+         before Admin Menu land in file order. A leader sees ten rows at most on the start
+         page: the Hire row hides once she is hired. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='Admin Menu']">
+        <response_entry id="Read Books Menu" ref_text="Read..." />
+    </insertBefore>
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="Read Books Menu" text="SdcsNPC_ReadMenu" nextstatementid="Read Books" ref_text="Read...">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
+            <requirement type="NPCCanCraft, 1-XNPCVoiceControl" requirementtype="Hide" />
+            <action type="BookMenuOpen, 1-XNPCVoiceControl" />
+        </response>
+        <response id="Read Books Back" text="SdcsNPC_CraftBack" nextstatementid="start" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <statement id="Read Books" text="SdcsNPC_ReadText" ref_text="Which one should I read?">
+            <response_entry id="Read Books Back" ref_text="Back" />
+        </statement>
+    </append>
     <!-- "Your progress": leader only, our survivors. The row leads to the Progress
          statement; its info rows (her level, the XP toward the next one, the quality
          she crafts at, her roles) are injected at display time by CraftMenuPatch
@@ -1210,6 +1118,27 @@
         </response>
         <statement id="Progress" text="SdcsNPC_ProgressText" ref_text="How am I doing?">
             <response_entry id="Progress Back" ref_text="Back" />
+        </statement>
+    </append>
+    <!-- Her skills: the Progress page's "Her skills..." row (injected by ProgressMenuRows
+         only when she has a crafting skill above 0) leads to the Progress Skills statement,
+         her skill groups; its rows (one per group holding a skill above 0) are injected at
+         display time by CraftMenuPatch (ProgressMenuRows.BuildSkills). Its Back row returns
+         to the Progress page. A group row leads to the Progress Skill Group statement, whose
+         rows (every skill of the group as level/max, with a More row when they overflow) are
+         injected by ProgressMenuRows.BuildGroup. Its Back row returns to the groups. -->
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="Progress Skills Back" text="SdcsNPC_CraftBack" nextstatementid="Progress" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <statement id="Progress Skills" text="SdcsNPC_SkillsText" ref_text="Here's what I've learned.">
+            <response_entry id="Progress Skills Back" ref_text="Back" />
+        </statement>
+        <response id="Progress Skill Group Back" text="SdcsNPC_CraftBack" nextstatementid="Progress Skills" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <statement id="Progress Skill Group" text="SdcsNPC_SkillsText" ref_text="Here's what I've learned.">
+            <response_entry id="Progress Skill Group Back" ref_text="Back" />
         </statement>
     </append>
     <!-- "Ammo...": leader only, our survivors. The row leads to the Ammo statement;

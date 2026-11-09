@@ -946,7 +946,6 @@
 			<property name="TintColor" value="80, 80, 80" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="weapon_jam"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="Group" value="Ammo/Weapons"/>
 			<property name="EconomicValue" value="0"/>
 			<property name="ShowQuality" value="true"/>
@@ -1068,7 +1067,6 @@
 			<property name="TintColor" value="40, 40, 40" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="weapon_jam"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/> 
 			<property name="CrosshairUpAfterShot" value="false"/> 
 			<property name="Sound_Sight_In" value="smg_sight_in"/>
@@ -1184,7 +1182,6 @@
 			<property name="TintColor" value="85, 107, 130" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="weapon_jam"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/>
 			<property name="CrosshairUpAfterShot" value="false"/>
 			<property name="Sound_Sight_In" value="rifle_sight_in"/>
@@ -1302,7 +1299,6 @@
 			<property name="TintColor" value="138, 163, 148" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="ItemNeedsRepair"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/>
 			<property name="CrosshairUpAfterShot" value="false"/>
 			<property name="Sound_Sight_In" value="rifle_sight_in"/>
@@ -1524,7 +1520,6 @@
 			<property name="TintColor" value="71, 84, 59" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="weapon_jam"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/>
 			<property name="CrosshairUpAfterShot" value="false"/>
 			<property name="Sound_Sight_In" value="rifle_sight_in"/>
@@ -1644,7 +1639,6 @@
 			<property name="TintColor" value="66, 33, 0" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="weapon_jam"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/> 
 			<property name="CrosshairUpAfterShot" value="false"/> 
 			<property name="Sound_Sight_In" value="smg_sight_in"/>
@@ -1907,7 +1901,6 @@
 			<property name="TintColor" value="80, 80, 80" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="weapon_jam"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/> 
 			<property name="CrosshairUpAfterShot" value="false"/> 
 			<property name="Sound_Sight_In" value="smg_sight_in"/>
@@ -2239,7 +2232,6 @@
 			<property name="TintColor" value="101, 84, 67" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="ItemNeedsRepair"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/>
 			<property name="CrosshairUpAfterShot" value="false"/>
 			<property name="Sound_Sight_In" value="rifle_sight_in"/>
@@ -2359,7 +2351,6 @@
 			<property name="TintColor" value="126, 135, 145" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="weapon_jam"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/> 
 			<property name="CrosshairUpAfterShot" value="false"/> 
 			<property name="Sound_Sight_In" value="rifle_sight_in"/>
@@ -2736,7 +2727,6 @@
 			<property name="TintColor" value="80, 80, 80" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="weapon_jam"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/>
 			<property name="CrosshairUpAfterShot" value="false"/>
 			<property name="Sound_Sight_In" value="rifle_sight_in"/>
@@ -2856,7 +2846,6 @@
 			<property name="TintColor" value="138, 138, 138" />
 			<property name="DegradationBreaksAfter" value="false"/>
 			<property name="SoundJammed" value="weapon_jam"/>
-			<property name="TintColor" value="255,255,255"/>
 			<property name="CrosshairOnAim" value="false"/>
 			<property name="CrosshairUpAfterShot" value="false"/>
 			<property name="Sound_Sight_In" value="rifle_sight_in"/>
@@ -3346,7 +3335,7 @@
 
 		<item name="RedteamFactionSchematic">
 		  <property name="Extends" value="schematicMaster" />
-		  <property name="DescriptionKey" value="RedTeamFactionSchematicDesc" />
+		  <property name="DescriptionKey" value="RedteamFactionSchematicDesc" />
 		  <property name="CreativeMode" value="Player" />
 		  <property name="CustomIcon" value="schematicMaster" />
 		  <effect_group tiered="false">
@@ -3356,7 +3345,7 @@
 
 		<item name="BlueteamFactionSchematic">
 		  <property name="Extends" value="schematicMaster" />
-		  <property name="DescriptionKey" value="BlueTeamFactionSchematicDesc" />
+		  <property name="DescriptionKey" value="BlueteamFactionSchematicDesc" />
 		  <property name="CreativeMode" value="Player" />
 		  <property name="CustomIcon" value="schematicMaster" />
 		  <effect_group tiered="false">
@@ -3366,7 +3355,7 @@
 		
 		<item name="GreenteamFactionSchematic">
 		  <property name="Extends" value="schematicMaster" />
-		  <property name="DescriptionKey" value="GreenTeamFactionSchematicDesc" />
+		  <property name="DescriptionKey" value="GreenteamFactionSchematicDesc" />
 		  <property name="CreativeMode" value="Player" />
 		  <property name="CustomIcon" value="schematicMaster" />
 		  <effect_group tiered="false">
@@ -3937,6 +3926,46 @@
 			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
 		</item>
 
+		<!-- The craft hammer clips' display prop: the vanilla claw hammer mesh,
+		     no consume, no events. HoldType 32 (the game's own claw hammer's,
+		     meleeToolRepairT1ClawHammer) so the base pass writes the hammer
+		     hold pose from the held prop while the clip plays. The clip row's
+		     holds attribute (SdcsAnimClips.xml) names it; the clip's playback
+		     (SdcsAnimPlayback.StartProbe) puts it in the hand for the clip's
+		     span and puts her own item back at the end. Same shape as the
+		     bandage prop above: no loot, no trader, no recipe, the one inert
+		     SdcsProp action. Mesh path and material copied from the vanilla
+		     hammer (Data/Config/items.xml). -->
+		<item name="sdcsDisplayClawHammer">
+			<property name="CreativeMode" value="None"/>
+			<property name="HoldType" value="32"/>
+			<property name="Meshfile" value="@:Other/Items/Tools/hammerPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mmetal"/>
+			<property name="Stacknumber" value="1"/>
+			<property name="EconomicValue" value="0"/>
+			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
+		</item>
+
+		<!-- The read show's display prop: the vanilla book mesh,
+		     no consume, no events. HoldType 21 (the vanilla book's own, the
+		     installed game's schematicMaster) and the mesh and material copied
+		     from it (Data/Config/items.xml). The read clip rows hold it in her
+		     LEFT hand (holdsHand="left"), so its placement comes from the row's
+		     holdsOffset attribute (or the hand's own zero pose), not the
+		     per-HoldType right-hand offset table. Same shape as the props above:
+		     no loot, no trader, no recipe, the one inert SdcsProp action. -->
+		<item name="sdcsDisplayBook">
+			<property name="CreativeMode" value="None"/>
+			<property name="HoldType" value="21"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/bookPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="Stacknumber" value="1"/>
+			<property name="EconomicValue" value="0"/>
+			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
+		</item>
+
 		<!-- The douse's display item: the vanilla water jar mesh, no consume, no
 			     events. HoldType 3 (the vanilla jar's own hold type) so its use clip
 			     plays the drink motion, not the bandage prop motion. -->
@@ -3946,6 +3975,57 @@
 			<property name="Meshfile" value="@:Other/Items/Food/masonJarWaterPrefab.prefab"/>
 			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
 			<property name="Material" value="Mglass"/>
+			<property name="Stacknumber" value="1"/>
+			<property name="EconomicValue" value="0"/>
+			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
+		</item>
+
+		<!-- The throw's display props: inert copies of the four vanilla
+		     throwable meshes, one per HoldType (the contact grenade shows the
+		     grenade's hold). The throw wind-up (Core/SdcsThrow.cs, the
+		     bandage-shaped playback) holds one of these while it fires the
+		     UseItem and WeaponFire triggers; the real, armed item is spawned
+		     at the release frame, so nothing ever cooks in the hand. Same
+		     shape as the bandage prop above: no loot, no trader, no recipe,
+		     the one inert SdcsProp action. Mesh paths copied from the vanilla
+		     items (Data/Config/items.xml: pipe bomb 12813, contact grenade
+		     12876, timed charge 12966, molotov HandMeshfile 13094). -->
+		<item name="sdcsDisplayPipeBomb">
+			<property name="CreativeMode" value="None"/>
+			<property name="HoldType" value="25"/>
+			<property name="Meshfile" value="@:Other/Items/Weapons/Ranged/PipeBomb/PipeBombPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mmetal"/>
+			<property name="Stacknumber" value="1"/>
+			<property name="EconomicValue" value="0"/>
+			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
+		</item>
+		<item name="sdcsDisplayGrenade">
+			<property name="CreativeMode" value="None"/>
+			<property name="HoldType" value="57"/>
+			<property name="Meshfile" value="@:Other/Items/Weapons/Ranged/Grenade/GrenadePrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mmetal"/>
+			<property name="Stacknumber" value="1"/>
+			<property name="EconomicValue" value="0"/>
+			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
+		</item>
+		<item name="sdcsDisplayTimedCharge">
+			<property name="CreativeMode" value="None"/>
+			<property name="HoldType" value="62"/>
+			<property name="Meshfile" value="@:Other/Items/Weapons/Ranged/TimedCharge/timedChargePrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mmetal"/>
+			<property name="Stacknumber" value="1"/>
+			<property name="EconomicValue" value="0"/>
+			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
+		</item>
+		<item name="sdcsDisplayMolotov">
+			<property name="CreativeMode" value="None"/>
+			<property name="HoldType" value="54"/>
+			<property name="Meshfile" value="@:Other/Items/Weapons/Ranged/Molotov/molotovPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
 			<property name="Stacknumber" value="1"/>
 			<property name="EconomicValue" value="0"/>
 			<property class="Action0"><property name="Class" value="SdcsProp, NPCSdcsCharacters"/></property>
