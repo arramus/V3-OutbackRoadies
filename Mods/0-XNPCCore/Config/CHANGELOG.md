@@ -7,6 +7,11 @@ Release notes, newest first. How to install and use the mod is in `ReadMeFirst.m
 Targets 7 Days to Die **3.4**. **Requires 0-SCore 3.4.14 or newer** (built and tested on 3.4.14.1542). Everyone on a server needs the
 same version, server included.
 
+### 3.4.03 hotfix: hires keep their loaded rounds
+- **Fixed:** a hire who put her gun away to talk to you, or in a vehicle gunner seat, drew it back empty, so her next reload took
+  another magazine from her pack. The rounds in her gun are kept now. Replace only the Core zip (`0-XNPCCore-v3.4.03.zip`); the Voice
+  and Complete packs are unchanged.
+
 ### Start here: three ways to command your hires
 The menus were reorganised this release. How you reach a hire depends on how far away they are:
 
