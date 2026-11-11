@@ -1543,11 +1543,11 @@
 				<consideration class="SdcsSeesShot, NPCSdcsCharacters"/>
 			</action>
 
-			<!-- STEP ASIDE FOR A CLEAR SHOT. A gun-armed hire whose leader stands in her line of
-			     fire to an enemy that is going for him steps aside, away from him (Settings.xml
-			     Combat ClearShotStepMetres), then her shot takes over. Weight 5.5, between the shot
-			     (6) and the backing off (5): with a clear line she just shoots. Leader-only, so the
-			     bandits' package has no copy. -->
+			<!-- STEP ASIDE FOR A CLEAR SHOT. A gun holder steps aside when her leader (an enemy
+			     going for him) or an ally who cannot kneel stands in her line of fire, away from
+			     that body (Settings.xml Combat ClearShotStepMetres), then her shot takes over.
+			     Weight 5.5, between the shot (6) and the backing off (5): with a clear line she
+			     just shoots. -->
 			<!-- band: ENGAGE -->
 			<action name="ClearShot" weight="5.5">
 				<task class="ClearShotSdcs, NPCSdcsCharacters" />
@@ -1555,9 +1555,9 @@
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
 				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
-				<!-- The job/fight commitment gate: cheap (one dictionary read), so it sits before the leader line-of-sight ray - the cost-order pin. -->
+				<!-- The job/fight commitment gate: cheap (one dictionary read), so it sits before the body in line test - the cost-order pin. -->
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
-				<consideration class="SdcsLeaderInLine, NPCSdcsCharacters"/>
+				<consideration class="SdcsBodyInLine, NPCSdcsCharacters"/>
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
 				<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0"/>
 			</action>
@@ -1750,6 +1750,18 @@
 				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
 				<consideration class="SdcsLineOfFire, NPCSdcsCharacters"/>
 				<consideration class="SdcsSeesShot, NPCSdcsCharacters"/>
+			</action>
+
+			<!-- STEP ASIDE FOR A CLEAR SHOT: a mate who cannot kneel stands in her line of fire. Weight 5.5, between the shot (6) and the backing off (5). -->
+			<!-- band: ENGAGE -->
+			<action name="ClearShot" weight="5.5">
+				<task class="ClearShotSdcs, NPCSdcsCharacters" />
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<consideration class="SdcsBodyInLine, NPCSdcsCharacters"/>
+				<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0"/>
 			</action>
 
 			<!-- band: ENGAGE -->

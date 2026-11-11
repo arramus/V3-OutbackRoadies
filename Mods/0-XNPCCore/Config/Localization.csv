@@ -263,6 +263,9 @@ SdcsNPC_OtherMenu,dialogs,Dialog,,,,Other Weapons,,Andere Waffen,Otras armas,Aut
 SdcsNPC_Admin Menu,dialogs,Dialogs,,,,Admin Menu,,Admin-Menü,Menú de administración,Menu de administration,Menu amministratore,管理メニュー,관리자 메뉴,Menu administratora,Menu de administração,Меню администратора,Yönetici Menüsü,管理员菜单,管理員選單
 SdcsNPC_Command Menu,dialogs,Dialogs,,,,Command Menu,,Befehlsmenü,Menú de órdenes,Menu de commandes,Menu comandi,コマンドメニュー,명령 메뉴,Menu poleceń,Menu de comandos,Меню команд,Komut Menüsü,命令菜单,命令選單
 SdcsNPC_Dismiss,dialogs,Dialogs,,,,Dismiss,,Entlassen,Despedir,Congédier,Congeda,解雇する,해고,Odpraw,Dispensar,Уволить,Görevden al,解雇,解僱
+SdcsNPC_DismissConfirm,dialogs,Dialogs,,,,You want me to go? My contract ends and I go my own way.,,Soll ich gehen? Mein Vertrag endet und ich gehe meinen eigenen Weg.,¿Quieres que me vaya? Mi contrato termina y me voy por mi cuenta.,Vous voulez que je parte ? Mon contrat prend fin et je prends mon propre chemin.,Vuoi che me ne vada? Il mio contratto finisce e prendo la mia strada.,私を解雇しますか？契約は終わり、私は自分の道を歩みます。,당신을 내보내길 원하세요? 계약은 끝나고 제 길을 가겠습니다.,"Chcesz, żebym odszedł? Mój kontrakt się kończy i idę własną drogą.",Você quer que eu vá? Meu contrato termina e eu sigo meu próprio caminho.,"Вы хотите, чтобы я ушёл? Мой контракт окончен, и я иду своей дорогой.",Gitmemi mi istiyorsun? Sözleşmem bitiyor ve kendi yoluma gidiyorum.,你想让我走吗？我的合同结束了，我要走自己的路。,你想讓我走嗎？我的合約結束了，我要走自己的路。
+SdcsNPC_DismissYes,dialogs,Dialogs,,,,Yes. You are free to go.,,Ja. Du bist frei zu gehen.,Sí. Estás libre de irte.,Oui. Vous êtes libre de partir.,Sì. Sei libero di andare.,はい。あなたは自由です。,그래. 자유롭게 가.,Tak. Możesz odejść.,Sim. Você está livre para ir.,Да. Ты свободен уходить.,Evet. Gitmekte serbestsin.,是的。你自由了。,是的。你自由了。
+SdcsNPC_DismissNo,dialogs,Dialogs,,,,No. Stay with me.,,Nein. Bleib bei mir.,No. Quédate conmigo.,Non. Restez avec moi.,No. Resta con me.,いいえ。私のそばにいて。,아니야. 나랑 있어.,Nie. Zostań przy mnie.,Não. Fica comigo.,Нет. Останься со мной.,Hayır. Benimle kal.,不。留在我身边。,不。留在我身邊。
 SdcsNPC_Dump2Log,dialogs,Dialogs,,,,Dump Values to Log,,Werte ins Protokoll schreiben,Volcar valores al registro,Vider les valeurs dans le journal,Scrivi i valori nel registro,ログに値をダンプする,값을 로그에 기록,Zapisz wartości do logu,Gravar valores no log,Записать значения в журнал,Değerleri Günlüğe Yaz,将数值写入日志,將數值寫入日誌
 SdcsNPC_FollowMe,dialogs,Dialogs,,,,Follow me,,Folge mir,Sígueme,Suivez-moi,Seguimi,私に従ってください,따라와,Chodź za mną,Me siga,Следуй за мной,Beni takip et,跟我来,跟我來
 SdcsNPC_GuardHere,dialogs,Dialogs,,,,Stay where I am standing,,"Bleib dort, wo ich stehe",Quédate donde estoy yo,Restez où je suis debout,Resta dove sono io,私が立っている場所にとどまってください,내가 서 있는 곳에 있어,"Zostań tam, gdzie stoję",Fique onde eu estou,"Стой там, где стою я",Durduğum yerde kal,待在我站的地方,待在我站的地方
@@ -351,6 +354,9 @@ VCPatrol_CancelPatrolRecord,,,,,,Cancel patrol,,Patrouille abbrechen,Cancelar pa
 VCPatrol_PatrolMenu,,,,,,Patrol,,Patrouille,Patrulla,Patrouille,Pattuglia,巡回,순찰,Patrol,Patrulha,Патруль,Devriye,巡逻,巡邏
 SdcsNPC_WhatCarrying,,,,,,What are you carrying?,,Was trägst du bei dir?,¿Qué llevas encima?,Que transportez-vous ?,Cosa stai portando?,何を持っている？,뭘 가지고 있어?,Co masz przy sobie?,O que você está carregando?,Что ты несёшь?,Üzerinde ne var?,你带着什么？,你帶著什麼？
 SdcsNPC_CraftMenu,,,,,,Craft...,,Herstellen...,Fabricar...,Fabriquer...,Fabbrica...,クラフト...,제작...,Wytwórz...,Fabricar...,Изготовить...,Üret...,制作...,製作...
+SdcsNPC_ComeHere,,,,,,Come here,,Komm her,Acércate,Viens ici,Vieni qui,こっちに来て,여기 와,Przyjdź,Vem cá,Иди сюда,Buraya gel,过来,過來
+SdcsNPC_OrderWheel,,,,,,Order wheel,,Befehlsrad,Rueda de órdenes,Roue des ordres,Ruota degli ordini,命令ホイール,명령 휠,Koło rozkazów,Roda de ordens,Колесо приказов,Emir çarkı,命令轮盘,命令輪盤
+SdcsNPC_JobsAndGear,,,,,,Jobs and gear,,Aufgaben und Ausrüstung,Trabajos y equipo,Tâches et équipement,Lavori e equipaggiamento,仕事と装備,작업과 장비,Zadania i sprzęt,Tarefas e equipamento,Работа и снаряжение,İşler ve teçhizat,工作与装备,工作與裝備
 SdcsNPC_CraftMenuText,,,,,,What should I make?,,Was soll ich herstellen?,¿Qué debo fabricar?,Que dois-je fabriquer ?,Cosa devo fabbricare?,何を作ればいい？,뭘 만들까?,Co mam wytworzyć?,O que devo fabricar?,Что мне сделать?,Ne üreteyim?,我该做什么？,我該做什麼？
 SdcsNPC_CraftKindText,,,,,,What kind of thing?,,Welche Art von Ding?,¿Qué tipo de cosa?,Quel genre de chose ?,Che tipo di cosa?,どんな種類の物？,어떤 종류의 물건?,Jaki rodzaj rzeczy?,Que tipo de coisa?,Какого рода вещь?,Ne tür bir şey?,什么类型的东西？,什麼類型的東西？
 SdcsNPC_CraftCountText,,,,,,How many?,,Wie viele?,¿Cuántos?,Combien ?,Quanti?,いくつ？,몇 개?,Ile?,Quantos?,Сколько?,Kaç tane?,做几个？,做幾個？
@@ -380,7 +386,7 @@ SdcsNPC_ProgressRoles,,,,,,Roles: {0},,Rollen: {0},Funciones: {0},Rôles : {0},R
 SdcsNPC_ProgressNoRoles,,,,,,No roles,,Keine Rollen,Sin funciones,Aucun rôle,Nessun ruolo,役割なし,역할 없음,Brak ról,Sem funções,Нет ролей,Rol yok,没有职责,沒有職責
 SdcsNPC_ProgressCraftSkill,,,,,,{0} {1}/{2},,{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2},{0} {1}/{2}
 SdcsNPC_ProgressMore,,,,,,+{0} more,,+{0} weitere,+{0} más,+{0} de plus,+{0} altri,他 {0} 件,+{0}개 더,+{0} więcej,+{0} a mais,ещё {0},+{0} daha,还有 {0} 个,還有 {0} 個
-SdcsNPC_ProgressSkillsMenu,,,,,,Her skills...,,Ihre Fertigkeiten...,Sus habilidades...,Ses compétences...,Le sue abilità...,彼女のスキル...,그녀의 기술...,Jej umiejętności...,Habilidades dela...,Её навыки...,Becerileri...,她的技能...,她的技能...
+SdcsNPC_ProgressSkillsMenu,,,,,,My skills...,,Meine Fertigkeiten...,Mis habilidades...,Mes compétences...,Le mie abilità...,私のスキル...,내 기술...,Moje umiejętności...,Minhas habilidades...,Мои навыки...,Becerilerim...,我的技能...,我的技能...
 SdcsNPC_SkillsText,,,,,,Here's what I've learned.,,Das habe ich gelernt.,Esto es lo que he aprendido.,Voici ce que j'ai appris.,Ecco cosa ho imparato.,これが私の覚えたことだ。,내가 배운 건 이거야.,Oto czego się nauczyłam.,Isto é o que aprendi.,Вот чему я научилась.,Öğrendiklerim bunlar.,这是我学到的。,這是我學到的。
 SdcsNPC_ProgressSkillGroup,,,,,,{0} ({1}),,{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1}),{0} ({1})
 SdcsNPC_SkillGroup_weapons,,,,,,Weapons,,Waffen,Armas,Armes,Armi,武器,무기,Broń,Armas,Оружие,Silahlar,武器,武器
@@ -394,12 +400,14 @@ SdcsNPC_TitleBlacksmith,,,,,,Smith,,Schmied,Herrero,Forgeron,Fabbro,鍛冶屋,�
 SdcsNPC_TitleChemist,,,,,,Chemist,,Chemiker,Químico,Chimiste,Chimico,化学者,화학자,Chemik,Químico,Химик,Kimyager,化学家,化學家
 SdcsNPC_TitleCrafter,,,,,,Crafter,,Handwerker,Artesano,Artisan,Artigiano,職人,제작자,Rzemieślnik,Artesão,Ремесленник,Zanaatkâr,工匠,工匠
 SdcsNPC_TitleFormat,,,,,,{0} - {1},,{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1}
-entitycommand_vcorders,,,,,,Orders,,Befehle,Órdenes,Ordres,Ordini,命令,명령,Rozkazy,Ordens,Приказы,Emirler,命令,命令
 entitycommand_vcjobs,,,,,,Jobs,,Aufgaben,Trabajos,Tâches,Lavori,仕事,작업,Zadania,Trabalhos,Работа,İşler,工作,工作
 entitycommand_vcroles,,,,,,Roles,,Rollen,Roles,Rôles,Ruoli,役割,역할,Role,Funções,Роли,Roller,职责,職責
 entitycommand_vcweapons,,,,,,Weapons,,Waffen,Armas,Armes,Armi,武器,무기,Broń,Armas,Оружие,Silahlar,武器,武器
+entitycommand_vcemotes,,,,,,Emotes,,Emotes,Gestos,Emotes,Emote,エモート,이모트,Emotki,Emotes,Эмоции,İfadeler,表情动作,表情動作
+entitycommand_vcread,,,,,,Read,,Lesen,Leer,Lire,Leggi,読む,읽기,Czytaj,Ler,Читать,Oku,阅读,閱讀
+entitycommand_vcprogress,,,,,,Your progress,,Dein Fortschritt,Tu progreso,Ta progression,I tuoi progressi,君の成長,너의 성장,Twoje postępy,Seu progresso,Твой прогресс,İlerlemen,你的成长,你的成長
+entitycommand_vcpickup,,,,,,Pick Me up,,Heb mich auf,Cógeme,Ramassez-moi,Prendimi in braccio,私を拾ってください,나를 들어 줘,Podnieś mnie,Me pegue,Подними меня,Beni al,把我带上,把我帶上
 entitycommand_vcinventory,,,,,,Inventory,,Inventar,Inventario,Inventaire,Inventario,所持品,인벤토리,Ekwipunek,Inventário,Инвентарь,Envanter,物品栏,物品欄
-entitycommand_vccraft,,,,,,Craft,,Herstellen,Fabricar,Fabriquer,Fabbrica,クラフト,제작,Wytwórz,Fabricar,Изготовить,Üret,制作,製作
 vcWheel_Follow,,,,,,Follow,,Folgen,Seguir,Suivre,Seguire,追従,따라오기,Podążaj,Seguir,Следовать,Takip et,跟随,跟隨
 vcWheel_ComeHere,,,,,,Come here,,Komm her,Acércate,Viens ici,Vieni qui,こっちに来て,여기 와,Przyjdź,Vem cá,Иди сюда,Buraya gel,过来,過來
 vcWheel_Stay,,,,,,Stay,,Bleiben,Quedarse,Rester,Restare,待機,대기,Zostań,Ficar,Стоять,Bekle,待命,待命

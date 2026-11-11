@@ -406,10 +406,8 @@
 		<dialog id="SdcsNPC" startstatementid="start">
 			<statement id="start" text="SdcsNPC_start" ref_text="Hello friend, how can I help you?">
 				<response_entry id="Hire" ref_text="I am interested in hiring you." />
-				<response_entry id="Command Menu" ref_text="Command Menu" />
-				<response_entry id="Weapon Menu" ref_text="Weapon Menu" />
-				<response_entry id="Admin Menu" ref_text="Admin Menu" />
-				<response_entry id="Pickup" ref_text="Pick Me up!" />
+				<response_entry id="Dismiss" ref_text="Dismiss" />
+				<response_entry id="FollowMe" ref_text="Follow me" />
 				<response_entry id="ShowMe" ref_text="Show Me your inventory" />
 				<response_entry id="done" ref_text="Nevermind." />
 			</statement>
@@ -421,6 +419,10 @@
 				<response_entry id="StayHere" ref_text="Stay where you are standing" />
 				<response_entry id="Dismiss" ref_text="Dismiss" />
 				<response_entry id="done" ref_text="Nevermind." />
+			</statement>
+			<statement id="DismissConfirm" text="SdcsNPC_DismissConfirm" ref_text="You want me to go? My contract ends and I go my own way.">
+				<response_entry id="DismissYes" ref_text="Yes. You are free to go." />
+				<response_entry id="DismissNo" ref_text="No. Stay with me." />
 			</statement>
 			<statement id="Admin Menu" text="SdcsNPC_Admin Menu" ref_text="Admin Menu">
 				<response_entry id="SetCode" ref_text="Here is your Patrol Code" />
@@ -899,12 +901,16 @@
 				<action type="AddBuffSDX, SCore" id="buffOrderStay" value="Self" />
 				<action type="AddBuffSDX, SCore" id="buffSdcsLootModeClear" value="Self" />
 			</response>
-			<response id="Dismiss" text="SdcsNPC_Dismiss" ref_text="Dismiss">
+			<response id="Dismiss" text="SdcsNPC_Dismiss" nextstatementid="DismissConfirm" ref_text="Dismiss">
+				<requirement type="Leader, SCore" requirementtype="Hide" />
+			</response>
+			<response id="DismissYes" text="SdcsNPC_DismissYes" ref_text="Yes. You are free to go.">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="ExecuteCommandSDX, SCore" id="Dismiss" />
 				<action type="AddBuffSDX, SCore" id="buffOrderDismiss" value="Self" />
 				<action type="AddBuffSDX, SCore" id="buffSdcsLootModeClear" value="Self" />
 			</response>
+			<response id="DismissNo" text="SdcsNPC_DismissNo" nextstatementid="start" ref_text="No. Stay with me." />
 			<response id="Pickup" text="SdcsNPC_Pickup" ref_text="Pick Me up!">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="PickUpNPC, SCore" />
@@ -1049,8 +1055,12 @@
          row, the two statements and their own rows: Nevermind on the menu, Back on
          the count page. A count row sends the order and closes the dialog. Grid
          budget: 8 recipes, More and Nevermind make 10 rows. -->
-    <!-- Before Admin Menu, so the row sits right after Weapon Menu. -->
-    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='Admin Menu']">
+    <!-- The start page (the top menu): Hire or Dismiss, Follow me, Come here, Show Me your
+         inventory, Craft..., Order wheel, Jobs and gear, Nevermind. The base file holds Hire,
+         Dismiss, Follow me, Show Me your inventory and Nevermind; the rows below land before
+         Show Me (Come here) and before Nevermind (the rest, in file order). Hire hides once
+         she is hired and Dismiss shows only to her leader, so a page shows 8 rows at most. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='done']">
         <response_entry id="Craft Menu" ref_text="Craft..." />
     </insertBefore>
     <append xpath="/dialogs/dialog[@id='SdcsNPC']">
@@ -1076,15 +1086,37 @@
             <response_entry id="Craft Back" ref_text="Back" />
         </statement>
     </append>
-    <!-- "Read...": leader only, our survivors whose class runs jobs (the Craft row's gate).
-         The row leads to the Read Books statement; its rows (each book she carries, greyed
-         when it teaches her nothing) are injected at display time by CraftMenuPatch
-         (BookMenuRows); picking one has her read it. Right after Craft: the rows inserted
-         before Admin Menu land in file order. A leader sees ten rows at most on the start
-         page: the Hire row hides once she is hired. -->
-    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='Admin Menu']">
-        <response_entry id="Read Books Menu" ref_text="Read..." />
+    <!-- Come here, Order wheel, Jobs and gear: leader only. Each row has no next statement,
+         so the click closes the dialog. Come here sends the order wheel's own Come here order;
+         Order wheel opens the squad's order wheel started on her; Jobs and gear opens the order
+         wheel locked on her, on the page that lists her hold-E ring's entries. The wheel opens
+         on the frame after the click, once the dialog has closed. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='ShowMe']">
+        <response_entry id="ComeHere" ref_text="Come here" />
     </insertBefore>
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='done']">
+        <response_entry id="OrderWheel" ref_text="Order wheel" />
+        <response_entry id="JobsAndGear" ref_text="Jobs and gear" />
+    </insertBefore>
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="ComeHere" text="SdcsNPC_ComeHere" ref_text="Come here">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <action type="ComeHere, 1-XNPCVoiceControl" />
+        </response>
+        <response id="OrderWheel" text="SdcsNPC_OrderWheel" ref_text="Order wheel">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <action type="OrderWheel, 1-XNPCVoiceControl" />
+        </response>
+        <response id="JobsAndGear" text="SdcsNPC_JobsAndGear" ref_text="Jobs and gear">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <action type="JobsAndGear, 1-XNPCVoiceControl" />
+        </response>
+    </append>
+    <!-- "Read...": leader only, our survivors whose class runs jobs (the Craft row's gate).
+         The response leads to the Read Books statement; its rows (each book she carries, greyed
+         when it teaches her nothing) are injected at display time by CraftMenuPatch
+         (BookMenuRows); picking one has her read it. No start page row: her hold-E ring's
+         Read entry opens the statement straight. -->
     <append xpath="/dialogs/dialog[@id='SdcsNPC']">
         <response id="Read Books Menu" text="SdcsNPC_ReadMenu" nextstatementid="Read Books" ref_text="Read...">
             <requirement type="Leader, SCore" requirementtype="Hide" />
@@ -1099,14 +1131,12 @@
             <response_entry id="Read Books Back" ref_text="Back" />
         </statement>
     </append>
-    <!-- "Your progress": leader only, our survivors. The row leads to the Progress
+    <!-- "Your progress": leader only, our survivors. The response leads to the Progress
          statement; its info rows (her level, the XP toward the next one, the quality
          she crafts at, her roles) are injected at display time by CraftMenuPatch
-         (ProgressMenuRows). The XML keeps the nav row, the statement and its Back
-         row, which returns to the first page. Before Admin Menu, after Craft. -->
-    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='Admin Menu']">
-        <response_entry id="Progress Menu" ref_text="Your progress" />
-    </insertBefore>
+         (ProgressMenuRows). The XML keeps the nav response, the statement and its Back
+         row, which returns to the first page. No start page row: her hold-E ring's
+         Progress entry opens the statement straight. -->
     <append xpath="/dialogs/dialog[@id='SdcsNPC']">
         <response id="Progress Menu" text="SdcsNPC_ProgressMenu" nextstatementid="Progress" ref_text="Your progress">
             <requirement type="Leader, SCore" requirementtype="Hide" />
@@ -1144,8 +1174,10 @@
     <!-- "Ammo...": leader only, our survivors. The row leads to the Ammo statement;
          its rows (each ammo type of the gun in her hand she carries, with the count,
          the loaded one marked) are injected at display time by CraftMenuPatch
-         (AmmoMenuRows); picking one loads it. Before Admin Menu, after Your progress. -->
-    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='Admin Menu']">
+         (AmmoMenuRows); picking one loads it. The row sits in the weapon menu (Weapon
+         Classes), right after Carried Weapons; its Back row returns there. Grid: that page lists 11 rows, so the 10 row
+         grid cuts Nevermind only when she carries a weapon of all seven classes. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Weapon Classes']/response_entry[@id='Blades']">
         <response_entry id="Ammo Menu" ref_text="Ammo..." />
     </insertBefore>
     <append xpath="/dialogs/dialog[@id='SdcsNPC']">
@@ -1154,7 +1186,7 @@
             <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
             <action type="AmmoMenuOpen, 1-XNPCVoiceControl" />
         </response>
-        <response id="Ammo Back" text="SdcsNPC_CraftBack" nextstatementid="start" ref_text="Back">
+        <response id="Ammo Back" text="SdcsNPC_CraftBack" nextstatementid="Weapon Classes" ref_text="Back">
             <requirement type="Leader, SCore" requirementtype="Hide" />
         </response>
         <statement id="Ammo" text="SdcsNPC_AmmoText" ref_text="Which ammo should I load?">

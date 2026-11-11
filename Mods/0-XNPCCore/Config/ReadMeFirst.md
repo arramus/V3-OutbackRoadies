@@ -12,11 +12,11 @@ you, loot, harvest, mine, craft at your workstations, read books, guard your bas
 
 Unzip into your `Mods` folder:
 
-1. **`0-XNPCCore-v3.4.03.zip` - required.** The survivors, the bandits, every order and menu, and the mod's code. On its own it runs
+1. **`0-XNPCCore-v3.4.04.zip` - required.** The survivors, the bandits, every order and menu, and the mod's code. On its own it runs
    with every voice and AI feature off.
 2. **Plus at most ONE add-on, if you want voice:**
-   - **`1-XNPCVoiceControl-Complete-v3.4.03.zip`** - AI chat, voice in and voice out. **Most players want this one.**
-   - **`1-XNPCVoiceControl-Voice-v3.4.03.zip`** - voice in and voice out only, no AI chat.
+   - **`1-XNPCVoiceControl-Complete-v3.4.04.zip`** - AI chat, voice in and voice out. **Most players want this one.**
+   - **`1-XNPCVoiceControl-Voice-v3.4.04.zip`** - voice in and voice out only, no AI chat.
 
 You should end up with `Mods/0-XNPCCore` and, if you took an add-on, `Mods/1-XNPCVoiceControl-Complete` or `Mods/1-XNPCVoiceControl-Voice` beside it. The add-on holds only models and helper servers; it does nothing without `0-XNPCCore`.
 
@@ -42,13 +42,13 @@ the cost grows each week up to a cap, they ask you when it is due, and a missed 
 
 ### How to command your hires
 
-How you reach a hire depends on how far away they are:
+Three menus, each with one job, so every command has one home:
 
 | Method | Reach | Use it for |
 |--------|-------|------------|
-| **Press E** on them | Up close: the game's own "Press E" reach, about 3.5 m in a survival game (a game value, not a mod setting) | Their talk menu: talk, hire or dismiss, trade and their inventory, and for your hires **Craft...**, **Read...** and **Your progress** |
-| **Hold E** on them | The same reach | Their ring: Talk, **Orders**, **Jobs**, **Roles**, **Weapons**, **Inventory**, **Craft**. Rest the cursor on an entry or let go of E over it; a quick tap of E still talks. One hire's jobs, roles and crafting live here (Jobs, Roles and Craft only on a survivor who can do that work) |
-| **Order wheel**: the **;** key | Any distance | Orders at range; **positioning** (follow distance, formation bearing, take point, go there, jump down, get in / out of your vehicle); and calling a hire back (below) |
+| **Press E** on them | Up close: the game's own "Press E" reach, about 3.5 m in a survival game (a game value, not a mod setting) | The **top menu**: talk; hire or dismiss; **Follow me**; **Come here**; **Show me your inventory**; **Craft...**; and two links: **Order wheel** (opens the **;** wheel on them) and **Jobs and gear** (their hold-E menu, as a wheel page, for players who never hold E) |
+| **Hold E** on them | The same reach | **Work and gear**, one hire at a time: **Jobs**, **Roles**, **Weapons** (carried weapons, each class, empty hands, what they carry, ammo), **Emotes**, **Read** (books), **Progress**, **Inventory**, **Pick me up**. Rest the cursor on an entry or let go of E over it; a quick tap of E still talks. Jobs, Roles and Read show only on a survivor who can do that work |
+| **Order wheel**: the **;** key | Any distance | **Tactics**, for one hire or the whole squad: follow, stay, guard, come here, stance, **positioning** (follow distance, take point, go there, jump down, get in / out of your vehicle), formation, crouch, scout, guard and return, patrols |
 | **Voice** (Voice / Complete add-on) | A hire within 40 m, a stranger within 15 m | Everything by speech (see *Voice and AI add-on*) |
 | **Text chat** | The nearest NPC | Press **T** and type `@your message` in global chat (the `@` targets the nearest NPC) |
 
@@ -66,17 +66,17 @@ so it is how you give orders to hires out of reach and call them back:
   Press **;** again, right-click or Esc to close it without an order.
 - **First page** - Follow, Stay, Guard, **Come here** (calls them back from any job), then the **Orders**, **Stance**, **Position**
   and **Formation** pages.
-- **Orders** - Emotes, Crouch (a toggle: **Crouch** or **Resume**), Stand up, Scout, Guard and return, and the patrol trio (Record /
-  Run / Cancel patrol).
-- **Stance** - Aggressive / Defensive / Hold fire / Disengage, plus **Weapons** (guns, rifles, shotguns, machine guns, melee, blades,
-  empty hands, ammo).
+- **Orders** - Crouch (a toggle: **Crouch** or **Resume**), Stand up, Scout, Guard and return, and the patrol trio (Record / Run /
+  Cancel patrol).
+- **Stance** - Aggressive / Defensive / Hold fire / Disengage.
 - **Position** - Close (1 m), Normal (2.5 m) and Far (5 m), drawn as the real metres; Point (they lead 2 m ahead of you); Go there
   (the spot under your crosshair when the wheel opened); Jump down; Get in / Get out (your vehicle).
 - **Formation** - the eight compass bearings (north at the top). Each companion keeps its own distance; the socket sets the direction
   only.
-- **One hire's own menus live on their hold-E ring**, not on this wheel: **Jobs** (Follow + loot, Loot here, Harvest, Mine, Base Repair,
-  Combat Repair, Remember base), **Roles** (Medic, Cook, Blacksmith, Chemist, Crafter: a survivor uses a workstation only with its
-  role) and **Craft** (their craft window).
+- **One hire's work and gear live on their hold-E ring** (or **Press E > Jobs and gear**), not on this wheel: **Jobs** (Follow + loot,
+  Loot here, Harvest, Mine, Base Repair, Combat Repair, Remember base), **Roles** (Medic, Cook, Blacksmith, Chemist, Crafter: a survivor
+  uses a workstation only with its role), **Weapons**, **Emotes**, **Read**, **Progress**, **Inventory** and **Pick me up**. Their craft
+  window is **Press E > Craft...**.
 
 ---
 
@@ -91,16 +91,16 @@ Each line names the `MANUAL.md` section with the details.
 - **Jobs** (hold E > Jobs) - follow and loot as you go, loot around a spot (bags, containers, and fresh kills they butcher), harvest
   wood, plants and crops, mine ore, clay and stone, and keep your base repaired. A full pack pauses the job; empty it and they go back.
   *Hired survivors: follow and loot.*
-- **Craft** (E > Craft..., or hold E > Craft) - their own crafting window: their recipes, what they have and need, a count, Craft. At a
+- **Craft** (E > Craft...) - their own crafting window: their recipes, what they have and need, a count, Craft. At a
   workstation they need its **role** (hold E > Roles): Cook the campfire, Blacksmith the forge, Chemist the chemistry station, Crafter the
   workbench and cement mixer. They get better at the work they do. *Hired survivors: crafting.*
-- **Read** (E > Read...) - give them a schematic or a crafting skill magazine and they learn it. **E > Your progress** shows their level,
-  roles and skills. *Hired survivors: reading books.*
+- **Read** (hold E > Read) - give them a schematic or a crafting skill magazine and they learn it. **Hold E > Progress** shows their
+  level, roles and skills. *Hired survivors: reading books.*
 - **Medic** (hold E > Roles > Medic) - they treat you and the rest of your squad.
 - **Ride** - on Follow they get in your vehicle when you drive, and out when you stop (Get in / Get out on the wheel too). They get out
   before you log off or the world saves, so they are never lost from the save.
 - **Guard your backpack** - when you die, your following hires guard your dropped pack until you come back.
-- **Emotes** (wheel > Orders > Emotes) - waves, salutes, dances; Shift+click for the squad. *Hired survivors: emotes.*
+- **Emotes** (hold E > Emotes) - waves, salutes, dances. *Hired survivors: emotes.*
 
 Not hired: **wild survivors** trade with you (*Trading with wild survivors*) and some pick pockets (*Pickpockets*). **Bandits** spawn by
 biome tier, hold posts and fight in groups (*Bandits*; POI builders: `POI-BUILDERS.md`).
@@ -414,6 +414,10 @@ If omitted, the mod auto-discovers the first `.gguf` it finds.
 #### The AI only speaks English
 
 The included Qwen3-4B model is multilingual but strongest in English. For stronger multilingual output you can swap in a different model (see the section above).
+
+**Licences of the bundled AI parts**
+
+The chat model is Qwen3-4B-Instruct-2507 by the Qwen team (Alibaba Cloud), released under the Apache License 2.0; the full text is in `Resources/Models/Llama/LICENSE-Qwen3`. The chat server is llama.cpp (MIT licence; the notice ships in `bin/LlamaServer/LICENSE-llama.cpp`). Another model can go in at any time: put its `.gguf` in `Resources/Models/Llama/` and name it in `<ModelFilename>`.
 
 ---
 

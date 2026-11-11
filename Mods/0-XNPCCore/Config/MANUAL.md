@@ -97,9 +97,9 @@ its type or class name, but deliberate.
 
 **One exception, visible in that same dialog:** the three *patrol* rows (Show me a route /
 Patrol your route / Cancel patrol) are **Voice Control** rows, not NPC Mod rows — this mod
-added them and removed the NPC Mod's legacy patrol rows. In the SDCS survivors' dialog they
-sit under the Command Menu's single **Patrol** row (a one-row deep menu); the generic NPC
-dialog keeps them flat in the Command Menu. They are hidden for a `no_voice`
+added them and removed the NPC Mod's legacy patrol rows. The SDCS survivors' talk menu no longer
+lists them (patrols are on the order wheel's Orders page); the generic NPC dialog keeps them flat in its
+Command Menu. They are hidden for a `no_voice`
 character because patrol cannot work without the Voice Control component the tag withholds.
 A tagged character can be hired and ordered normally, just not put on a recorded patrol.
 Ordered to patrol with no recorded route, or with a route recorded somewhere far away, she says so instead of
@@ -327,22 +327,33 @@ Press the radial key (default **Semicolon**) to open the order wheel; it stays o
 
 **Targeting.** The wheel commands the companion you are looking at, otherwise the last one you gave an order to, otherwise the nearest. Their name sits in the middle of the ring and the mouse wheel cycles through your hires.
 
-**From the E ring.** Hold **E** on one of your hires and the ring shows her own menu after Talk: **Orders**, **Jobs**, **Roles**, **Weapons**, **Inventory** and **Craft** (Jobs, Roles and Craft only on a survivor who can do that work). Pick an entry by resting the cursor on it, or by letting go of E over it; a quick tap of E still talks. **Orders** opens the squad wheel on its first page, on her, and E works like the radial key until it closes: click an order for her, Shift+click for the whole squad, E again closes it. **Jobs**, **Roles** and **Weapons** open the wheel straight on that page, locked on her: every pick is hers, the mouse wheel does not switch to another hire, and resting on the centre steps back up her pages, then closes the wheel. **Craft** opens her craft window (see *Hired survivors: crafting*). **Inventory** opens her pack. A wheel opened from the ring ignores the spot your cursor was resting on when it appeared: move onto a socket to pick it. Only her leader sees these entries. (The game's own **remove** entry still shows only with the debug menu on.)
+**Three menus, one home per command.** The wheel is for **tactics** (how the squad moves and fights). **Press E** on a hire is the
+**top menu**: talk, hire or dismiss (asks you to confirm first), **Follow me**, **Come here**, **Show me your inventory**, **Craft...**, and two links: **Order
+wheel** opens this wheel on the squad's first page with her shown, and **Jobs and gear** opens it locked on her, on a page that lists her
+hold-E ring's entries (the same entries, for players who never hold E). **Hold E** is her **work and gear**.
+
+**From the E ring.** Hold **E** on one of your hires and the ring shows her own menu after Talk: **Jobs**, **Roles**, **Weapons**,
+**Emotes**, **Read**, **Progress**, **Inventory** and **Pick me up** (Jobs, Roles and Read only on a survivor who can do that work). Pick an
+entry by resting the cursor on it, or by letting go of E over it; a quick tap of E still talks. **Jobs**, **Roles** and **Emotes** open the
+wheel straight on that page, locked on her: every pick is hers, the mouse wheel does not switch to another hire, and resting on the centre
+steps back up her pages, then closes the wheel. **Weapons**, **Read** and **Progress** open her talk menu straight on that page: the weapon
+menu (her carried weapons, each class, empty hands, what she carries, and **Ammo**), her books, her progress. **Inventory** opens her pack;
+**Pick me up** picks her up. A wheel opened from the ring ignores the spot your cursor was resting on when it appeared: move onto a socket to
+pick it. Only her leader sees these entries. (The game's own **remove** entry still shows only with the debug menu on.)
 
 **Pages.** The wheel always opens on page 0:
 
 | Page | Sockets |
 |------|---------|
-| **0 (root)** | `Follow`, `Stay`, `Guard`, `Come here` commit directly; `Orders`, `Stance`, `Position`, `Formation` open a drill-down page; the `Stance` page opens a third level (Weapons). Jobs, Roles and Craft are one survivor's menus: they open from her hold-E ring (above), not from this wheel |
-| **Orders** | `Emotes` (drill-down; moved here from the root when the root filled up), `Crouch` (the 0/1 toggle - Crouch / Resume resolved from her state, exactly as before), `Stand up` (the voice `stand up`, SetCrouch arg 2), `Scout` (the voice wander order), `Guard and return` (patrol the spot: walk out within `<Guard><PatrolMetres>` (6 m), look around, come back, face your way, repeat; fight freely, then back to the spot), `Record patrol` / `Run patrol` / `Cancel patrol` (the patrol trio - one survivor's route; a Shift+click goes to the target, not the squad) |
+| **0 (root)** | `Follow`, `Stay`, `Guard`, `Come here` commit directly; `Orders`, `Stance`, `Position`, `Formation` open a drill-down page. Jobs, Roles, Emotes and her gear are one survivor's menus: they open from her hold-E ring (above), not from this wheel |
+| **Orders** | `Crouch` (the 0/1 toggle - Crouch / Resume resolved from her state, exactly as before), `Stand up` (the voice `stand up`, SetCrouch arg 2), `Scout` (the voice wander order), `Guard and return` (patrol the spot: walk out within `<Guard><PatrolMetres>` (6 m), look around, come back, face your way, repeat; fight freely, then back to the spot), `Record patrol` / `Run patrol` / `Cancel patrol` (the patrol trio - one survivor's route; a Shift+click goes to the target, not the squad) |
 | **Roles** (from her ring) | One survivor's roles, each a toggle that reads **Stop ...** while she has it (target only, never the squad): `Medic` (the designated medic role), `Cook` (the campfire), `Blacksmith` (the forge), `Chemist` (the chemistry station), `Crafter` (the workbench and cement mixer). A survivor uses a workstation only with its role - see *Hired survivors: crafting* |
-| **Craft** (from her ring) | Not a wheel page: it opens her craft window, the same window as **E > Craft...** (see *Hired survivors: crafting*) |
+| **Her ring** (Press E > Jobs and gear) | Her hold-E ring's entries for you, in the ring's order; a pick does what the ring entry does |
 | **Jobs** (from her ring) | `Follow + loot` (starts **follow and loot**, exactly the voice "loot" command - see *Hired survivors: follow and loot* below), `Loot here`, the `Harvest` and `Mine` drill-downs (the wood / plants / crops / butcher orders and the mine / clay orders), the two base-keeper duties `Base Repair` (most damaged block first, the wheel arg `baserepair`) and `Combat Repair` (a block damaged in the last few seconds first, the wheel arg `combatrepair`), and `Remember base` |
-| **Stance** | `Aggressive` (1), `Defensive` (0), `Hold fire` (2), `Disengage` (3) - the four SetEngage args verbatim - plus the `Weapons` drill-down |
-| **Weapons** | `Guns`, `Rifles`, `Shotguns`, `Machine guns`, `Melee`, `Blades`, `Empty hands`, `Ammo` (her ammo types for the gun in her hand with their counts, the loaded one marked; pick one and she loads it, the same as the talk dialog's Ammo page) - the voice weapon-category swaps, the same resolved swap as speaking them (she equips the first weapon of that category she actually carries, and says so; a Shift+click goes to the target, not the squad) |
+| **Stance** | `Aggressive` (1), `Defensive` (0), `Hold fire` (2), `Disengage` (3) - the four SetEngage args verbatim |
 | **Position** | `Close` (1 m), `Normal` (2.5 m), `Far` (5 m) - the real metres are drawn in the icon slot - `Point` (the voice "take point": the companion leads 2 m ahead of you), `Go there`, `Jump down`, `Get in` / `Get out` (your vehicle). **Look first, then open the wheel:** `Go there` goes to the spot under your crosshair *when the wheel opened*, not where you aim when you pick it. |
 | **Formation** | The 8 compass bearings, N at top and E to the right. Direction only: each NPC keeps its own distance |
-| **Emotes** | `Wave`, `Salute`, `Fist bump`, `Stretch`, `Warm up`, `Whatever`, then the `Dances` drill-down (seven dances a page plus More) and the `More` drill-down (`Flip off`, `Insult`, `Loser`, `Threaten`). Click for the target, Shift+click for the whole squad. Only the clips the base mod's clip list holds show - see *Hired survivors: emotes* |
+| **Emotes** (from her ring) | `Wave`, `Salute`, `Fist bump`, `Stretch`, `Warm up`, `Whatever`, then the `Dances` drill-down (seven dances a page plus More) and the `More` drill-down (`Flip off`, `Insult`, `Loser`, `Threaten`). Only the clips the base mod's clip list holds show - see *Hired survivors: emotes* |
 
 **Commit vs navigate.**
 - **Release the key** while hovering a commit socket - the order goes to the **targeted companion**.
@@ -556,11 +567,13 @@ All runtime settings live in one file. Most can be adjusted in the in-game confi
 | Setting | Default | Description |
 |---------|---------|-------------|
 | `<Endpoint>` | `http://127.0.0.1:5055/v1/chat/completions` | LLM API endpoint (OpenAI-compatible) |
-| `<ModelFilename>` | *(empty)* | Model filename override. Leave empty for auto-detect. |
+| `<ModelFilename>` | `Qwen3-4B-Instruct-2507-Q4_K_M.gguf` | The .gguf in Resources/Models/Llama to load. Empty = the first .gguf found. |
 | `<Model>` | `Qwen3-4B-Instruct-2507-Q4_K_M` | Model name. Used verbatim for an external API endpoint. For the local llama-server, autodetect of the `.gguf` in `Resources/` overrides it, so this value only appears in the log when no model file is found. |
 | `<TimeoutSeconds>` | `30` | How long to wait for LLM response |
 | `<MaxTokens>` | `200` | Maximum response length in tokens (64-2048). Use 1024-1536 for reasoning models. A value saved in the settings window overrides this file value at launch |
 | `<Temperature>` | `0.8` | Randomness 0-1 (higher = more creative, lower = more focused) |
+| `<Reasoning>` | `off` | The bundled server's thinking switch: off, on or auto. Keep it off unless you raise MaxTokens for a thinking model. |
+| `<MaxSpokenSentences>` | `3` | At most this many sentences of a reply are spoken and shown; 0 is no cap. A stray think-close tag from the model is never spoken or shown. |
 | `<SystemPrompt>` | *(see config)* | Base personality injected into every NPC conversation |
 | `<ContextMemory>` | `5` | Number of exchanges kept in conversation history (3-20) |
 | `<ShowTypingIndicator>` | `true` | Show "typing..." indicator while waiting for response |
@@ -641,6 +654,7 @@ pay, answer yes (or pay) or no; during the grace days, say **pay** to pay what y
 | `<DropCheckDepth>` | `1` | Deepest drop in blocks the NPC will take on its own: a 1-block step stays walkable, a drop of 2 or more is never her own choice. |
 | `<MaxFollowDrop>` | `5` | The one exception: how much deeper the NPC follows when you just dropped (jump/fall), detected via a 2 s high-water mark. Also controls the trail hop down budget: there is no separate hop-down key (removed S6, 2026-09-05), so this value is the only knob for how deep a hop may fall. |
 | `<LeaderDropGraceSeconds>` | `5` | How long the MaxFollowDrop allowance stays active after your descent. |
+| `<ChatWeaponGraceSeconds>` | `20` | Seconds a hire keeps her weapon put away after a chat line, so it stays away through a conversation; a fight draws it at once. |
 | `<TrailHopMaxHoriz>` / `<TrailHopMaxClimb>` | `2.5` / `1.6` | When the trail leads to a crumb the NPC cannot walk to, it hops (short teleport) to it within these limits. The down budget has no key (removed S6, 2026-09-05): it follows `<MaxFollowDrop>` - the NPC must not hop a fall it would refuse to walk. An old `<TrailHopMaxDrop>` key in a user config is silently ignored. |
 | `<PathFirstFollow>` | `true` | Far-from-leader travel is A*-first; set false for the old servo-first behaviour (A* only on failure). |
 | `<PathReleaseDist>` | `2.5` | Release side of the horizontal hysteresis pair for the path/servo handover (engage side has no key). `PathHandoverDist` is derived from `<TrailHandoverDist>` at load (removed S6, 2026-09-05); an old `<PathHandoverDist>` key in a user config is silently ignored. |
@@ -756,7 +770,7 @@ someone using it) and she has no other of that kind, she says so once as the win
   **Crafter** the workbench and cement mixer (`<Crafting><CookStations>` and the like: add a modded station's craft area to a list).
   A survivor may hold several roles, and several survivors the same one. Asked for a station recipe she has no role for: "I don't
   know how to do that." While she is hired her roles show after her name ("Xyth - Cook, Smith") on the Press E prompt, the talk
-  window, captions, the order wheel and SCore's companions list; **E > Your progress** lists them with her level, her XP toward
+  window, captions, the order wheel and SCore's companions list; **Hold E > Progress** lists them with her level, her XP toward
   the next level and the quality she crafts at.
 
 - **The station:** the nearest one in reach that makes the recipe and holds its tool (the cooking pot, the crucible...), of a kind
@@ -816,7 +830,7 @@ to at least that level. The game then unlocks recipes and raises her craft quali
 - The defaults are the skills of the recipes each role's own stations make; edit a role's list to change what it learns.
 - A new Cook makes corn on the cob and baked potato after 20 crafts at a campfire; later recipes take more (the game's own levels).
 - Only workstation crafts count, not backpack crafts. A skill never drops, and she keeps it if she gives up the role.
-- **E > Your progress** shows each role she holds: "Cook skill 2: 20 / 30 crafts" (her skill, her crafts, the crafts the next level
+- **Hold E > Progress** shows each role she holds: "Cook skill 2: 20 / 30 crafts" (her skill, her crafts, the crafts the next level
   takes). The skill shown is her real one: the highest of the role's crafting skills, so a skill magazine she read shows there too.
 - Her level still earns the game's crafting XP, as before.
 
@@ -854,7 +868,7 @@ Optional, each with a fallback:
 A hire reads the same books you do: a **schematic** she has not learned, or a **crafting skill magazine**. Give her the book (her
 harvest window or her pack), then:
 
-- **E > Read...** (right after **Craft...**, for your own hire who does jobs) lists every book she carries, one row each. A book that
+- **Hold E > Read** (for your own hire who does jobs) lists every book she carries, one row each. A book that
   would teach her nothing shows "(nothing new)". Pick one and she reads it. With no book: "I don't have anything to read."
 - Or say **"read your books"** ("read the book", "read the books"): she reads every book she carries that teaches her something,
   then says one line.
@@ -891,9 +905,8 @@ base is **under attack** while a block of it that she tracks has been hit within
 
 A hire can wave, salute, dance and more: a short animation she plays where she stands.
 
-- **Order wheel > Orders > Emotes**: `Wave`, `Salute`, `Fist bump`, `Stretch`, `Warm up`, `Whatever`, then **Dances**
-  (ten dances, seven a page plus More) and **More** (`Flip off`, `Insult`, `Loser`, `Threaten`). Release over one for the hire named
-  in the middle of the wheel; Shift+click for the whole squad.
+- **Hold E > Emotes** (or **Press E > Jobs and gear > Emotes**): `Wave`, `Salute`, `Fist bump`, `Stretch`, `Warm up`, `Whatever`, then **Dances**
+  (ten dances, seven a page plus More) and **More** (`Flip off`, `Insult`, `Loser`, `Threaten`). Pick one and she plays it.
 - **By voice**, the whole phrase: "wave at me", "salute me", "bump fists", "do a stretch", "do a warm up", "dance for me" or "do a
   dance" (a random dance), "flip me off", "do an insult", "do the loser", "do a threat". A sentence that only mentions dancing ("do
   you like to dance?") does not start one. Given to the squad, each hire picks her own dance.
@@ -920,10 +933,12 @@ A hire can wave, salute, dance and more: a short animation she plays where she s
 ## Survivors' aim
 
 A survivor shoots like a player who aims down the sights, made less steady by her inexperience: her spread with a gun is a
-player's aimed spread with that gun (no perks) times a factor of 3 at level 1, falling to 1 at level 10
-(`<Progression><AimErrorAtLevel1>` and `<AimErrorAtMaxLevel>`). A level-1 survivor's pipe pistol spreads about as wide as a
-player firing it from the hip; a level-10 one shoots like a player aiming. Moving, running and crouching change it the way they
-change a player's, and her shots spread more as she keeps firing, as yours do. Bandits use the same aim at their own level.
+player's aimed spread with that gun (no perks) times a factor that falls in a straight line from level 1 to 1 at level 10
+(`<AimErrorAtMaxLevel>`). Survivors, hired or not, start at 2 (`<Progression><AimErrorAtLevel1>`): they had practice before anyone
+hired them. Bandits start at 3 (`<BanditAimErrorAtLevel1>`): little practice and scarce ammo. A level-1 bandit's pipe pistol
+spreads about as wide as a player firing it from the hip; a level-10 survivor or bandit shoots like a player aiming. Moving,
+running and crouching change it the way they change a player's, and her shots spread more as she keeps firing, as yours do. A
+bandit's tier can add more spread on top (`<Bandits><SpreadByTier>`).
 They aim at the chest of a person (you, a survivor, a bandit, a trader) and at the head of a zombie or an animal; bows and
 launchers aim at the head, and their arc drops the shot onto the body.
 
@@ -934,6 +949,13 @@ also fights any enemy she can see within 20 m of herself, whatever it is after; 
 (a broken door, a window) she aims at the part of the target she can actually hit, and holds fire when she can hit none.
 An enemy behind a closed door, window or bars is not hers on Defensive: she waits until the way opens. On Aggressive she opens
 the door, or breaks through it with an axe or hammer and shoots through the gap (`<Combat><BreakThroughDoors>`).
+
+**Kneeling to shoot.** A survivor or bandit with a gun who stands still to shoot at a target at least 15 m away sometimes kneels
+for it (half her fights, `<Combat><KneelChance>`), but never while another enemy is within 10 m of her. Kneeling uses her gun's
+own crouch accuracy, as it does for you, and her aim steadies as she stays down. She stands up when she moves, when the target
+closes in or changes, or when an enemy comes near. When a friend (a survivor, a bandit mate, you) stands in her line of fire,
+the one in front kneels for about 3 seconds if the shot then passes over her (`<Combat><KneelForAllySeconds>`); if it would not,
+or the friend is moving, the shooter steps aside instead. Your crouch or stand order always wins.
 
 **Looking for cover.** A survivor or bandit whose search for cover found nothing does not search again from the same place: she
 waits until she, her enemy or the area she keeps to has moved 2 m (`<Cover><FruitlessRescanMoveMetres>`), she faces another enemy,
@@ -1081,7 +1103,7 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<AnyWeaponSettleSeconds>` | `2.0` | How long the backpack must stay unchanged before she equips (minimum about 1). |
 | `<NoWear>` | `true` | Survivors' gear takes no wear (they have no way to repair it yet). |
 | `<PlayerCtrlDeathWeapon>` | `vanish` | For player-controller NPCs only: on death the held weapon `vanish`es, or `fall`s with the body. |
-| `<Progression>` | | Hired survivors level up: `<HealthPerLevel>` (0.03), `<DamagePerLevel>` (0.02), `<AimErrorAtLevel1>` (3) and `<AimErrorAtMaxLevel>` (1, her spread is a player's aimed spread times this factor, falling in a straight line from level 1 to `<MaxLevel>`; see *Survivors' aim*), `<MaxLevel>` (10), `<StartLevelDaysPerLevel>` (7, world days per start level: a survivor met on day 8 starts at level 2), `<HealthRegenPerSecond>` (0.2), `<HarvestPerLevel>` (0.10, extra yield per level above 1 from wood, stone, ore, clay, plants, crops and butchering). Her XP: kills, crafting and harvesting (butchering included) pay her what they pay a player. |
+| `<Progression>` | | Hired survivors level up: `<HealthPerLevel>` (0.03), `<DamagePerLevel>` (0.02), `<AimErrorAtLevel1>` (2, survivors), `<BanditAimErrorAtLevel1>` (3, bandits) and `<AimErrorAtMaxLevel>` (1, her spread is a player's aimed spread times this factor, falling in a straight line from level 1 to `<MaxLevel>`; see *Survivors' aim*), `<MaxLevel>` (10), `<StartLevelDaysPerLevel>` (7, world days per start level: a survivor met on day 8 starts at level 2), `<HealthRegenPerSecond>` (0.2), `<HarvestPerLevel>` (0.10, extra yield per level above 1 from wood, stone, ore, clay, plants, crops and butchering). Her XP: kills, crafting and harvesting (butchering included) pay her what they pay a player. |
 | `<Crafting><PostReachMetres>` | `4` | How close to her post a crafting survivor must stand; farther away (after a fight) she walks back first. Clamped 1 to 20. |
 | `<Crafting><StationReachMetres>` | `5` | How close to you a workstation must be for its recipes to show in **Craft...**. Clamped 1 to 10. |
 | `<Crafting><StationFuel>` | `resourceWood,resourceCoal` | What she feeds a forge or campfire, the first one found first (a comma list of item names). |
@@ -1130,7 +1152,7 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<CraftSkill><CookSkills>` / `<BlacksmithSkills>` / `<ChemistSkills>` / `<CrafterSkills>` | the skills of each role's stations | The game's crafting skills (progression.xml names, comma list) each role raises. A name that is not a crafting skill is skipped with a warning. |
 | `<RepairSkill><Enabled>` | `true` | A keeper learns to repair by repairing: each paid repair and rebuilt block pays her the player's repair XP for its materials, into her repair XP and her level, and her repair XP sets the strongest building material she may work. `false` = every keeper repairs everything (the XP still counts). |
 | `<RepairSkill><StartTier>` | `0` | What a new hire may repair: 0 wood, 1 cobblestone, 2 concrete, 3 steel. |
-| `<RepairSkill><CobblestoneXp>` / `<ConcreteXp>` / `<SteelXp>` | `100` / `900` / `1700` | The repair XP each tier takes (a full wood repair pays about 4, cobblestone or concrete about 32). Shown on E > Your progress. |
+| `<RepairSkill><CobblestoneXp>` / `<ConcreteXp>` / `<SteelXp>` | `100` / `900` / `1700` | The repair XP each tier takes (a full wood repair pays about 4, cobblestone or concrete about 32). Shown on hold E > Progress. |
 | `<RepairSkill><WoodMaxDamage>` / `<CobblestoneMaxDamage>` / `<ConcreteMaxDamage>` | `500` / `1500` / `5000` | A block's tier is its material's strength: up to 500 wood (sandbags, frames, wood), up to 1500 cobblestone (brick, scrap metal), up to 5000 concrete, above that steel. Workstations, traps and electrics are open to every keeper. |
 | `<Medic><InCombatHealthPercent>` | `50` | The medic treats a patient below this health while an enemy is visible, and also in the first seconds after a fight (lighter wounds wait so you can patch yourself). Clamped 1 to 99. |
 | `<Medic><AfterCombatHealthPercent>` | `50` | The same line once the fight is over. Clamped 1 to 99. |
@@ -1168,8 +1190,12 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<Combat><SightStealth>` | `true` | Survivors and bandits use the game's stealth value (the one your HUD stealth meter shows: light, crouching, moving) when they look at you or at another survivor or bandit, also while choosing whom to fight. How sharp-eyed each one is comes from its class's `SightLightThreshold` in entityclasses.xml. Zombies are not affected. `false` = they ignore stealth the way SCore does. |
 | `<Combat><SightPlantStealthFactor>` | `0.7` | Each plant between the watcher and the target multiplies the target's stealth value by this, so crouching behind a bush hides you sooner. `1` = plants do not help; `0` = any plant hides completely. |
 | `<Combat><SightPlantStealthFactorHidden>` | `0.35` | The same, but for a character marked `$HidesInPlants` while he crouches (see POI-BUILDERS). |
-| `<Combat><ClearShotStepMetres>` | `2` | A hire with a gun steps this far aside, away from you, when you stand in her line of fire to an enemy that is going for you, then shoots. Clamped 1 to 5. |
-| `<Combat><ClearShotLeaderRadiusMetres>` | `20` | ...for an enemy within this distance of you. Clamped 2 to 60. |
+| `<Combat><ClearShotStepMetres>` | `2` | A survivor or bandit with a gun steps this far aside, away from the one in her way, when you or a friend who cannot kneel stand in her line of fire, then shoots. Clamped 1 to 5. |
+| `<Combat><ClearShotLeaderRadiusMetres>` | `20` | ...and when it is you, for an enemy within this distance of you that is going for you. Clamped 2 to 60. |
+| `<Combat><KneelChance>` | `0.5` | A gun holder standing still to shoot kneels with this chance per target (0 never, 1 always). Clamped 0 to 1. |
+| `<Combat><KneelMinTargetMetres>` | `15` | ...only for a target at least this far away. Clamped 3 to 100. |
+| `<Combat><KneelNoEnemyWithinMetres>` | `10` | ...and never while another enemy is this close to her. Clamped 2 to 40. |
+| `<Combat><KneelForAllySeconds>` | `3` | A friend standing still in a shooter's line kneels this long when the shot then passes over her. Clamped 1 to 10. |
 | `<Combat><HealGunThreatMetres>` | `25` | A survivor or bandit does not start a self-heal while an enemy holding a gun has her in sight this close: she keeps fighting and heals once it is gone. A melee threat (a zombie) still counts only within arm's reach, as before. A burning one is never held. 0 = never held. Clamped 0 to 60. |
 | `<Combat><DeathGuardLeashMetres>` | `8` | A death-guard hire (her leader died, she guards his dropped bag) keeps every fight move within this distance of his death spot and within `<Bandits><SentryLevelMetres>` of its floor; her cover and back-up reach counts to it too. Bandits keep `<Bandits><SentryLeashMetres>`. Clamped 2 to 30. |
 | `<Cover><FruitlessRescanMoveMetres>` | `2` | After a cover search that found nothing, a survivor or bandit does not search again until she, her enemy or the centre of the area she keeps to has moved this far (or her enemy, the kind of cover she is after or her order changed, or `FruitlessRescanSeconds` passed); meanwhile she does what she does when there is no cover. Clamped 0.5 to 10. |
@@ -1219,7 +1245,7 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<Bandits><SeekArriveHeightMetres>` | `2.5` | A seek (a bandit's, or a hire's) has arrived only within this height of its spot, so a seeker on the floor above or below keeps walking her path to the stairs. Clamped 1 to 10. |
 | `<Progression><KillXpWorkaround>` | `true` | Works around an SCore error on NPC kills that also costs the player the kill's XP; leave on. |
 | `<AwakeStealth>` | `true` | An awake zombie that is after a survivor sees her through the player's own stealth test: crouching, a held light and speed count, as they do for you. |
-| `<HitBoxFix>` | `true` | Keeps the oversized invisible box around survivors, NPCs and pets switched off, so hits land on the body. `false`: the game's behaviour (hits up to 30 cm off the body). |
+| `<HitBoxFix>` | `true` | Keeps the oversized invisible box around survivors, NPCs and pets switched off, so hits land on the body. `false`: the game's behaviour (hits up to 30 cm off the body). An NPC whose model has no body-part colliders (some other NPC packs) keeps its box, so she can still be hit and talked to. |
 | `<SdcsArmorExcludeGroups>` | `groupPreacher` | Outfit groups (comma separated) never rolled for an NPC, e.g. coats whose cloth only animates on players. |
 | `<SdcsCustomCharacterChance>` | `0.1` | Chance that a new wild survivor is dressed as one of an online player's own creator characters of the same sex; `0` turns it off. |
 | `<NpcPathRules>` | `true` | Survivors plan their paths with the mod's own rules (the hazard and drop settings below). `false`: the game's own paths. |
@@ -1236,7 +1262,7 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<Emotes><Reactions><Greet><Enabled>` / `<Chance>` / `<CooldownSeconds>` | `true` / `0.5` / `120` | The wave with her greeting when it plays toward you. Every reaction is skipped, never saved for later, while she fights, walks, plays another animation, works a job, sits in a vehicle or has an enemy near. |
 | `<Emotes><Idle><Enabled>` | `true` | Idle moments: a hire who stands still and free now and then plays a short idle clip. `false` = never. |
 | `<Emotes><Idle><StillSeconds>` | `20` | How long she stands still and free before the first one. |
-| `<Emotes><Idle><MinIntervalSeconds>` / `<MaxIntervalSeconds>` | `120` / `300` | The random wait between two of her idle clips; each survivor rolls her own. |
+| `<Emotes><Idle><MinIntervalSeconds>` / `<MaxIntervalSeconds>` | `60` / `60` | The random wait between two of her idle clips; each survivor rolls her own. |
 | `<Emotes><Idle><StillMetres>` | `0.5` | A move of more than this between two looks a second apart (hers, or her leader's while she follows) counts as walking. |
 | `<Emotes><Idle><Clips>` | `stretch,warmup,whatever` | The idle clips (ids from the base mod's `Config/SdcsAnimClips.xml`, comma separated); an unknown id is skipped with a warning. |
 | `<VerboseLogging>`, `<JitterWindow>`, `<SdcsPitchPin>`, `<PlayerCtrlOwnController>` | | Diagnostics and engine switches; leave as shipped. |

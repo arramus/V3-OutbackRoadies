@@ -1,11 +1,11 @@
-# Bandits in your POIs: a guide for POI builders (NPCCore 3.4.03 tester build)
+# Bandits in your POIs: a guide for POI builders (NPCCore 3.4.04)
 
 NPCCore's bandits are hostile survivors built on the game's own character system: they fight with real weapons, use cover,
 throw explosives, and sleep in your POIs like zombies do. This guide covers what you need to place them and test them.
 
 ## What to install
 
-- `0-SCore` 3.4.3 and `0-XNPCCore` 3.4.03 (the Core zip): required.
+- `0-SCore` 3.4.14 or newer and `0-XNPCCore` 3.4.04 (the Core zip): required.
 - The voice add-on (`1-XNPCVoiceControl-Voice` or `-Complete`): optional. Without it bandits work the same, they only stay
   silent (their one spoken line needs text to speech).
 - Generate a NEW random world after installing your POI pack: an existing world never gains new POIs.

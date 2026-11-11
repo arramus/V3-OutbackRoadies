@@ -4714,7 +4714,8 @@
 			     down the sights (IsAiming stays false), so her hip spread is set instead: a
 			     player's AIMED spread with that gun times a factor that shrinks with her level,
 			     through the SdcsAimSpread cvar the controller writes ([SDCS-AIM], Settings.xml
-			     Progression AimErrorAtLevel1 and AimErrorAtMaxLevel). -->
+			     Progression AimErrorAtLevel1 (survivors), BanditAimErrorAtLevel1 (bandits)
+			     and AimErrorAtMaxLevel). -->
 			<effect_group name="SdcsNpcAccuracy">
 				<passive_effect name="SpreadMultiplierAiming" operation="base_set" value="1"/>
 				<passive_effect name="SpreadMultiplierCrouching" operation="base_set" value="1"/>

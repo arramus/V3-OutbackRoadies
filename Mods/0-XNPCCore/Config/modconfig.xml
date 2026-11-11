@@ -80,10 +80,11 @@
                not port-probed, and free-form chat falls back to canned responses
                (phrase trigger commands still execute).
       Endpoint: URL for the OpenAI-compatible chat completions API.
-      ModelFilename: leave empty to use default model from llama-server config.
+      ModelFilename: the .gguf in Resources/Models/Llama to load (default the shipped Qwen3-4B file). Empty = the first .gguf found.
       Model: name of the model for an EXTERNAL API endpoint (used verbatim in requests). When Endpoint is the local llama-server default, a .gguf discovered in Resources/ overrides this value, so it only matters for external endpoints and as the printed fallback when no model file is found.
       MaxTokens: maximum response length in tokens (64-2048).
       Temperature: randomness 0-1 (higher = more creative, lower = more focused).
+      Reasoning: the bundled llama-server's thinking switch, off (default) / on / auto.
       SystemPrompt: the base personality injected into every NPC conversation.
       ContextMemory: how many recent exchanges to keep in context (3-20).
       ShowTypingIndicator: show a "typing..." tooltip while waiting for response.
@@ -304,7 +305,7 @@
     <LLM>
         <Enabled>false</Enabled>
         <Endpoint>http://127.0.0.1:5055/v1/chat/completions</Endpoint>
-        <ModelFilename></ModelFilename>
+        <ModelFilename>Qwen3-4B-Instruct-2507-Q4_K_M.gguf</ModelFilename>
         <!-- Name of the model. For an external API endpoint this is sent verbatim in
              requests. For the local llama-server default, autodetect overrides it with
              the .gguf found in Resources/ (no extension), so this value only shows up
@@ -313,6 +314,13 @@
         <TimeoutSeconds>30</TimeoutSeconds>
         <MaxTokens>200</MaxTokens>
         <Temperature>0.8</Temperature>
+
+        <!-- Reasoning: the bundled llama-server's thinking switch, off / on / auto. Off by default: replies are short and capped by
+             MaxTokens, and a model that thinks first spends the cap on its reasoning. Only for the bundled server. -->
+        <Reasoning>off</Reasoning>
+
+        <!-- MaxSpokenSentences: at most this many sentences of a reply are spoken and shown; 0 is no cap. -->
+        <MaxSpokenSentences>3</MaxSpokenSentences>
 
         <!-- NPC Personality Defaults -->
         <SystemPrompt>You are a survivor in post-apocalyptic Arizona, about seven years after the outbreak. Stay fully in character: weary from years of survival, but still capable of hope, warmth, and dark humor. You have your own goals, fears, and opinions. React to what the survivor says and to anything you remember about them. Never break character or mention being an AI. Keep replies SHORT: one or two sentences, three at the very most. Your words are spoken aloud, not read, so a long answer makes the player wait. Do not use markdown, bullet lists or stage directions.</SystemPrompt>
@@ -582,6 +590,9 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
          descent is detected. Default 5 seconds. After this window the NPC reverts to DropCheckDepth.
     -->
     <LeaderDropGraceSeconds>5</LeaderDropGraceSeconds>
+
+    <!-- Seconds a hire keeps her weapon put away after a chat line, so it stays away through a conversation; a fight draws it at once. -->
+    <ChatWeaponGraceSeconds>20</ChatWeaponGraceSeconds>
 
     <!-- Hire-roster diagnostic: the server keeps a snapshot of each
          player's hired NPCs (Hire_Roster_Snapshot.xml beside the mod DLL) and reconciles it

@@ -21,12 +21,15 @@
      Progression (NPC progression Phase 1) is read by the controller's
      [SDCS-LEVEL] block: the per-level rates and the level cap behind the
      hidden level buff (SdcsNpcLevelBonus in Config/buffs.xml). HealthPerLevel
-     and DamagePerLevel are perc_add per level. AimErrorAtLevel1 and AimErrorAtMaxLevel
+     and DamagePerLevel are perc_add per level. AimErrorAtLevel1,
+     BanditAimErrorAtLevel1 and AimErrorAtMaxLevel
      set how well a survivor shoots ([SDCS-AIM]): her spread with a gun is a player's
-     AIMED spread with that gun times this factor, 3 at level 1 falling in a straight
-     line to 1 at MaxLevel (a level-1 survivor's pipe pistol spreads about as wide as a
-     player firing it from the hip, a top-level one like a player aiming down the sights;
-     lower = more accurate). MaxLevel is this mod's own level clamp. HarvestPerLevel
+     AIMED spread with that gun times this factor, survivors (hired or not) starting
+     at AimErrorAtLevel1 (2), bandits at BanditAimErrorAtLevel1 (3), both falling in
+     a straight line to AimErrorAtMaxLevel (1) at MaxLevel: a bandit starts with a
+     rougher handicap (little practice, scarce ammo) while a survivor had more
+     practice before anyone hired her; lower = more accurate. MaxLevel is this
+     mod's own level clamp. HarvestPerLevel
      is the extra harvest yield per level above 1 (wood, stone, ore, clay, plants, crops,
      butchering). The
      HealthRegenPerSecond is the slow natural regen on the same buff, in HP per
@@ -137,9 +140,10 @@
          than the model. While true this mod disables the box once per NPC
          (before the trader tick can run) and drops the cached reference,
          the same move SCore already makes at death, so the trader tick has
-         nothing to re-enable. The interact prompt is unaffected: the body
-         part colliders it resolves through sit on layer 0, which is in the
-         interact ray's layer mask. The EFFECTIVE value is read with the same
+         nothing to re-enable. Only for an NPC whose model has body part
+         colliders (the interact prompt and the hits resolve through them);
+         an NPC model without them keeps its box. The EFFECTIVE value is read
+         with the same
          lazy, warn-once, ParseBool shape as the other keys here; a missing
          node on an old install warns once and keeps the default (true).
          Log tag: [SDCS-HITBOX]. -->
@@ -261,7 +265,8 @@
     <Progression>
         <HealthPerLevel>0.03</HealthPerLevel>
         <DamagePerLevel>0.02</DamagePerLevel>
-        <AimErrorAtLevel1>3</AimErrorAtLevel1>
+        <AimErrorAtLevel1>2</AimErrorAtLevel1>
+        <BanditAimErrorAtLevel1>3</BanditAimErrorAtLevel1>
         <AimErrorAtMaxLevel>1</AimErrorAtMaxLevel>
         <HarvestPerLevel>0.10</HarvestPerLevel>
         <MaxLevel>10</MaxLevel>
@@ -492,6 +497,20 @@
              clear shot. Clamped 1 to 5.
          ClearShotLeaderRadiusMetres: only for an enemy this close to the leader.
              Clamped 2 to 60.
+         KneelChance: a gun holder (survivor or bandit) standing still kneels
+             to shoot with this chance per target (0 never, 1 always), only
+             when the target is at least KneelMinTargetMetres away and no other
+             enemy is within KneelNoEnemyWithinMetres of her. She stands up
+             when she moves, the target closes in or changes, or an enemy
+             comes near. Kneeling uses the gun's own crouch accuracy, as for a
+             player. A player's crouch or stand order wins. Clamped 0 to 1.
+         KneelMinTargetMetres: the long shot distance for KneelChance.
+             Clamped 3 to 100.
+         KneelNoEnemyWithinMetres: no kneel while another enemy is this close
+             to her. Clamped 2 to 40.
+         KneelForAllySeconds: an ally (survivor or bandit) standing still in a
+             shooter's line kneels this long when the shot then clears over
+             her, else the shooter steps aside. Clamped 1 to 10.
          HealGunThreatMetres: a survivor or a bandit does not stop to bandage
              herself while an enemy holding a gun has her in sight this close
              (her gunfire threat list, the one cover uses): she keeps fighting
@@ -604,6 +623,10 @@
         <CrawlerAimBellyMetres>0.25</CrawlerAimBellyMetres>
         <ClearShotStepMetres>2</ClearShotStepMetres>
         <ClearShotLeaderRadiusMetres>20</ClearShotLeaderRadiusMetres>
+        <KneelChance>0.5</KneelChance>
+        <KneelMinTargetMetres>15</KneelMinTargetMetres>
+        <KneelNoEnemyWithinMetres>10</KneelNoEnemyWithinMetres>
+        <KneelForAllySeconds>3</KneelForAllySeconds>
         <HealGunThreatMetres>25</HealGunThreatMetres>
         <BreakThroughDoors>true</BreakThroughDoors>
         <HoldUnseenGiveUpSeconds>5</HoldUnseenGiveUpSeconds>
@@ -792,8 +815,8 @@
              the console command sdcsbandit damage 0.75 (that lasts until the game
              restarts; edit this value to keep it). Clamped 0 to 5.
          SpreadByTier: an EXTRA spread for a bandit, by her tier (T1, T2, T3), added to
-             her hip spread on top of the aim every survivor has (Progression
-             AimErrorAtLevel1): 0 = she shoots like a survivor of her level, 1 = one
+             her hip spread on top of her level's aim (Progression
+             BanditAimErrorAtLevel1): 0 = no extra, 1 = one
              more hip spread of her gun. Clamped 0 to 10 each.
          SeekMemorySeconds: how long a bandit keeps seeking an enemy she lost sight of,
              from the last moment she saw it (or was hit by it); then she gives up.
@@ -1372,8 +1395,8 @@
         <Idle>
             <Enabled>true</Enabled>
             <StillSeconds>20</StillSeconds>
-            <MinIntervalSeconds>120</MinIntervalSeconds>
-            <MaxIntervalSeconds>300</MaxIntervalSeconds>
+            <MinIntervalSeconds>60</MinIntervalSeconds>
+            <MaxIntervalSeconds>60</MaxIntervalSeconds>
             <StillMetres>0.5</StillMetres>
             <Clips>stretch,warmup,whatever</Clips>
         </Idle>

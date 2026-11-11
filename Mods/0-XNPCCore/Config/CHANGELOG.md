@@ -2,15 +2,69 @@
 
 Release notes, newest first. How to install and use the mod is in `ReadMeFirst.md`, next to this file.
 
-## What's New in 3.4.03
+## What's New in 3.4.04
 
 Targets 7 Days to Die **3.4**. **Requires 0-SCore 3.4.14 or newer** (built and tested on 3.4.14.1542). Everyone on a server needs the
 same version, server included.
 
-### 3.4.03 hotfix: hires keep their loaded rounds
+### Chat server update
+- **The bundled llama.cpp chat server is updated.** The chat model stays Qwen3-4B. Its thinking is switched off by the new
+  `<LLM><Reasoning>` setting (off by default), and `<ModelFilename>` now names the shipped model, so an extra `.gguf` in
+  `Resources/Models/Llama/` is never loaded by accident.
+
+### Three menus, one home per command
+- **Press E** is the top menu: talk, hire or dismiss, Follow me, Come here, Show me your inventory, Craft..., and two links:
+  **Order wheel** (the **;** wheel, on them) and **Jobs and gear** (their hold-E menu as a wheel page).
+- **Hold E** is their work and gear: Jobs, Roles, Weapons (the full weapon menu, with Ammo inside it), Emotes, Read, Progress,
+  Inventory, Pick me up.
+- The **;** order wheel is tactics only: Emotes and Weapons left it, and the ring's Orders and Craft entries are gone (Craft is on
+  Press E). Voice and typed commands are unchanged.
+
+### Includes the 3.4.03 hotfix: hires keep their loaded rounds
 - **Fixed:** a hire who put her gun away to talk to you, or in a vehicle gunner seat, drew it back empty, so her next reload took
-  another magazine from her pack. The rounds in her gun are kept now. Replace only the Core zip (`0-XNPCCore-v3.4.03.zip`); the Voice
-  and Complete packs are unchanged.
+  another magazine from her pack. The rounds in her gun are kept now.
+
+### Survivors
+- **Survivors shoot straighter than bandits.** A level-1 survivor, hired or not, now starts at twice a player's aimed spread
+  instead of three times; bandits keep three times. Both still reach a player's aimed spread at the top level. New setting
+  `<Progression><BanditAimErrorAtLevel1>` (3); `<AimErrorAtLevel1>` (now 2) is the survivors' value.
+- **Kneeling to shoot.** A survivor or bandit with a gun who stands still to shoot at a long-range target sometimes kneels for it,
+  with her gun's own crouch accuracy, and stands up when she moves or an enemy comes near. New settings `<Combat><KneelChance>`
+  (0.5), `<KneelMinTargetMetres>` (15) and `<KneelNoEnemyWithinMetres>` (10).
+- **Friends no longer stand in the way.** When a friend stands in a shooter's line of fire, the one in front kneels so the shot
+  passes over her (`<Combat><KneelForAllySeconds>`, 3), or the shooter steps aside. Before, only you made a hire step aside, and
+  bandits never did.
+
+### Fixes
+- **Legacy NPCs shoot their guns again.** Since 3.4.03 a legacy (V5) NPC with a rifle swung it like a club at range instead of
+  shooting. She shoots again, and swings only up close.
+- **Hires walk round parked vehicles.** A following hire plans her path round a parked truck instead of into it, and finds a way
+  round when she gets wedged against one.
+- **Hires are never invisible in a vehicle seat.** On a dedicated server a hire who boarded with you could ride hidden; she now
+  shows in her seat.
+- **Shorter replies, no stray tags.** A hire says at most three sentences (`<LLM><MaxSpokenSentences>`), and a stray `</think>` from the chat model is never spoken or shown.
+- **Dismiss asks first.** Dismiss on the Press E menu now asks you to confirm, so a hire is never let go
+  by a slip of the mouse.
+- **Hold E -> Weapons, Read and Progress open their page** every time; after a talk they could open the top of the talk menu.
+- **The Progress page says "My skills..."** (it said "Her skills..." on every hire).
+- **A dismissed survivor offers Hire right away.** Talking to her just after a dismissal could show Dismiss again instead.
+- **NPCs from other NPC packs can be talked to and hit again.** Since 3.4.02 the invisible box around every NPC was
+  switched off; an NPC model without body-part colliders then had nothing to interact with or hit. Such NPCs now keep the box.
+- **Humanoid characters can emote and dance.** The emotes and dances that were greyed out for humanoid characters (for example
+  the VRoid characters of other packs) now play; only Flip Off stays greyed for them.
+- **Idle gestures come more often.** A hire standing still plays an idle gesture after 20 seconds, then about once a minute.
+- **For modders: VRoid characters hold their guns in the hand with `PlayerCtrlGripScale` 0.6.** A VRoid hand is smaller than the
+  rig the weapon animations are built on, so the gun sits in front of it. Add `<property name="PlayerCtrlGripScale" value="0.6"/>`
+  to the character's entity classes (fitted in game on a VRoid pack; allowed 0.5 to 2.0, lower pulls the gun back into the hand).
+- **Talking to a hire keeps her weapon away.** It stays put away through the whole conversation (`<ChatWeaponGraceSeconds>`, 20 s after her last line)
+  and her talk gestures no longer repeat the same one twice in a row; a fight still draws it at once.
+- **"I'll" no longer calls Jill.** A word with an apostrophe is never taken loosely as a name, so the reply goes to the hire
+  in front of you.
+
+## What's New in 3.4.03
+
+Targets 7 Days to Die **3.4**. **Requires 0-SCore 3.4.14 or newer** (built and tested on 3.4.14.1542). Everyone on a server needs the
+same version, server included.
 
 ### Start here: three ways to command your hires
 The menus were reorganised this release. How you reach a hire depends on how far away they are:
