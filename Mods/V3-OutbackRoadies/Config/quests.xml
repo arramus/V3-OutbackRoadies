@@ -242,7 +242,365 @@
 		<property name="difficulty" value="easy" />
 		<reward type="SkillPoints" value="1" />
 	</quest>
-
+	
 	</append>
+	
+<!-- *** BANDIT_CLEAR_QUESTS -->
+    <insertBefore xpath="/quests/quest_list[@id='test_quests']">
+        <quest id="tier1_clear_bandit_variant">
+		<property name="name_key" value="quest_tier1_clear_bandit_variant" param1="name"/>
+		<property name="subtitle_key" value="quest_clear_bandit_variant_subtitle"/>
+		<property name="description_key" value="quest_clear_bandit_variant_description"/>
+        <property name="icon" value="ui_game_symbol_quest"/>
+        <property name="repeatable" value="true"/>
+		<property name="category_key" value="quest"/>
+		<property name="offer_key" value="quest_tier1_clear_bandit_variant_offer" param1="offer"/>
+		<property name="difficulty_tier" value="1" param1="difficulty"/>
+		<property name="poi_variant_suffix" value="_bandit"/>
+		<property name="statement_key" value="quest_clear_bandit_variant_statement"/>
+		<property name="response_key" value="quest_clear_bandit_variant_response"/>
+		<property name="login_rally_reset" value="true"/>
+		<property name="reward_choices_count" value="5"/>
+		<property name="extra_tags" value="" param1="extra_tags"/>
+		<property name="filter_tags" value="poi" param1="filter_tags"/>
+		<property name="shareable" value="true"/>	
+
+		<property name="completiontype" value="TurnIn"/>
+		<property name="completion_key" value="quest_clear_bandit_variant_completion"/>
+
+            <!-- SCore Quest POI Variants: rebuild the POI from <name>_bandit on rally point reset. -->
+            <property name="poi_variant_suffix" value="_bandit"/>
+
+            <objective type="RandomTaggedPOIGotoSDX, SCore">
+                <property name="phase" value="1"/>
+                <property name="require_poi_variant" value="true"/>
+				<property name="biome_filter_type" value="SameBiome" param1="biome_filter_type"/>
+				<property name="biome_filter" value="" param1="biome_filter"/>
+                <property name="nav_object" value="quest"/>
+				<property name="poi_tier" value="-1" param1="poi_tier"/>
+            </objective>
+
+            <objective type="RallyPoint">
+                <property name="phase" value="2"/>
+                <property name="nav_object" value="rally"/>
+                <property name="rally_marker_type" value="questRallyMarkerClear"/>
+            </objective>
+
+            <objective type="ClearSleepers">
+                <property name="phase" value="3"/>
+                <property name="nav_object" value="sleeper_volume"/>
+            </objective>
+
+            <objective type="POIStayWithin">
+                <property name="phase" value="3"/>
+                <property name="radius" value="25"/>
+            </objective>
+
+            <action type="UnlockPOI">
+                <property name="phase" value="4"/>
+            </action>
+
+            <objective type="ReturnToNPC">
+                <property name="phase" value="4"/>
+                <property name="nav_object" value="return_to_trader"/>
+            </objective>
+
+            <objective type="InteractWithNPC">
+                <property name="phase" value="4"/>
+                <property name="nav_object" value="return_to_trader"/>
+            </objective>
+
+		<reward type="Exp" value="3000"/>
+		<reward type="Item" id="casinoCoin" value="400"/>
+
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestResourcesT0" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestResourcesT0,groupQuestT1SkillMagazineBundle" ischosen="true" value="1"/>
+    </quest>
+	
+	<quest id="tier2_clear_bandit_variant" template="tier1_clear_bandit_variant">
+		<variable name="name" value="quest_tier2_clear_bandit_variant"/>
+		<variable name="offer" value="quest_tier2_clear_bandit_variant_offer"/>
+		<variable name="difficulty" value="2"/>
+		<variable name="extra_tags" value=""/>
+		<variable name="biome_filter_type" value="SameBiome"/>
+		<variable name="biome_filter" value=""/>
+		
+		<reward type="Exp" value="4500"/>
+		<reward type="Item" id="casinoCoin" value="500"/>
+
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestResourcesT0,seedsNoFlowers" ischosen="true"/>
+		<reward type="LootItem" id="groupQuestResourcesT0,groupQuestT1SkillMagazineBundle" ischosen="true"/>
+	</quest>
+	
+	<quest id="tier3_clear_bandit_variant" template="tier1_clear_bandit_variant">
+		<variable name="name" value="quest_tier3_clear_bandit_variant"/>
+		<variable name="offer" value="quest_tier3_clear_bandit_variant_offer"/>
+		<variable name="difficulty" value="3"/>
+		<variable name="extra_tags" value=""/>
+		<variable name="biome_filter_type" value="SameBiome"/>
+		<variable name="biome_filter" value=""/>
+		
+		<reward type="Exp" value="6000"/>
+		<reward type="Item" id="casinoCoin" value="800"/>
+
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestResourcesT0,seedsNoFlowers,groupQuestSteel01" ischosen="true"/>
+		<reward type="LootItem" id="groupQuestResourcesT1,groupQuestT1SkillMagazineBundle" ischosen="true"/>
+	</quest>
+	
+	<quest id="tier4_clear_bandit_variant" template="tier1_clear_bandit_variant">
+		<variable name="name" value="quest_tier4_clear_bandit_variant"/>
+		<variable name="offer" value="quest_tier4_clear_bandit_variant_offer"/>
+		<variable name="difficulty" value="4"/>
+		<variable name="extra_tags" value=""/>
+		<variable name="biome_filter_type" value="SameBiome"/>
+		<variable name="biome_filter" value=""/>
+		
+		<reward type="Exp" value="7500"/>
+		<reward type="Item" id="casinoCoin" value="1000"/>
+
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestResourcesT1,groupQuestSteel01" ischosen="true"/>
+		<reward type="LootItem" id="groupQuestResourcesT1,groupQuestT1SkillMagazineBundle" ischosen="true"/>
+	</quest>
+		
+	<quest id="tier5_clear_bandit_variant" template="tier1_clear_bandit_variant">
+		<variable name="name" value="quest_tier5_clear_bandit_variant"/>
+		<variable name="offer" value="quest_tier5_clear_bandit_variant_offer"/>
+		<variable name="difficulty" value="5"/>
+		<variable name="extra_tags" value=""/>
+		<variable name="biome_filter_type" value="AnyBiome"/>
+		<variable name="biome_filter" value=""/>
+		
+		<reward type="Exp" value="15000"/>
+		<reward type="Item" id="casinoCoin" value="2000"/>
+
+		<reward type="LootItem" id="groupQuestArmorResources" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="5"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics,groupQuestMods" ischosen="true" value="5"/>
+		<reward type="LootItem" id="groupQuestGas,groupQuestSteel02" ischosen="true"/>
+		<reward type="LootItem" id="groupQuestResourcesT1,groupQuestT1SkillMagazineBundle" ischosen="true"/>
+	</quest>
+
+<!-- *** BANDIT_INFESTED_QUESTS -->
+	<quest id="tier2_clear_infested_bandit_variant">
+		<property name="name_key" value="quest_tier2_infested_clear_bandit_variant" param1="name"/>
+		<property name="subtitle_key" value="quest_infestation_bandit_variant_subtitle"/>
+		<property name="description_key" value="quest_tier2_infested_clear_bandit_variant_offer"/>
+		<property name="icon" value="ui_game_symbol_quest"/>
+		<property name="repeatable" value="true"/>
+		<property name="category_key" value="quest"/>
+		<property name="offer_key" value="quest_tier2_infested_clear_bandit_variant_offer" param1="offer"/>
+		<property name="difficulty_tier" value="2" param1="difficulty"/>
+		<property name="statement_key" value="quest_infestation_bandit_variant_statement"/>
+		<property name="response_key" value="quest_infestation_bandit_variant_response"/>
+		<property name="login_rally_reset" value="true"/>
+		<property name="reward_choices_count" value="5"/>
+		<property name="extra_tags" value="infested" param1="extra_tags"/>
+		<property name="filter_tags" value="poi" param1="filter_tags"/>
+		<property name="shareable" value="true"/>
+		<property name="spawn_multiplier" value="2" param1="spawn_multiplier"/>
+		<property name="gamestage_mod" value=".6" param1="gamestage_mod"/>
+		<property name="gamestage_bonus" value="30" param1="gamestage_bonus"/>
+
+		<property name="completiontype" value="TurnIn"/>
+		<property name="completion_key" value="quest_clear_completion"/>
+		
+            <!-- SCore Quest POI Variants: rebuild the POI from <name>_bandit on rally point reset. -->
+            <property name="poi_variant_suffix" value="_bandit"/>
+
+            <objective type="RandomTaggedPOIGotoSDX, SCore">
+                <property name="phase" value="1"/>
+                <property name="require_poi_variant" value="true"/>
+				<property name="biome_filter_type" value="SameBiome" param1="biome_filter_type"/>
+				<property name="biome_filter" value="" param1="biome_filter"/>
+                <property name="nav_object" value="quest"/>
+				<property name="poi_tier" value="1" param1="poi_tier"/>
+            </objective>
+
+            <objective type="RallyPoint">
+                <property name="phase" value="2"/>
+                <property name="nav_object" value="rally"/>
+                <property name="rally_marker_type" value="questRallyMarkerInfestation"/>
+            </objective>
+
+            <objective type="ClearSleepers">
+                <property name="phase" value="3"/>
+                <property name="nav_object" value="sleeper_volume"/>
+            </objective>
+
+            <objective type="POIStayWithin">
+                <property name="phase" value="3"/>
+                <property name="radius" value="25"/>
+            </objective>
+
+            <action type="UnlockPOI">
+                <property name="phase" value="4"/>
+            </action>
+
+            <objective type="ReturnToNPC">
+                <property name="phase" value="4"/>
+                <property name="nav_object" value="return_to_trader"/>
+            </objective>
+
+            <objective type="InteractWithNPC">
+                <property name="phase" value="4"/>
+                <property name="nav_object" value="return_to_trader"/>
+            </objective>
+
+		<reward type="Exp" value="5625"/>
+		<reward type="Item" id="casinoCoin" value="1000"/>
+
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="2"/>
+		<reward type="LootItem" id="groupQuestResourcesT0" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestResourcesT0,groupQuestT1SkillMagazineBundle" ischosen="true" value="2"/>
+	</quest>
+	
+	<quest id="tier3_clear_infested_bandit_variant" template="tier2_clear_infested_bandit_variant">
+		<variable name="name" value="quest_tier3_infested_clear_bandit_variant"/>
+		<variable name="offer" value="quest_tier3_infested_clear_bandit_variant_offer"/>
+		<variable name="difficulty" value="3"/>
+		<variable name="extra_tags" value="infested"/>
+		<variable name="poi_tier" value="2"/>
+		<variable name="spawn_multiplier" value="2"/>
+		<variable name="gamestage_mod" value=".6"/>
+		<variable name="gamestage_bonus" value="30"/>
+		
+		<reward type="Exp" value="7500"/>
+		<reward type="Item" id="casinoCoin" value="2000"/>
+
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="3"/>
+		<reward type="LootItem" id="groupQuestResourcesT1" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestResourcesT1,groupQuestT1SkillMagazineBundle" ischosen="true" value="3"/>
+	</quest>
+	
+	<quest id="tier4_clear_infested_bandit_variant" template="tier2_clear_infested_bandit_variant">
+		<variable name="name" value="quest_tier4_infested_clear_bandit_variant"/>
+		<variable name="offer" value="quest_tier4_infested_clear_bandit_variant_offer"/>
+		<variable name="difficulty" value="4"/>
+		<variable name="extra_tags" value="infested"/>
+		<variable name="poi_tier" value="3"/>
+		<variable name="spawn_multiplier" value="1.5"/>
+		<variable name="gamestage_mod" value=".6"/>
+		<variable name="gamestage_bonus" value="30"/>
+		<variable name="biome_filter_type" value="SameBiome"/>
+		
+		<reward type="Exp" value="9375"/>
+		<reward type="Item" id="casinoCoin" value="3000"/>
+
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="4"/>
+		<reward type="LootItem" id="groupQuestResourcesT1" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestResourcesT1,groupQuestT1SkillMagazineBundle" ischosen="true" value="4"/>
+	</quest>
+	
+	<quest id="tier5_clear_infested_bandit_variant" template="tier2_clear_infested_bandit_variant">
+		<variable name="name" value="quest_tier5_infested_clear_bandit_variant"/>
+		<variable name="offer" value="quest_tier5_infested_clear_bandit_variant_offer"/>
+		<variable name="difficulty" value="5"/>
+		<variable name="extra_tags" value="infested"/>
+		<variable name="poi_tier" value="4"/>
+		<variable name="spawn_multiplier" value="1.5"/>
+		<variable name="gamestage_mod" value=".6"/>
+		<variable name="gamestage_bonus" value="30"/>
+		<variable name="biome_filter_type" value="AnyBiome"/>
+		
+		<reward type="Exp" value="18750"/>
+		<reward type="Item" id="casinoCoin" value="4000"/>
+
+		<reward type="LootItem" id="groupQuestArmorResources" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="5"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="5"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="5"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="5"/>
+		<reward type="LootItem" id="groupQuestGas" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestResourcesT1,groupQuestT1SkillMagazineBundle" ischosen="true" value="5"/>
+	</quest>
+
+	<quest id="tier6_clear_infested_bandit_variant" template="tier2_clear_infested_bandit_variant">
+		<variable name="name" value="quest_tier6_infested_clear_bandit_variant"/>
+		<variable name="offer" value="quest_tier5_infested_clear_bandit_variant_offer"/>
+		<variable name="difficulty" value="6"/>
+		<variable name="extra_tags" value="infested"/>
+		<variable name="poi_tier" value="5"/>
+		<variable name="spawn_multiplier" value="1.5"/>
+		<variable name="gamestage_mod" value=".6"/>
+		<variable name="gamestage_bonus" value="30"/>
+		<variable name="biome_filter_type" value="AnyBiome"/>
+		
+		<reward type="Exp" value="30000"/>
+		<reward type="Item" id="casinoCoin" value="6000"/>
+
+		<reward type="Item" id="resourceLegendaryParts" ischosen="true" isfixed="true" value="1"/>
+		<reward type="LootItem" id="groupQuestFood,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="6"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="6"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="6"/>
+		<reward type="LootItem" id="groupQuestMedical,groupQuestAmmo,groupQuestSchematics" ischosen="true" value="6"/>
+		<reward type="LootItem" id="groupQuestGas" ischosen="true" value="1"/>
+		<reward type="LootItem" id="groupQuestResourcesT1,groupQuestT1SkillMagazineBundle" ischosen="true" value="6"/>
+	</quest>	
+    </insertBefore>
+	
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier1_buried_supplies']">
+		<quest id="tier1_clear_bandit_variant"/>
+	</insertAfter>
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier2_buried_supplies']">
+		<quest id="tier2_clear_bandit_variant"/>
+	</insertAfter>
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier3_buried_supplies']">
+		<quest id="tier3_clear_bandit_variant"/>
+	</insertAfter>
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier4_fetch_clear']">
+		<quest id="tier4_clear_bandit_variant"/>
+	</insertAfter>
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier5_fetch_clear']">
+		<quest id="tier5_clear_bandit_variant"/>
+	</insertAfter>
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier2_clear_infested']">
+	    <quest id="tier2_clear_infested_bandit_variant"/>
+	</insertAfter>
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier3_clear_infested']">
+	    <quest id="tier3_clear_infested_bandit_variant"/>
+	</insertAfter>
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier4_clear_infested']">
+	    <quest id="tier4_clear_infested_bandit_variant"/>
+	</insertAfter>
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier5_clear_infested']">
+	    <quest id="tier5_clear_infested_bandit_variant"/>
+	</insertAfter>
+	<insertAfter xpath="/quests/quest_list/quest[@id='tier6_clear_infested']">
+	    <quest id="tier6_clear_infested_bandit_variant"/>
+	</insertAfter>
 	
 </configs>

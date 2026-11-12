@@ -81,13 +81,13 @@
 	<set xpath="/blocks/block[@name='chemistryStation']/property[@name='TakeDelay']/@value">5</set> <!-- Default 15 -->
 	
 	<append xpath="/blocks/block[@name='treeMaster']" >
-		<drop event="Destroy" name="foodWitchettyGrub" prob=".15" count="1,2"/>
+		<drop event="Destroy" name="foodWitchettyGrub" prob=".2" count="1,2"/>
 	</append>
 	<append xpath="/blocks/block[@name='treeStump']" >
-		<drop event="Destroy" name="foodWitchettyGrub" prob=".15" count="1,2"/>
+		<drop event="Destroy" name="foodWitchettyGrub" prob=".2" count="1,2"/>
 	</append>
 	<append xpath="/blocks/block[@name='treeStumpPOI']" >
-		<drop event="Destroy" name="foodWitchettyGrub" prob=".15" count="1,2"/>
+		<drop event="Destroy" name="foodWitchettyGrub" prob=".2" count="1,2"/>
 	</append>
 	<!-- Military Carton Pallets -->
 	<append xpath="/blocks/block[@name='palletCartonMilitaryCap']">
