@@ -8,7 +8,7 @@ SpecBytes from SpecBytes Gaming requested the hostile Australian themed animals 
 =============================
 = INSTALLATION INSTRUCTIONS =
 =============================
-For manual installation, place the contents of the Mods folder inside your appdata or main directory Mods folder.
+For manual installation, place the contents of the Mods folder inside your main directory Mods folder or appdata Mods folder.
 For Mod Launcher installation, simply follow the usual method of installing through the application.
 
 =======================================
