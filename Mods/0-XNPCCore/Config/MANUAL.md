@@ -663,6 +663,8 @@ pay, answer yes (or pay) or no; during the grace days, say **pay** to pay what y
 | `<LadderOrderedUseAstar>` | `true` | INERT key (nothing reads it any more): the ladder climb hands A* one exact path unconditionally. The loader still reads the value in case the flag is wired back. |
 | `<PatrolAStarLeg>` | `true` | Recorded-patrol legs between waypoints are A*-owned. |
 | `<PatrolStartMaxMetres>` | `40` | "Patrol your route" is refused out loud when her recorded route's nearest point is farther than this from her ("My patrol route is far from here"); with no route she says she has none yet. Either way she keeps her current order. Clamped 10 to 500. |
+| `<PatrolStraightenToleranceMetres>` | `0.9` | A recorded route is stored block by block, so a diagonal walk is a staircase of 1 m steps. When she starts patrolling, those runs are merged into straight segments; this is how far a recorded point may sit off the straight line and still be dropped. Real corners, stairs and ledges are kept. `0` turns it off (she walks every recorded point). Clamped 0 to 2. |
+| `<PatrolStraightenMaxSegmentMetres>` | `8` | The longest straight segment the merge may make, in metres. Clamped 2 to 30. |
 | `<ChatFollowEscapeDist>` | `6.0` | While mid-conversation the NPC holds its ground within this distance and resumes following beyond it. |
 | `<JumpDownWaitSeconds>` | `10` | After you drop further below the NPC than MaxFollowDrop, it waits at the lip this long before the teleport backstop re-arms (you hold the JumpDown command; you decide). |
 | `<TeleportMinGain>` | `1.5` | Refuses teleports that would move the NPC less than this (no-op guard). |
@@ -886,6 +888,14 @@ Tell a hire **"put your weapon away"** (or "use bare hands", "empty hands", or *
 she stays bare-handed, also through a save and reload: she comes back with empty hands instead of drawing the weapon she held last.
 Bare hands are a weapon: in a fight she punches. Ordering her to a weapon ends it, and so does dismissing her.
 
+## Hired survivors: her gun's flashlight
+
+Her gun's flashlight comes on by itself in the dark, stays on in a fight, goes out when you crouch (she sneaks with you) (Settings.xml `<Light>`).
+
+## Hired survivors: the torch
+
+When her gun has no light of its own, a hire holds a light tool (a torch or a flashlight) from her bag in the dark: at night, and by day in a room the sky does not reach (a lamp does not count). A fight puts it away at once (her weapon back), and it stays away for 10 s after the fight (`<Light><TorchFightCooldownSeconds>`). By day it goes away after a moment (`<Light><HoldSeconds>`), your crouch puts it away (as the gun light), and a weapon order at night stops it for the rest of the night. The tool comes from her window or bag only, never the spawn kit; a hire whose gun carries a flashlight mod keeps her gun. New survivors start with one torch in their window.
+
 ## Hired survivors: the base keeper in an attack
 
 A base keeper (**Jobs > Base Repair** or **Combat Repair**, or "repair the base") reacts to an attack on the base by her duty. The
@@ -920,8 +930,9 @@ A hire can wave, salute, dance and more: a short animation she plays where she s
   over and no enemy is near, at most once a minute. Half the time she waves with her greeting when it plays toward you, at most
   once every two minutes (single player and a listen host for now: not on a dedicated server). A reaction is skipped, never saved
   for later, while she fights, walks, plays another animation, works a job, sits in a vehicle or has an enemy near.
+  While she speaks a chat reply she talks with her hands, a new gesture as each sentence starts.
 - **Idle moments** (`<Emotes><Idle>`): a hire who stands still and free (on Stay or Guard, or following you while you stand still)
-  now and then stretches, warms up or shrugs: after 20 s still, then 2 to 5 minutes apart, each hire on her own clock. Never in a
+  now and then stretches, warms up, shrugs, looks around, yawns or looks bored: after 20 s still, then about once a minute, each hire on her own clock. Never in a
   fight, with an enemy near, while she or the leader she follows walks, while she works a job or sits in a vehicle, or while you
   are talking with her.
 - Other players on a server see it.
@@ -1122,12 +1133,27 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<Crafting><AnimAccentSeconds>` | `20,40` | The gap between her accent clips while she works (min,max seconds; the next is rolled in between). Clamped 5 to 600. |
 | `<Crafting><AnimSets>` | the fire, bench, use and pack sets | The clip sets: a set id, then its clips by slot (`in`, `loop`, `accent`, `light`, `refuel`, `out`; any slot may be left out). `<AnimStations>` picks the set per workstation. A set id with no row plays the rummage pose. |
 | `<Crafting><AnimBackpackSet>` | `pack` | The clip set a backpack order plays. |
+| `<Crafting><StationWalkSeconds>` | `10` | How long her walk to her spot beside a workstation goes on without getting closer before she gives up. Clamped 3 to 60. |
+| `<Crafting><StationWorkFromMetres>` | `0.7` | When that walk gives up, she still works the station from where she stopped if she is this close to her spot; farther, the order ends. Clamped 0.3 to 1.5. |
+| `<Crafting><StationSettleSeconds>` | `2` | Within `StationWorkFromMetres` of her spot and no closer for this long, she stops and works from there. Clamped 0.5 to 10. |
+| `<Crafting><StationWalkProgressMetres>` | `0.5` | The walk counts as getting closer only when she is at least this much nearer her spot than before. Clamped 0.1 to 2. |
+| `<Crafting><StationWalkAskSeconds>` | `2` | While she walks to her spot her path is asked for again this often (a dropped path is planned again). Clamped 0.5 to 10. |
+| `<Crafting><FacingDegrees>` | `20` | She faces a workstation when her yaw is within this many degrees of the direction to it; she turns until then and her work clip waits for it. Clamped 5 to 90. |
+| `<Crafting><WanderMinFromStationMetres>` | `1.5` | Each spot she wanders to at a station is at least this far from its centre (at most `StationWanderMetres`). Clamped 0.5 to 5. |
+| `<Routine><ArriveLevelMetres>` | `2` | A POI resident more than this far above or below her bed or work spot is on another floor: her walk there has not arrived and she counts as away from it. Clamped 0.5 to 4. |
 | `<Sleeper><SightRangeMetres>` | `16` | How close a sleeping zombie must be to see one of your survivors. Clamped 4 to 29. |
 | `<Sleeper><LeaveBeyondMetres>` | `30` | Once a house wakes on a wild survivor, how far past it she runs before she counts as away. Clamped 10 to 100. |
 | `<Sleeper><HouseAvoidSeconds>` | `300` | How long she then stays out of that house (and away from a container she gave up on). Clamped 30 to 3600. |
 | `<Vehicle><GunnerMaxRangeMetres>` | `40` | The farthest a seated gunner fires; each gun also stops at its own effective range (a pistol about 17 m). Clamped 5 to 150. |
 | `<Vehicle><GunnerIdleHolsterSeconds>` | `5` | How long she keeps the gun out after the last enemy is gone. Clamped 0 to 60. |
 | `<Vehicle><BoardRangeMetres>` | `30` | How far from the vehicle a hire walks over to get in. Clamped 5 to 100. |
+| `<Vehicle><ExitClearanceMetres>` | `1` | How far outside the vehicle's body a hire is placed when she gets out, so the vehicle cannot clip her; 0 = keep the game's exit spot. Clamped 0 to 3. |
+| `<Light><GunLightEnabled>` | `true` | A hire whose held gun carries a flashlight mod switches it on by herself in the dark, keeps it on in a fight, and it goes out when you crouch (she sneaks with you). `false` = she never switches it. |
+| `<Light><IndoorDarkBelow>` | `0.3` | By day, a room counts as dark when the sky light at her head (0 to 1: 1 under the open sky, 0 in a sealed room) is below this. At night it is always dark; a lamp does not count. Clamped 0 to 1. |
+| `<Light><HoldSeconds>` | `2` | How long the dark or light must last before she switches the light, so a doorway does not flicker it. Clamped 0 to 10. |
+| `<Light><TorchEnabled>` | `true` | A hire holds a light tool (torch or flashlight) from her window or bag (never the spawn kit) in the dark when her gun has no light of its own. A fight puts it away at once and it stays away for `<TorchFightCooldownSeconds>` after; by day it goes away after `<HoldSeconds>`, your crouch puts it away, and a weapon order at night stops it for the rest of the night. `false` = she never holds the torch. |
+| `<Light><TorchFightCooldownSeconds>` | `10` | After the last hostile is gone, how long she keeps the torch away. Clamped 0 to 60. |
+| `<Light><TorchNoToolRecheckSeconds>` | `5` | After a search of her window and bag finds no light tool, how long she waits before searching again (a torch handed to her shows up within this time). `0` searches every second. Clamped 0 to 60. |
 | `<WorkSite><HarvestRadius>` | `30` | How far from her post the chop-wood, mine and pick scans reach. Clamped 20 to 40. |
 | `<WorkSite><ClayRadius>` | `8` | The same for digging clay (clay is everywhere, so it stays smaller). Clamped 4 to 40. |
 | `<WorkSite><MineVeinDepthLayers>` | `2` | How many layers of an ore vein she mines, down from the surface as she first saw it. Clamped 1 to 10. |
@@ -1203,6 +1229,7 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<Follow><PaceNearDistMetres>` | `8` | At or below this distance from you she walks. Clamped 1 to 60. |
 | `<Follow><PaceFarDistMetres>` | `10` | At or above it she moves at full speed; between the two her speed blends (it must be above the near distance). |
 | `<Follow><PaceNearWalkSpeedMps>` | `2` | Her walking speed near you, in metres per second (0.5 up to below 2.75, where the run starts). |
+| `<Follow><HireActivateReachMetres>` | `6` | How far the E key reaches YOUR OWN hires (the game's reach, 3.5 m in survival, stays for everyone else), so a hire on Far spacing still answers E. 2 to 10, default 6. |
 | `<Loot><BagMaxMedical>` | `5` | Medical items she keeps in her own bag from looting; the rest goes to her harvest window. Clamped 0 to 100. |
 | `<Loot><BagMaxAmmoStacks>` | `2` | Full stacks of each carried gun's ammo she keeps in her bag. Clamped 0 to 20. |
 | `<Loot><VerticalReachMetres>` | `3` | How far above or below you she loots (one storey). Clamped 1 to 20. |
@@ -1247,6 +1274,10 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<AwakeStealth>` | `true` | An awake zombie that is after a survivor sees her through the player's own stealth test: crouching, a held light and speed count, as they do for you. |
 | `<HitBoxFix>` | `true` | Keeps the oversized invisible box around survivors, NPCs and pets switched off, so hits land on the body. `false`: the game's behaviour (hits up to 30 cm off the body). An NPC whose model has no body-part colliders (some other NPC packs) keeps its box, so she can still be hit and talked to. |
 | `<SdcsArmorExcludeGroups>` | `groupPreacher` | Outfit groups (comma separated) never rolled for an NPC, e.g. coats whose cloth only animates on players. |
+| `<SdcsArmorExcludeItems>` | `` | Single armour items (comma separated) never worn by an NPC; a set left with nothing in a slot is dropped. Empty by default. |
+| `<SdcsArmorFemaleOnly>` | `` | Outfit groups or armour items (comma separated) only women wear. Beats the detection below. Empty by default. |
+| `<SdcsArmorMaleOnly>` | `` | Outfit groups or armour items (comma separated) only men wear. Beats the detection below. Empty by default. |
+| `<SdcsArmorSexDetect>` | `true` | Detects armour made for one sex from its model path, so a man never wears a dress. `false`: only the two lists above decide. |
 | `<SdcsCustomCharacterChance>` | `0.1` | Chance that a new wild survivor is dressed as one of an online player's own creator characters of the same sex; `0` turns it off. |
 | `<NpcPathRules>` | `true` | Survivors plan their paths with the mod's own rules (the hazard and drop settings below). `false`: the game's own paths. |
 | `<NpcPathSpikeCost>` | `1000000` | Path cost of a spike / barbed wire / cactus cell: crossed only when there is no other way. |
@@ -1260,11 +1291,14 @@ so restart after an edit. A missing or unreadable value falls back to its defaul
 | `<Emotes><Reactions><Hire><Enabled>` / `<Chance>` / `<CooldownSeconds>` / `<PendingSeconds>` | `true` / `1` / `0` / `3` | The salute right after you hire her (see *Hired survivors: emotes*). `Chance` is how often it plays when it may (0 to 1), `CooldownSeconds` the least time between two of hers (0 = none), `PendingSeconds` how long it waits for her to be free after the hire before it is dropped (0 to 10). A survivor already hired when the world loads never salutes. |
 | `<Emotes><Reactions><FightEnd><Enabled>` / `<Chance>` / `<CooldownSeconds>` | `true` / `0.5` / `60` | The fist bump when a fight she was in is over (hires only, never bandits). |
 | `<Emotes><Reactions><Greet><Enabled>` / `<Chance>` / `<CooldownSeconds>` | `true` / `0.5` / `120` | The wave with her greeting when it plays toward you. Every reaction is skipped, never saved for later, while she fights, walks, plays another animation, works a job, sits in a vehicle or has an enemy near. |
+| `<Emotes><Reactions><Talk><Enabled>` / `<Chance>` / `<CooldownSeconds>` / `<Clips>` | `true` / `1` / `2` / `talk1,talk2,talk3,talk_happy,talk_dismiss,talk_lookaway,talk_ack,talk_cocky` | Her hands while she speaks a chat reply: a gesture as each sentence starts, once the last one is over, never the same one twice in a row. |
+| `<Emotes><Reactions><Nod><Enabled>` / `<Chance>` / `<CooldownSeconds>` / `<Clips>` / `<Lines>` | `true` / `1` / `3` / `nod1,nod_yes,nod_hard,nod_long` / `ammo.switched,basekeep.remembered,vehicle.wait,book.later,give.atfeet,comehere.ack,loot.resume` | A nod when she accepts an order (an order wheel or voice order is answered, or she speaks one of her `<Lines>`). `<Lines>` is a comma separated list of spoken line ids that nod; an entry ending in a colon covers every line id that starts with it. |
+| `<Emotes><Reactions><Shake><Enabled>` / `<Chance>` / `<CooldownSeconds>` / `<Clips>` / `<Lines>` | `true` / `1` / `3` / `shake1,shake2,shake_no,shake_annoyed,shake_thoughtful` / `job.refused,patrol.none,patrol.far,craft.cant,craft.busy,craft.fuel,craft.noclaim:,craft.trader:,craft.inuse:,ammo.same,ammo.none,ammo.nogun,ammo.unknown,vehicle.noroom,vehicle.far,basekeep.nobase,book.nothing,book.notbook,book.none,harvest.notool,mine.notool,clay.notool,butcher.notool,basekeep.notool` | A head shake when she refuses one (the same, or one of its `<Lines>`). A line in both the Nod and Shake lists shakes. |
 | `<Emotes><Idle><Enabled>` | `true` | Idle moments: a hire who stands still and free now and then plays a short idle clip. `false` = never. |
 | `<Emotes><Idle><StillSeconds>` | `20` | How long she stands still and free before the first one. |
 | `<Emotes><Idle><MinIntervalSeconds>` / `<MaxIntervalSeconds>` | `60` / `60` | The random wait between two of her idle clips; each survivor rolls her own. |
 | `<Emotes><Idle><StillMetres>` | `0.5` | A move of more than this between two looks a second apart (hers, or her leader's while she follows) counts as walking. |
-| `<Emotes><Idle><Clips>` | `stretch,warmup,whatever` | The idle clips (ids from the base mod's `Config/SdcsAnimClips.xml`, comma separated); an unknown id is skipped with a warning. |
+| `<Emotes><Idle><Clips>` | `stretch,warmup,whatever,bored,lookaround,yawn,idle_weightshift` | The idle clips (ids from the base mod's `Config/SdcsAnimClips.xml`, comma separated); an unknown id is skipped with a warning. |
 | `<VerboseLogging>`, `<JitterWindow>`, `<SdcsPitchPin>`, `<PlayerCtrlOwnController>` | | Diagnostics and engine switches; leave as shipped. |
 
 Set elsewhere: wild and hired survivors walk at the same pace (`MoveSpeed` 1.5 on `npcSdcsBase` in `Config/entityclasses.xml`); about half as many survivors spawn in the open world as in 3.3.02 (`Config/entitygroups.xml`), and an
@@ -1272,6 +1306,18 @@ unhired survivor loots at most one container a minute (`Config/buffs.xml`, `Sdcs
 `ammo`, `food`, `drinks` or `csm` (skill magazines) plus anything worth 100 or more, and leaving the rest (the wild loot action in `Config/utilityai.xml`,
 `listedTags` and `minValue`). Survivors ignore a zombie that is still
 asleep, and an unhired survivor carries on with what she is doing until a zombie actually threatens her.
+
+**Choosing the armour survivors wear.** A survivor wears a full armour set: every armour group (vanilla or from a mod pack) that has a
+head, chest, hands and feet piece. To keep a whole set off survivors, add its group name (the item's `ArmorGroup`, e.g.
+`groupPreacher`) to `<SdcsArmorExcludeGroups>`; to keep one piece off, add the item name to `<SdcsArmorExcludeItems>` (a set with no
+other piece for that slot drops out). Armour made for one sex is worn by that sex only. It is detected from the item's SDCS `Prefab`
+path: a path with the `{sex}` token (all vanilla gear) fits both; otherwise `female` in the path or the item name means women only, and
+`male` means men only. Where the guess is wrong, name the group or item in `<SdcsArmorFemaleOnly>` or `<SdcsArmorMaleOnly>` (an item
+name beats its group; a name in both lists counts as female). A one-sex piece that is one of several choices for its slot is just
+skipped for the other sex. At game start `Player.log` prints `[SDCS-LOOK] armour pool: <n> sets (<f> female-only, <m> male-only,
+<u> unisex), <x> excluded`; with `<VerboseLogging>` on it also names each one-sex set and the piece that decided it. A survivor already
+wearing a set the lists now exclude is re-dressed the next time she loads. In multiplayer every machine, server included, needs the same
+lists.
 
 ## Stories ("tell me a story")
 

@@ -406,6 +406,7 @@ entitycommand_vcweapons,,,,,,Weapons,,Waffen,Armas,Armes,Armi,武器,무기,Bro�
 entitycommand_vcemotes,,,,,,Emotes,,Emotes,Gestos,Emotes,Emote,エモート,이모트,Emotki,Emotes,Эмоции,İfadeler,表情动作,表情動作
 entitycommand_vcread,,,,,,Read,,Lesen,Leer,Lire,Leggi,読む,읽기,Czytaj,Ler,Читать,Oku,阅读,閱讀
 entitycommand_vcprogress,,,,,,Your progress,,Dein Fortschritt,Tu progreso,Ta progression,I tuoi progressi,君の成長,너의 성장,Twoje postępy,Seu progresso,Твой прогресс,İlerlemen,你的成长,你的成長
+entitycommand_vcwardrobe,,,,,,Wardrobe,,Garderobe,Vestuario,Garde-robe,Guardaroba,衣装,옷장,Garderoba,Guarda-roupa,Гардероб,Gardırop,衣橱,衣櫥
 entitycommand_vcpickup,,,,,,Pick Me up,,Heb mich auf,Cógeme,Ramassez-moi,Prendimi in braccio,私を拾ってください,나를 들어 줘,Podnieś mnie,Me pegue,Подними меня,Beni al,把我带上,把我帶上
 entitycommand_vcinventory,,,,,,Inventory,,Inventar,Inventario,Inventaire,Inventario,所持品,인벤토리,Ekwipunek,Inventário,Инвентарь,Envanter,物品栏,物品欄
 vcWheel_Follow,,,,,,Follow,,Folgen,Seguir,Suivre,Seguire,追従,따라오기,Podążaj,Seguir,Следовать,Takip et,跟随,跟隨
@@ -565,4 +566,16 @@ SdcsNPC_ReadAtMax,,,,,,{0} (at max),,{0} (Maximum erreicht),{0} (al máximo),{0}
 SdcsNPC_ReadNeedsRole,,,,,,{0} (needs the {1} role),,{0} (braucht die Rolle {1}),{0} (necesita la función {1}),{0} (nécessite le rôle {1}),{0} (serve il ruolo {1}),{0}（{1}の役割が必要）,{0} ({1} 역할 필요),{0} (wymaga roli: {1}),{0} (precisa da função {1}),{0} (нужна роль: {1}),{0} ({1} rolü gerekli),{0}（需要{1}角色）,{0}（需要{1}角色）
 SdcsNPC_ReadPerkBook,,,,,,{0} (a perk book: not yet),,{0} (Perk-Buch: noch nicht),{0} (libro de ventaja: aún no),{0} (livre d'atout : pas encore),{0} (libro di abilità: non ancora),{0}（パーク本：まだ）,{0} (퍽 책: 아직),{0} (książka atutu: jeszcze nie),{0} (livro de vantagem: ainda não),{0} (книга навыка: пока нет),{0} (yetenek kitabı: henüz değil),{0}（天赋书：暂不）,{0}（天賦書：暫不）
 SdcsNPC_ReadNoUse,,,,,,{0} (won't help her),,{0} (hilft ihr nicht),{0} (no le sirve),{0} (ne l'aidera pas),{0} (non le serve),{0}（彼女の役に立たない）,{0} (그녀에게 도움 안 됨),{0} (nie pomoże jej),{0} (não vai ajudá-la),{0} (ей не поможет),{0} (ona yardımı olmaz),{0}（对她没用）,{0}（對她沒用）
+SdcsNPC_WardrobeMenu,,,,,,Wardrobe...,,Garderobe...,Vestuario...,Garde-robe...,Guardaroba...,衣装...,옷장...,Garderoba...,Guarda-roupa...,Гардероб...,Gardırop...,衣橱...,衣櫥...
+SdcsNPC_WardrobeText,,,,,,What should I wear?,,Was soll ich tragen?,¿Qué me pongo?,Qu'est-ce que je porte ?,Cosa devo indossare?,何を着ればいい？,뭘 입을까?,Co mam założyć?,O que devo vestir?,Что мне надеть?,Ne giyeyim?,我该穿什么？,我該穿什麼？
+SdcsNPC_WardrobeWear,,,,,,Wear {0},,{0} tragen,Ponerse {0},Porter {0},Indossa {0},{0}を着る,{0} 착용,Załóż: {0},Vestir {0},Надеть: {0},{0} giy,穿上{0},穿上{0}
+SdcsNPC_WardrobeWrongSex,,,,,,{0} (not made for her),,{0} (nicht für sie gemacht),{0} (no está hecho para ella),{0} (pas fait pour elle),{0} (non fatto per lei),{0}（彼女には合わない）,{0} (그녀용이 아님),{0} (nie dla niej),{0} (não é feito para ela),{0} (не для неё),{0} (ona göre değil),{0}（不适合她）,{0}（不適合她）
+SdcsNPC_WardrobeNotDrawable,,,,,,{0} (does not show on her),,{0} (an ihr nicht sichtbar),{0} (no se ve en ella),{0} (ne s'affiche pas sur elle),{0} (non si vede su di lei),{0}（彼女には表示されない）,{0} (그녀에게 보이지 않음),{0} (nie widać tego na niej),{0} (não aparece nela),{0} (на ней не видно),{0} (onda görünmüyor),{0}（在她身上不显示）,{0}（在她身上不顯示）
+SdcsNPC_WardrobeBack,,,,,,Back to my own {0},,Zurück zu meinem eigenen Stück: {0},Volver a lo mío: {0},Revenir à mon équipement : {0},Torna ai miei: {0},自分の{0}に戻す,내 {0}(으)로 되돌리기,Wróć do moich: {0},Voltar ao meu: {0},Вернуть своё: {0},Kendi {0} parçama dön,换回我自己的{0},換回我自己的{0}
+SdcsNPC_WardrobeNone,,,,,,I have no armor in my pack.,,Ich habe keine Rüstung im Rucksack.,No tengo armadura en mi mochila.,Je n'ai pas d'armure dans mon sac.,Non ho armature nello zaino.,バッグに防具がない。,가방에 방어구가 없어.,Nie mam zbroi w plecaku.,Não tenho armadura na mochila.,В рюкзаке нет брони.,Çantamda zırh yok.,我的背包里没有护甲。,我的背包裡沒有護甲。
+SdcsNPC_WardrobeFixed,,,,,,{0} (my outfit is fixed),,{0} (mein Outfit ist fest),{0} (mi atuendo es fijo),{0} (ma tenue est fixe),{0} (il mio completo è fisso),{0}（服は固定）,{0} (내 옷은 고정이야),{0} (mój strój jest stały),{0} (minha roupa é fixa),{0} (мой наряд не меняется),{0} (kıyafetim sabit),{0}（我的服装是固定的）,{0}（我的服裝是固定的）
+SdcsNPC_WardrobeSlotHead,,,,,,headgear,,Kopfbedeckung,casco,casque,copricapo,頭防具,머리 방어구,nakrycie głowy,capacete,головной убор,başlık,头部护甲,頭部護甲
+SdcsNPC_WardrobeSlotChest,,,,,,chest armor,,Brustpanzer,peto,plastron,corazza,胴防具,가슴 방어구,napierśnik,peitoral,нагрудник,göğüslük,胸甲,胸甲
+SdcsNPC_WardrobeSlotHands,,,,,,gloves,,Handschuhe,guantes,gants,guanti,手袋,장갑,rękawice,luvas,перчатки,eldivenler,手套,手套
+SdcsNPC_WardrobeSlotFeet,,,,,,boots,,Stiefel,botas,bottes,stivali,ブーツ,부츠,buty,botas,ботинки,botlar,靴子,靴子
 vcMenu_SettingsButton,,,,,,NPC VoiceControl Settings,,,,,,,,,,,,,

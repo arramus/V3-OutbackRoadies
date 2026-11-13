@@ -34,8 +34,10 @@
     </append>
 
     <!-- Register the order wheel: page 0 = core orders, drill-down pages include the 8-socket formation -->
+    <!-- No always_update: the wheel opens by name and its input runs in its own component, and a closed radial
+         that updates every frame runs every other mod's radial-update patch. -->
     <append xpath="/xui">
-        <window_group name="VCFormationRadialGroup" actionset="keyboard" always_update="true"
+        <window_group name="VCFormationRadialGroup" actionset="keyboard"
                       controller="XUiC_VCFormationRadial, 1-XNPCVoiceControl">
             <window name="windowVCFormationRadial"/>
         </window_group>

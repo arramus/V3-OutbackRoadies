@@ -43,7 +43,7 @@
 				personality property rather than this cvar.
 				WHY: it gated on SelfHasCVar $Timid=1. $Timid DOES have a writer: the SDCS
 				class npcSdcsSurvivorFemaleTimid (base entityclasses.xml, three entry triggers)
-				sets it, and the live SdcsNpcCore Flee action (SdcsMayAct plus $Timid) uses it.
+				sets it, and the live SdcsNpcVillager Flee action (SdcsMayAct plus $Timid) uses it.
 				No legacy NPCModCore class sets it, so for these four legacy variants the
 				gate can never score, and commenting the action out is BEHAVIOUR NEUTRAL.
 				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
@@ -95,40 +95,6 @@
 					<task class="SdcsAnimBusy, 1-XNPCVoiceControl"/>
 					<consideration class="SelfHasCVar, SCore" cvar="SdcsAnimBusy" value="1"/>
 				</action>
-				<!-- Weight 10: an explicit jump order must beat the fight (the highest
-				     ENGAGE weight is 6, and the DEFENCE backup actions sit below this),
-				     so she drops over the edge even mid-combat. -->
-				<!-- band: DEFENCE -->
-				<action name="JumpDownOrder" weight="10" entity_filter="IsSelf">
-					<task class="JumpDownSDX, 1-XNPCVoiceControl" OnStopAddBuffs="XVC_JumpCooldown" />
-					<consideration class="SelfHasCVar, SCore" cvar="$XVC_PendingCommand" value="2"/>
-					<consideration class="SelfNotHasBuff, SCore" buffs="XVC_JumpCooldown"/>
-				</action>
-				<!-- A TIMID class (the $Timid cvar, set on its three entry triggers; npcSdcsSurvivorFemaleTimid
-				     is the example) runs from an enemy it can see within Settings.xml Combat
-				     TimidFleeDistanceMetres instead of fighting, hired or not: weight 9, the DEFENCE band,
-				     above every ENGAGE action (6.5, the throw) and every DEFENCE back-up (8), below
-				     JumpDownOrder (10) and SAFETY (12). The $Timid gate sits before the distance and the
-				     sight ray, so a non-timid NPC pays only the stun read and the cvar read; with no enemy
-				     in radius the action scores 0 and following resumes. The legacy NPCModCore variants
-				     keep their Flee commented out. -->
-				<!-- band: DEFENCE -->
-				<action name="Flee" weight="9" entity_filter="IsEnemy">
-					<task class="FleeFromTarget" max_distance="30"/>
-					<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
-					<consideration class="SelfHasCVar, SCore" cvar="$Timid" value="1"/>
-					<consideration class="SdcsFleeDistance, NPCSdcsCharacters"/>
-					<consideration class="CanSeeTarget, SCore"/>
-				</action>
-				<!-- A pickpocket caught at it backs away from the player for a few seconds:
-				     the base sets SdcsBackOff (Settings.xml Pickpocket BackOffSeconds) on a
-				     thief class only. -->
-				<!-- band: DEFENCE -->
-				<action name="PickpocketBackOff" weight="8" entity_filter="IsPlayer">
-					<task class="FleeFromTarget" max_distance="6"/>
-					<consideration class="SelfHasCVar, SCore" cvar="SdcsBackOff" value="1"/>
-					<consideration class="TargetDistance" flip_x="true" min="0" max="8" curve="threshold"/>
-				</action>
 				<!-- A posted bandit (a sentry, or a bandit on Stay or Guard) knocked
 				     off her post walks back to it mid fight: outside her leash
 				     (Settings.xml Bandits SentryLeashMetres flat of her post, or more
@@ -167,13 +133,6 @@
 					<consideration class="HasOrder, SCore" order="Guard" />
 					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
 				</action>
-				<!-- band: AMBIENT -->
-				<action name="Chat" weight="2" entity_filter="IsPlayer">
-					<task class="IdleSDX, SCore" OnStartAddBuffs="RandomIdle" OnStopRemoveBuffs="RandomIdle" />
-					<consideration class="TargetDistance" flip_x="true" min="1" max="4" curve="threshold" />
-				<consideration class="HasActiveChat, 1-XNPCVoiceControl" />
-					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="10" />
-				</action>
 				<!-- WanderSdcs: the wander that gives up when she gets nowhere (Settings.xml Wander);
 				     the SdcsWanderRest buff keeps her off it a moment after. Checked first, so a
 				     resting NPC skips the enemy scan. -->
@@ -184,6 +143,11 @@
                     <consideration class="NotHasOrder, SCore" order="Stay"/>
                     <consideration class="NotHasOrder, SCore" order="Follow"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+					<!-- The resident's routine walk owns her movement while its flag is up, so the
+					     enemy scan below is skipped. Same outcome: with the flag up the wander could
+					     only win when the walk scores 0, and the walk carries the same chat and enemy
+					     gates as this action. -->
+					<consideration class="SelfNotHasCVar, SCore" cvar=".SdcsRoutineWalk" value="1"/>
 					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="30" />
 				</action>
 				<!-- Weight .5, off the band's whole numbers on purpose: the idle
@@ -224,7 +188,7 @@
 				personality property rather than this cvar.
 				WHY: it gated on SelfHasCVar $Timid=1. $Timid DOES have a writer: the SDCS
 				class npcSdcsSurvivorFemaleTimid (base entityclasses.xml, three entry triggers)
-				sets it, and the live SdcsNpcCore Flee action (SdcsMayAct plus $Timid) uses it.
+				sets it, and the live SdcsNpcVillager Flee action (SdcsMayAct plus $Timid) uses it.
 				No legacy NPCModCore class sets it, so for these four legacy variants the
 				gate can never score, and commenting the action out is BEHAVIOUR NEUTRAL.
 				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
@@ -834,7 +798,7 @@
 				personality property rather than this cvar.
 				WHY: it gated on SelfHasCVar $Timid=1. $Timid DOES have a writer: the SDCS
 				class npcSdcsSurvivorFemaleTimid (base entityclasses.xml, three entry triggers)
-				sets it, and the live SdcsNpcCore Flee action (SdcsMayAct plus $Timid) uses it.
+				sets it, and the live SdcsNpcVillager Flee action (SdcsMayAct plus $Timid) uses it.
 				No legacy NPCModCore class sets it, so for these four legacy variants the
 				gate can never score, and commenting the action out is BEHAVIOUR NEUTRAL.
 				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
@@ -886,7 +850,7 @@
 				personality property rather than this cvar.
 				WHY: it gated on SelfHasCVar $Timid=1. $Timid DOES have a writer: the SDCS
 				class npcSdcsSurvivorFemaleTimid (base entityclasses.xml, three entry triggers)
-				sets it, and the live SdcsNpcCore Flee action (SdcsMayAct plus $Timid) uses it.
+				sets it, and the live SdcsNpcVillager Flee action (SdcsMayAct plus $Timid) uses it.
 				No legacy NPCModCore class sets it, so for these four legacy variants the
 				gate can never score, and commenting the action out is BEHAVIOUR NEUTRAL.
 				WHY NOT JUST DROP THE GATE: the only other conditions are "an enemy is visible
@@ -2214,12 +2178,16 @@
 			   food, drinks or csm whatever its price, plus anything worth at least
 			   the threshold; everything else stays in the container for whoever
 			   comes next (takeAll=false, minValue=100,
-			   listedTags=medical,ammo,food,drinks,csm).  -->
+			   listedTags=medical,ammo,food,drinks,csm). A POI resident (the
+			   SdcsResident cvar) never runs it: its scan is not bounded to her
+			   POI and she never leaves her POI; that gate is the third cheap
+			   read, after the stun and unhired gates.  -->
 			<!-- band: AMBIENT -->
 			<action name="LootSdcsWild" weight="1" entity_filter="IsSelf">
 				<task class="LootSdcs, NPCSdcsCharacters" run="false" buff="ActivityBuff" takeAll="false" minValue="100" listedTags="medical,ammo,food,drinks,csm" cooldownBuff="SdcsLootWildCooldown" priorityLootLists="ammoPileSmall,ammoPileMed,ammoPileLarge,medicalPileSmall,medicalPileMedium,medicalPileLarge,bookPile,singleBooks,foodPileSmall,foodPileMed,foodPileLarge,chemPileSmall,chemPileMed,chemPileLarge,liquorPileSmall,liquorPileMed,liquorPileLarge"/>
 				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SdcsUnhired, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="SdcsResident" value="1"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SelfNotHasBuffV4, SCore" buffs="ActivityCoolDown"/>
 				<consideration class="SelfNotHasBuffV4, SCore" buffs="SdcsLootWildCooldown"/>
@@ -2248,6 +2216,71 @@
 				<task class="LeaveAreaSdcs, NPCSdcsCharacters"/>
 				<consideration class="SelfHasBuffV4, SCore" buffs="SdcsLeavingArea"/>
 			</action>
+		</ai_package>
+
+		<!-- SdcsNpcVillager: village life for POI residents (the day routine); survivors only, never bandits;
+		     future villager actions go here. The actions below moved here from SdcsNpcCore unchanged; each
+		     gate is one no bandit can satisfy (a leader order, the timid and pickpocket classes, a voice chat,
+		     the resident routine). Listed directly after SdcsNpcCore in npcSdcsBase AIPackages: across
+		     packages the later one wins a tie, so this keeps every tie these actions had inside SdcsNpcCore. -->
+		<ai_package name="SdcsNpcVillager">
+				<!-- Weight 10: an explicit jump order must beat the fight (the highest
+				     ENGAGE weight is 6, and the DEFENCE backup actions sit below this),
+				     so she drops over the edge even mid-combat. -->
+				<!-- band: DEFENCE -->
+				<action name="JumpDownOrder" weight="10" entity_filter="IsSelf">
+					<task class="JumpDownSDX, 1-XNPCVoiceControl" OnStopAddBuffs="XVC_JumpCooldown" />
+					<consideration class="SelfHasCVar, SCore" cvar="$XVC_PendingCommand" value="2"/>
+					<consideration class="SelfNotHasBuff, SCore" buffs="XVC_JumpCooldown"/>
+				</action>
+				<!-- A TIMID class (the $Timid cvar, set on its three entry triggers; npcSdcsSurvivorFemaleTimid
+				     is the example) runs from an enemy it can see within Settings.xml Combat
+				     TimidFleeDistanceMetres instead of fighting, hired or not: weight 9, the DEFENCE band,
+				     above every ENGAGE action (6.5, the throw) and every DEFENCE back-up (8), below
+				     JumpDownOrder (10) and SAFETY (12). The $Timid gate sits before the distance and the
+				     sight ray, so a non-timid NPC pays only the stun read and the cvar read; with no enemy
+				     in radius the action scores 0 and following resumes. The legacy NPCModCore variants
+				     keep their Flee commented out. -->
+				<!-- band: DEFENCE -->
+				<action name="Flee" weight="9" entity_filter="IsEnemy">
+					<task class="FleeFromTarget" max_distance="30"/>
+					<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+					<consideration class="SelfHasCVar, SCore" cvar="$Timid" value="1"/>
+					<consideration class="SdcsFleeDistance, NPCSdcsCharacters"/>
+					<consideration class="CanSeeTarget, SCore"/>
+				</action>
+				<!-- A pickpocket caught at it backs away from the player for a few seconds:
+				     the base sets SdcsBackOff (Settings.xml Pickpocket BackOffSeconds) on a
+				     thief class only. -->
+				<!-- band: DEFENCE -->
+				<action name="PickpocketBackOff" weight="8" entity_filter="IsPlayer">
+					<task class="FleeFromTarget" max_distance="6"/>
+					<consideration class="SelfHasCVar, SCore" cvar="SdcsBackOff" value="1"/>
+					<consideration class="TargetDistance" flip_x="true" min="0" max="8" curve="threshold"/>
+				</action>
+				<!-- band: AMBIENT -->
+				<action name="Chat" weight="2" entity_filter="IsPlayer">
+					<task class="IdleSDX, SCore" OnStartAddBuffs="RandomIdle" OnStopRemoveBuffs="RandomIdle" />
+					<consideration class="TargetDistance" flip_x="true" min="1" max="4" curve="threshold" />
+				<consideration class="HasActiveChat, 1-XNPCVoiceControl" />
+					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="10" />
+				</action>
+				<!-- RoutineWalk: a POI resident walks to the anchor her day keeps her
+				     at (her work station by day, her bed from before dusk) and, asleep,
+				     stands still at her bed. The base's 1 Hz day pass sets the hidden
+				     .SdcsRoutineWalk flag only for an unhired resident who is away from
+				     that anchor or asleep, so every other survivor pays one cvar read
+				     and scores 0. Weight 1.5, off the band's whole numbers on purpose:
+				     above her wander and the wild loot (1) so the walk is not drowned
+				     out, below Chat (2), the orders and every fight action; the enemy
+				     gate hands her to the fight or the flee as the ambient actions do. -->
+				<!-- band: AMBIENT -->
+				<action name="RoutineWalk" weight="1.5" entity_filter="IsSelf">
+					<task class="RoutineWalkSdcs, NPCSdcsCharacters"/>
+					<consideration class="SelfHasCVar, SCore" cvar=".SdcsRoutineWalk" value="1"/>
+					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
+					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="30" />
+				</action>
 		</ai_package>
 
 		<!-- [SDCS-MEDIC] The medic package: walk to an ally who needs aid, then run the first-aid sequence. One consideration, SdcsPatientNeedsAid, is the whole decision (the cached combat clock, the defend-first gate, the patient gate, the condition, the held item, the walk retry window). The two actions share it: MoveToPatientSdcs scores only beyond 3.5 m (it walks on the seek's walk seam, SdcsPointWalk, which only walks and does NOT attack: it re-paths as the patient moves, and a walk that stalls gives up and skips that patient for Medic WalkRetrySeconds), FirstAidSdcs only within 3.5 m, and both are gated by SdcsIsHealing (her own heal running) and NoActiveChat (an open dialog holds her). AID band weight 7. FirstAidSdcs tests the distance before the medic check (most allies stand beyond 3.5 m); MoveToPatientSdcs keeps the medic check first on purpose: it reads her combat clock for every ally at any distance, so the clock keeps watching the fight and the after-combat wait counts from the fight's real end. -->

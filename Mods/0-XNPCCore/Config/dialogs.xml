@@ -993,6 +993,13 @@
     <remove xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='SetCode']"/>
     <remove xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Patrol']"/>
 
+    <!-- Follow me goes through VCCommandRouter (it adds buffOrderFollow itself) so it ends an
+         old commanded post, like voice and wheel Follow. The loot-mode clear stays. -->
+    <remove xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='FollowMe']/action[@id='buffOrderFollow']"/>
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='FollowMe']/action[@id='buffSdcsLootModeClear']">
+        <action type="FollowMe, 1-XNPCVoiceControl" />
+    </insertBefore>
+
     <!-- Before Dismiss on purpose (the R1/R2 result pin): the menu is Scout, Follow,
          Stay x3, Patrol, Dismiss, Nevermind, with both exits last. -->
     <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Command Menu']/response_entry[@id='Dismiss']">
@@ -1129,6 +1136,24 @@
         </response>
         <statement id="Read Books" text="SdcsNPC_ReadText" ref_text="Which one should I read?">
             <response_entry id="Read Books Back" ref_text="Back" />
+        </statement>
+    </append>
+    <!-- "Wardrobe...": leader only, our survivors. The response leads to the Wardrobe statement;
+         its rows (each armour piece in her pack, greyed when it cannot be worn, and a back row for
+         each slot she wears a picked piece in) are injected at display time by CraftMenuPatch
+         (WardrobeMenuRows); picking one has her wear it. No start page row: her hold-E ring's
+         Wardrobe entry opens the statement straight. -->
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="Wardrobe Menu" text="SdcsNPC_WardrobeMenu" nextstatementid="Wardrobe" ref_text="Wardrobe...">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
+            <action type="WardrobeMenuOpen, 1-XNPCVoiceControl" />
+        </response>
+        <response id="Wardrobe Back" text="SdcsNPC_CraftBack" nextstatementid="start" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <statement id="Wardrobe" text="SdcsNPC_WardrobeText" ref_text="What should I wear?">
+            <response_entry id="Wardrobe Back" ref_text="Back" />
         </statement>
     </append>
     <!-- "Your progress": leader only, our survivors. The response leads to the Progress

@@ -1,11 +1,11 @@
-# Bandits in your POIs: a guide for POI builders (NPCCore 3.4.04)
+# Bandits in your POIs: a guide for POI builders (NPCCore 3.4.05)
 
 NPCCore's bandits are hostile survivors built on the game's own character system: they fight with real weapons, use cover,
 throw explosives, and sleep in your POIs like zombies do. This guide covers what you need to place them and test them.
 
 ## What to install
 
-- `0-SCore` 3.4.14 or newer and `0-XNPCCore` 3.4.04 (the Core zip): required.
+- `0-SCore` 3.4.14 or newer and `0-XNPCCore` 3.4.05 (the Core zip): required.
 - The voice add-on (`1-XNPCVoiceControl-Voice` or `-Complete`): optional. Without it bandits work the same, they only stay
   silent (their one spoken line needs text to speech).
 - Generate a NEW random world after installing your POI pack: an existing world never gains new POIs.
@@ -41,6 +41,9 @@ count a little, as for zombies.)
 | below 100 | tier 1 | melee (clubs, knives, spears, sledges); in gun rooms a pipe pistol or pipe rifle | gun bandits: 2 pipe bombs |
 | 100 to 399 | tier 2 | iron melee, pipe guns, the pistol, bows | 1 molotov |
 | 400 and up | tier 3 | steel melee, the better guns (rifles, shotguns, machine guns, compound bows) | 3 molotovs |
+
+The melee groups (`GroupNPCBanditsMelee`, NPCCore's `npcBanditsMeleeGroupGS*`) are melee only at every tier: no guns, bows or
+throwables, also in high-tier POIs.
 | Boss volume | tier 3 | as tier 3 | 3 molotovs |
 
 They throw only at a group (three or more targets close together).
@@ -151,6 +154,36 @@ as `$Timid`, on all three triggers:
 
 A buff's `ModifyCVar` can set it too, so a player can carry it.
 
+## Resident survivors (survivors who live in your POI)
+
+Put `GroupNPCSurvivors` (NPCCore's `S_-Group_NPC_Survivors`) in a sleeper volume to place friendly survivors who live in your
+POI. The tier follows the party's gamestage like the bandits (tier 1 below 100, tier 2 below 400, tier 3 from 400). Each survivor
+it spawns is a resident of the POI that holds the volume: she claims the nearest free **bed** inside the POI's box as her home and
+the nearest free **workstation** as her work place, one survivor per bed and per station. Any friendly survivor a sleeper volume
+spawns (the Friendly groups too) counts the same; bandits never do, and survivors from the biome never move into a POI.
+
+- Use vanilla blocks: any bedroll, bed, bunk bed, frameless bed, the flat mattress or a hospital bed for beds; a workbench,
+  campfire, forge, chemistry station or cement mixer for work. The lists are `Settings.xml <Routine><BedBlocks>` and `<WorkBlocks>`.
+- Give each resident her own bed and station: the second survivor takes the next free one, or goes without.
+- Like every sleeper, residents spawn when a player comes near and despawn after he leaves; their beds free up for the next ones.
+- Residents keep a day: by day each stands at her workstation, she heads home an hour before dusk, sleeps on her bed through the
+  night and idles at home after dawn until work starts. On a blood moon night she stays home from an hour
+  before dusk until dawn. The hours follow the world's dusk and dawn; the offsets are `Settings.xml <Routine>`. With no workstation
+  she idles near her bed by day, with no bed near her workstation at night.
+- At her workstation she faces it and works it with a hire's craft moves (a campfire kneeling, a workbench or forge hammering,
+  a chemistry station or cement mixer working it) for a spell, then takes a break nearby, then works again
+  (`Settings.xml <Routine><WorkSeconds>`, `<BreakSeconds>`). She crafts nothing and uses no fuel; a player can use the station
+  while she works. Leave the space in front of the station free to stand in.
+- She walks between her places (no teleport) and never leaves the POI's box, so put the bed and the station where a survivor can
+  walk between them. A fight, an order or a chat comes first; she goes back after.
+- At night she walks to the spot beside her bed and lies on it: onto a raised bed (a bed, bunk bed, gurney or hospital bed) with
+  a lie-down, straight onto a low one (a bedroll, frameless bed or flat mattress). She gets up at dawn. Leave the space beside
+  the bed free to stand in. With no free bed she sleeps on a bedroll from her pack where she stands (nothing a player can take).
+  A hostile she sees or hears close by, an attack or an order gets her up at once; talking to her wakes her. The bed heights are
+  `Settings.xml <Routine><BedTopMetres>` (a modded bed needs its own entry; one that lies her the wrong way round takes a yaw:
+  `family:top:180`).
+- Check the claims and her day with `sdcsresident status`; `sdcsresident phase work|home|sleep` skips the wait for dusk (below).
+
 ## Testing tools (the F1 console)
 
 | Command | What it does |
@@ -161,6 +194,8 @@ A buff's `ModifyCVar` can set it too, so a player can carry it.
 | `settime <day> 8 0` | jumps the clock; days survived count toward gamestage too |
 | `sdcsbandit` | lists the bandits in the world, with their class |
 | `sdcsbandit group 2` | spawns a tier 2 group beside you (or `3`) |
+| `sdcsresident` | makes the survivor you look at a resident of the POI she stands in; `sdcsresident status` shows her POI, bed and workstation claims and her day, `sdcsresident clear` undoes it |
+| `sdcsresident phase work` | forces her day's phase (`work`, `home`, `sleep` or `wake`): she walks to that phase's place (`sleep`: she lies down on her bed once there); `sdcsresident phase auto` hands her back to the clock |
 
 ## Reporting a problem
 

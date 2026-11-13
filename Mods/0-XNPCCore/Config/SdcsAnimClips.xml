@@ -32,12 +32,26 @@
   clip that also stows keeps it put away between the two. Set on the bare
   hand craft rows (the campfire set, the use, the kneel in, idle and out).
   Any other value warns once and her item is left to the profile.
+  torch: optional. ok marks a small movement (head only, or both forearms
+  kept low) that still looks right with a torch in her hand. While she holds
+  a torch (right hand or the left prop) the automatic clips (talk gestures,
+  idle moments, reactions) pick only these rows, and play none when the list
+  has none. An emote the player orders puts the torch away for its span
+  instead. Any other value warns once and the row is not torch-safe.
   busy: optional, true or false (default false). True holds her still for
   the clip's length: her AI does not move her until it ends, even for a work
   clip (the kneel out of the craft clips, so a step after the order ended
   does not cut it). The in clips chain into their light or loop without a
   hold: the craft task runs the whole time and its action outweighs the
   wander, and an attack or an order must cut them at once.
+  lieY: optional, metres. A lying clip: while it plays on a sleeping
+  resident her pose is moved onto the surface she lies on (her bed's top, or
+  her bedroll) and raised by this much, so the clip's lying hips sit 0.12 m
+  over it. Anything that is not a number warns once and the row lies with no
+  offset.
+  reverse: optional, true or false (default false). True plays the clip
+  backwards, from its last frame to its first. Any other value warns once
+  and the clip plays forwards.
   Pick filter: the emote wheel offers only its fixed gesture rows plus the
   rows whose id starts with dance_ (the idle pick only the ids of Settings
   Emotes/Idle/Clips, a reaction only the ids of its own Clips in Settings
@@ -53,6 +67,11 @@
   <clip id="stretch" bundle="SdcsEmoteGestures.unity3d" name="Stretch" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="warmup" bundle="SdcsEmoteGestures.unity3d" name="Warm Up" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="whatever" bundle="SdcsEmoteGestures.unity3d" name="Whatever" profile="emote" loop="false" maxSeconds="15"/>
+  <!-- Life idles: Bored, LookAround and Yawn join the idle pick; the bundle's
+       other clips are unlisted (playable by 'vc anim play' with the file form only). -->
+  <clip id="bored" bundle="SdcsLifeClips.unity3d" name="Bored" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="lookaround" bundle="SdcsLifeClips.unity3d" name="LookAround" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="yawn" bundle="SdcsLifeClips.unity3d" name="Yawn" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="flipoff" bundle="SdcsEmoteGestures.unity3d" name="Flip Off" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="insult" bundle="SdcsEmoteGestures.unity3d" name="Insult" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="loser" bundle="SdcsEmoteGestures.unity3d" name="Loser" profile="emote" loop="false" maxSeconds="15"/>
@@ -62,13 +81,28 @@
   <clip id="talk1" bundle="SdcsGestureClips.unity3d" name="HumanM_Talk01" femaleName="HumanF_Talk01" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="talk2" bundle="SdcsGestureClips.unity3d" name="HumanM_Talk02" femaleName="HumanF_Talk02" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="talk3" bundle="SdcsGestureClips.unity3d" name="HumanM_Talk03" femaleName="HumanF_Talk03" profile="emote" loop="false" maxSeconds="15"/>
-  <clip id="nod1" bundle="SdcsGestureClips.unity3d" name="HumanM_HeadNod01" femaleName="HumanF_HeadNod01" profile="emote" loop="false" maxSeconds="15"/>
-  <clip id="shake1" bundle="SdcsGestureClips.unity3d" name="HumanM_HeadShake01" femaleName="HumanF_HeadShake01" profile="emote" loop="false" maxSeconds="15"/>
-  <clip id="shake2" bundle="SdcsGestureClips.unity3d" name="HumanM_HeadShake02" femaleName="HumanF_HeadShake02" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="nod1" bundle="SdcsGestureClips.unity3d" name="HumanM_HeadNod01" femaleName="HumanF_HeadNod01" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="shake1" bundle="SdcsGestureClips.unity3d" name="HumanM_HeadShake01" femaleName="HumanF_HeadShake01" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="shake2" bundle="SdcsGestureClips.unity3d" name="HumanM_HeadShake02" femaleName="HumanF_HeadShake02" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
   <clip id="handwave1" bundle="SdcsGestureClips.unity3d" name="HumanM_HandWave01" femaleName="HumanF_HandWave01" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="handwave2" bundle="SdcsGestureClips.unity3d" name="HumanM_HandWave02" femaleName="HumanF_HandWave02" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="cheer1" bundle="SdcsGestureClips.unity3d" name="HumanM_Cheer01" femaleName="HumanF_Cheer01" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="cheer2" bundle="SdcsGestureClips.unity3d" name="HumanM_Cheer02" femaleName="HumanF_Cheer02" profile="emote" loop="false" maxSeconds="15"/>
+  <!-- Talk gestures from the Mixamo gestures pack (unisex, one name per row, the file form):
+       the talk, nod and shake reaction picks of Settings Emotes Reactions, plus one idle. The
+       bundle's other clips are unlisted (playable by 'vc anim play' with the file form only). -->
+  <clip id="talk_happy" bundle="SdcsTalkClips.unity3d" name="happy hand gesture" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="talk_dismiss" bundle="SdcsTalkClips.unity3d" name="dismissing gesture" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="talk_lookaway" bundle="SdcsTalkClips.unity3d" name="look away gesture" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="talk_ack" bundle="SdcsTalkClips.unity3d" name="acknowledging" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="talk_cocky" bundle="SdcsTalkClips.unity3d" name="being cocky" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="nod_yes" bundle="SdcsTalkClips.unity3d" name="head nod yes" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="nod_hard" bundle="SdcsTalkClips.unity3d" name="hard head nod" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="nod_long" bundle="SdcsTalkClips.unity3d" name="lengthy head nod" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="shake_no" bundle="SdcsTalkClips.unity3d" name="shaking head no" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="shake_annoyed" bundle="SdcsTalkClips.unity3d" name="annoyed head shake" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="shake_thoughtful" bundle="SdcsTalkClips.unity3d" name="thoughtful head shake" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="idle_weightshift" bundle="SdcsTalkClips.unity3d" name="weight shift" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
   <!-- Dances -->
   <clip id="dance_breakdance" bundle="SdcsEmoteDances.unity3d" name="Breakdance Footwork" profile="emote" loop="true" maxSeconds="15"/>
   <clip id="dance_brookling" bundle="SdcsEmoteDances.unity3d" name="Brookling" profile="emote" loop="true" maxSeconds="15"/>
@@ -118,4 +152,31 @@
   <clip id="craft_kneel_hammer" bundle="SdcsCraftClips.unity3d" name="Item-Kneel-Hammer" profile="work" loop="false" holds="sdcsDisplayClawHammer"/>
   <clip id="craft_kneel_idle" bundle="SdcsCraftClips.unity3d" name="Item-Kneel-Idle" profile="work" loop="true" maxSeconds="60" hand="empty"/>
   <clip id="craft_kneel_out" bundle="SdcsCraftClips.unity3d" name="Item-Kneel-Stand" profile="work" loop="false" busy="true" hand="empty"/>
+
+  <!-- Sleep (a POI resident's night, Settings Routine): on a raised bed she
+       lies down onto it, then sleeps in a loop all night, stirs and gets up.
+       lieY: the height her root is raised by while the clip plays, so the
+       clip's lying hips land 0.12 m over the surface she lies on: 0.12
+       minus the clip's own lying hips height (measured at the bake). The
+       floor clips lie at the floor (lieY about 0); bed and lie_down_bed
+       carry their source bed's height. lieYaw: degrees added to her root
+       yaw while the clip plays, so its lying body lines up with lie_down_bed's
+       (measured at the bake); 0 rows omit it. liePitch: degrees her hips
+       turn about her right axis while the clip plays, pivoting on the hips,
+       positive raises the head: sleep_bed is baked 9.4 degrees head down
+       (the mean over its samples), so it lies level. The lie down and the
+       get ups change their pitch through the clip and the stir is within
+       3 degrees, so they omit it. Only sleep_bed is the loop
+       for now: sleep_deep and sleep_restless stay listed but unused, their
+       lying body is 106 to 115 degrees off the lie-down and the get-up, so
+       every change to or from them turns her whole pose. get_up_bed is
+       lie_down_bed played backwards: off a raised bed she rises the way
+       she lay down. -->
+  <clip id="lie_down_bed"   bundle="SdcsLifeClips.unity3d" name="LieDownBed" profile="emote" loop="false" lieY="-0.6873"/>
+  <clip id="sleep_bed"      bundle="SdcsLifeClips.unity3d" name="SleepBed" profile="emote" loop="true" maxSeconds="60" lieY="-0.9465" liePitch="9.4"/>
+  <clip id="sleep_deep"     bundle="SdcsLifeClips.unity3d" name="SleepDeep" profile="emote" loop="true" maxSeconds="60" lieY="-0.0019" lieYaw="114.6"/>
+  <clip id="sleep_restless" bundle="SdcsLifeClips.unity3d" name="SleepRestless" profile="emote" loop="true" maxSeconds="60" lieY="-0.0249" lieYaw="106.5"/>
+  <clip id="sleep_stir"     bundle="SdcsLifeClips.unity3d" name="SleepStir" profile="emote" loop="false" lieY="-0.0106"/>
+  <clip id="get_up_back"    bundle="SdcsLifeClips.unity3d" name="GetUpFromBack" profile="emote" loop="false" lieY="0.0302" lieYaw="-6"/>
+  <clip id="get_up_bed"     bundle="SdcsLifeClips.unity3d" name="LieDownBed" profile="emote" loop="false" lieY="-0.6873" reverse="true"/>
 </SdcsAnimClips>

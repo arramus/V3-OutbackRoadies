@@ -2,6 +2,114 @@
 
 Release notes, newest first. How to install and use the mod is in `ReadMeFirst.md`, next to this file.
 
+## What's New in 3.4.05
+
+### New
+- **More gestures.** Hires have five more talk gestures, three more nods, three more head shakes and one more idle (from Mixamo), on SDCS and humanoid characters.
+- **More idle moments.** A hire standing around now also looks around, yawns or looks bored (new animations, on SDCS and humanoid
+  characters).
+- **Choose the armour survivors wear.** New Settings.xml lists exclude armour sets or single pieces (vanilla or from mod packs), and armour made for
+  one sex is no longer worn by the other: detected automatically, with female-only / male-only lists to correct it.
+- **E reaches your hires on Far spacing.** The E key now reaches your own hires out to 6 m (Settings.xml `<Follow>
+  <HireActivateReachMetres>`), so a hire set to Far still opens her menu. Everyone else keeps the game's 3.5 m.
+- **Gun flashlights in the dark.** A hire whose gun carries a flashlight mod switches it on at night and in dark rooms,
+  keeps it on in a fight, and it goes out when you crouch (she sneaks with you) (Settings.xml `<Light>`).
+- **Torches in the dark.** A hire with a torch (or a flashlight) in her bag holds it at night and in dark rooms when her gun has no light,
+  puts it away for a fight (back 10 s after), by day, when you crouch, or for the night once you order her a weapon.
+  New survivors start with one (Settings.xml `<Light>`). A hire with a one-handed weapon holds the torch in her left hand (her arm
+  posed to hold it, the torch upright in her fist, with every one-handed weapon, pistols included) and keeps her weapon, also in a
+  fight (Settings.xml `<Light><TorchLeftHand>`; the pose: `<TorchLeftHandTarget>`, `<TorchLeftElbowHint>`, `<TorchLeftGripPosition>`,
+  `<TorchLeftGripRotation>`). While she holds a torch she only makes small gestures; an emote you order puts it away until it ends.
+- **Dress your hires.** Hold E on a hire, Wardrobe: pick which armour piece from her pack she wears in each slot (it protects her as
+  worn armour). Taking it out of her pack puts her own piece back.
+- **Power attacks.** A survivor's melee every 3 to 6 swings (random) is a power attack (the weapon's own heavy swing and damage; Settings.xml
+  `<Combat><PowerAttackMinSwings>`/`<PowerAttackMaxSwings>`, 0 in either turns it off).
+- **POI residents (first step).** POI makers can place friendly survivors with the new sleeper group; each claims a bed and a workstation in her POI.
+- **Residents keep a day:** they work at their station by day, go home at dusk and stay home on horde nights
+  (hours from the world's dusk and dawn, Settings.xml `<Routine>`; they walk between their places, never leave their POI, and a fight,
+  an order or a chat still comes first).
+- **Residents sleep on their beds:** at night a resident steps to the floor beside her bed, lies down flat on it (or settles onto a
+  bedroll or floor mattress) and sleeps until dawn, then stirs and gets up; with no free bed she sleeps on a bedroll from her pack
+  (only a look, gone at dawn). A hostile close by, an attack or an order gets her up at once. Talking to her (E, or by voice) wakes
+  her at once: she gets up and answers a couple of seconds later, and lies down again 15 s after the talk if it is still night. Any
+  loud noise nearby wakes her too (a gunshot or an explosion, yours included; footsteps do not). Settings.xml `<Routine>`: the bed
+  heights, the wake distances, `<TalkWakeSpeakSeconds>`, `<TalkResleepSeconds>`, `<WakeNoiseToWake>`, `<WakeLoudNoise>`. On SDCS and
+  humanoid characters, in multiplayer too.
+- **Residents work at their station by day:** at her workstation a resident faces it and works it with the same moves a hire
+  crafts with (kneeling at a campfire and tossing logs on, hammering and chiselling at a workbench or forge, working a chemistry
+  station or cement mixer), with short breaks in between when she idles nearby (Settings.xml `<Routine><WorkSeconds>`,
+  `<BreakSeconds>`). She makes nothing and uses no fuel, and a player can use the station as usual. A fight, an order, a talk
+  or hiring her stops the work at once; she goes back to it later.
+- **Residents move between their POI's stations:** a resident who is the only one working in her POI moves to another free station
+  each work spell (campfire, forge, cement mixer, ...; Settings.xml `<Routine><RotateStations>`); with two or more residents each
+  keeps her own. She steps right up to the station's front on the floor (never onto a bed, counter or table), stands to work a
+  station raised on a counter (`<Crafting><RaisedStationSet>`, per station `<StationPose>` auto / kneel / stand), and the station
+  shows as running while she works (a campfire or forge burns, the cement mixer's drum turns; no fuel is used).
+- **Residents use doors:** on her way to her bed or station a resident opens a closed (unlocked) door, walks through it (up or down
+  a doorstep) and it closes behind her (Settings.xml `<PointWalk>`: `<DoorSeekMetres>` 16, `<DoorSeekSpotMetres>`,
+  `<DoorPassMetres>`, `<DoorHoldMaxSeconds>`). She never gets stuck on a bed or other furniture.
+- **Residents walk their whole POI.** Now and then, at the start of a break or once in the evening, a resident strolls to another
+  part of her POI, lingers a little and walks back (Settings.xml `<Routine>`: `<StrollChance>`, `<StrollMinMetres>`,
+  `<StrollLingerSeconds>`; not on horde nights). Her other break wandering stays near her spot.
+- **Subtitles stay until she stops speaking.** A spoken line's subtitle now stays on screen while her voice is still playing, and a
+  moment after (modconfig.xml `<TTS>`: `<SubtitleWordsPerSecond>`, `<SubtitleMinSeconds>`, `<SubtitleMaxSeconds>`,
+  `<SubtitleTailSeconds>`, `<SubtitleHoldCapSeconds>`). Another survivor's voice ending no longer clears her subtitle.
+- **More drinks put out a fire.** A hire on fire can also drink coffee, beer, moonshine, Megacrush or Grandpa's drinks to put it
+  out (every fire-out drink in game 3.4). Plain water goes first, and the valuable buff drinks only when nothing cheaper is left.
+- **Weapon fit for humanoid and VRoid characters.** A character author can now set a weapon's size, angle and position in the hand
+  separately from the hand spread (entity class `PlayerCtrlWeaponScale`, `PlayerCtrlGripRotation`, `PlayerCtrlGripOffset`), or place an empty
+  named `NpcRightWeapon` under the model's right hand (`PlayerCtrlWeaponSocket` renames it). A gun swapped in mid-game keeps the right size.
+  The console command `sdcsgrip` tunes the survivor you look at live (`forward`, `up`, `right` nudge the gun along its own barrel) and prints the XML lines to paste. Guides: the humanoid and VRoid
+  author guides.
+- **Several blink shapes blink together.** A character author can name every blendshape the model blinks with (an eyelid and an
+  eyelash shape, say) in the entity class property `FaceBlinkShapes` (comma separated, exact names, any mesh); they all move
+  together, in place of the one shape picked automatically. Needs the voice add-on. Guide: the humanoid author guide, "Several
+  blink shapes".
+
+### Fixes
+- **An ordered weapon shows before the talk puts it away.** Picking a weapon in a hire's menu while she held her torch put it straight back into her pack. It now shows for a few seconds first, as with any other weapon order.
+- **Followers keep out of parked vehicles.** A hire whose follow spot fell against a parked vehicle could wedge into it
+  and be teleported into its body, flipping it. Her spot and any rescue teleport now stay outside a vehicle's body.
+- **Follow me from the menu ends an old post.** A hire who was told to stay or go somewhere, then told Follow me
+  from her E menu, kept standing on the old spot. The menu's Follow me now ends it, like the voice and wheel orders.
+- **The melee bandit groups are melee only again.** Their tier 2 and 3 bandits carried guns, and a POI's
+  tier raises its bandits to those tiers, so most POI entrances built with the melee group spawned gunmen. They now spawn melee-only
+  bandits at every tier.
+- **Legacy NPCs no longer get stuck in a vehicle seat.** Legacy (V5) NPCs never take a seat: while you
+  drive they are handled the way SCore does it, as before 3.4.03. An NPC already stuck in a seat gets out
+  the next time you drive.
+- **She talks with her hands through the whole reply.** A new talk gesture starts with each sentence she
+  speaks (`<Emotes><Reactions><Talk>` Chance 1, CooldownSeconds 2), not one per reply.
+- **Hires stop aiming at the ground after a fight.** A hire kept pointing her gun down at a dead zombie (or
+  at one that vanished in a hitch) for a long time; with no live target her aim now stays level.
+- **A misnamed SCore folder is reported.** If SCore loads after NPCCore (for example its folder was renamed to `SCore`), the log now
+  says so in one line and names the fix, instead of only thousands of XML errors.
+- **Patrols walk straight.** A recorded route was stored block by block, so a survivor zig-zagged along any diagonal. The route is now straightened when she starts patrolling (real corners, stairs and ledges kept). `<PatrolStraightenToleranceMetres>` 0 turns it off.
+- **Recording a patrol again works.** Recording a new route over ground she had already recorded that session saved no points, so she answered that she had no route. Each recording now starts fresh.
+- **A patrol no longer errors when its route changes.** If her route got shorter while she was patrolling, the patrol threw an error every tick until she got another order. She now picks up at the nearest leg.
+- **Hires get out clear of the vehicle.** A hire getting out was placed against the vehicle's side, where the vehicle could clip her and fling her.
+  She is now placed outside its body (Settings.xml `<Vehicle><ExitClearanceMetres>`, default 1 m).
+- **A torch is not a weapon.** A torch or a flashlight in a hire's bag was picked as her melee weapon. Light tools are never picked as weapons now. New survivors start with a torch.
+- **Other radial mods work beside the order wheel.** The closed order wheel was updated every frame, which could stop another mod's radial menus (a hover-to-open dance menu, for one)
+  from working. It now stays idle while closed.
+- **A hire keeps her loaded rounds when you close her pack.** Closing a hire's inventory could hand her gun back empty, and putting it away then saved the empty count over her loaded rounds. The saved rounds now stay; and a torch taken from her hand no longer leaves her stuck in torch mode.
+- **Patrolling hires keep their place.** A hire on a patrol (or told to Wander) was pulled to you when you loaded the game or got
+  out of a vehicle. She now stays where she was.
+- **Hires' crossbows, bows and other launchers hit.** A hire's shots could stop on her own arm and do no damage, and after her
+  reload a launcher fired nothing. Both fixed, for every launcher, modded ones included.
+- **The heal roll goes somewhere.** A hire who rolls away to bandage now rolls away from the enemy, only where there is room;
+  otherwise she bandages where she stands.
+- **A read book shows in a humanoid character's hand.**
+- **Six old test survivor classes are hidden** from the spawn menu, and their fixed outfit can no longer be swapped out.
+- **Survivors no longer plan a path through a thin wall** or pole that the game's path grid misses, and a short walk now ends on
+  its spot instead of a metre short.
+- **Crouch holds.** A hire ordered to crouch no longer stands back up when an idle or a talk gesture plays; she stays down until
+  you order her up.
+- **Stand up does what it says.** The Stand up order no longer makes her stand, crouch and stand again. She stays standing until
+  you next crouch or stand up yourself, then copies you again as before.
+- **Melee enemies no longer hit you from behind.** A melee bandit fighting a zombie could hit a player standing behind him with
+  his back turned. A survivor's melee swing now only lands in front of her.
+
 ## What's New in 3.4.04
 
 Targets 7 Days to Die **3.4**. **Requires 0-SCore 3.4.14 or newer** (built and tested on 3.4.14.1542). Everyone on a server needs the

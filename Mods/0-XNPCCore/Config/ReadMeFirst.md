@@ -12,15 +12,15 @@ you, loot, harvest, mine, craft at your workstations, read books, guard your bas
 
 Unzip into your `Mods` folder:
 
-1. **`0-XNPCCore-v3.4.04.zip` - required.** The survivors, the bandits, every order and menu, and the mod's code. On its own it runs
+1. **`0-XNPCCore-v3.4.05.zip` - required.** The survivors, the bandits, every order and menu, and the mod's code. On its own it runs
    with every voice and AI feature off.
 2. **Plus at most ONE add-on, if you want voice:**
-   - **`1-XNPCVoiceControl-Complete-v3.4.04.zip`** - AI chat, voice in and voice out. **Most players want this one.**
-   - **`1-XNPCVoiceControl-Voice-v3.4.04.zip`** - voice in and voice out only, no AI chat.
+   - **`1-XNPCVoiceControl-Complete-v3.4.05.zip`** - AI chat, voice in and voice out. **Most players want this one.**
+   - **`1-XNPCVoiceControl-Voice-v3.4.05.zip`** - voice in and voice out only, no AI chat.
 
 You should end up with `Mods/0-XNPCCore` and, if you took an add-on, `Mods/1-XNPCVoiceControl-Complete` or `Mods/1-XNPCVoiceControl-Voice` beside it. The add-on holds only models and helper servers; it does nothing without `0-XNPCCore`.
 
-**Requirements:** **7 Days to Die 3.4** and **0-SCore 3.4.14 or newer** (on a server: the server and every player). A newer SCore can rename something the mod patches: the log then names each patch that did not apply (`[SDCS-PATCH] ... NOT applied`) and the rest of the mod still runs. If you are still on game 3.2, use mod version 3.2.06 instead. It does NOT need the older `0-XNPCCore` (v3.1.00) - this mod replaces it (see the top of this file).
+**Requirements:** **7 Days to Die 3.4** and **0-SCore 3.4.14 or newer** (on a server: the server and every player). A newer SCore can rename something the mod patches: the log then names each patch that did not apply (`[SDCS-PATCH] ... NOT applied`) and the rest of the mod still runs. Keep SCore's folder name `0-SCore`: mods load in folder-name order and SCore must load before `0-XNPCCore` (a renamed SCore folder gives thousands of XML errors; the log then says so in one `[NPCCORE]` line). If you are still on game 3.2, use mod version 3.2.06 instead. It does NOT need the older `0-XNPCCore` (v3.1.00) - this mod replaces it (see the top of this file).
 
 **On a dedicated server:**
 
@@ -47,7 +47,7 @@ Three menus, each with one job, so every command has one home:
 | Method | Reach | Use it for |
 |--------|-------|------------|
 | **Press E** on them | Up close: the game's own "Press E" reach, about 3.5 m in a survival game (a game value, not a mod setting) | The **top menu**: talk; hire or dismiss; **Follow me**; **Come here**; **Show me your inventory**; **Craft...**; and two links: **Order wheel** (opens the **;** wheel on them) and **Jobs and gear** (their hold-E menu, as a wheel page, for players who never hold E) |
-| **Hold E** on them | The same reach | **Work and gear**, one hire at a time: **Jobs**, **Roles**, **Weapons** (carried weapons, each class, empty hands, what they carry, ammo), **Emotes**, **Read** (books), **Progress**, **Inventory**, **Pick me up**. Rest the cursor on an entry or let go of E over it; a quick tap of E still talks. Jobs, Roles and Read show only on a survivor who can do that work |
+| **Hold E** on them | The same reach | **Work and gear**, one hire at a time: **Jobs**, **Roles**, **Weapons** (carried weapons, each class, empty hands, what they carry, ammo), **Emotes**, **Read** (books), **Progress**, **Wardrobe** (armour from their pack), **Inventory**, **Pick me up**. Rest the cursor on an entry or let go of E over it; a quick tap of E still talks. Jobs, Roles and Read show only on a survivor who can do that work |
 | **Order wheel**: the **;** key | Any distance | **Tactics**, for one hire or the whole squad: follow, stay, guard, come here, stance, **positioning** (follow distance, take point, go there, jump down, get in / out of your vehicle), formation, crouch, scout, guard and return, patrols |
 | **Voice** (Voice / Complete add-on) | A hire within 40 m, a stranger within 15 m | Everything by speech (see *Voice and AI add-on*) |
 | **Text chat** | The nearest NPC | Press **T** and type `@your message` in global chat (the `@` targets the nearest NPC) |
@@ -101,9 +101,19 @@ Each line names the `MANUAL.md` section with the details.
   before you log off or the world saves, so they are never lost from the save.
 - **Guard your backpack** - when you die, your following hires guard your dropped pack until you come back.
 - **Emotes** (hold E > Emotes) - waves, salutes, dances. *Hired survivors: emotes.*
+- **Wardrobe** (hold E > Wardrobe) - put armour in their pack, then pick which piece they wear in each slot; it protects them. Take it
+  out of their pack (or pick Back to my own) and their own piece comes back.
 
 Not hired: **wild survivors** trade with you (*Trading with wild survivors*) and some pick pockets (*Pickpockets*). **Bandits** spawn by
 biome tier, hold posts and fight in groups (*Bandits*; POI builders: `POI-BUILDERS.md`).
+
+**POI residents (first step).** POI makers can place friendly survivors who live in the POI: put the sleeper group
+`GroupNPCSurvivors` in a sleeper volume. Each survivor it spawns claims a free bed and a free workstation inside that POI
+(vanilla blocks only; the lists are in Settings.xml `<Routine>`). Survivors from the biome never move into a POI. Residents
+keep a day: they work at their station by day (a hire's craft moves with short breaks; nothing is made), go home before dusk, sleep on their bed at night (a bedroll from their pack when
+no bed is free) and stay home on blood moon nights (the hours follow the world's dusk and dawn; offsets in `<Routine>`). A
+hostile close by or an attack gets a sleeper up at once; talking to her (E) wakes her. Details: `POI-BUILDERS.md` (*Resident
+survivors*).
 
 ---
 

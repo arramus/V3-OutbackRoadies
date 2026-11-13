@@ -57,7 +57,11 @@
 		<group name="S_-Group_NPC_Friendly_All" spawner="NPCFriendlyAllHorde"/>
 		<group name="S_-Group_NPC_Friendly_Melee" spawner="NPCFriendlyMeleeHorde"/>
 		<group name="S_-Group_NPC_Friendly_Ranged" spawner="NPCFriendlyRangedHorde"/>
-		<group name="S_-Group_NPC_Friendly_Boss" spawner="NPCFriendlyBossHorde"/>		
+		<group name="S_-Group_NPC_Friendly_Boss" spawner="NPCFriendlyBossHorde"/>
+		<!-- [SDCS-ROUTINE] POI resident survivors: every survivor from this group lives in the POI
+		     of her volume and claims a bed and a work station there (Settings.xml Routine).
+		     The survivor tiers by gamestage, like the bandit groups. -->
+		<group name="S_-Group_NPC_Survivors" spawner="NPCSurvivorsHorde"/>
 		<!-- Mechanical NPC (robot, cyborg, etc.) gamestage groups -->
 		<group name="S_-Group_NPC_Mech_All" spawner="NPCMechAllHorde"/>
 		<group name="S_-Group_NPC_Mech_Melee" spawner="NPCMechMeleeHorde"/>
@@ -712,6 +716,28 @@
 			</gamestage>
 			<gamestage stage="800">
 				<spawn group="npcEnemyBossGroupGS800" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+		</spawner>
+		<!-- [SDCS-ROUTINE] POI resident survivor spawner: tier 1 at GS01 and GS50, tier 2 at
+		     GS100 and GS200, tier 3 at GS400 and GS800 (the bandit sentry tiers). -->
+		<spawner name="NPCSurvivorsHorde">
+			<gamestage stage="1">
+				<spawn group="npcSurvivorsGroupGS01" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="50">
+				<spawn group="npcSurvivorsGroupGS50" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="100">
+				<spawn group="npcSurvivorsGroupGS100" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="200">
+				<spawn group="npcSurvivorsGroupGS200" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="400">
+				<spawn group="npcSurvivorsGroupGS400" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="800">
+				<spawn group="npcSurvivorsGroupGS800" num="1" maxAlive="1" duration="1" />
 			</gamestage>
 		</spawner>
 		<!-- Friendly spawners -->

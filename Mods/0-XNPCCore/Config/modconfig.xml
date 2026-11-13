@@ -129,6 +129,21 @@
         <MinDistance>2</MinDistance>
         <SpeechRate>1.0</SpeechRate>
 
+        <!-- Subtitle Reading Time: a subtitle shows for its word count divided by
+             SubtitleWordsPerSecond (0.5 to 10), kept between SubtitleMinSeconds
+             (0.5 to 30) and SubtitleMaxSeconds (never below the minimum). A spoken
+             line uses this as its shortest time and stays longer while her voice plays. -->
+        <SubtitleWordsPerSecond>2.5</SubtitleWordsPerSecond>
+        <SubtitleMinSeconds>3</SubtitleMinSeconds>
+        <SubtitleMaxSeconds>10</SubtitleMaxSeconds>
+
+        <!-- Subtitle Hold: a line she speaks stays on screen until her voice ends,
+             then SubtitleTailSeconds more (0 to 5). SubtitleHoldCapSeconds (5 to 300)
+             is the most a spoken subtitle can stay up, in case a voice never reports
+             finishing. -->
+        <SubtitleTailSeconds>0.75</SubtitleTailSeconds>
+        <SubtitleHoldCapSeconds>60</SubtitleHoldCapSeconds>
+
         <!-- Voice Defaults (overridden per-NPC by personalities.xml) -->
         <DefaultVoice>F4</DefaultVoice>
         <TraderVoice>M1</TraderVoice>
@@ -646,6 +661,15 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <!-- farther than this from her (flat metres, default 40, clamped 10 to 500): she says    -->
     <!-- her route is far and keeps her current order. Record a new route where she is.     -->
     <PatrolStartMaxMetres>40</PatrolStartMaxMetres>
+    <!-- A recorded route holds one point per block, so a diagonal walk is a staircase of 1 m   -->
+    <!-- steps. When a patrol starts, runs of those points are merged into straight segments. -->
+    <!-- This is how far a recorded point may sit off a straight line and still be dropped     -->
+    <!-- (metres, default 0.9, clamped 0 to 2); 0 = off, walk every recorded point. Real       -->
+    <!-- corners, stairs and ledges are always kept.                                           -->
+    <PatrolStraightenToleranceMetres>0.9</PatrolStraightenToleranceMetres>
+    <!-- The longest straight segment a merge may make (flat metres, default 8, clamped 2 to   -->
+    <!-- 30).                                                                                  -->
+    <PatrolStraightenMaxSegmentMetres>8</PatrolStraightenMaxSegmentMetres>
     <!-- Master switch for stair mode. Kept for an A/B; A* first owns stairs, so it ships OFF. -->
     <!-- When false, stair mode never enters.                                                  -->
     <StairModeEnabled>false</StairModeEnabled>

@@ -4682,8 +4682,9 @@
 			     SdcsPatientNeedsAid gate (a patient who needs aid, no
 			     defend-first block, a held item), so nothing changes until that gate
 			     passes. Placed after SdcsNpcRangedAdvanced in the list. -->
-			<!-- The first and third entries are the SDCS forks (SdcsNpcCore, SdcsNpcHired): copies of the shared NPCModCore / NPCModNPCHired packages banded for our characters, so the legacy templates keep the originals untouched. -->
-			<property name="AIPackages" value="SdcsNpcCore, SdcsNpcRangedAdvanced, SdcsNpcHired, SdcsNpcMedic, SdcsNpcLoot, SdcsNpcLeave, SdcsCover"/>
+			<!-- The first and fourth entries are the SDCS forks (SdcsNpcCore, SdcsNpcHired): copies of the shared NPCModCore / NPCModNPCHired packages banded for our characters, so the legacy templates keep the originals untouched. -->
+			<!-- SdcsNpcVillager: village life (the day routine, the voice and leader driven actions); survivors only, never on a bandit class. Directly after SdcsNpcCore on purpose: across packages the later one wins a tie, so its actions keep the ties they had inside SdcsNpcCore. -->
+			<property name="AIPackages" value="SdcsNpcCore, SdcsNpcVillager, SdcsNpcRangedAdvanced, SdcsNpcHired, SdcsNpcMedic, SdcsNpcLoot, SdcsNpcLeave, SdcsCover"/>
 			<property name="Hirable" value="true"/>
 			<!-- RestoreSpeed and the UAI movement tasks read these.  THESE ARE NOW LITERAL METRES PER SECOND. -->
 			<property name="MoveSpeed" value="1.5"/>
@@ -4899,7 +4900,7 @@
 		</entity_class>
 
 		<entity_class name="npcSdcsTest" extends="npcSdcsBase">
-			<property name="UserSpawnType" value="Menu"/>
+			<property name="UserSpawnType" value="None"/>
 			<!-- Starting gear. SDCSUtils.setupEquipment builds the visible gear from the
 				ENTITY's equipment slots, not from the archetype's equipment entries: it clears
 				the archetype list and rebuilds it from what the entity is wearing. So an NPC
@@ -4916,7 +4917,7 @@
 		</entity_class>
 
 		<entity_class name="npcSdcsFemaleAK47" extends="npcSdcsBaseFemale">
-			<property name="UserSpawnType" value="Menu"/>
+			<property name="UserSpawnType" value="None"/>
 			<effect_group name="Starting Gear">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorCommandoHelmet" equip_slot="Head"/>
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorCommandoOutfit" equip_slot="Chest"/>
@@ -4954,7 +4955,10 @@
 				back in. -->
 			<property name="SdcsWeapons" value="meleeWpnClubT0WoodenClub,meleeWpnBladeT0BoneKnife,meleeWpnSpearT0StoneSpear,meleeWpnSledgeT0StoneSledgehammer,meleeWpnKnucklesT0LeatherKnuckles,meleeWpnBatonT0PipeBaton,meleeWpnBladeT1HuntingKnife,meleeWpnClubT1BaseballBat,meleeWpnSpearT1IronSpear,meleeWpnKnucklesT1IronKnuckles,meleeWpnSledgeT1IronSledgehammer,meleeToolAxeT1IronFireaxe"/>
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
+			<!-- The torch is the starter light: it seeds the harvest window ONCE per
+				NPC life (SdcsHarvestSeeded), so only NEW survivors get it; it is
+				never a weapon (LightToolRules). -->
+			<property name="HarvestItems" value="medicalFirstAidBandage=5,meleeToolTorch=1"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
@@ -4974,7 +4978,7 @@
 		</entity_class>
 
 		<!-- A TIMID survivor (the $Timid example class): the T1 kit, but she flees an enemy she can
-			see within Settings.xml Combat TimidFleeDistanceMetres instead of fighting (the SdcsNpcCore
+			see within Settings.xml Combat TimidFleeDistanceMetres instead of fighting (the SdcsNpcVillager
 			Flee action). The $Timid cvar is set on the three entry triggers: cvars do not survive a
 			world save, so onSelfEnteredGame is what keeps her timid after a reload, and onSelfRespawn
 			covers a respawn. Hired or not, she flees and then follows again. -->
@@ -4997,7 +5001,8 @@
 			<!-- Spawn kit only; the rolled weapon is seeded into the bag at first
 				spawn by SdcsLookApplier. See the block comment on npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
+			<!-- The torch is the starter light: new survivors only (SdcsHarvestSeeded). -->
+			<property name="HarvestItems" value="medicalFirstAidBandage=5,meleeToolTorch=1"/>
 			<property class="ItemsOnEnterGame">
 				<property name="GameModeSurvival" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
 				<property name="GameModeSurvivalSP" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
@@ -5021,7 +5026,8 @@
 				declares no ItemsOnEnterGame of its own); see the block comment on
 				npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
+			<!-- The torch is the starter light: new survivors only (SdcsHarvestSeeded). -->
+			<property name="HarvestItems" value="medicalFirstAidBandage=5,meleeToolTorch=1"/>
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
 			</effect_group>
@@ -5039,7 +5045,8 @@
 				spawn by SdcsLookApplier. The kit is INHERITED from npcSdcsBase (this class declares
 				no ItemsOnEnterGame of its own); see the block comment on npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
+			<!-- The torch is the starter light: new survivors only (SdcsHarvestSeeded). -->
+			<property name="HarvestItems" value="medicalFirstAidBandage=5,meleeToolTorch=1"/>
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
 			</effect_group>
@@ -5056,7 +5063,8 @@
 				spawn by SdcsLookApplier. The kit is INHERITED from npcSdcsBase (this class declares
 				no ItemsOnEnterGame of its own); see the block comment on npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
+			<!-- The torch is the starter light: new survivors only (SdcsHarvestSeeded). -->
+			<property name="HarvestItems" value="medicalFirstAidBandage=5,meleeToolTorch=1"/>
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
 			</effect_group>
@@ -5073,7 +5081,8 @@
 				spawn by SdcsLookApplier. The kit is INHERITED from npcSdcsBase (this class declares
 				no ItemsOnEnterGame of its own); see the block comment on npcSdcsSurvivorFemaleT1. -->
 			<property name="BagItems" value="gunHandgunT0PipePistol,meleeWpnClubT0WoodenClub"/>
-			<property name="HarvestItems" value="medicalFirstAidBandage=5"/>
+			<!-- The torch is the starter light: new survivors only (SdcsHarvestSeeded). -->
+			<property name="HarvestItems" value="medicalFirstAidBandage=5,meleeToolTorch=1"/>
 			<effect_group name="SDCS Look">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SdcsApplyLook, NPCSdcsCharacters"/>
 			</effect_group>
@@ -5099,7 +5108,7 @@
 		</entity_class>
 
 		<entity_class name="npcSdcsMaleM60" extends="npcSdcsBase">
-			<property name="UserSpawnType" value="Menu"/>
+			<property name="UserSpawnType" value="None"/>
 			<effect_group name="Starting Gear">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRaiderHelmet" equip_slot="Head"/>
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRaiderOutfit" equip_slot="Chest"/>
@@ -5117,7 +5126,7 @@
 		</entity_class>
 
 		<entity_class name="npcSdcsFemaleBow" extends="npcSdcsBaseFemale">
-			<property name="UserSpawnType" value="Menu"/>
+			<property name="UserSpawnType" value="None"/>
 			<effect_group name="Starting Gear">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRangerHelmet" equip_slot="Head"/>
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorRangerOutfit" equip_slot="Chest"/>
@@ -5135,7 +5144,7 @@
 		</entity_class>
 
 		<entity_class name="npcSdcsMaleXBow" extends="npcSdcsBase">
-			<property name="UserSpawnType" value="Menu"/>
+			<property name="UserSpawnType" value="None"/>
 			<effect_group name="Starting Gear">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNomadHelmet" equip_slot="Head"/>
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNomadOutfit" equip_slot="Chest"/>
@@ -5154,7 +5163,7 @@
 
 		<!-- male test rig from Dave's Xyth character profile, Nerd set, AK47 and stun baton. -->
 		<entity_class name="npcSdcsXyth" extends="npcSdcsBase">
-			<property name="UserSpawnType" value="Menu"/>
+			<property name="UserSpawnType" value="None"/>
 			<effect_group name="Starting Gear">
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNerdHelmet" equip_slot="Head"/>
 				<triggered_effect trigger="onSelfFirstSpawn" action="SetItemInSlot" item_name="armorNerdOutfit" equip_slot="Chest"/>
@@ -5356,6 +5365,72 @@
 			<property name="SdcsKeepTarget" value="0.7"/>
 			<property name="SdcsThrowables" value="thrownAmmoMolotovCocktail:3"/>
 			<property name="SdcsSpawnMates" value="npcSdcsBanditMatesT3:1-2"/>
+		</entity_class>
+
+		<!-- [SDCS-BANDIT] The tier 2 and tier 3 bandits in their melee only form, for the
+		     melee sleeper groups the POI builders use at their entrances. A POI tier lifts
+		     its bandits to tier 2 and 3 (Settings.xml Bandits PoiTierFloors), and those roll
+		     guns and carry a pipe pistol in their kit, so a melee group built a POI door
+		     would spawn gunmen. Each one below is its tier bandit in every other way (the
+		     faction, the AI, the tags, the personality, the loot, the drop, the experience):
+		     the weapon pool is the tier's melee weapons only (no gun, no bow), the spawn
+		     kit and bag carry no gun, the spawn ammo is withheld and the throwables grant
+		     emptied. -->
+		<entity_class name="npcSdcsBanditMeleeMaleT2" extends="npcSdcsBanditMaleT2">
+			<property name="SdcsWeapons" value="meleeWpnBladeT1HuntingKnife,meleeWpnClubT1BaseballBat,meleeWpnSpearT1IronSpear,meleeWpnKnucklesT1IronKnuckles,meleeWpnSledgeT1IronSledgehammer,meleeToolAxeT1IronFireaxe"/>
+			<property name="BagItems" value="meleeWpnClubT0WoodenClub"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+			</property>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="SdcsSpawnAmmo" value="false"/>
+			<!-- [SDCS-THROW] The throwables grant emptied (the tier 2 bandit's one molotov):
+			     empty parses to nothing, so she seeds no throwables at first spawn. -->
+			<property name="SdcsThrowables" value=""/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditMeleeFemaleT2" extends="npcSdcsBanditFemaleT2">
+			<property name="SdcsWeapons" value="meleeWpnBladeT1HuntingKnife,meleeWpnClubT1BaseballBat,meleeWpnSpearT1IronSpear,meleeWpnKnucklesT1IronKnuckles,meleeWpnSledgeT1IronSledgehammer,meleeToolAxeT1IronFireaxe"/>
+			<property name="BagItems" value="meleeWpnClubT0WoodenClub"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+			</property>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="SdcsSpawnAmmo" value="false"/>
+			<!-- [SDCS-THROW] The throwables grant emptied (the tier 2 bandit's one molotov):
+			     empty parses to nothing, so she seeds no throwables at first spawn. -->
+			<property name="SdcsThrowables" value=""/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditMeleeMaleT3" extends="npcSdcsBanditMaleT3">
+			<property name="SdcsWeapons" value="meleeWpnBatonT2StunBaton,meleeToolAxeT2SteelAxe,meleeWpnBladeT3Machete,meleeWpnClubT3SteelClub,meleeWpnKnucklesT3SteelKnuckles,meleeWpnSledgeT3SteelSledgehammer,meleeWpnSpearT3SteelSpear"/>
+			<property name="BagItems" value="meleeWpnClubT0WoodenClub"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+			</property>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="SdcsSpawnAmmo" value="false"/>
+			<!-- [SDCS-THROW] The throwables grant emptied (the tier 3 bandit's three molotovs):
+			     empty parses to nothing, so she seeds no throwables at first spawn. -->
+			<property name="SdcsThrowables" value=""/>
+		</entity_class>
+		<entity_class name="npcSdcsBanditMeleeFemaleT3" extends="npcSdcsBanditFemaleT3">
+			<property name="SdcsWeapons" value="meleeWpnBatonT2StunBaton,meleeToolAxeT2SteelAxe,meleeWpnBladeT3Machete,meleeWpnClubT3SteelClub,meleeWpnKnucklesT3SteelKnuckles,meleeWpnSledgeT3SteelSledgehammer,meleeWpnSpearT3SteelSpear"/>
+			<property name="BagItems" value="meleeWpnClubT0WoodenClub"/>
+			<property class="ItemsOnEnterGame">
+				<property name="GameModeSurvival" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalSP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+				<property name="GameModeSurvivalMP" value="meleeWpnClubT0WoodenClub,meleeToolRepairT0StoneAxe,meleeToolShovelT0StoneShovel,meleeWpnBladeT0BoneKnife"/>
+			</property>
+			<property name="IsEnemyEntity" value="true"/>
+			<property name="SdcsSpawnAmmo" value="false"/>
+			<!-- [SDCS-THROW] The throwables grant emptied (the tier 3 bandit's three molotovs):
+			     empty parses to nothing, so she seeds no throwables at first spawn. -->
+			<property name="SdcsThrowables" value=""/>
 		</entity_class>
 
 		<!-- [SDCS-SENTRY] The sentries: bandits that hold a post. A POI builder names the

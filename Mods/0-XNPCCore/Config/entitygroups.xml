@@ -84,9 +84,15 @@
 			* GS01 and GS50: tier 1. npcSdcsBanditMelee for melee, npcSdcsBanditRanged (a pipe
 			  gun) for ranged: a Melee group holds the first, a Ranged group the second, an All
 			  or deco trap group both.
-			* GS100 and GS200: tier 2, npcSdcsBanditMaleT2 and npcSdcsBanditFemaleT2.
-			* GS400 and GS800: tier 3, npcSdcsBanditMaleT3 and npcSdcsBanditFemaleT3.
+			* GS100 and GS200: tier 2, npcSdcsBanditMaleT2 and npcSdcsBanditFemaleT2. The
+			  melee groups hold the melee only variants, npcSdcsBanditMeleeMaleT2 and
+			  npcSdcsBanditMeleeFemaleT2 (no guns, no bows, no throwables).
+			* GS400 and GS800: tier 3, npcSdcsBanditMaleT3 and npcSdcsBanditFemaleT3. The
+			  melee groups hold the melee only variants, npcSdcsBanditMeleeMaleT3 and
+			  npcSdcsBanditMeleeFemaleT3 (no guns, no bows, no throwables).
 			* Every Boss group: tier 3.
+			* The melee groups are melee at every tier: a POI tier lifts its bandits to tier
+			  2 and 3, and the melee only variants keep the group gun free.
 		  A bandit is the first entry of each of these groups. Keep it first: the game reads
 		  a group's first entry to decide whether the group is an enemy group.
 		
@@ -336,20 +342,20 @@
 			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS100">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS200">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS400">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsMeleeGroupGS800">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcBanditsRangedGroupGS01">
 			<e n="npcSdcsBanditRanged" p="0.016"/>
@@ -482,20 +488,20 @@
 			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS100">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS200">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS400">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcDukeMeleeGroupGS800">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcDukeRangedGroupGS01">
 			<e n="npcSdcsBanditRanged" p="0.016"/>
@@ -1384,20 +1390,20 @@
 			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS100">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS200">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS400">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersMeleeGroupGS800">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcWhisperersRangedGroupGS01">
 			<e n="npcSdcsBanditRanged" p="0.016"/>
@@ -2236,20 +2242,20 @@
 			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS100">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS200">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS400">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyMeleeGroupGS800">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcEnemyRangedGroupGS01">
 			<e n="npcSdcsBanditRanged" p="0.016"/>
@@ -2296,6 +2302,34 @@
 		<entitygroup name="npcEnemyBossGroupGS800">
 			<e n="npcSdcsBanditMaleT3" p="0.0065"/>
 			<e n="npcSdcsBanditFemaleT3" p="0.0065"/>
+		</entitygroup>
+
+		<!-- [SDCS-ROUTINE] POI resident survivor entity groups, for the sleeper group
+		     S_-Group_NPC_Survivors (gamestages.xml): the survivor of the tier, male and female at
+		     equal weight. No none entries: every roll is a survivor. -->
+		<entitygroup name="npcSurvivorsGroupGS01">
+			<e n="npcSdcsSurvivorMaleT1" p="0.5"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsGroupGS50">
+			<e n="npcSdcsSurvivorMaleT1" p="0.5"/>
+			<e n="npcSdcsSurvivorFemaleT1" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsGroupGS100">
+			<e n="npcSdcsSurvivorMaleT2" p="0.5"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsGroupGS200">
+			<e n="npcSdcsSurvivorMaleT2" p="0.5"/>
+			<e n="npcSdcsSurvivorFemaleT2" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsGroupGS400">
+			<e n="npcSdcsSurvivorMaleT3" p="0.5"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsGroupGS800">
+			<e n="npcSdcsSurvivorMaleT3" p="0.5"/>
+			<e n="npcSdcsSurvivorFemaleT3" p="0.5"/>
 		</entitygroup>
 
 		<!-- Friendly NPC entity groups -->
@@ -2434,20 +2468,20 @@
 			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS100">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS200">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS400">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcMechMeleeGroupGS800">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcMechRangedGroupGS01">
 			<e n="npcSdcsBanditRanged" p="0.016"/>
@@ -2528,20 +2562,20 @@
 			<e n="npcSdcsBanditMelee" p="0.007"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS100">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS200">
-			<e n="npcSdcsBanditMaleT2" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT2" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT2" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS400">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyMeleeGroupGS800">
-			<e n="npcSdcsBanditMaleT3" p="0.0035"/>
-			<e n="npcSdcsBanditFemaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeMaleT3" p="0.0035"/>
+			<e n="npcSdcsBanditMeleeFemaleT3" p="0.0035"/>
 		</entitygroup>
 		<entitygroup name="npcFantasyRangedGroupGS01">
 			<e n="npcSdcsBanditRanged" p="0.016"/>

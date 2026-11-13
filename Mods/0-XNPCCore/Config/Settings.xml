@@ -111,12 +111,95 @@
          GunnerIdleHolsterSeconds: how long she keeps the gun out after the last enemy
              is gone. Clamped 0 to 60.
          BoardRangeMetres: how far from the vehicle a hire walks over to get in.
-             Clamped 5 to 100. -->
+             Clamped 5 to 100.
+         ExitClearanceMetres: how far outside the vehicle's body a hire is placed
+             when she gets out, so the vehicle cannot clip her; 0 = keep the game's
+             exit spot. Clamped 0 to 3. -->
     <Vehicle>
         <GunnerMaxRangeMetres>40</GunnerMaxRangeMetres>
         <GunnerIdleHolsterSeconds>5</GunnerIdleHolsterSeconds>
         <BoardRangeMetres>30</BoardRangeMetres>
+        <ExitClearanceMetres>1</ExitClearanceMetres>
     </Vehicle>
+    <!-- [SDCS-LIGHT] A hire's gun flashlight, read once at boot; a missing or
+         unreadable node warns once and keeps the value below.
+         GunLightEnabled: true lets a hire whose held gun carries a flashlight
+             mod switch it on by herself in the dark. It stays on in a fight
+             and goes out when you crouch (she sneaks with you) or when it is
+             light again.
+         IndoorDarkBelow: the sky light at her head (0 to 1: 1 under the open
+             sky by day and by night, 0 in a sealed room) below which a room
+             counts as dark by day. At night it is always dark. A lamp does
+             not count. Clamped 0 to 1.
+         HoldSeconds: how long the dark or light must last before she
+             switches, so a doorway does not flicker it. Clamped 0 to 10.
+         TorchEnabled: true lets a hire hold a light tool (a torch or a
+             flashlight) from her window or bag in the dark, when her gun
+             has no light of its own. A fight puts it away at once and it
+             stays away for TorchFightCooldownSeconds after, by day it goes
+             away after HoldSeconds, your crouch puts it away (as the gun
+             light), and a weapon order stops it for the rest of the night.
+             The tool comes from her window or bag only, never the spawn
+             kit. false = she never holds the torch.
+         TorchFightCooldownSeconds: after the last hostile is gone, how long
+             she keeps the torch away before holding it again. Clamped 0 to
+             60.
+         TorchNoToolRecheckSeconds: after a search of her window and bag
+             finds no light tool, how long she waits before searching again
+             (a torch handed to her shows up within this time). 0 searches
+             every second. Clamped 0 to 60.
+         TorchLeftHand: true lets a hire whose own weapon is one handed (a
+             hold type in TorchLeftHoldTypes) keep that weapon and carry the
+             lit torch in her LEFT hand instead. The left torch stays lit in
+             a fight and after a weapon order; it goes away by day, when you
+             crouch, and while she works a station, rides a seat, holds a
+             job tool or bandages. Her own emotes keep it: a small gesture
+             plays with it lit, and an emote you order hides it until the
+             emote ends. It counts as her light for stealth. A two handed weapon or bare hands keep the
+             right hand torch above. A light tool whose model has no light
+             switch of its own is never carried in the left hand. false = the
+             right hand torch only.
+         TorchLeftHoldTypes: the weapon hold types (the HoldType item
+             property) that count as one handed, comma separated:
+             1 = 9mm pistol, 44 = 44 magnum, 75 = desert vulture,
+             83 = pipe pistol, 2 = clubs, 36 = knives, 47 = machete,
+             58 = stun baton, 80 = pipe baton. Knuckles (61, 70, 79) are
+             left out on purpose: their own part already hangs on the left
+             hand. Empty = no left mode.
+         While the left torch is shown her left arm is posed to hold it,
+             whatever her weapon's hold does with that arm, and the torch
+             sits in her fist. The four keys below tune that pose; each is
+             "x,y,z", and anything that is not three numbers means the
+             value shipped here. Her chest frame: x to her right, y up her
+             spine, z to her front.
+         TorchLeftHandTarget: where her left wrist goes, metres from her
+             left shoulder joint in her chest frame. 0,-0.22,0.28 puts the
+             fist below and in front of the shoulder with the elbow bent
+             to about 80 degrees. Farther than her arm reaches = a straight arm.
+         TorchLeftElbowHint: a point her left elbow bends toward, metres
+             from her left shoulder joint in her chest frame. The default
+             keeps the elbow down, out to her left and a little back.
+         TorchLeftGripPosition: where the torch's grip end sits in her
+             fist, metres in the fist frame: x toward the palm, y up
+             through the fist (from the little finger to the index
+             finger), z along the fingers.
+         TorchLeftGripRotation: the torch's turn in her fist, degrees
+             about the same fist axes. 0,0,0 = the torch straight along
+             the fist's up; x leans the flame toward her front. -->
+    <Light>
+        <GunLightEnabled>true</GunLightEnabled>
+        <IndoorDarkBelow>0.3</IndoorDarkBelow>
+        <HoldSeconds>2</HoldSeconds>
+        <TorchEnabled>true</TorchEnabled>
+        <TorchFightCooldownSeconds>10</TorchFightCooldownSeconds>
+        <TorchNoToolRecheckSeconds>5</TorchNoToolRecheckSeconds>
+        <TorchLeftHand>true</TorchLeftHand>
+        <TorchLeftHoldTypes>1,44,75,83,2,36,47,58,80</TorchLeftHoldTypes>
+        <TorchLeftHandTarget>0,-0.22,0.28</TorchLeftHandTarget>
+        <TorchLeftElbowHint>-0.15,-0.3,-0.1</TorchLeftElbowHint>
+        <TorchLeftGripPosition>0.03,0,0.07</TorchLeftGripPosition>
+        <TorchLeftGripRotation>15,0,0</TorchLeftGripRotation>
+    </Light>
     <!-- [SDCS-STEALTH] An awake EAI observer (a zombie that holds one of our
          survivors as a target, e.g. after she has hit it) passes the survivor
          through the PLAYER's own stealth test (crouch, held light, speed),
@@ -262,6 +345,31 @@
          shipped default (groupPreacher) with a one-time warning.
          Log tag: [SDCS-LOOK]. -->
     <SdcsArmorExcludeGroups>groupPreacher</SdcsArmorExcludeGroups>
+    <!-- [SDCS-LOOK] Armour item names (comma separated) never worn by an NPC,
+         vanilla or from a mod pack: a set that loses its only piece in a slot
+         drops out. Matching is case-insensitive; an empty node excludes
+         nothing. Every machine in a multiplayer game needs the same armour
+         lists (this one and the three below): each machine resolves a
+         survivor's stored set against its own list. The boot line
+         "[SDCS-LOOK] armour pool:" shows what is left. Log tag: [SDCS-LOOK]. -->
+    <SdcsArmorExcludeItems></SdcsArmorExcludeItems>
+    <!-- [SDCS-LOOK] ArmorGroup or item names (comma separated) only women
+         wear. Overrides the detection below; an item name beats its group
+         name, and a name in both lists counts as female (warned once). A set
+         with a female only piece in every variant of a slot is worn by women
+         only; a female only variant in a slot that has others is skipped for
+         men. Case-insensitive; an empty node lists nothing. Log tag: [SDCS-LOOK]. -->
+    <SdcsArmorFemaleOnly></SdcsArmorFemaleOnly>
+    <!-- [SDCS-LOOK] ArmorGroup or item names (comma separated) only men wear,
+         the same rules as SdcsArmorFemaleOnly. Log tag: [SDCS-LOOK]. -->
+    <SdcsArmorMaleOnly></SdcsArmorMaleOnly>
+    <!-- [SDCS-LOOK] Detect armour made for one sex from its SDCS Prefab path:
+         a path with the sex token fits both; else "female" in the path or the
+         item name means women only, else "male" means men only. false: only
+         the two lists above make armour one sex. With VerboseLogging on, the
+         boot log names every one sex set and the piece that decided it.
+         Log tag: [SDCS-LOOK]. -->
+    <SdcsArmorSexDetect>true</SdcsArmorSexDetect>
     <Progression>
         <HealthPerLevel>0.03</HealthPerLevel>
         <DamagePerLevel>0.02</DamagePerLevel>
@@ -390,6 +498,28 @@
          StationStandInMetres: her spot beside a workstation sits this far
          from the middle of its cell, toward the station. Clamped 0 to 0.2,
          default 0.1.
+         StationWalkSeconds: how long her walk to her spot beside a
+         workstation goes on without getting closer before she gives up.
+         Clamped 3 to 60, default 10.
+         StationWorkFromMetres: when the walk gives up, she still works the
+         station from where she stopped if she is this close to her spot;
+         farther, the order ends (she could not reach it). Clamped 0.3 to
+         1.5, default 0.7.
+         StationSettleSeconds: within StationWorkFromMetres of her spot and
+         no closer for this long, she stops and works from there. Clamped
+         0.5 to 10, default 2.
+         StationWalkProgressMetres: the walk counts as getting closer only
+         when she is at least this much nearer her spot than before (each
+         time restarts StationWalkSeconds). Clamped 0.1 to 2, default 0.5.
+         StationWalkAskSeconds: while she walks to her spot her path is asked
+         for again this often (a dropped path is planned again). Clamped
+         0.5 to 10, default 2.
+         FacingDegrees: she faces a workstation when her yaw is within this
+         many degrees of the direction to it; she turns until then and her
+         work clip waits for it. Clamped 5 to 90, default 20.
+         WanderMinFromStationMetres: each spot she wanders to at a station is
+         at least this far from its centre (at most StationWanderMetres).
+         Clamped 0.5 to 5, default 1.5.
          StationTools: each workstation's tool slots in the game's own order
          (area=tool,tool,tool; stations separated by ;). A tool a recipe needs
          that she carries (her pack or a chest in reach) and the station lacks
@@ -405,10 +535,26 @@
          now and then while the loop runs, light plays once when she lights
          the station, refuel plays once when she feeds it fuel, and out
          plays once when the order ends. A set id with no row plays the
-         rummage pose (a line, once).
+         rummage pose (a line, once). lootLow and lootStand are the loot
+         rummage sets (a low container or a bag: the kneel; else the standing
+         lean): in, the loop while she rummages, out when she is done. A
+         missing loot row plays the crouch instead.
          AnimBackpackSet: the set id a backpack order plays.
+         RaisedStationSet: the set id a station plays when she works it
+         from the floor level below it (a campfire on a counter): a
+         standing set. A set id with no AnimSets row: the station keeps
+         its own set (a line, once).
+         StationPose: a station's pose override, area=value entries
+         separated by commas (e.g. campfire=auto,forge=stand). auto: its
+         AnimStations set, or RaisedStationSet when she works it from the
+         level below. kneel: its own set always. stand: RaisedStationSet
+         always. An area not listed is auto; an unknown value is auto (a
+         line, once).
          AnimAccentSeconds: the gap between accents, min and max in
          seconds, clamped 5 to 600; the next one is rolled in between.
+         LoopClipMaxSeconds: a set's looping loop clip runs at most this
+         many seconds at a time, then starts again (a set with only a loop
+         shows the restart). Clamped 5 to 600, default 20.
          AnimLightAtSeconds: a forge or campfire waits for her: she lights
          it when she is at her spot, this many seconds into her light clip
          (0 = as the clip starts); a station whose clip set has no light
@@ -436,11 +582,21 @@
         <StationClearanceMetres>0.3</StationClearanceMetres>
         <StationArriveMetres>0.3</StationArriveMetres>
         <StationStandInMetres>0.1</StationStandInMetres>
+        <StationWalkSeconds>10</StationWalkSeconds>
+        <StationWorkFromMetres>0.7</StationWorkFromMetres>
+        <StationSettleSeconds>2</StationSettleSeconds>
+        <StationWalkProgressMetres>0.5</StationWalkProgressMetres>
+        <StationWalkAskSeconds>2</StationWalkAskSeconds>
+        <FacingDegrees>20</FacingDegrees>
+        <WanderMinFromStationMetres>1.5</WanderMinFromStationMetres>
         <StationTools>campfire=toolCookingPot,toolCookingGrill,toolBeaker;forge=toolBellows,toolAnvil,toolForgeCrucible</StationTools>
         <AnimStations>campfire=fire;forge=bench;workbench=bench;combineStation=bench;chemistryStation=use;cementMixer=use</AnimStations>
-        <AnimSets>fire=in:craft_fire_in,loop:craft_fire_kneel,accent:craft_fire_toss,light:craft_fire_light,refuel:craft_fire_toss,out:craft_fire_out;bench=loop:craft_bench_hammer,accent:craft_bench_chisel;use=loop:craft_use;pack=in:craft_kneel_in,loop:craft_kneel_hammer,accent:craft_kneel_idle,out:craft_kneel_out</AnimSets>
+        <AnimSets>fire=in:craft_fire_in,loop:craft_fire_kneel,accent:craft_fire_toss,light:craft_fire_light,refuel:craft_fire_toss,out:craft_fire_out;bench=loop:craft_bench_hammer,accent:craft_bench_chisel;use=loop:craft_use;pack=in:craft_kneel_in,loop:craft_kneel_hammer,accent:craft_kneel_idle,out:craft_kneel_out;lootLow=in:loot_low_in,loop:loot_low_loop,out:loot_low_out;lootStand=in:loot_open_in,loop:loot_open_loop,out:loot_open_out</AnimSets>
         <AnimBackpackSet>pack</AnimBackpackSet>
+        <RaisedStationSet>use</RaisedStationSet>
+        <StationPose></StationPose>
         <AnimAccentSeconds>20,40</AnimAccentSeconds>
+        <LoopClipMaxSeconds>20</LoopClipMaxSeconds>
         <AnimLightAtSeconds>4</AnimLightAtSeconds>
         <HomeStationReachMetres>60</HomeStationReachMetres>
     </Crafting>
@@ -560,7 +716,7 @@
              within any distance still counts as before. 0 = off (only a
              walking holder bills the stuck time). Clamped to not negative.
          TimidFleeDistanceMetres: the radius in metres at which a class that
-             sets the $Timid cvar (the SdcsNpcCore Flee action) flees an
+             sets the $Timid cvar (the SdcsNpcVillager Flee action) flees an
              enemy it can see instead of fighting; npcSdcsSurvivorFemaleTimid
              is the example class. 0 = never flee (the kill switch).
              Clamped to not negative.
@@ -674,6 +830,16 @@
              is never touched). -->
         <NpcThrustPiercesBars>true</NpcThrustPiercesBars>
         <PlayerThrustPiercesBars>false</PlayerThrustPiercesBars>
+        <!-- [SDCS-POWER] Power attacks: a survivor's weapon's own power
+             attack (its heavy swing and its power damage, from the weapon's
+             second action) comes after a random gap of MinSwings to
+             MaxSwings swings, so the cadence is not predictable. 0 in
+             either value turns it off; each value is clamped 2 to 20 and
+             the two are swapped if min is over max. Only weapons that have
+             a power attack swap; a power swing that would fall short of the
+             target is a normal swing. -->
+        <PowerAttackMinSwings>3</PowerAttackMinSwings>
+        <PowerAttackMaxSwings>6</PowerAttackMaxSwings>
         <SightStealthOnlyWhileLeaderCrouches>true</SightStealthOnlyWhileLeaderCrouches>
         <SightThroughPlants>true</SightThroughPlants>
         <SightStealth>true</SightStealth>
@@ -693,11 +859,15 @@
          PaceNearWalkSpeedMps: her walking speed near you, in metres per
              second. It must be at least 0.5 and BELOW the run-gait switch
              (2.75), or walking beside you plays as a run; if it is not, the
-             mod warns once and uses 2. -->
+             mod warns once and uses 2.
+         HireActivateReachMetres: how far the E key reaches YOUR OWN hires
+             (the game's reach, 3.5 m in survival, stays for everyone else),
+             so a hire on Far spacing still answers E. 2 to 10, default 6. -->
     <Follow>
         <PaceNearDistMetres>8</PaceNearDistMetres>
         <PaceFarDistMetres>10</PaceFarDistMetres>
         <PaceNearWalkSpeedMps>2</PaceNearWalkSpeedMps>
+        <HireActivateReachMetres>6</HireActivateReachMetres>
     </Follow>
     <!-- [SDCS-LOOT] What a hired survivor keeps from her looting and how far
          she ranges, read once at boot; a missing or unreadable node warns
@@ -1046,6 +1216,56 @@
         <StuckSeconds>6</StuckSeconds>
     </Wander>
 
+    <!-- [SDCS-SEEK] The shared point walk (a resident's routine walk, the
+         seek, the medic walk): its stall uses the Wander StuckMetres and
+         StuckSeconds above, and the door on her path.
+         StallMinMetres: near the end of a walk she needs only what is left
+             outside her arrival band to count as getting somewhere, never
+             less than this. Clamped 0.1 to 3.
+         DoorOpenMetres: a closed, unlocked door that is one of her path's
+             next two nodes opens when she is this close to it (flat).
+             Clamped 0.5 to 3.
+         DoorCloseSeconds: the door she opened closes again this long after.
+             Clamped 1 to 30.
+         DoorSeekMetres: when her walk stalls, or her path ends short of the
+             spot, a closed unlocked door within this many metres of her is
+             the way through when it is nearer the spot than she is (on her
+             way) or within DoorSeekSpotMetres of the spot: she walks to the
+             cell in front of it on her side, opens it and walks through.
+             Once per walk. The search reads every block of a box this many
+             metres round her, once per seek. Clamped 2 to 32.
+         DoorSeekSpotMetres: a door this close to the spot also counts when
+             it is not on her way (a spot just through a wall from her, the
+             door round the side). 0 seeks only doors on her way. Clamped 0
+             to 32.
+         DoorSeekRepathSeconds: when her walk through the door she sought
+             fails, she paths to the spot at once and again this long after,
+             when the path grid has taken in the open door. Clamped 0.5 to 10.
+         DoorPassMetres: after opening the door she sought she walks through
+             it (the cell in front, the door cell, the cell beyond) and then
+             paths to the spot; the door stays open until she is this many
+             metres past the door cell, then closes DoorCloseSeconds later.
+             Clamped 0.5 to 3.
+         DoorHoldMaxSeconds: the most seconds that door is held open (a walk
+             that gets stuck lets it go after this). Clamped 4 to 60.
+         OffFurnitureSnapMetres: when her walk stalls or a wander gives up
+             while she stands on a bed, a counter or a model block, she steps
+             to the nearest floor cell within 2 m (the work step's seconds,
+             Routine WorkStepSeconds); still off it after them, she is moved
+             onto it when it is within this many metres. 0 never moves her.
+             Clamped 0 to 3. -->
+    <PointWalk>
+        <StallMinMetres>0.5</StallMinMetres>
+        <DoorOpenMetres>1.5</DoorOpenMetres>
+        <DoorCloseSeconds>4</DoorCloseSeconds>
+        <DoorSeekMetres>16</DoorSeekMetres>
+        <DoorSeekSpotMetres>8</DoorSeekSpotMetres>
+        <OffFurnitureSnapMetres>1.5</OffFurnitureSnapMetres>
+        <DoorSeekRepathSeconds>3</DoorSeekRepathSeconds>
+        <DoorPassMetres>1</DoorPassMetres>
+        <DoorHoldMaxSeconds>12</DoorHoldMaxSeconds>
+    </PointWalk>
+
     <!-- Cover (the cover spot scan, [SDCS-COVER]): the scan builds a ring
          of standable cells around her and probes the sides that face the
          threat, by block facts first and short bullet-stop rays second.
@@ -1335,22 +1555,22 @@
             </Greet>
             <Talk>
                 <Enabled>true</Enabled>
-                <Chance>0.7</Chance>
-                <CooldownSeconds>6</CooldownSeconds>
-                <Clips>talk1,talk2,talk3</Clips>
+                <Chance>1</Chance>
+                <CooldownSeconds>2</CooldownSeconds>
+                <Clips>talk1,talk2,talk3,talk_happy,talk_dismiss,talk_lookaway,talk_ack,talk_cocky</Clips>
             </Talk>
             <Nod>
                 <Enabled>true</Enabled>
                 <Chance>1</Chance>
                 <CooldownSeconds>3</CooldownSeconds>
-                <Clips>nod1</Clips>
+                <Clips>nod1,nod_yes,nod_hard,nod_long</Clips>
                 <Lines>ammo.switched,basekeep.remembered,vehicle.wait,book.later,give.atfeet,comehere.ack,loot.resume</Lines>
             </Nod>
             <Shake>
                 <Enabled>true</Enabled>
                 <Chance>1</Chance>
                 <CooldownSeconds>3</CooldownSeconds>
-                <Clips>shake1,shake2</Clips>
+                <Clips>shake1,shake2,shake_no,shake_annoyed,shake_thoughtful</Clips>
                 <Lines>job.refused,patrol.none,patrol.far,craft.cant,craft.busy,craft.fuel,craft.noclaim:,craft.trader:,craft.inuse:,ammo.same,ammo.none,ammo.nogun,ammo.unknown,vehicle.noroom,vehicle.far,basekeep.nobase,book.nothing,book.notbook,book.none,harvest.notool,mine.notool,clay.notool,butcher.notool,basekeep.notool</Lines>
             </Shake>
         </Reactions>
@@ -1398,7 +1618,7 @@
             <MinIntervalSeconds>60</MinIntervalSeconds>
             <MaxIntervalSeconds>60</MaxIntervalSeconds>
             <StillMetres>0.5</StillMetres>
-            <Clips>stretch,warmup,whatever</Clips>
+            <Clips>stretch,warmup,whatever,bored,lookaround,yawn,idle_weightshift</Clips>
         </Idle>
         <!-- Read (the read show): a read order that reads at
              least one book plays a short book-reading show, one show per
@@ -1416,4 +1636,188 @@
         <ReadSeconds>4</ReadSeconds>
         <ReadSet>in:read_in,loop:read_loop,accent:read_loop2,out:read_out</ReadSet>
     </Emotes>
+    <!-- Routine (POI residents): a friendly survivor a POI
+         maker places with a sleeper volume (the group GroupNPCSurvivors, or
+         any friendly survivor group) lives in that POI: she claims the
+         nearest free bed in the POI as her home and the nearest free work
+         station as her work place, one survivor per bed and per station.
+         A claim frees when she dies or despawns, when its block is gone or
+         when she is hired. Wild survivors from the biome never adopt a POI.
+         Her day: she works at her station by day, heads home a while
+         before dusk, stays near her bed in the evening, sleeps on her bed
+         from a while after dusk to dawn, and idles at home until work
+         starts again.
+         Her night: at her bed she lies down onto it (a raised bed) or
+         settles straight onto it (a floor bed or bedroll) and sleeps there
+         until dawn; then she stirs and gets up. With no free bed she
+         sleeps on a bedroll from her pack where she stands (only a look:
+         nobody can take it, and it is gone at dawn). A hostile she sees or
+         hears close by, an attack or an order gets her up at once; a
+         player who talks to her (the E key) wakes her with a stir first,
+         and she goes back to bed a while later if it is still night. Dusk and dawn are the
+         world's own (its daylight length). On a blood moon night she stays
+         home from a while before dusk until dawn and never works or walks
+         out. With no work station she idles near home by day; with no bed
+         she idles near work at night. She walks between her places (never
+         a teleport), never leaves her POI, and a fight, an order or a chat
+         still comes first. Hired survivors are untouched.
+         The claims and her day show in the sdcsresident command.
+         Enabled: true or false.
+         BedBlocks and WorkBlocks: block names, comma separated; a name
+         ending in * covers every block that starts with it (bed02* is
+         every colour of bed02). Case is ignored.
+         RescanSeconds: a survivor who found no free bed or station looks
+         again after this long, s (5 to 3600).
+         ScanCacheSeconds: one look at a POI's beds and stations is shared
+         by its residents this long, s (5 to 3600).
+         WorkStartHours: work starts this long after dawn, game hours (0 to
+         12).
+         HomeBeforeDuskHours: she heads home this long before dusk, game
+         hours (0 to 12); on a blood moon night she is home from then on.
+         SleepAfterDuskHours: she sleeps from this long after dusk, game
+         hours (0 to 12).
+         AnchorArriveMetres: she has reached her bed or station spot within
+         this distance, m (0.5 to 5).
+         IdleRadiusMetres: at her spot she idles and wanders within this
+         distance of it; farther out she walks back, m (0.5 to 20, never
+         below AnchorArriveMetres).
+         WalkRetrySeconds: a walk that gets nowhere stops; she idles where
+         she stopped and tries again after this long, s (5 to 600).
+         ArriveLevelMetres: a height difference above this is another
+         floor, so she is not at her spot (her walk has not arrived and
+         she reads as away from it), m (0.5 to 4).
+         ArriveHeightMetres: her walk has arrived at her spot only within
+         this height of it, and at her work station only where her eyes
+         see the station (never working through a wall), m (0.2 to 2,
+         never above ArriveLevelMetres).
+         WorkSeconds: by day at her work station she stands at it, facing
+         it, and plays the station's craft clips (the Crafting AnimStations
+         and AnimSets a hire uses while crafting) for a work spell this
+         long, min,max s, a random length between them (each 5 to 3600).
+         She crafts nothing: no items, no fuel, the station is untouched.
+         A fight, an order, a talk or a hire ends the work at once; she
+         goes back to it later. A station with no clip set: she idles near
+         it.
+         BreakSeconds: after a work spell she takes a break this long (she
+         idles and wanders near the station), min,max s (each 5 to 3600),
+         then works again.
+         StrollChance: at the start of a break, and once an evening when
+         she is settled at home (never on a horde night), she sometimes
+         strolls instead of wandering near her spot: she walks to a random
+         floor spot anywhere in her POI (opening doors on the way),
+         lingers there and walks back. The chance of a stroll, 0 to 1
+         (0 = never, 1 = every time). If her break ends mid stroll she goes
+         back to work; a stroll walk that gets stuck just ends.
+         StrollMinMetres: a stroll spot is at least this far from her spot,
+         m (0 to 200). A POI too small for one: no stroll.
+         StrollLingerSeconds: she lingers at the stroll spot this long,
+         min,max s, a random length between them (each 1 to 600).
+         WorkFlame: true = while she works a workstation, every player sees
+         it running: the fire of a campfire, forge or chemistry station and
+         the moving part a station shows while it crafts (the cement
+         mixer's drum); it stops when she stops. Only the look: no fuel
+         burns, the station is untouched and nothing is saved. false = the
+         station stays still.
+         RotateStations: true = a resident who is the only one working
+         stations in her POI moves to another free station of the POI each
+         work spell (a random one, never the same twice in a row while
+         another is free). Two or more residents working stations there
+         each keep their own. false = she keeps the one she claimed.
+         BedTopMetres: how high each bed's lying surface is over its floor,
+         m, as family:top entries (comma separated; a family ending in *
+         covers every block that starts with it). An entry may add a third
+         number, family:top:yaw, that turns her on that family's beds,
+         degrees. The shipped tops are measured from each bed's own shape.
+         BedTopFallbackMetres: the top of a bed on BedBlocks that has no
+         entry, m (0 to 2).
+         RaisedBedMetres: a bed this high or higher is raised: she lies
+         down onto it and stands straight up at the end; a lower one is a
+         floor bed: she settles onto it and gets up from the floor, m (0 to
+         2).
+         BedYawOffsetDegrees: turns her lying body on every bed, degrees
+         (-360 to 360): use it when she lies with her head at the foot.
+         LyingHeight: her body's height for hits and bumps while she lies,
+         m (0.3 to 1.8).
+         StirSeconds: how long she stirs before she gets up at dawn, s (0 to
+         12; 0 = no stir). A talk or a loud noise gets her up at once.
+         WakeEnemyMetres: a hostile she sees this close wakes her, m (1 to
+         20).
+         WakeHearMetres: a hostile this close wakes her even unseen, m (0
+         to 20; 0 = off).
+         WakeCheckSeconds: how often she checks for hostiles while she
+         sleeps, s (0.25 to 5).
+         WakeSightAngle: the width of the cone she sees in, degrees (30 to
+         360).
+         WakeNoiseToWake: how loud a sound must be where she lies to wake
+         her (the game's sleeper falloff, 1 to 300). A sleeping bandit needs
+         9 to 12, so the default 15 sleeps deeper: a gunshot wakes her from
+         5 to 11 m, a footstep does not.
+         WakeLoudNoise: a sound from anyone who is not hostile to her (a
+         player, a hire, another survivor, an explosion) wakes her only when
+         it is this loud at its source too, 0 to 300. The default 35 is above
+         every footstep (10, trash 15, a running survivor 30) and below an
+         unsilenced gunshot (52 to 200) or an explosion (60 to 120).
+         ResleepSeconds: after a wake that was not dawn or a talk she lies
+         down again no sooner than this, if it is still night, s (5 to 1800).
+         TalkResleepSeconds: at night, after a talk or trade with her closes,
+         she lies down again this long after; while it is open she stays up,
+         s (0 to 600).
+         TalkWakeSpeakSeconds: woken by a talk, her greeting or reply waits
+         this long after she starts to get up, s (0 to 10).
+         BedStepOffMetres: before she lies down on her bed, a root farther
+         than this from her floor spot beside it (standing on the mattress
+         counts) walks to the spot first, m (0.1 to 2).
+         BedStepSeconds: how long that step may take, s (0 to 10).
+         BedStepNearMetres: after it, still off but on the spot's floor this
+         near, she lies down where she stands; farther, she tries again
+         after ResleepSeconds, m (0 to 2).
+         WorkStepOffMetres: arrived at her work station farther than this
+         from her spot, she steps onto it before she works, m (0.1 to 2).
+         WorkStepSeconds: how long that step may take, s (0 to 10).
+         WorkStepSnapMetres: after it, still off but on the spot's floor this
+         near, she is moved onto the spot as her work clip starts; farther,
+         she works where she stands, m (0 to 1.5). -->
+    <Routine>
+        <Enabled>true</Enabled>
+        <BedBlocks>bedroll*,bed02*,bunkBedMade*,bunkBedMessy*,bedMadeNoFrame*,bedMessyNoFrame*,mattressFlatThin,gurneyBed,hospitalBed</BedBlocks>
+        <WorkBlocks>workbench,campfire,forge,chemistryStation,cementMixer</WorkBlocks>
+        <RescanSeconds>60</RescanSeconds>
+        <ScanCacheSeconds>60</ScanCacheSeconds>
+        <WorkStartHours>1</WorkStartHours>
+        <HomeBeforeDuskHours>1</HomeBeforeDuskHours>
+        <SleepAfterDuskHours>1</SleepAfterDuskHours>
+        <AnchorArriveMetres>1.5</AnchorArriveMetres>
+        <IdleRadiusMetres>3</IdleRadiusMetres>
+        <WalkRetrySeconds>30</WalkRetrySeconds>
+        <ArriveLevelMetres>2</ArriveLevelMetres>
+        <ArriveHeightMetres>0.6</ArriveHeightMetres>
+        <WorkSeconds>60,180</WorkSeconds>
+        <BreakSeconds>30,90</BreakSeconds>
+        <StrollChance>0.3</StrollChance>
+        <StrollMinMetres>8</StrollMinMetres>
+        <StrollLingerSeconds>5,15</StrollLingerSeconds>
+        <WorkFlame>true</WorkFlame>
+        <RotateStations>true</RotateStations>
+        <BedTopMetres>bedroll*:0.08,bed02*:0.546,bunkBedMade*:0.686,bunkBedMessy*:0.686,bedMadeNoFrame*:0.215,bedMessyNoFrame*:0.251,mattressFlatThin:0.251,gurneyBed:0.8,hospitalBed:0.734</BedTopMetres>
+        <BedTopFallbackMetres>0.5</BedTopFallbackMetres>
+        <RaisedBedMetres>0.3</RaisedBedMetres>
+        <BedYawOffsetDegrees>0</BedYawOffsetDegrees>
+        <LyingHeight>0.5</LyingHeight>
+        <StirSeconds>2</StirSeconds>
+        <WakeEnemyMetres>4</WakeEnemyMetres>
+        <WakeHearMetres>2</WakeHearMetres>
+        <WakeCheckSeconds>1</WakeCheckSeconds>
+        <WakeSightAngle>180</WakeSightAngle>
+        <WakeNoiseToWake>15</WakeNoiseToWake>
+        <ResleepSeconds>60</ResleepSeconds>
+        <WakeLoudNoise>35</WakeLoudNoise>
+        <TalkResleepSeconds>15</TalkResleepSeconds>
+        <TalkWakeSpeakSeconds>2</TalkWakeSpeakSeconds>
+        <BedStepOffMetres>0.5</BedStepOffMetres>
+        <BedStepSeconds>2</BedStepSeconds>
+        <BedStepNearMetres>1</BedStepNearMetres>
+        <WorkStepOffMetres>0.3</WorkStepOffMetres>
+        <WorkStepSeconds>2</WorkStepSeconds>
+        <WorkStepSnapMetres>0.75</WorkStepSnapMetres>
+    </Routine>
 </Settings>
