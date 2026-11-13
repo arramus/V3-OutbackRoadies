@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<signs version="2">
+  <sign guid="6b7bc9b1-c142-4a09-b6ab-81f93fe5aa43" name="New Sign" modified="2026-11-13 21:00:01Z" next_poly_id="0" next_text_id="1" next_noise_id="0" next_group_id="0">
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.285, 0.285" color="#FFFFFFFF" mode="ColorOnly" font="LiberationSans" text="Guzzolene" direction="0" spacing="1.2" softness="0" dilate="0.2" />
+    <layer name="Text 01" type="TextSignLayer" pos="0, 0" rot="0" scale="0.285, 0.285" color="#690B0BFF" mode="ColorOnly" font="LiberationSans" text="Guzzolene" direction="0" spacing="1.2" softness="0" dilate="0" />
+  </sign>
+</signs>
