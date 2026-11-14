@@ -1,9 +1,9 @@
 <configs>
 
 	<!-- Load out starter kit -->
-	<set xpath="/entity_classes/entity_class[contains(@name,'playerMale')]/property/property[contains(@name,'GameModeSurvival')]/@value">OutbackRoadiesStarterKit,StarterRewardPocoCar,medicalFirstAidBandage,meleeToolTorch,keystoneBlock,npcAnimalFoxStarterFood,noteDuke01</set>	
-	<set xpath="/entity_classes/entity_class[contains(@name,'playerMale')]/property/property[contains(@name,'GameModeSurvivalSP')]/@value">OutbackRoadiesStarterKit,StarterRewardPocoCar,medicalFirstAidBandage,meleeToolTorch,keystoneBlock,npcAnimalFoxStarterFood</set>	
-	<set xpath="/entity_classes/entity_class[contains(@name,'playerMale')]/property/property[contains(@name,'GameModeSurvivalMP')]/@value">OutbackRoadiesStarterKit,StarterRewardPocoCar,medicalFirstAidBandage,meleeToolTorch,keystoneBlock,npcAnimalFoxStarterFood</set>
+	<set xpath="/entity_classes/entity_class[contains(@name,'playerMale')]/property/property[contains(@name,'GameModeSurvival')]/@value">OutbackRoadiesStarterKit,StarterRewardPocoCar,medicalFirstAidBandage=5,meleeToolTorch,keystoneBlock,npcAnimalFoxStarterFood,noteDuke01</set>	
+	<set xpath="/entity_classes/entity_class[contains(@name,'playerMale')]/property/property[contains(@name,'GameModeSurvivalSP')]/@value">OutbackRoadiesStarterKit,StarterRewardPocoCar,medicalFirstAidBandage=5,meleeToolTorch,keystoneBlock,npcAnimalFoxStarterFood</set>	
+	<set xpath="/entity_classes/entity_class[contains(@name,'playerMale')]/property/property[contains(@name,'GameModeSurvivalMP')]/@value">OutbackRoadiesStarterKit,StarterRewardPocoCar,medicalFirstAidBandage=5,meleeToolTorch,keystoneBlock,npcAnimalFoxStarterFood</set>
 
 	<!-- Hostile Animal Climbing -->
 	<set xpath="/entity_classes/entity_class[@name='animalTemplateHostile']/property[@name='CanClimbLadders']/@value">true</set> <!-- Offset Ladder Horde Night and the new Dire Wolf -->
