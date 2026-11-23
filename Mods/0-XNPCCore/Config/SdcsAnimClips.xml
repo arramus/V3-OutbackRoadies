@@ -67,11 +67,23 @@
   <clip id="stretch" bundle="SdcsEmoteGestures.unity3d" name="Stretch" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="warmup" bundle="SdcsEmoteGestures.unity3d" name="Warm Up" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="whatever" bundle="SdcsEmoteGestures.unity3d" name="Whatever" profile="emote" loop="false" maxSeconds="15"/>
-  <!-- Life idles: Bored, LookAround and Yawn join the idle pick; the bundle's
-       other clips are unlisted (playable by 'vc anim play' with the file form only). -->
+  <!-- Life idles: Bored, LookAround, BreathingIdle, NeckStretch, NervousLookAround,
+       LookingBehind and the straight-legged idles Yawn, NeutralIdle, AAIdle2,
+       StandingShortIdle, WeightShiftIdle and StandingIdleLookAround join the idle
+       pick; the bundle's other clips are unlisted (playable by 'vc anim play' with
+       the file form only). FemaleIdle stays in the bundle, unlisted. -->
   <clip id="bored" bundle="SdcsLifeClips.unity3d" name="Bored" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="lookaround" bundle="SdcsLifeClips.unity3d" name="LookAround" profile="emote" loop="false" maxSeconds="15" torch="ok"/>
+  <clip id="breathingidle" bundle="SdcsLifeClips.unity3d" name="BreathingIdle" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="neckstretch" bundle="SdcsLifeClips.unity3d" name="NeckStretch" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="nervouslookaround" bundle="SdcsLifeClips.unity3d" name="NervousLookAround" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="lookingbehind" bundle="SdcsLifeClips.unity3d" name="LookingBehind" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="yawn" bundle="SdcsLifeClips.unity3d" name="Yawn" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="neutralidle" bundle="SdcsLifeClips.unity3d" name="NeutralIdle" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="aaidle2" bundle="SdcsLifeClips.unity3d" name="AAIdle2" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="standingshortidle" bundle="SdcsLifeClips.unity3d" name="StandingShortIdle" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="weightshiftidle" bundle="SdcsLifeClips.unity3d" name="WeightShiftIdle" profile="emote" loop="false" maxSeconds="15"/>
+  <clip id="standingidlelookaround" bundle="SdcsLifeClips.unity3d" name="StandingIdleLookAround" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="flipoff" bundle="SdcsEmoteGestures.unity3d" name="Flip Off" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="insult" bundle="SdcsEmoteGestures.unity3d" name="Insult" profile="emote" loop="false" maxSeconds="15"/>
   <clip id="loser" bundle="SdcsEmoteGestures.unity3d" name="Loser" profile="emote" loop="false" maxSeconds="15"/>

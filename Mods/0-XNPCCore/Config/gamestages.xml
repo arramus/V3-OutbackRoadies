@@ -20,7 +20,9 @@
 		<group name="S_-Group_NPC_Bandits_Ranged" spawner="NPCBanditsRangedHorde"/>
 		<group name="S_-Group_NPC_Bandits_Boss" spawner="NPCBanditsBossHorde"/>
 		<!-- Bandit sentry gamestage groups: every bandit from these wakes on her sleeper spot
-		     and holds it (the sentry classes, entityclasses.xml). SentryRanged: guns only. -->
+		     and holds it (the sentry classes, entityclasses.xml). A sentry rolls from her tier's
+		     guns and spawns with 120 rounds for the rolled gun; the tier 1 melee sentry is the
+		     one melee sentry. -->
 		<group name="S_-Group_NPC_Bandits_Sentry" spawner="NPCBanditsSentryHorde"/>
 		<group name="S_-Group_NPC_Bandits_SentryRanged" spawner="NPCBanditsSentryRangedHorde"/>
 		<!-- Duke gamestage groups -->
@@ -62,6 +64,10 @@
 		     of her volume and claims a bed and a work station there (Settings.xml Routine).
 		     The survivor tiers by gamestage, like the bandit groups. -->
 		<group name="S_-Group_NPC_Survivors" spawner="NPCSurvivorsHorde"/>
+		<!-- [SDCS-SENTRY] Friendly sentries: every survivor from this group wakes on her sleeper
+		     spot and holds it until hired (the survivor sentry classes, entityclasses.xml). Each
+		     rolls from her tier's guns and spawns with 120 rounds for the rolled gun. -->
+		<group name="S_-Group_NPC_Survivors_Sentry" spawner="NPCSurvivorsSentryHorde"/>
 		<!-- Mechanical NPC (robot, cyborg, etc.) gamestage groups -->
 		<group name="S_-Group_NPC_Mech_All" spawner="NPCMechAllHorde"/>
 		<group name="S_-Group_NPC_Mech_Melee" spawner="NPCMechMeleeHorde"/>
@@ -738,6 +744,28 @@
 			</gamestage>
 			<gamestage stage="800">
 				<spawn group="npcSurvivorsGroupGS800" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+		</spawner>
+		<!-- [SDCS-SENTRY] Friendly sentry spawner: the POI resident survivor tiers by gamestage,
+		     each survivor her sentry. -->
+		<spawner name="NPCSurvivorsSentryHorde">
+			<gamestage stage="1">
+				<spawn group="npcSurvivorsSentryGroupGS01" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="50">
+				<spawn group="npcSurvivorsSentryGroupGS50" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="100">
+				<spawn group="npcSurvivorsSentryGroupGS100" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="200">
+				<spawn group="npcSurvivorsSentryGroupGS200" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="400">
+				<spawn group="npcSurvivorsSentryGroupGS400" num="1" maxAlive="1" duration="1" />
+			</gamestage>
+			<gamestage stage="800">
+				<spawn group="npcSurvivorsSentryGroupGS800" num="1" maxAlive="1" duration="1" />
 			</gamestage>
 		</spawner>
 		<!-- Friendly spawners -->

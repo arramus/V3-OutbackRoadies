@@ -49,6 +49,13 @@
                  character, all for everyone else.
              <Subtitles>none</Subtitles>
 
+             Spotted: what this hire does when a stealth kill is spotted on the way
+                 in (the base mod's stealth kill): backoff = crouch-walk back to her
+                 leader and let it go; fight = stand and let the stance rules decide;
+                 charge = run in and finish the attack standing. Omit it for the base
+                 mod's own default (Settings.xml Stealth SpottedDefault).
+             <Spotted>fight</Spotted>
+
             <Greetings>
                 <Greeting lang="en">Hello traveler!</Greeting>
                 <Greeting lang="de">Hallo, Reisender!</Greeting>
@@ -60,6 +67,14 @@
             <CombatLines>
                 <Line>Time to die.</Line>
             </CombatLines>
+
+             SmallTalk: pairs a POI resident says to another resident near her, one
+                 Line each, opener|reply. The opener's personality picks the pair and the
+                 partner says the reply in her own voice. Without a block, the
+                 SmallTalkDefault pool at the end of this file is used.
+            <SmallTalk>
+                <Line>Quiet night last night.|Too quiet.</Line>
+            </SmallTalk>
 
              FaceOverride: per-character facial-animation tuning for procedural lip-sync and bone
                  jaw (SDCS rigs). All child elements are optional. Omitted values use global
@@ -94,6 +109,7 @@
         SDCS bandits use it; name a voice instead to pin one.
       - Greetings are optional. Omit the entire <Greetings> block if not needed.
       - CombatLines are optional. Only a bandit says them; omit the block for everyone else.
+      - SmallTalk is optional. A survivor without it uses the SmallTalkDefault pool.
       - Use excludeFromRandom="true" for personalities that should not auto-assign.
       - FaceOverride is optional. Omit the entire block if global defaults work for this NPC's mesh.
 
@@ -250,6 +266,7 @@
     <!-- Survivor/NPC personalities -->
     <Personality id="survivor_veteran">
         <Name>War Veteran</Name>
+        <Spotted>charge</Spotted>
         <Traits>You're a former military veteran who's adapted well to the apocalypse. You speak with authority, offer tactical advice, and remain calm under pressure. You occasionally reference your military past.</Traits>
         <Backstory>I spent twelve years in the Army Rangers, two deployments overseas. When the military collapsed during the outbreak, I was on my own — but discipline doesn't expire just because the uniforms are gone.</Backstory>
         <Stories>
@@ -292,10 +309,33 @@
             <Greeting lang="en">Your name is not important. Whether you can hold a line is.</Greeting>
             <Greeting lang="en">Stay behind me and you will live. That is the whole briefing.</Greeting>
         </Greetings>
+        <SmallTalk>
+            <Line>Watch the east side tonight. That's where they come from.|I'll keep an eye on it.</Line>
+            <Line>Check your weapon. Then check it again.|Already did. Twice.</Line>
+            <Line>Sleep in shifts. Nobody argues.|Nobody's arguing.</Line>
+            <Line>I've seen worse than this. Not by much.|That's not as comforting as you think.</Line>
+            <Line>Keep your boots on when you sleep.|Learned that one the hard way.</Line>
+            <Line>Noise discipline. They hear everything.|Sorry. I'll keep it down.</Line>
+            <Line>We hold this place, it holds us.|Then let's hold it.</Line>
+            <Line>Don't waste rounds on the slow ones.|Knife for the slow ones. Got it.</Line>
+            <Line>Perimeter's thin on the north side.|I'll stack some sandbags there.</Line>
+            <Line>Back in the service we'd call this a quiet day.|What did you call a bad day?</Line>
+            <Line>Clean that rifle before dark.|Yes, sergeant.</Line>
+            <Line>Never go out alone. Not once.|Not even for water?</Line>
+            <Line>You did good out there yesterday.|Thanks. My hands were shaking.</Line>
+            <Line>The ones that run are the worst.|Don't remind me.</Line>
+            <Line>Eat when you can. You don't know when it's next.|Pass the jerky, then.</Line>
+            <Line>Doors barred?|Barred and wedged.</Line>
+            <Line>Old habit. I count exits in every room.|How many here?</Line>
+            <Line>Keep your knife where your hand can find it blind.|Right hip. Always.</Line>
+            <Line>Seventh day's coming. Be ready.|I'm never ready. I just show up.</Line>
+            <Line>Rest while you can.|You first.</Line>
+        </SmallTalk>
     </Personality>
 
     <Personality id="survivor_scared">
         <Name>Nervous Survivor</Name>
+        <Spotted>backoff</Spotted>
         <Traits>You're constantly on edge, always looking over your shoulder. You speak quickly, often interrupt yourself, and are paranoid about zombie attacks. Despite your fear, you've survived this long.</Traits>
         <Backstory>I used to be an accountant before all this started. I survived purely by accident and paranoia — if something sounds wrong, I'm already three blocks away.</Backstory>
         <Stories>
@@ -332,6 +372,28 @@
         <FemaleVoice>F2</FemaleVoice>
         <TTSLanguage>en</TTSLanguage>
         <ProactiveGreetingChance>0.0</ProactiveGreetingChance>
+        <SmallTalk>
+            <Line>Did you lock the door? Are you sure?|I'm sure. I checked twice.</Line>
+            <Line>I heard scratching last night.|It was probably a rat. Probably.</Line>
+            <Line>What if they get in?|They won't. We've got walls.</Line>
+            <Line>I can't sleep with the lights off anymore.|Me neither, honestly.</Line>
+            <Line>Is it getting dark already?|Not yet. We have time.</Line>
+            <Line>Please tell me that was the wind.|That was the wind.</Line>
+            <Line>I keep thinking I see them in the trees.|Stay inside, then. You're safe in here.</Line>
+            <Line>Do you think it'll ever stop?|One day. It has to.</Line>
+            <Line>Can I stay near you tonight?|Sure. Bring a blanket.</Line>
+            <Line>I dropped my flashlight down the stairs.|I'll get it for you.</Line>
+            <Line>Was that a scream?|A bird. Just a bird.</Line>
+            <Line>I don't want to go out there again.|Then don't. Not today.</Line>
+            <Line>My hands won't stop shaking.|Breathe. Slow. There you go.</Line>
+            <Line>How many bullets do we have left?|Enough. Don't worry about it.</Line>
+            <Line>I had the dream again.|The one with the bridge?</Line>
+            <Line>Don't go outside without telling me.|I won't. Promise.</Line>
+            <Line>Everyone's so calm. How are you so calm?|I'm not. I just hide it better.</Line>
+            <Line>Something's moving behind the fence.|I'll take a look. Stay here.</Line>
+            <Line>I'm sorry I panicked earlier.|Everyone panics. Don't sweat it.</Line>
+            <Line>It's too quiet.|Quiet is good. Quiet means nothing's coming.</Line>
+        </SmallTalk>
     </Personality>
 
     <Personality id="survivor_scientist">
@@ -378,6 +440,28 @@
             <Greeting lang="en">Where have you been? If something is wrong with you, I need symptoms, not a story.</Greeting>
             <Greeting lang="en">Another data point. Welcome, I suppose.</Greeting>
         </Greetings>
+        <SmallTalk>
+            <Line>Their decay rate is wrong. It should be faster.|Maybe don't study them up close.</Line>
+            <Line>I've been logging the hordes. There's a pattern.|Every seventh night. We noticed.</Line>
+            <Line>Have you boiled that water? Properly?|Ten minutes. Like you said.</Line>
+            <Line>The radiation in the wasteland is fascinating.|Fascinating from a long way away, I hope.</Line>
+            <Line>I need a working microscope.|I'll keep an eye out on the next run.</Line>
+            <Line>Statistically, we should all be dead.|Thanks for the pep talk.</Line>
+            <Line>The infection isn't airborne. I'm fairly sure.|Fairly?</Line>
+            <Line>I calibrated the scale. We've been eating less.|I could have told you that.</Line>
+            <Line>Gunpowder is just chemistry, you know.|Then you can make more of it.</Line>
+            <Line>I miss my lab. And clean gloves.|You'll get both back one day.</Line>
+            <Line>They react to sound more than light.|So keep the generator quiet at night.</Line>
+            <Line>I've written down everything we know.|Keep that notebook safe.</Line>
+            <Line>Don't eat anything that glows.|That rule kind of goes without saying.</Line>
+            <Line>The crops need more nitrogen.|I'll find some fertilizer.</Line>
+            <Line>Hypothesis: the big ones are older.|I don't want to test that.</Line>
+            <Line>Someone mixed up my samples.|Sorry. Which one was the soup?</Line>
+            <Line>We could purify more water with a better filter.|Draw me what you need.</Line>
+            <Line>I sleep better with numbers in my head.|I sleep better with a shotgun.</Line>
+            <Line>The weather's shifting. Snow is likely soon.|Better gather more wood, then.</Line>
+            <Line>Everything has an explanation.|Even them?</Line>
+        </SmallTalk>
     </Personality>
 
     <Personality id="survivor_medic">
@@ -424,6 +508,28 @@
             <Greeting lang="en">Wounds out here get dirty in an hour. Tell me what you have and I will clean it.</Greeting>
             <Greeting lang="en">Clean water and steady hands. Both are yours if you need them.</Greeting>
         </Greetings>
+        <SmallTalk>
+            <Line>Let me see that cut.|It's nothing. Really.</Line>
+            <Line>We're down to our last few bandages.|I'll look for cloth on the next run.</Line>
+            <Line>Did you drink water today? Real water?|A little. I'll drink more.</Line>
+            <Line>Wash your hands before you eat.|Yes, doctor.</Line>
+            <Line>Any fever? Chills?|No. Just tired.</Line>
+            <Line>Nobody goes out with an open wound.|Understood.</Line>
+            <Line>I patched up three people last week.|Thank you for that.</Line>
+            <Line>Keep that splint on. I mean it.|It itches.</Line>
+            <Line>Antibiotics are worth more than gold now.|I'll trade for some if I see any.</Line>
+            <Line>You look pale. Sit down a minute.|Just a minute.</Line>
+            <Line>Get some sleep. That's an order.|I didn't know you could give orders.</Line>
+            <Line>I can stitch a lot, but not everything.|We'll be careful.</Line>
+            <Line>Boil the needles. Every time.|Every time.</Line>
+            <Line>If you get bitten, tell me right away.|You'll be the first to know.</Line>
+            <Line>I found aloe growing behind the house.|Good. Burns heal faster with it.</Line>
+            <Line>How's your stomach after that meat?|Holding up. Barely.</Line>
+            <Line>I used to work night shifts. This is worse.|At least the patients don't complain.</Line>
+            <Line>Rest helps more than any pill.|Then I'll take two naps.</Line>
+            <Line>Your hands are steady. You could help me.|Show me what to do.</Line>
+            <Line>Come find me if anything hurts.|Will do.</Line>
+        </SmallTalk>
     </Personality>
 
     <Personality id="survivor_mechanic">
@@ -470,10 +576,33 @@
             <Greeting lang="en">Bring me a broken engine and I will owe you a favor.</Greeting>
             <Greeting lang="en">Duct tape and stubbornness kept me alive. You got either?</Greeting>
         </Greetings>
+        <SmallTalk>
+            <Line>Generator's making that noise again.|The clunk or the whine?</Line>
+            <Line>Hand me a wrench? The ten.|Here. That's a ten.</Line>
+            <Line>I could get that old truck running.|With what parts?</Line>
+            <Line>Somebody used my good screwdriver as a pry bar.|Wasn't me. Swear.</Line>
+            <Line>We need more oil. Engine oil, not cooking oil.|I'll check the gas station.</Line>
+            <Line>The door hinge is shot.|I'll grab a spare from the shed.</Line>
+            <Line>Everything breaks. You just fix it again.|That's the whole job, huh?</Line>
+            <Line>I rewired the lights. Don't touch the blue one.|Why? What does it do?</Line>
+            <Line>Duct tape is holding this whole place together.|Then we need more duct tape.</Line>
+            <Line>If you find spark plugs, grab every one.|Spark plugs. Got it.</Line>
+            <Line>The forge needs cleaning.|I'll help after lunch.</Line>
+            <Line>Mind the wires on the floor.|Who put wires on the floor?</Line>
+            <Line>I miss a proper workshop.|This one's not bad.</Line>
+            <Line>Engines make sense. People don't.|Fair enough.</Line>
+            <Line>I sharpened all the axes this morning.|I'll try not to dull mine.</Line>
+            <Line>That gun of yours needs a new spring.|Can you fix it?</Line>
+            <Line>Keep the fuel away from the fire, please.|Moving it now.</Line>
+            <Line>Found a box of bolts. Good day.|You're easy to please.</Line>
+            <Line>We could weld some plates on the gate.|Draw it up and I'll help.</Line>
+            <Line>Machines don't bite. That's why I like them.|Neither do I. Usually.</Line>
+        </SmallTalk>
     </Personality>
 
     <Personality id="survivor_hunter">
         <Name>Wilderness Survivor</Name>
+        <Spotted>charge</Spotted>
         <Traits>You lived off the grid even before the apocalypse. You're quiet, observant, and an expert tracker. You prefer actions over words and speak about nature and hunting.</Traits>
         <Backstory>My family's been hunting these mountains for generations, so I knew how to live off the land long before anyone needed to. The dead don't bother me as much as the other survivors do.</Backstory>
         <Stories>
@@ -516,6 +645,28 @@
             <Greeting lang="en">I track the dead. You should track me.</Greeting>
             <Greeting lang="en">The ridge is safe tonight. After that, who knows.</Greeting>
         </Greetings>
+        <SmallTalk>
+            <Line>Deer tracks by the creek this morning.|Fresh?</Line>
+            <Line>Wind's from the north. Good for hunting.|Bring something back, then.</Line>
+            <Line>I set snares along the tree line.|I'll watch my step.</Line>
+            <Line>Nothing's wasted. Hide, meat, bone.|Even the bones?</Line>
+            <Line>Wolves were howling last night.|I heard them. Close.</Line>
+            <Line>Arrows are quieter than bullets.|And cheaper.</Line>
+            <Line>Smoked some meat. It'll keep a week.|It smells amazing.</Line>
+            <Line>Stay downwind of the big ones.|Noted.</Line>
+            <Line>A bear's been through the berry patch.|Then I'm not picking berries today.</Line>
+            <Line>Sharpen your knife. A dull one's dangerous.|I'll do it tonight.</Line>
+            <Line>Rabbits are thin this season.|Everything's thin this season.</Line>
+            <Line>I can track anything that bleeds.|What about the ones that don't?</Line>
+            <Line>Quiet feet. You stomp like a horde.|I'll work on it.</Line>
+            <Line>Fished the pond. Three trout.|Dinner, then.</Line>
+            <Line>The forest is honest. The city lies.|I'll take the forest.</Line>
+            <Line>Feathers for fletching. Got any?|I'll pluck the next chicken.</Line>
+            <Line>Don't shoot what you can't carry home.|Good rule.</Line>
+            <Line>Snow will make tracking easier.|And sneaking harder.</Line>
+            <Line>Saw a buzzard circling west of here.|Something's dead out there.</Line>
+            <Line>Patience wins every hunt.|And every fight.</Line>
+        </SmallTalk>
     </Personality>
 
     <Personality id="survivor_prepper">
@@ -562,6 +713,28 @@
             <Greeting lang="en">You made it, so the apocalypse is obviously real.</Greeting>
             <Greeting lang="en">The water is by the fire. Do not touch the antibiotics.</Greeting>
         </Greetings>
+        <SmallTalk>
+            <Line>I knew this was coming. Nobody listened.|We're listening now.</Line>
+            <Line>Rotate the canned food. Oldest first.|Oldest first. Got it.</Line>
+            <Line>Two is one. One is none.|So we need two of everything?</Line>
+            <Line>I've got a cache buried somewhere. Not telling where.|Fair enough.</Line>
+            <Line>Water first. Food second. Everything else after.|Then let's dig a well.</Line>
+            <Line>Never let the stockpile drop below a week.|We're at five days.</Line>
+            <Line>Always keep a go bag packed.|Mine's by the door.</Line>
+            <Line>Trust is earned. Bullets are stored.|You're a cheerful one.</Line>
+            <Line>I've got seeds sealed in wax.|Let's plant some.</Line>
+            <Line>The grid's never coming back.|Then we make our own.</Line>
+            <Line>Salt. We need salt. For everything.|I'll check the old store.</Line>
+            <Line>Someone touched my supply shelf.|Just borrowed a can opener.</Line>
+            <Line>Fuel goes bad. Use it or stabilize it.|What do we stabilize it with?</Line>
+            <Line>I practiced this every weekend for ten years.|Paid off, didn't it?</Line>
+            <Line>Back-up plan for the back-up plan.|How many plans do you have?</Line>
+            <Line>Batteries in the fridge last longer.|We don't have a fridge.</Line>
+            <Line>Keep your ammo dry and your mouth shut.|Charming.</Line>
+            <Line>I counted the matches. Three hundred twelve.|You counted the matches?</Line>
+            <Line>A full pantry is peace of mind.|Then I'm feeling very peaceful.</Line>
+            <Line>Be ready. That's all there is.|Ready as I'll ever be.</Line>
+        </SmallTalk>
     </Personality>
 
     <Personality id="survivor_kid">
@@ -608,6 +781,28 @@
             <Greeting lang="en">You good? For real? Cool, cool.</Greeting>
             <Greeting lang="en">I caught a rabbit today. Like, an actual rabbit.</Greeting>
         </Greetings>
+        <SmallTalk>
+            <Line>Can I hold the gun? Just for a second?|Not a chance.</Line>
+            <Line>I found a comic book! It's only a little wet.|Nice find. Read it to me later.</Line>
+            <Line>Are we having beans again?|Yep. Beans again.</Line>
+            <Line>I'm not scared of them. Not really.|You're braver than me, then.</Line>
+            <Line>Can we get a dog?|If we find one that doesn't bite.</Line>
+            <Line>I drew a picture of all of us.|Can I see it?</Line>
+            <Line>Why do they walk so funny?|Because they forgot how to walk right.</Line>
+            <Line>I want to go on a supply run.|When you're older.</Line>
+            <Line>I'm bored. There's nothing to do.|There's always water to haul.</Line>
+            <Line>Tell me about before. What was school like?|Boring. You're not missing much.</Line>
+            <Line>I can climb the roof faster than anyone.|Please don't climb the roof.</Line>
+            <Line>I saved you my candy bar.|That's really nice. Split it with me?</Line>
+            <Line>Is it true they can smell you?|Some of them. So wash up.</Line>
+            <Line>I want to learn to shoot a bow.|I'll teach you tomorrow.</Line>
+            <Line>Do you think my mom is out there?|I hope so, kid.</Line>
+            <Line>I heard you snoring last night.|I don't snore.</Line>
+            <Line>Can I stay up late tonight?|Not on a horde night.</Line>
+            <Line>I'm hungry. Again.|Growing kids. Here, have some jerky.</Line>
+            <Line>Look! I can whistle now!|Not too loud. Good job, though.</Line>
+            <Line>When I grow up I'm gonna fix everything.|I believe it.</Line>
+        </SmallTalk>
     </Personality>
 
     <Personality id="survivor_elder">
@@ -654,6 +849,28 @@
             <Greeting lang="en">Rest when you can. The road will still be there tomorrow.</Greeting>
             <Greeting lang="en">I have watched empires fall. This one is moving faster than a century.</Greeting>
         </Greetings>
+        <SmallTalk>
+            <Line>I remember when the worst thing was taxes.|Those days sound nice.</Line>
+            <Line>My knees know the weather before I do.|What are they saying today?</Line>
+            <Line>Patience, young one. It'll all come.|I'm trying.</Line>
+            <Line>I've buried more friends than I can count.|I'm sorry.</Line>
+            <Line>Back in my day we grew our own food. We still do.|Some things don't change.</Line>
+            <Line>Sit with me a while.|Sure. Just for a bit.</Line>
+            <Line>The young ones rush. Rushing gets you killed.|I'll slow down.</Line>
+            <Line>I knit you a pair of socks.|Thank you. My feet thank you.</Line>
+            <Line>There's always a way through. Always.|I hope you're right.</Line>
+            <Line>Tea helps. Even bad tea.|Especially bad tea.</Line>
+            <Line>I've seen hard times. Not like this.|None of us have.</Line>
+            <Line>Don't let the dark make you cruel.|I won't.</Line>
+            <Line>My eyes aren't what they were. What's that over there?|Just a crow on the fence.</Line>
+            <Line>We should plant the beans before the frost.|I'll help you with the rows.</Line>
+            <Line>Old age is a privilege now.|Then you're a lucky one.</Line>
+            <Line>Kindness is the last thing they can't take.|I'll hold on to that.</Line>
+            <Line>I used to fall asleep to the radio.|I can hum something, if you like.</Line>
+            <Line>Mind your elders. And your ammunition.|In that order?</Line>
+            <Line>I've got stories that would curl your hair.|Tell me one tonight.</Line>
+            <Line>Every morning is a gift.|Even the cold ones?</Line>
+        </SmallTalk>
     </Personality>
 
     <!-- Special NPCs -->
@@ -788,6 +1005,28 @@
             <Greeting lang="en">Walk with me a while. I am leaving before nightfall.</Greeting>
             <Greeting lang="en">Some dangers have faces. The next one does not.</Greeting>
         </Greetings>
+        <SmallTalk>
+            <Line>The road remembers everyone who walks it.|What does it remember about you?</Line>
+            <Line>I've been further east than anyone here.|What's out there?</Line>
+            <Line>Some places are better left unseen.|Then don't tell me about them.</Line>
+            <Line>The dead don't dream. Do you?|Only bad ones lately.</Line>
+            <Line>I won't stay long. I never do.|Stay for supper at least.</Line>
+            <Line>There's a town to the south. Empty. Too empty.|I'll stay clear of it.</Line>
+            <Line>The stars look the same as before. Funny, that.|Some things never change.</Line>
+            <Line>Ask me no questions.|Fine. Pass the salt, then.</Line>
+            <Line>I've seen the burned forest at midnight.|Was it worth the walk?</Line>
+            <Line>Everyone here is running from something.|What are you running from?</Line>
+            <Line>A compass doesn't lie. People do.|Good thing I'm not a compass.</Line>
+            <Line>I knew a woman who could hear them coming.|What happened to her?</Line>
+            <Line>The wind changes before a storm. Listen.|I don't hear anything.</Line>
+            <Line>Not every door should be opened.|You sound like my grandmother.</Line>
+            <Line>I trade in stories. Got any?|Only sad ones.</Line>
+            <Line>The radio towers still blink at night.|Who's keeping them running?</Line>
+            <Line>Some nights I walk until dawn.|Doesn't that get you killed?</Line>
+            <Line>Names don't matter out here.|Then what should I call you?</Line>
+            <Line>The quiet ones are the ones to watch.|Is that a warning?</Line>
+            <Line>We'll meet again. Somewhere.|I'll hold you to that.</Line>
+        </SmallTalk>
     </Personality>
 
     <!-- ============================================================ -->
@@ -974,6 +1213,7 @@
 
     <Personality id="british_military" excludeFromRandom="true">
         <Name>British Military Veteran</Name>
+        <Spotted>charge</Spotted>
         <Traits>You served in the British armed forces and bring military discipline to survival. You're direct, efficient, and maintain chain-of-command thinking. You reference British military tradition and take no prisoners when it comes to threats.</Traits>
         <Backstory>I served in the SAS before being pulled back into civilian life — but the moment the military collapsed, old habits kicked right back in. Discipline and structure are the only things keeping me alive out here.</Backstory>
         <Stories>
@@ -1743,5 +1983,28 @@
             <Greeting lang="en">I'm Jen. Try not to bleed on me.</Greeting>
         </Greetings>
     </Personality>
+
+    <SmallTalkDefault>
+        <Line>Quiet night last night.|Too quiet. I kept waking up anyway.</Line>
+        <Line>You eat yet?|Half a can of beans. I'm living like a king.</Line>
+        <Line>Did you hear that, out past the fence?|Just the wind. I hope.</Line>
+        <Line>We're low on water again.|I'll boil some more before dark.</Line>
+        <Line>How's the leg?|Still attached. I'll take it.</Line>
+        <Line>Think the trader's open tomorrow?|If he's still breathing, he's open.</Line>
+        <Line>I miss coffee. Real coffee.|Don't. You'll just make it worse.</Line>
+        <Line>Somebody left the back door open again.|Wasn't me. Probably wasn't me.</Line>
+        <Line>Clouds are coming in.|Good. Rain means water.</Line>
+        <Line>You ever think about leaving?|Every day. Then I think about the road.</Line>
+        <Line>Smells like smoke.|Somebody's cooking. Or something's burning.</Line>
+        <Line>I counted the ammo twice.|And?</Line>
+        <Line>Saw a dog yesterday. A real one.|Did it have all its fur?</Line>
+        <Line>That new one seems all right.|Give it a week.</Line>
+        <Line>My boots are falling apart.|Duct tape. It fixes everything.</Line>
+        <Line>Long day.|They're all long now.</Line>
+        <Line>You hear anything on the radio?|Static. Same as always.</Line>
+        <Line>We should fix that wall before the next horde.|I'll find some nails.</Line>
+        <Line>Remember weekends?|Barely. They had something to do with sleeping in.</Line>
+        <Line>Stay sharp tonight.|You too.</Line>
+    </SmallTalkDefault>
 
 </Personalities>

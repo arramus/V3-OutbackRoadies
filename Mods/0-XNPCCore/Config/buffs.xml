@@ -1012,6 +1012,10 @@
 			<stack_type value="ignore"/>
 			<duration value="10"/>
 		</buff>
+		<buff name="SdcsChatHold" hidden="true"> <!--  The flag that a resident is in a small-talk exchange with another resident. No effects; while present the SdcsNpcCore Wander action scores 0, so both stay put. The exchange removes it when it ends; the duration is only a backstop.  -->
+			<stack_type value="ignore"/>
+			<duration value="60"/>
+		</buff>
 		<buff name="SdcsSeekRest" hidden="true"> <!--  The flag that a bandit just gave up on seeking where she last saw her enemy (searched it, or got nowhere). No effects; while present the SdcsBanditCombat BanditSeek action scores 0, so she stops looking for it until it shows or hits her again.  -->
 			<stack_type value="ignore"/>
 			<duration value="15"/>
@@ -1825,6 +1829,19 @@
 			</effect_group>
 		</buff>
 
+		<!-- [SDCS-DOWNED] The invulnerable marker SCore skips all damage for
+		     (EntityAliveSDXV4.Combat checks this buff name in DamageEntity and
+		     ProcessDamageResponseLocal). We own the row: hidden, no icon, no
+		     duration of its own (permanent, like SdcsNpcLevelBonus) and no
+		     effects (the name is the whole switch). The downed state adds it on
+		     the way down and keeps it through the post revive grace; the boot
+		     fix removes a stale one (a save while downed loads her revived). -->
+		<buff name="buffInvulnerable" hidden="true">
+			<stack_type value="ignore"/>
+			<effect_group name="buffInvulnerable">
+			</effect_group>
+		</buff>
+
 	</append>
 	
 
@@ -1847,8 +1864,8 @@
 
 	<!-- [VC-STANCE] The squad stance on the player's buff bar: the Engage stance his
 	     hires share (the server writes the player cvar sdcsSquadStance once a second:
-	     0 none, 1 defensive, 2 aggressive, 3 hold fire), with the order wheel's own
-	     Engage symbols. No hires, or hires on different stances: no icon. -->
+	     0 none, 1 defensive, 2 aggressive, 3 hold fire, 4 hunting), with the order
+	     wheel's own Engage symbols. No hires, or hires on different stances: no icon. -->
 	<append xpath="/buffs/buff[@name='buffStatusCheck01']">
 		<effect_group name="SdcsSquadStanceDisplay">
 			<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="buffSdcsStanceDefensive">
@@ -1869,6 +1886,12 @@
 			<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffSdcsStanceHoldFire">
 				<requirement name="CVarCompare" cvar="sdcsSquadStance" operation="NotEquals" value="3"/>
 			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="self" buff="buffSdcsStanceHunting">
+				<requirement name="CVarCompare" cvar="sdcsSquadStance" operation="Equals" value="4"/>
+			</triggered_effect>
+			<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" target="self" buff="buffSdcsStanceHunting">
+				<requirement name="CVarCompare" cvar="sdcsSquadStance" operation="NotEquals" value="4"/>
+			</triggered_effect>
 		</effect_group>
 	</append>
 	<append xpath="/buffs">
@@ -1881,6 +1904,10 @@
 			<duration value="0"/>
 		</buff>
 		<buff name="buffSdcsStanceHoldFire" icon="ui_game_symbol_hand" name_key="buffSdcsStanceHoldFireName" description_key="buffSdcsStanceHoldFireDesc">
+			<stack_type value="ignore"/>
+			<duration value="0"/>
+		</buff>
+		<buff name="buffSdcsStanceHunting" icon="ui_game_symbol_search" name_key="buffSdcsStanceHuntingName" description_key="buffSdcsStanceHuntingDesc">
 			<stack_type value="ignore"/>
 			<duration value="0"/>
 		</buff>

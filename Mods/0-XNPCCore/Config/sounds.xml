@@ -1,6 +1,15 @@
 <configs>
 	<append xpath="/Sounds">
-	
+
+		<!-- The whistle key's tap (voice mod WhistleInput): the vanilla trader whistle clip, played at the player. No asset shipped. -->
+		<SoundDataNode name="vcWhistle">
+			<AudioSource name="@:Sounds/Prefabs/AudioSource_Player.prefab"/>
+			<AudioClip ClipName="@:Sounds/VO/Trader/Bob/trader_bob_whistle_01.wav"/>
+			<maxVoicesPerEntity value="1"/>
+			<MaxVoices value="10"/>
+			<MaxRepeatRate value="0.2"/>
+		</SoundDataNode>
+
 		<!--NEW-->
 		<SoundDataNode name="NPCHelp">
 			<AudioSource name="@:Sounds/Prefabs/AudioSource_VO_TraderRekt.prefab"/>

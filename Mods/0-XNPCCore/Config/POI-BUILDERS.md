@@ -1,11 +1,11 @@
-# Bandits in your POIs: a guide for POI builders (NPCCore 3.4.05)
+# Bandits in your POIs: a guide for POI builders (NPCCore 3.4.06)
 
 NPCCore's bandits are hostile survivors built on the game's own character system: they fight with real weapons, use cover,
 throw explosives, and sleep in your POIs like zombies do. This guide covers what you need to place them and test them.
 
 ## What to install
 
-- `0-SCore` 3.4.14 or newer and `0-XNPCCore` 3.4.05 (the Core zip): required.
+- `0-SCore` 3.4.25.925 or newer and `0-XNPCCore` 3.4.06 (the Core zip): required.
 - The voice add-on (`1-XNPCVoiceControl-Voice` or `-Complete`): optional. Without it bandits work the same, they only stay
   silent (their one spoken line needs text to speech).
 - Generate a NEW random world after installing your POI pack: an existing world never gains new POIs.
@@ -23,11 +23,13 @@ Put one of these in a sleeper volume, with its min and max count from the Spawn 
 | `GroupNPCBanditsMelee` | melee bandits only |
 | `GroupNPCBanditsRanged` | gun bandits only |
 | `GroupNPCBanditsBoss` | always tier 3 |
-| `GroupNPCBanditsSentry` | sentries, melee and gun mixed: awake on their spot, holding it (see "Sentries" below) |
-| `GroupNPCBanditsSentryRanged` | sentries with guns only |
+| `GroupNPCBanditsSentry` | bandit sentries: awake on their spot, holding it (see "Sentries" below); tier 1 brings the one melee sentry, tiers 2 and 3 guns |
+| `GroupNPCBanditsSentryRanged` | bandit sentries with guns only |
+| `GroupNPCSurvivorsSentry` | FRIENDLY sentries: survivors who hold their spot until the player hires them (see "Friendly sentries" below) |
 
-(These are NPCCore's `S_-Group_NPC_Bandits_All` / `_Melee` / `_Ranged` / `_Boss`; the game strips the `S_-` and the
-underscores.) You can mix bandit volumes and zombie volumes in one POI.
+(These are NPCCore's `S_-Group_NPC_Bandits_All` / `_Melee` / `_Ranged` / `_Boss` / `_Sentry` / `_SentryRanged` and
+`S_-Group_NPC_Survivors_Sentry`; the game strips the `S_-` and the underscores.) You can mix bandit volumes and zombie volumes in
+one POI.
 
 ## Which bandits spawn: the party's gamestage, with your POI's difficulty as a floor
 
@@ -89,11 +91,34 @@ awake, on the block when its chunk loads, facing the way the block faces. The ti
 | `SpawnCubeBanditT2Stay` / `SpawnCubeBanditT2Guard` | tier 2 |
 | `SpawnCubeBanditT3Stay` / `SpawnCubeBanditT3Guard` | tier 3 |
 
-Both kinds keep their spot in a fight: a sentry or guard steps at most about one block for a shot or cover, never off her spot's
-level and never jumping down, and fights from there (a melee one swings at what comes within reach); knocked off, she walks
-back. Out of a fight a Guard block's bandit walks a short patrol around her spot (`<Guard><PatrolMetres>`), on her own floor only,
-never stepping off it; a Stay block's bandit and a sentry stand still. To
-make your own block, copy one of ours and set its `Config`: `eg=<entity group>` (or `ec=<class name>`), then `task=stay` or
+**Weapons.** Every sentry rolls from her tier's guns and spawns with 120 rounds, loaded and ready; the tier 1 bandit melee sentry
+(`npcSdcsBanditSentryMelee`) is the one melee sentry.
+
+Both kinds keep their spot in a fight, never leaving her spot's level and never jumping down:
+- **With a gun** she steps at most about one block, for a clear shot or cover (`<Bandits><SentryLeashMetres>`), and fights from there.
+- **With a melee weapon** (or a gun run dry, her club out) she is a guard at a gate: she steps out to fight an enemy within
+  `<Bandits><SentryMeleeLeashMetres>` (6 m) of her spot and walks back when the fight is over. She never takes a route she cannot walk
+  back up: if the way to the enemy drops off a ledge, she leaves that enemy for a while and returns to her spot.
+- Knocked off, she walks back.
+
+Out of a fight a Guard block's bandit walks a short patrol around her spot (`<Guard><PatrolMetres>`), on her own floor only, never
+stepping off it; a Stay block's bandit and a sentry stand still.
+
+**Placing a sentry.** Put her sleeper spot at least 1.5 blocks back from any drop, or give her perch a low wall or lip. Her limits
+only cover her OWN moves: an enemy that climbs up and presses against her in a melee fight can push her body off the edge (the
+game's own body push between two characters). She steps back to where she stood when she is shoved and walks back if she falls, but a
+perch she cannot be pushed off is the reliable answer.
+
+**Friendly sentries.** Name `GroupNPCSurvivorsSentry` in a volume for friendly survivors who hold their spot the same way (one class
+per tier and sex, `npcSdcsSurvivorSentryMaleT1` .. `npcSdcsSurvivorSentryFemaleT3`, by gamestage like the resident survivors). A
+friendly sentry fights any enemy within `<Bandits><SentryEngageMetres>` (20 m) of her spot, not only one that comes for her, and
+never the player. She keeps her gun out while the player talks to her. When the player hires her, her post ends for good: she
+follows like any hire, and dismissing her later does not post her again. A sentry is never made a POI resident.
+
+**Your own sentries.** What makes a sentry is one class property: `<property name="SdcsSentry" value="true"/>`. Give it to your own
+survivor or bandit class (it no longer needs the `bandit` tag) and any sleeper volume spawns her as a sentry.
+
+**Your own guard blocks.** To make your own block, copy one of ours and set its `Config`: `eg=<entity group>` (or `ec=<class name>`), then `task=stay` or
 `task=guard`, with `;` between the settings. Please test whether a guard keeps her post over a save and reload, and tell us.
 
 ## Loot

@@ -134,14 +134,17 @@
 					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
 				</action>
 				<!-- WanderSdcs: the wander that gives up when she gets nowhere (Settings.xml Wander);
-				     the SdcsWanderRest buff keeps her off it a moment after. Checked first, so a
+				     the SdcsWanderRest buff keeps her off it a moment after, and the SdcsChatHold buff
+				     keeps a resident off it during a small-talk exchange. Checked first, so a
 				     resting NPC skips the enemy scan. -->
 				<!-- band: AMBIENT -->
 				<action name="Wander" weight="1" entity_filter="IsSelf">
 					<task class="WanderSdcs, NPCSdcsCharacters"/>
-					<consideration class="SelfNotHasBuff, SCore" buffs="SdcsWanderRest"/>
+					<consideration class="SelfNotHasBuff, SCore" buffs="SdcsWanderRest,SdcsChatHold"/>
                     <consideration class="NotHasOrder, SCore" order="Stay"/>
                     <consideration class="NotHasOrder, SCore" order="Follow"/>
+					<!-- A posted survivor (a sentry on watch, a posted bandit) never wanders off her post. -->
+					<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="wander"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
 					<!-- The resident's routine walk owns her movement while its flag is up, so the
 					     enemy scan below is skipped. Same outcome: with the flag up the wander could
@@ -1404,9 +1407,9 @@
 				cvar directly (2 is Stay; an unset cvar reads as not Stay, the same answer as
 				SCore's NotHasOrder, whose order lookup builds a log string on every call), and
 				the melee pair tests its weapon range before its sight. SdcsNotPosted, right
-				after the order gate on the back-ups and the melee approach, is 1 for every
-				survivor (a cached flag); it is there so the bandits' copies stay in step and
-				hold a posted bandit on her post. -->
+				after the order gate on the back-ups, and SdcsMeleeGuardReach in the melee
+				approach (the order gate folded in), hold a posted survivor on her post (a
+				cached flag for everyone else); the bandits' copies stay in step. -->
 			<!-- SdcsKeepTarget, after the engage gate and before the range and sight checks in the attack and approach actions,
 				keeps a fighter on her current target when her class sets SdcsKeepTarget below
 				1. Only the bandit classes do, so for a survivor it scores 1 and changes
@@ -1440,6 +1443,8 @@
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<!-- The ordered stalk guard, as on the other fight actions: while her ordered quiet kill is pending, 0 for an enemy that is not the ordered one and is not going for her. After the state keeping MayEngage. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
 				<!-- The base keeper's job/fight commitment: 0 while the repair duty won the last decision within the dwell window and no fresh attacker (in her reach or a gun in hand) breaks in; 1 for everyone else (it scores 1 outside the two repair modes). Mirrored in SdcsBanditCombat at its old position (no MayEngage there). -->
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<consideration class="TargetDistance" flip_x="true" min="0" max="4" curve="threshold"/>
@@ -1468,6 +1473,8 @@
 				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,SdcsThrowCooldown"/>
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<!-- The ordered stalk guard: while her ordered quiet kill is pending (set and not finished, through cover too), 0 for an enemy that is not the ordered one and is not going for her, so an enemy going for the leader or a mate cannot pull her off the order. Before the costly throw test. Not on TakeCover: under gunfire cover still wins, and the order resumes after. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
 				<consideration class="SdcsThrowWanted, NPCSdcsCharacters"/>
 			</action>
 			<!-- The ranged attack. Index 0 is FIRE on a player ranged weapon. On a melee weapon
@@ -1480,6 +1487,8 @@
 			<action name="RangedMeleeAttack" weight="6">
 				<task class="AttackTargetEntitySDX, SCore" action_index="0"/>
 				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<!-- Stands aside for the ordered bow shot: 0 for her quiet-kill target while she holds a bow or crossbow (the stalk shoots it from its standoff). -->
+				<consideration class="SdcsNotQuietShotTarget, NPCSdcsCharacters"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 				<!-- Self-heal lives in the SdcsStatusCheck buff chain, so the heal-gate watches
 				     our own SdcsIsHealing. NPCCore gates its attack packages on IsHealing the same way, but
@@ -1495,8 +1504,12 @@
 					rather than scripted. -->
 				<consideration class="SelfNotHasCVar, SCore" cvar="SdcsReloading" value="1"/>
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<!-- The ordered stalk guard: while her ordered quiet kill is pending (set and not finished, through cover too), 0 for an enemy that is not the ordered one and is not going for her, so an enemy going for the leader or a mate cannot pull her off the order. After the state keeping MayEngage (scoring stops at the first 0). Not on TakeCover: under gunfire cover still wins, and the order resumes after. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<!-- Focus fire: while the squad holds a focus (the enemy on the leader), the focus scores 1 and the other targets the Cover FocusOtherScore, so the shot stays on it. Self-defence (a target on her) outranks the focus. -->
+				<consideration class="SdcsSquadFocus, NPCSdcsCharacters"/>
 				<!-- The shot's range and line of fire: in range and some body point clear of blocks
 				     (head, chest, pelvis; SdcsAimPoint, the point the shot itself aims at). Through a
 				     gap in a broken door she shoots the part she can hit, and holds when none is clear. -->
@@ -1523,7 +1536,69 @@
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<consideration class="SdcsBodyInLine, NPCSdcsCharacters"/>
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<!-- The ordered stalk guard: while her ordered quiet kill is pending (set and not finished, through cover too), 0 for an enemy that is not the ordered one and is not going for her, so an enemy going for the leader or a mate cannot pull her off the order. After the state keeping MayEngage (scoring stops at the first 0). Not on TakeCover: under gunfire cover still wins, and the order resumes after. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
 				<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0"/>
+			</action>
+
+			<!-- [SDCS-STEALTH] STALK A QUIET KILL. A hired melee holder closes on an
+				unaware enemy crouched, at her walk pace (Settings.xml Stealth ApproachSpeedScale),
+				and strikes while still crouched, so the game's own sneak-attack bonus applies
+				(the attacker crouched + the victim not alerted, the base game's melee item XML;
+				no damage code in the mod). The trigger is the Hunting stance with the enemy
+				within the leader's hunting leash, or the ordered target id the leader order
+				writes (SdcsStealthTargetId, from any stance); SdcsStealthTarget scores 0 for
+				everyone else (wild survivors and bandits never stalk, a target already alert or
+				targeting the party never scores, a sleeping bandit never scores). No MayEngage
+				here: the ordered trigger must work from any stance, and an unaware enemy nobody
+				is fighting scores 0 in the engage gate anyway. When she is spotted on the way in
+				(target alert AND targeting the party), her personality's behaviour takes over
+				(the SdcsSpotted cvar: back off to the leader crouched, stand and let the stance
+				rules fight, or run in and finish standing; unset reads the SpottedDefault
+				setting). The UAI's one-action rule is untouched: this one action carries the
+				whole stalk, the swing and the spotted behaviour, so the MeleeAttack pair below
+				never runs at the same time. Weight 5.5, between the shot (6) and the melee pair
+				(5), listed after ClearShot so its 5.5 tie goes to the step aside (a gun
+				action; the class gate keeps them apart anyway). -->
+			<!-- band: ENGAGE -->
+			<action name="StealthKill" weight="5.5">
+				<task class="StealthKillSdcs, NPCSdcsCharacters" />
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<!-- The weapon gate: a melee hold, or a loaded bow or crossbow on an ordered quiet kill (she shoots from outside the target's notice distance). -->
+				<consideration class="SdcsQuietWeapon, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
+				<!-- The cheap reads first (the switch, the cvars, the stance, the alert
+					flag, the bandit class); the leader lookup and the enemy's attack-or-revenge
+					lookup run last. One entity lookup and one attack-or-revenge lookup per
+					enemy candidate per decision (the decision pace), for a hired melee holder
+					only (the class gate precedes it). -->
+				<consideration class="SdcsStealthTarget, NPCSdcsCharacters"/>
+				<!-- The order and post gate from the melee approach: a not-posted Stay
+					hire scores 0 (the folded Stay gate, as in MeleeApproach), a posted
+					survivor only for a target inside her melee leash of her post. The
+					order's hold of a Stay or Guard hire sits in SdcsStealthTarget above
+					(its order-held sub-reason); allow_ordered: the explicit quiet-kill
+					order works from any stance and off any post, so the target it names
+					passes this gate whole. The route-drop half is inert for this action
+					(it judges a running MeleeApproach only). -->
+				<consideration class="SdcsMeleeGuardReach, NPCSdcsCharacters" move="quiet kill" allow_ordered="true"/>
+				<!-- A stalking mate does not walk in on a live blast or a molotov fire zone:
+					0 while the target sits in one and she does not. -->
+				<consideration class="SdcsTargetClearOfBlast, NPCSdcsCharacters"/>
+				<!-- The melee-unreachable pair gate: 0 while this target is marked
+					unreachable (the 1 Hz pass owns the mark). LAST before the sight ray. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
+				<!-- The base keeper's job/fight commitment, the other combat actions' own:
+					0 while the repair duty won the last decision within the dwell window and no
+					fresh attacker breaks in (a quiet target does not count). -->
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<!-- The stalk's own sight gate (SdcsStalkSight, in place of SCore's
+					CanSeeTarget): the shared sight replay without the two
+					leader-protection steps. The ordered quiet kill and the Hunting
+					auto-stalk stalk a target the crouched leader hides from; gunfire
+					and every other action keep those steps through CanSeeTarget.
+					Still LAST: the ray is the final, costliest gate. -->
+				<consideration class="SdcsStalkSight, NPCSdcsCharacters"/>
 			</action>
 
 			<!-- BACK OFF WHEN THE TARGET IS TOO CLOSE. InWeaponRange at index 1 is the trigger,
@@ -1557,32 +1632,40 @@
 					higher, thresholded. Our pistol reaches 40 m, so 10 m is comfortably inside
 					its range and the NPC keeps shooting the whole way back. -->
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<!-- The ordered stalk guard, as on the other fight actions: while her ordered quiet kill is pending, 0 for an enemy that is not the ordered one and is not going for her. After the state keeping MayEngage. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<consideration class="TargetDistance" flip_x="true" min="1" max="10" curve="threshold"/>
 				<consideration class="CanSeeTarget, SCore"/>
 			</action>
 
-			<!-- AN AGGRESSIVE HIRE'S SEEK. She lost sight of the bandit she was fighting and goes
-			     where she LAST SAW it: the bandits' seek task, subclassed rather than copied
-			     (the one-seeker-per-target claim and the leash from her leader are the subclass's
-			     additions; the walk, the search and the look timings are the Bandits Seek* settings,
-			     as in BanditSeek). SdcsHireSeekAllowed rules the seek: Aggressive only, her order
-			     not Stay or Guard, the claim on that target free or hers, and the last-seen spot
-			     within GunThreatLeashMetres of the leader. No weapon gate: an Aggressive melee
-			     hire seeks too. Weight 5, listed AFTER BackupRanged: a tie in this package goes
-			     to the first listed, so the back-off and the melee pair keep theirs; it beats
-			     HoldEngaged (4) and loses to the shot and the cover (6). -->
+			<!-- A GUN HIRE RUNS AT THE MARK. The leader marked an enemy (the voice mark
+			     key, the per-leader SdcsMarkBoard) and this hire's stance takes the mark
+			     (Hunting or Aggressive, SdcsLeaderMark): she runs at the marked enemy
+			     with no sight of her own (the mark IS the information) until her gun
+			     reaches it with a clear line, and the shot (weight 6, the exact
+			     complement of the SdcsNoLineOfFire term below) takes her over there.
+			     A posted hire holds her post (the order 2 and SdcsNotPosted gates,
+			     as the back-off has them); a walk that stalls becomes a per target
+			     skip window (Combat MarkWalkRetrySeconds), never a buff, so a new mark
+			     is not blocked. Weight 5: the range outside half of the gun pair, as
+			     MeleeApproach; it beats HoldEngaged (4) and loses to the shot and the
+			     cover (6). -->
 			<!-- band: ENGAGE -->
-			<action name="HireSeek" weight="5">
-				<task class="HireSeekSdcs, NPCSdcsCharacters" run="true" />
+			<action name="MarkApproach" weight="5">
+				<task class="MarkApproachSdcs, NPCSdcsCharacters" run="true" />
 				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
-				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,SdcsSeekRest"/>
+				<consideration class="SdcsLeaderMark, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
+				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="mark approach"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
-				<consideration class="SdcsHireSeekAllowed, NPCSdcsCharacters"/>
-				<consideration class="SdcsLostSight, NPCSdcsCharacters"/>
+				<!-- The ordered stalk guard: while her ordered quiet kill is pending (set and not finished, through cover too), 0 for an enemy that is not the ordered one and is not going for her, so an enemy going for the leader or a mate cannot pull her off the order. After the state keeping MayEngage (scoring stops at the first 0). Not on TakeCover: under gunfire cover still wins, and the order resumes after. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
-				<!-- The melee-unreachable pair gate: 0 while this target is marked unreachable (the 1 Hz pass owns the mark; a gun holder keeps her marks, and the gate scores 1 while a ranged weapon is held). LAST, after the state-keeping SdcsLostSight: scoring stops at the first 0, so ahead of it the kept last-seen record would go stale while the mark lasts. -->
-				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
+				<consideration class="SdcsTargetClearOfBlast, NPCSdcsCharacters"/>
+				<consideration class="SdcsNoLineOfFire, NPCSdcsCharacters"/>
 			</action>
 
 			<!-- MELEE HALF. Modelled on the base game's default melee actions, without the
@@ -1592,22 +1675,29 @@
 				MeleeApproach: the gate-exclusive approach pair (class 0 vs not, outside
 				weapon range vs inside, the attack half), so no weight offset is needed
 				between them. -->
+			<!-- The melee approach task is SCore's MoveToAttackTargetSDX with a per NPC repath anchor (MeleeApproachSdcs): the shared task object keeps its anchor in one field, so two approachers would read each other's and re-path every tick. The bandit package's two approaches use the same task. -->
 			<!-- band: ENGAGE -->
 			<action name="MeleeApproach" weight="5">
-				<task class="MoveToAttackTargetSDX, SCore" run="true" />
+				<task class="MeleeApproachSdcs, NPCSdcsCharacters" run="true" />
 				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
-				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
-				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="melee approach"/>
+				<!-- The order and post gate in one: a Stay hire scores 0 as before, a posted melee guard
+				     steps out to a target inside her melee leash, a posted gun holder never. -->
+				<consideration class="SdcsMeleeGuardReach, NPCSdcsCharacters" move="melee approach"/>
 				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
 				<!-- A melee mate does not walk her fight into a live blast or a
 				     molotov fire zone: 0 while the target sits in one and she does not. -->
 				<consideration class="SdcsTargetClearOfBlast, NPCSdcsCharacters"/>
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<!-- The ordered stalk guard: while her ordered quiet kill is pending (set and not finished, through cover too), 0 for an enemy that is not the ordered one and is not going for her, so an enemy going for the leader or a mate cannot pull her off the order. After the state keeping MayEngage (scoring stops at the first 0). Not on TakeCover: under gunfire cover still wins, and the order resumes after. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<!-- The melee-unreachable pair gate: 0 while this target is marked unreachable (the 1 Hz pass owns the mark; a gun holder keeps her marks, and the gate scores 1 while a ranged weapon is held). AFTER the state-keeping MayEngage: scoring stops at the first 0, so ahead of it the engage bookkeeping would stop while the mark lasts. -->
 				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
 				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<!-- The marked enemy is the preferred melee target too: a Hunting or Aggressive
+				     hire walks for the mark ahead of a nearer one (self-defence still wins). -->
+				<consideration class="SdcsSquadFocus, NPCSdcsCharacters"/>
 				<consideration class="SdcsNotInWeaponRange, NPCSdcsCharacters" action_index="0" />
 				<!-- A hire also approaches an enemy going for her leader within 10 m of him unseen:
 				     the leader himself blocks her sight line when she follows behind him. -->
@@ -1620,10 +1710,15 @@
 				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<!-- The ordered stalk guard, as on the other fight actions: while her ordered quiet kill is pending, 0 for an enemy that is not the ordered one and is not going for her. After the state keeping MayEngage. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<!-- The melee-unreachable pair gate: 0 while this target is marked unreachable (the 1 Hz pass owns the mark; a gun holder keeps her marks, and the gate scores 1 while a ranged weapon is held). AFTER the state-keeping MayEngage: scoring stops at the first 0, so ahead of it the engage bookkeeping would stop while the mark lasts. -->
 				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
 				<consideration class="SdcsKeepTarget, NPCSdcsCharacters"/>
+				<!-- The marked enemy is the preferred melee target too: in weapon range the
+				     swing goes for the mark ahead of a nearer one (self-defence still wins). -->
+				<consideration class="SdcsSquadFocus, NPCSdcsCharacters"/>
 				<consideration class="SdcsInWeaponRange, NPCSdcsCharacters" action_index="0" />
 				<!-- The reach test before every swing, right after the range gate: it casts
 				     its ray only inside her melee reach, so the sight ray stays last. 0 when
@@ -1632,6 +1727,34 @@
 				     she breaks through a barrier on purpose. -->
 				<consideration class="SdcsMeleeReach, NPCSdcsCharacters"/>
 				<consideration class="CanSeeTarget, SCore"/>
+			</action>
+
+			<!-- AN AGGRESSIVE HIRE'S SEEK. She lost sight of the bandit she was fighting and goes
+			     where she LAST SAW it: the bandits' seek task, subclassed rather than copied
+			     (the one-seeker-per-target claim and the leash from her leader are the subclass's
+			     additions; the walk, the search and the look timings are the Bandits Seek* settings,
+			     as in BanditSeek). SdcsHireSeekAllowed rules the seek: Aggressive only, her order
+			     not Stay or Guard, the claim on that target free or hers, and the last-seen spot
+			     within GunThreatLeashMetres of the leader. No weapon gate: an Aggressive melee
+			     hire seeks too. Weight 5, listed AFTER BackupRanged and the melee pair: a tie in
+			     this package goes to the first listed, so the back-off and the melee pair keep
+			     theirs; it beats HoldEngaged (4) and loses to the shot and the cover (6).
+			     SdcsLostSight sits BEFORE SdcsHireSeekAllowed: it is the one that writes the
+			     last-seen record (she sees it, or it hit her) and the reader needs that record,
+			     so with the reader first the first contact could never be recorded here. -->
+			<!-- band: ENGAGE -->
+			<action name="HireSeek" weight="5">
+				<task class="HireSeekSdcs, NPCSdcsCharacters" run="true" />
+				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
+				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing,SdcsSeekRest"/>
+				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<!-- The ordered stalk guard, as on the other fight actions: while her ordered quiet kill is pending, 0 for an enemy that is not the ordered one and is not going for her. After the state keeping MayEngage. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
+				<consideration class="SdcsLostSight, NPCSdcsCharacters"/>
+				<consideration class="SdcsHireSeekAllowed, NPCSdcsCharacters"/>
+				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
+				<!-- The melee-unreachable pair gate: 0 while this target is marked unreachable (the 1 Hz pass owns the mark; a gun holder keeps her marks, and the gate scores 1 while a ranged weapon is held). LAST, after the state-keeping SdcsLostSight: scoring stops at the first 0, so ahead of it the kept last-seen record would go stale while the mark lasts. -->
+				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
 			</action>
 
 			<!-- NEVER IDLE MID-FIGHT: the fallback below the
@@ -1649,6 +1772,8 @@
 				<!-- The engage gate, the other combat actions' own: she holds while she
 				     may engage a target; with none left, the follow or the idle takes over. -->
 				<consideration class="MayEngage, 1-XNPCVoiceControl"/>
+				<!-- The ordered stalk guard: while her ordered quiet kill is pending (set and not finished, through cover too), 0 for an enemy that is not the ordered one and is not going for her, so an enemy going for the leader or a mate cannot pull her off the order. After the state keeping MayEngage (scoring stops at the first 0). Not on TakeCover: under gunfire cover still wins, and the order resumes after. -->
+				<consideration class="SdcsStalkGuard, NPCSdcsCharacters"/>
 				<consideration class="SdcsJobFightHold, NPCSdcsCharacters" side="fight"/>
 				<!-- The melee-unreachable pair gate: the hold must not keep her on a melee
 				     target she cannot close to (no weapon gate here, so this is the only copy
@@ -1657,6 +1782,8 @@
 				     the engage bookkeeping would stop while the mark lasts. -->
 				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
 				<consideration class="TargetDistance" flip_x="true" min="0" max="40" curve="threshold"/>
+				<!-- The unseen exit for a WILD holder: she holds only an enemy she has seen, heard or been hurt by within the Bandits DropUnseenSeconds window (the bandit copy's gate); a hired or owned holder scores 1 here and keeps her own give-up. LAST: the unknown target's one sight check runs after TargetDistance. -->
+				<consideration class="SdcsKnowsTarget, NPCSdcsCharacters"/>
 			</action>
 		</ai_package>
 		<!-- [SDCS-BANDIT] The bandit's combat: SdcsNpcRangedAdvanced's five actions
@@ -1670,7 +1797,9 @@
 			A POSTED bandit (a sentry, or a bandit on the Stay or Guard order) holds
 			her post: the back-ups, the approaches, the listen and the seek score 0
 			for her (SdcsNotPosted, and SdcsHuntsTarget for the seek); she shoots,
-			throws and swings from there.
+			throws and swings from there. A posted MELEE holder steps out to an enemy
+			inside her melee leash (SdcsMeleeGuardReach on the melee approach) and
+			walks back when the fight is over.
 			Keep the five in step with SdcsNpcRangedAdvanced: a change to the
 			survivors' actions belongs here too (a test pins it). -->
 		<ai_package name="SdcsBanditCombat" entity_filter="IsEnemy">
@@ -1743,10 +1872,11 @@
 
 			<!-- band: ENGAGE -->
 			<action name="MeleeApproach" weight="5">
-				<task class="MoveToAttackTargetSDX, SCore" run="true" />
+				<task class="MeleeApproachSdcs, NPCSdcsCharacters" run="true" />
 				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
-				<consideration class="SelfNotHasCVar, SCore" cvar="CurrentOrder" value="2"/>
-				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="melee approach"/>
+				<!-- The order and post gate in one: a Stay hire scores 0 as before, a posted melee guard
+				     steps out to a target inside her melee leash, a posted gun holder never. -->
+				<consideration class="SdcsMeleeGuardReach, NPCSdcsCharacters" move="melee approach"/>
 				<consideration class="SelfHasCVar, SCore" cvar="CurrentWeaponClass" value="0"/>
 				<consideration class="SelfNotHasBuff, SCore" buffs="SdcsIsHealing"/>
 				<!-- The melee-unreachable pair gate, mirrored: 0 while this target is marked
@@ -1778,7 +1908,7 @@
 
 			<!-- band: ENGAGE -->
 			<action name="BanditApproach" weight="5">
-				<task class="MoveToAttackTargetSDX, SCore" run="true" />
+				<task class="MeleeApproachSdcs, NPCSdcsCharacters" run="true" />
 				<!-- A posted bandit (a sentry, or on Stay or Guard) never leaves her post to close in. -->
 				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="approach"/>
@@ -1846,6 +1976,8 @@
 				     while a ranged weapon is held). -->
 				<consideration class="SdcsReachable, NPCSdcsCharacters"/>
 				<consideration class="TargetDistance" flip_x="true" min="0" max="40" curve="threshold"/>
+				<!-- She holds only an enemy she has seen, heard or been hurt by within the Bandits DropUnseenSeconds window (the unknown target's one sight check runs last, after TargetDistance). -->
+				<consideration class="SdcsKnowsTarget, NPCSdcsCharacters"/>
 			</action>
 		</ai_package>
 
@@ -2188,6 +2320,7 @@
 				<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 				<consideration class="SdcsUnhired, NPCSdcsCharacters"/>
 				<consideration class="SelfNotHasCVar, SCore" cvar="SdcsResident" value="1"/>
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="wild loot"/>
 				<consideration class="NoActiveChat, 1-XNPCVoiceControl"/>
 				<consideration class="SelfNotHasBuffV4, SCore" buffs="ActivityCoolDown"/>
 				<consideration class="SelfNotHasBuffV4, SCore" buffs="SdcsLootWildCooldown"/>
@@ -2199,8 +2332,8 @@
 		<!--  The SDCS leave package. A WILD survivor detected in a grown sleeper
 			    volume has the leave point stored on her controller and the hidden
 			    SdcsLeavingArea buff (45 s, base Config/buffs.xml) added by the
-			    detection. This single action scores on that buff and nothing else
-			    (entity_filter IsSelf, one consideration), at weight 9, in the defence
+			    detection. This single action scores on that buff (entity_filter IsSelf)
+			    and on the post gate (a posted survivor never leaves), at weight 9, in the defence
 			    band: she breaks off the fight and runs (it outranks every attack
 			    action, the highest ENGAGE weight being 6, and the shooting-distance
 			    backup at 8 too). The task is in the base assembly (the LootSdcs
@@ -2215,6 +2348,8 @@
 			<action name="LeaveAreaSdcs" weight="9" entity_filter="IsSelf">
 				<task class="LeaveAreaSdcs, NPCSdcsCharacters"/>
 				<consideration class="SelfHasBuffV4, SCore" buffs="SdcsLeavingArea"/>
+				<!-- A sentry on watch never leaves her post: the buff then lapses on its own. -->
+				<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="leave"/>
 			</action>
 		</ai_package>
 
@@ -2246,6 +2381,7 @@
 					<task class="FleeFromTarget" max_distance="30"/>
 					<consideration class="SdcsMayAct, NPCSdcsCharacters"/>
 					<consideration class="SelfHasCVar, SCore" cvar="$Timid" value="1"/>
+					<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="flee"/>
 					<consideration class="SdcsFleeDistance, NPCSdcsCharacters"/>
 					<consideration class="CanSeeTarget, SCore"/>
 				</action>
@@ -2256,6 +2392,7 @@
 				<action name="PickpocketBackOff" weight="8" entity_filter="IsPlayer">
 					<task class="FleeFromTarget" max_distance="6"/>
 					<consideration class="SelfHasCVar, SCore" cvar="SdcsBackOff" value="1"/>
+					<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="back off"/>
 					<consideration class="TargetDistance" flip_x="true" min="0" max="8" curve="threshold"/>
 				</action>
 				<!-- band: AMBIENT -->
@@ -2278,6 +2415,7 @@
 				<action name="RoutineWalk" weight="1.5" entity_filter="IsSelf">
 					<task class="RoutineWalkSdcs, NPCSdcsCharacters"/>
 					<consideration class="SelfHasCVar, SCore" cvar=".SdcsRoutineWalk" value="1"/>
+					<consideration class="SdcsNotPosted, NPCSdcsCharacters" move="routine walk"/>
 					<consideration class="NoActiveChat, 1-XNPCVoiceControl" />
 					<consideration class="SdcsEnemyNotNear, NPCSdcsCharacters" scan="v3" distance="30" />
 				</action>

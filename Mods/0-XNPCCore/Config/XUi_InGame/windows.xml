@@ -88,6 +88,13 @@
 		</window>
 	</append>
 
+	<!-- [SDCS-PARTY] The companion list's grid (3.4.06): vanilla ships 7 rows and
+	     simply does not draw an 8th companion, so the HUD showed 7 of an 8-member
+	     party. This set gives the grid an 8th row. The row count must track
+	     Settings.xml <PartyMaxMembers> (XML cannot read that file): if the cap
+	     changes, change this rows value with it. -->
+	<set xpath="/windows/window[@name='windowGroupBars']/grid[@controller='CompanionEntryList']/@rows">8</set>
+
 
     <!-- Append our settings button into the vanilla ingameMenu buttons grid (3.0) -->
     <append xpath="//window[@name='ingameMenu']/grid[@name='buttons']">
@@ -265,12 +272,12 @@
         </window>
     </append>
 
-    <!-- Order Wheel window: 8 entry slots (repeat_count fixed); pages with fewer sockets leave the rest hidden -->
+    <!-- Order Wheel window: 9 entry slots (repeat_count fixed, RadialOrderWheel.MaxRootSockets); pages with fewer sockets leave the rest hidden -->
     <append xpath="/windows">
         <window name="windowVCFormationRadial" anchor="Center" pos="-150,-150" width="600" height="600" cursor_area="true">
             <!-- radialPanel and selection both carry pos="150,150" to cancel the window's pos="-150,-150".
                  If the window pos ever changes, update both offsets here to keep the ring and label centred. -->
-            <rect name="radialPanel" pos="150,150" repeat_content="true" repeat_count="8">
+            <rect name="radialPanel" pos="150,150" repeat_content="true" repeat_count="9">
                 <!-- The shared base-game radial_entry template, expanded INLINE (the base template
                      is used by the vanilla block and toolbelt radials and must not be overridden). Same
                      rect, same controller, same child names (border, background, icon, text).
@@ -301,8 +308,29 @@
                  checks HasAnyEvent before wiring UIEventListener). XUiC_VCFormationRadial
                  subscribes its OnHover event: the centre is a dwell target (back to page 0).
                  The 150x50 hit area is the centre of the ring; entries sit at radius
-                 150, so they never overlap it. -->
+                 150 (162.5 on the nine socket root), so they never overlap it. -->
             <label depth="10" name="selection" pos="150,150" width="150" height="50" pivot="center" justify="center" font_size="26" on_hover="true"/>
+        </window>
+    </append>
+
+    <!-- The combat wheel's names row: a separate window in the order wheel's group, above
+         the ring, so the wheel's own window keeps its size. Shown only when the whistle key
+         opened the wheel (XUiC_VCWheelNames hides it otherwise). All alone on the top row,
+         then one button per hire, four to a row (the controller lays them out from
+         WheelNamesLayout, centred, and hides the unused ones). The rows fill the window from
+         its bottom edge, which sits where the single row sat, so the ring is never covered. -->
+    <append xpath="/windows">
+        <window name="windowVCWheelNames" anchor="Center" pos="-320,330" width="640" height="120" cursor_area="true"
+                controller="XUiC_VCWheelNames, 1-XNPCVoiceControl">
+            <simplebutton name="btnWheelAll" pos="240,0" width="154" height="34" depth="3" font_size="16" selectedcolor="80,180,255,255" caption_key="vcWheel_All"/>
+            <simplebutton name="btnWheelName0" pos="0,-40" width="154" height="34" depth="3" font_size="16" selectedcolor="80,180,255,255"/>
+            <simplebutton name="btnWheelName1" pos="160,-40" width="154" height="34" depth="3" font_size="16" selectedcolor="80,180,255,255"/>
+            <simplebutton name="btnWheelName2" pos="320,-40" width="154" height="34" depth="3" font_size="16" selectedcolor="80,180,255,255"/>
+            <simplebutton name="btnWheelName3" pos="480,-40" width="154" height="34" depth="3" font_size="16" selectedcolor="80,180,255,255"/>
+            <simplebutton name="btnWheelName4" pos="0,-80" width="154" height="34" depth="3" font_size="16" selectedcolor="80,180,255,255"/>
+            <simplebutton name="btnWheelName5" pos="160,-80" width="154" height="34" depth="3" font_size="16" selectedcolor="80,180,255,255"/>
+            <simplebutton name="btnWheelName6" pos="320,-80" width="154" height="34" depth="3" font_size="16" selectedcolor="80,180,255,255"/>
+            <simplebutton name="btnWheelName7" pos="480,-80" width="154" height="34" depth="3" font_size="16" selectedcolor="80,180,255,255"/>
         </window>
     </append>
 
@@ -428,6 +456,134 @@
                         </rect>
                     </grid>
                 </rect>
+            </rect>
+        </window>
+
+        <!-- Her gift window (window_group NpcGiftGroup, XUiC_NpcGiftWindow): the gifts
+             you CARRY (left list, your own slots) and her room for the picked one
+             (right panel: her held vs her cap, the count and Give). The left list
+             reads the player's own inventory; the room rows are her (server) facts.
+             Opened modal, so Escape closes it. -->
+        <window name="windowNpcGiftList" width="397" height="688" panel="Left" cursor_area="true">
+            <rect name="header" height="43" depth="1">
+                <headerbg />
+                <sprite pos="4,-5" depth="2" name="windowIcon" style="icon32px" sprite="ui_game_symbol_resource"/>
+                <label style="header.name" name="title" text="" />
+            </rect>
+
+            <rect name="content" height="650" depth="1" pos="0,-43" on_scroll="true">
+                <rect depth="3" name="listControls" width="390" height="44" pos="3,-6">
+                    <sprite name="backgroundMain" sprite="menu_empty3px" pos="-3,3" width="396" height="49" color="[black]" type="sliced" fillcenter="false" />
+                    <sprite color="[darkGrey]" type="sliced" />
+                    <label depth="4" name="carry" pos="10,-8" width="270" height="30" text="" font_size="28" color="[beige]" />
+                    <rect pos="286,0" width="104" height="43">
+                        <pager name="pager" pos="4,-6" contents_parent="content"/>
+                    </rect>
+                </rect>
+
+                <grid name="gifts" depth="2" rows="12" cols="1" pos="3,-52" width="390" height="596" cell_width="390" cell_height="46" repeat_content="true" arrangement="vertical">
+                    <rect height="43" style="press, hover, scroll" controller="XUiC_NpcGiftEntry, 1-XNPCVoiceControl" sound="[recipe_click]" sound_play_on_hover="[default_hover]">
+                        <sprite depth="2" name="backgroundMain" sprite="menu_empty3px" pos="-3,3" width="396" height="49" color="[black]" type="sliced" fillcenter="false" />
+                        <sprite depth="3" name="background" height="45" pos="0,1" color="[darkGrey]" type="sliced" />
+                        <sprite depth="4" name="icon" atlas="ItemIconAtlas" sprite="" size="40,40" pos="34,-22" pivot="center" foregroundlayer="true"/>
+                        <label depth="4" name="name" pos="200,-22" width="270" height="30" text="" font_size="28" justify="center" pivot="center"/>
+                        <label depth="4" name="held" pos="384,-22" width="50" height="26" text="" font_size="22" color="[beige]" justify="right" pivot="right"/>
+                    </rect>
+                </grid>
+
+                <label depth="5" name="waiting" pos="195,-320" width="380" height="40" text="" font_size="28" justify="center" pivot="center" visible="false"/>
+            </rect>
+        </window>
+
+        <window name="windowNpcGiftInfo" width="603" height="392" style="crafting.info.window" panel="Center" cursor_area="true">
+            <rect name="header" height="43" depth="1">
+                <headerbg />
+                <sprite depth="2" name="windowIcon" style="icon32px" pos="4,-5" sprite="ui_game_symbol_resource"/>
+                <label style="header.name" name="itemName" text="" />
+                <label depth="2" pos="595,-8" name="status" width="250" height="32" text="" font_size="28" color="[red]" upper_case="true" justify="right" pivot="topright"/>
+            </rect>
+
+            <rect name="contentGiftInfo" height="381" depth="1" pos="0,-46">
+                <sprite depth="5" name="backgroundMain" sprite="menu_empty3px" width="604" height="348" color="[black]" type="sliced" fillcenter="false" />
+                <rect depth="1" pos="3,-3" name="preview" width="147" height="169">
+                    <sprite depth="8" name="backgroundMain" sprite="menu_empty3px" pos="-3,3" width="153" height="175" color="[black]" type="sliced" fillcenter="false" />
+                    <sprite depth="1" color="[darkGrey]" type="sliced" />
+                    <sprite depth="12" name="itemPreview" width="110" height="110" atlas="ItemIconAtlas" sprite="" pos="74,-74" pivot="center" foregroundlayer="true"/>
+                </rect>
+
+                <sprite depth="8" name="backgroundMain" pos="0,-174" width="153" height="173" sprite="menu_empty3px" color="[black]" type="sliced" fillcenter="false" />
+                <rect depth="1" name="actions" pos="3,-176" width="147" height="170">
+                    <sprite depth="1" color="[mediumGrey]" type="sliced" height="45" />
+                    <rect name="countControl" width="120" height="45" pos="27,0">
+                        <button depth="2" name="countDown" style="icon30px, press" pos="-10,-20" sprite="ui_game_symbol_arrow_left" pivot="center" sound="[paging_click]" disabledcolor="[lightGrey]"/>
+                        <label depth="2" name="count" pos="27,-20" width="40" height="28" text="1" font_size="26" justify="center" pivot="center"/>
+                        <button depth="2" name="countUp" style="icon30px, press" pos="64,-20" sprite="ui_game_symbol_arrow_right" pivot="center" sound="[paging_click]" disabledcolor="[lightGrey]"/>
+                        <button depth="2" name="countMax" style="icon30px, press" pos="96,-20" sprite="ui_game_symbol_arrow_max" pivot="center" sound="[paging_click]" disabledcolor="[lightGrey]"/>
+                    </rect>
+                    <simplebutton name="btnGive" caption_key="vcGiftGive" width="147" height="42" depth="3" pos="0,-68" />
+                </rect>
+
+                <rect depth="1" pos="153,-43" name="room" width="447" height="300">
+                    <sprite depth="3" name="backgroundMain" sprite="menu_empty3px" pos="-3,0" width="453" height="303" color="[black]" type="sliced" fillcenter="false" />
+                    <rect>
+                        <sprite depth="1" color="[darkGrey]" type="sliced" height="301" />
+                        <label depth="3" name="roomHeader" pos="224,-90" width="420" height="36" text="" font_size="28" color="[beige]" justify="center" pivot="center"/>
+                        <label depth="3" name="roomText" pos="224,-150" width="420" height="44" text="" font_size="34" justify="center" pivot="center"/>
+                    </rect>
+                </rect>
+            </rect>
+        </window>
+
+        <!-- Her equipment window (window_group NpcEquipGroup, XUiC_NpcEquipWindow): her
+             loadout (left: Head, Chest, Hands, Feet, Weapon, Ammo) and the choices from
+             her pack for the picked row (right), with the buttons that open her pack and
+             have her say what her private bag holds.
+             The rows are her (server) facts. Opened modal, so Escape closes it. -->
+        <window name="windowNpcEquipLoadout" width="397" height="341" panel="Left" cursor_area="true">
+            <rect name="header" height="43" depth="1">
+                <headerbg />
+                <sprite pos="4,-5" depth="2" name="windowIcon" style="icon32px" sprite="ui_game_symbol_shirt"/>
+                <label style="header.name" name="title" text="" />
+            </rect>
+
+            <rect name="content" height="298" depth="1" pos="0,-43">
+                <grid name="loadout" depth="2" rows="6" cols="1" pos="3,-6" width="390" height="276" cell_width="390" cell_height="46" repeat_content="true" arrangement="vertical">
+                    <rect height="43" style="press, hover" controller="XUiC_NpcEquipEntry, 1-XNPCVoiceControl" sound="[recipe_click]" sound_play_on_hover="[default_hover]">
+                        <sprite depth="2" name="backgroundMain" sprite="menu_empty3px" pos="-3,3" width="396" height="49" color="[black]" type="sliced" fillcenter="false" />
+                        <sprite depth="3" name="background" height="45" pos="0,1" color="[darkGrey]" type="sliced" />
+                        <sprite depth="4" name="icon" atlas="ItemIconAtlas" sprite="" size="40,40" pos="34,-22" pivot="center" foregroundlayer="true"/>
+                        <label depth="4" name="name" pos="200,-22" width="240" height="30" text="" font_size="26" justify="center" pivot="center"/>
+                        <label depth="4" name="detail" pos="384,-22" width="80" height="26" text="" font_size="20" color="[beige]" justify="right" pivot="right"/>
+                    </rect>
+                </grid>
+            </rect>
+        </window>
+
+        <window name="windowNpcEquipChoices" width="603" height="618" style="crafting.info.window" panel="Center" cursor_area="true">
+            <rect name="header" height="43" depth="1">
+                <headerbg />
+                <sprite depth="2" name="windowIcon" style="icon32px" pos="4,-5" sprite="ui_game_symbol_shirt"/>
+                <label style="header.name" name="choicesTitle" text="" />
+                <rect pos="495,-2" width="104" height="43">
+                    <pager name="pager" pos="4,-4" contents_parent="choices"/>
+                </rect>
+            </rect>
+
+            <rect name="content" height="575" depth="1" pos="0,-46" on_scroll="true">
+                <grid name="choices" depth="2" rows="10" cols="1" pos="3,-3" width="597" height="460" cell_width="597" cell_height="46" repeat_content="true" arrangement="vertical">
+                    <rect height="43" style="press, hover, scroll" controller="XUiC_NpcEquipEntry, 1-XNPCVoiceControl" sound="[recipe_click]" sound_play_on_hover="[default_hover]">
+                        <sprite depth="2" name="backgroundMain" sprite="menu_empty3px" pos="-3,3" width="603" height="49" color="[black]" type="sliced" fillcenter="false" />
+                        <sprite depth="3" name="background" height="45" pos="0,1" color="[darkGrey]" type="sliced" />
+                        <sprite depth="4" name="icon" atlas="ItemIconAtlas" sprite="" size="40,40" pos="34,-22" pivot="center" foregroundlayer="true"/>
+                        <label depth="4" name="name" pos="310,-22" width="500" height="30" text="" font_size="26" justify="center" pivot="center"/>
+                        <label depth="4" name="detail" pos="590,-22" width="60" height="26" text="" font_size="20" color="[beige]" justify="right" pivot="right"/>
+                    </rect>
+                </grid>
+
+                <label depth="5" name="waiting" pos="300,-230" width="560" height="40" text="" font_size="28" justify="center" pivot="center" visible="false"/>
+
+                <simplebutton name="btnBackpack" caption_key="vcEquipShowBackpack" width="290" height="42" depth="3" pos="4,-476" />
+                <simplebutton name="btnShowBag" caption_key="vcEquipShowBag" width="290" height="42" depth="3" pos="306,-476" />
             </rect>
         </window>
     </append>

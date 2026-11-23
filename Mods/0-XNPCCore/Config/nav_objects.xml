@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<configs>
+	<!-- The bleed-out countdown marker ([SDCS-DOWNED]): a red medical symbol
+	     above her body and on the compass while she is downed. The on-screen
+	     text is the NavObject's name (the seconds left), set by the code;
+	     text_type Name re-reads it every frame. -->
+	<append xpath="/nav_object_classes">
+		<nav_object_class name="sdcs_downed">
+			<compass_settings>
+				<property name="sprite_name" value="ui_game_symbol_medical"/>
+				<property name="min_distance" value="0"/>
+				<property name="max_distance" value="-1"/>
+				<property name="color" value="255,0,0,255"/>
+				<property name="has_pulse" value="true"/>
+			</compass_settings>
+			<onscreen_settings>
+				<property name="sprite_name" value="ui_game_symbol_medical"/>
+				<property name="min_distance" value="0"/>
+				<property name="max_distance" value="-1"/>
+				<property name="color" value="255,0,0,255"/>
+				<property name="has_pulse" value="true"/>
+				<property name="text_type" value="Name"/>
+				<property name="show_distance" value="false"/>
+				<property name="offset" value="0,1.0,0"/>
+			</onscreen_settings>
+		</nav_object_class>
+		<!-- The target mark ([VC-MARK]): a red skull above the enemy the player
+		     marked with the mark key, on screen and on the compass, until the
+		     mark ends. The voice mod registers it on the local player only, at
+		     the target's head position, and moves it with the target each frame.
+		     It tracks a position, not the entity, so no head offset applies here;
+		     the offset below lifts the skull above the head. -->
+		<nav_object_class name="vc_target_mark">
+			<compass_settings>
+				<property name="sprite_name" value="ui_game_symbol_skull"/>
+				<property name="min_distance" value="0"/>
+				<property name="max_distance" value="-1"/>
+				<property name="color" value="255,64,64,255"/>
+				<property name="has_pulse" value="false"/>
+			</compass_settings>
+			<onscreen_settings>
+				<property name="sprite_name" value="ui_game_symbol_skull"/>
+				<property name="min_distance" value="0"/>
+				<property name="max_distance" value="-1"/>
+				<property name="color" value="255,64,64,255"/>
+				<property name="has_pulse" value="false"/>
+				<property name="text_type" value="None"/>
+				<property name="show_distance" value="true"/>
+				<property name="offset" value="0,0.6,0"/>
+			</onscreen_settings>
+		</nav_object_class>
+	</append>
+</configs>

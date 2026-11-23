@@ -431,107 +431,6 @@
 				<response_entry id="done" ref_text="Nevermind." />
 			</statement>
 
-			<!-- The weapon menu is POSSESSION DRIVEN. One response per swappable
-			     weapon, each hidden unless the NPC actually holds that PLAYER item right now, in the
-			     harvest window, the bag or the toolbelt (NPCHasItemSDX checks exactly those stores).
-			     The swap action is the stock SCore SwapWeapon dialog action with the PLAYER item id,
-			     and the items.xml CompatibleWeapon self-reference makes the stock FindWeapon accept
-			     it. Nothing here knows about any NPC item variant. -->
-			<!-- Melee is split into Blades, Clubs and Heavy submenus: a single Melee Menu would hold
-			     hands plus 20 melee weapons (22 rows), more than the 10 row dialog grid shows.
-			     Player hands moved up to this list. Every menu stays at 10 rows or fewer. -->
-			<!-- The "Carried Weapons" entry. The XML
-			     holds ONLY the skeleton: this nav row (hired sdcsnpc NPCs only,
-			     same gates as the other rows) and the statement below with its
-			     single back row. One row per carried usable weapon is injected
-			     into that statement at display time by the voice mod
-			     (1-XNPCVoiceControl), the only place that knows what the NPC
-			     carries, through its router swap (ONE swap authority for SP and
-			     dedi). Grid budget: 10 rows, this statement spends 1 on the back
-			     row, so the code fills at most 9 (the Melee split row rule).
-			 -->
-			<!-- Carried Weapons is the FIRST row of the weapon menu (the carried weapon
-			     selection should be the top menu item). Nothing else moves. -->
-			<statement id="Weapon Classes" text="SdcsNPC_Weapon Classes" ref_text="Weapon Classes">
-				<response_entry id="Carried" ref_text="Carried Weapons" />
-				<response_entry id="Blades" ref_text="Blades Menu" />
-				<response_entry id="Clubs" ref_text="Clubs Menu" />
-				<response_entry id="Heavy" ref_text="Heavy Menu" />
-				<response_entry id="Pistols" ref_text="Pistol Menu" />
-				<response_entry id="Rifles" ref_text="Rifle Menu" />
-				<response_entry id="ShotGuns" ref_text="ShotGun Menu" />
-				<response_entry id="Others" ref_text="Other Menu" />
-				<response_entry id="SdcsPlayerHands" ref_text="Use Player Hands" />
-				<response_entry id="done" ref_text="Nevermind." />
-			</statement>
-			<statement id="Carried Weapons" text="SdcsNPC_Carried Weapons" ref_text="Carried Weapons">
-				<response_entry id="Weapon Menu" ref_text="Weapon Menu" />
-			</statement>
-			<statement id="Blades Menu" text="SdcsNPC_Blades Menu" ref_text="Blades">
-				<response_entry id="SdcsKnife" ref_text="Use Knife" />
-				<response_entry id="SdcsMachete" ref_text="Use Machete" />
-				<response_entry id="SdcsBoneKnife" ref_text="Use Bone Knife" />
-				<response_entry id="Weapon Menu" ref_text="Weapon Menu" />
-			</statement>
-			<statement id="Clubs Menu" text="SdcsNPC_Clubs Menu" ref_text="Clubs">
-				<response_entry id="SdcsClub" ref_text="Use Wooden Club" />
-				<response_entry id="SdcsBat" ref_text="Use Bat" />
-				<response_entry id="SdcsSteelClub" ref_text="Use Steel Club" />
-				<response_entry id="SdcsPipeBaton" ref_text="Use Pipe Baton" />
-				<response_entry id="SdcsStunBaton" ref_text="Use Stun Baton" />
-				<response_entry id="SdcsLeatherKnuckles" ref_text="Use Leather Knuckles" />
-				<response_entry id="SdcsIronKnuckles" ref_text="Use Iron Knuckles" />
-				<response_entry id="SdcsSteelKnuckles" ref_text="Use Steel Knuckles" />
-				<response_entry id="Weapon Menu" ref_text="Weapon Menu" />
-			</statement>
-			<statement id="Heavy Menu" text="SdcsNPC_Heavy Menu" ref_text="Heavy Weapons">
-				<response_entry id="SdcsAxe" ref_text="Use Axe" />
-				<response_entry id="SdcsSpear" ref_text="Use Spear" />
-				<response_entry id="SdcsSteelAxe" ref_text="Use Steel Axe" />
-				<response_entry id="SdcsChainsaw" ref_text="Use Chainsaw" />
-				<response_entry id="SdcsStoneSledge" ref_text="Use Stone Sledgehammer" />
-				<response_entry id="SdcsIronSledge" ref_text="Use Iron Sledgehammer" />
-				<response_entry id="SdcsSteelSledge" ref_text="Use Steel Sledgehammer" />
-				<response_entry id="SdcsStoneSpear" ref_text="Use Stone Spear" />
-				<response_entry id="SdcsSteelSpear" ref_text="Use Steel Spear" />
-				<response_entry id="Weapon Menu" ref_text="Weapon Menu" />
-			</statement>
-			<statement id="Pistol Menu" text="SdcsNPC_Pistol Menu" ref_text="Pistols">
-				<response_entry id="SdcsSMG" ref_text="Use SMG" />
-				<response_entry id="SdcsPistol" ref_text="Use Pipe Pistol" />
-				<response_entry id="SdcsIronPistol" ref_text="Use Pistol" />
-				<response_entry id="SdcsDesertEagle" ref_text="Use DesertEagle" />
-				<response_entry id="SdcsMagnum" ref_text="Use Magnum" />
-				<response_entry id="Weapon Menu" ref_text="Weapon Menu" />
-			</statement>
-			<statement id="Rifle Menu" text="SdcsNPC_RifleMenu" ref_text="Rifles">
-				<response_entry id="SdcsPipeRifle" ref_text="Use PipeRifle" />
-				<response_entry id="SdcsPipeMachineGun" ref_text="Use PipeMachinegun" />
-				<response_entry id="SdcsM60" ref_text="Use M60" />
-				<response_entry id="SdcsAK47" ref_text="Use AK47" />
-				<response_entry id="SdcsTacticalAR" ref_text="Use AssaultRifle" />
-				<response_entry id="SdcsHuntingRifle" ref_text="Use HuntingRifle" />
-				<response_entry id="SdcsSniperRifle" ref_text="Use SniperRifle" />
-				<response_entry id="SdcsLeverRifle" ref_text="Use Lever Action Rifle" />
-				<response_entry id="Weapon Menu" ref_text="Weapon Menu" />
-			</statement>
-			<statement id="ShotGun Menu" text="SdcsNPC_ShotGunMenu" ref_text="Shotguns">
-				<response_entry id="SdcsPipeShotgun" ref_text="Use PipeShotgun" />
-				<response_entry id="SdcsPumpShotgun" ref_text="Use Shotgun" />
-				<response_entry id="SdcsAutoShotgun" ref_text="Use AutoShotgun" />
-				<response_entry id="SdcsDoubleBarrel" ref_text="Use Double Barrel" />
-				<response_entry id="Weapon Menu" ref_text="Weapon Menu" />
-			</statement>
-			<statement id="Other Menu" text="SdcsNPC_OtherMenu" ref_text="Other Weapons">
-				<response_entry id="SdcsLongbow" ref_text="Use Longbow" />
-				<response_entry id="SdcsCrossbow" ref_text="Use Crossbow" />
-				<response_entry id="SdcsRocketLauncher" ref_text="Use RocketLauncher" />
-				<response_entry id="SdcsPrimitiveBow" ref_text="Use Primitive Bow" />
-				<response_entry id="SdcsCompoundBow" ref_text="Use Compound Bow" />
-				<response_entry id="SdcsCompoundCrossbow" ref_text="Use Compound Crossbow" />
-				<response_entry id="Weapon Menu" ref_text="Weapon Menu" />
-			</statement>
-
 			<!-- LIVE responses, field proven on our rig. -->
 			<response id="Hire" text="SdcsNPC_Hire" ref_text="I am interested in hiring you.">
 				<requirement type="HiredSDX, SCore" requirementtype="Hide" value="not" />
@@ -546,292 +445,8 @@
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="ExecuteCommandSDX, SCore" id="OpenInventory" />
 			</response>
-			<response id="SdcsPlayerHands" text="SdcsNPC_UsePlayerHands" ref_text="Use Player Hands">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<action type="SwapWeapon, SCore" id="meleeHandPlayer" />
-			</response>
-			<response id="SdcsPistol" text="SdcsNPC_UsePipePistol" ref_text="Use Pipe Pistol">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunHandgunT0PipePistol" />
-				<action type="SwapWeapon, SCore" id="gunHandgunT0PipePistol" />
-			</response>
-			<response id="SdcsClub" text="SdcsNPC_UseWoodenClub" ref_text="Use Wooden Club">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnClubT0WoodenClub" />
-				<action type="SwapWeapon, SCore" id="meleeWpnClubT0WoodenClub" />
-			</response>
-
-			<!-- The full swappable set, player item ids only. Each entry shows
-			     only while the NPC holds that exact item (harvest window, bag or toolbelt) and
-			     equips that exact item. Bare hands above is deliberately the one entry without an
-			     ownership gate: the bare hand item is the character's default hand, never stored. -->
-			<response id="SdcsKnife" text="SdcsNPC_UseKnife" ref_text="Use Knife">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnBladeT1HuntingKnife" />
-				<action type="SwapWeapon, SCore" id="meleeWpnBladeT1HuntingKnife" />
-			</response>
-			<response id="SdcsBat" text="SdcsNPC_UseBat" ref_text="Use Bat">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnClubT1BaseballBat" />
-				<action type="SwapWeapon, SCore" id="meleeWpnClubT1BaseballBat" />
-			</response>
-			<response id="SdcsSpear" text="SdcsNPC_UseSpear" ref_text="Use Spear">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnSpearT1IronSpear" />
-				<action type="SwapWeapon, SCore" id="meleeWpnSpearT1IronSpear" />
-			</response>
-			<response id="SdcsMachete" text="SdcsNPC_UseMachete" ref_text="Use Machete">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnBladeT3Machete" />
-				<action type="SwapWeapon, SCore" id="meleeWpnBladeT3Machete" />
-			</response>
-			<response id="SdcsAxe" text="SdcsNPC_UseAxe" ref_text="Use Axe">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeToolAxeT1IronFireaxe" />
-				<action type="SwapWeapon, SCore" id="meleeToolAxeT1IronFireaxe" />
-			</response>
-			<response id="SdcsSMG" text="SdcsNPC_UseSMG" ref_text="Use SMG">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunHandgunT3SMG5" />
-				<action type="SwapWeapon, SCore" id="gunHandgunT3SMG5" />
-			</response>
-			<response id="SdcsIronPistol" text="SdcsNPC_UseIronPistol" ref_text="Use Pistol">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunHandgunT1Pistol" />
-				<action type="SwapWeapon, SCore" id="gunHandgunT1Pistol" />
-			</response>
-			<response id="SdcsDesertEagle" text="SdcsNPC_UseDesertEagle" ref_text="Use DesertEagle">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunHandgunT3DesertVulture" />
-				<action type="SwapWeapon, SCore" id="gunHandgunT3DesertVulture" />
-			</response>
-			<response id="SdcsPipeRifle" text="SdcsNPC_UsePipeRifle" ref_text="Use PipeRifle">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunRifleT0PipeRifle" />
-				<action type="SwapWeapon, SCore" id="gunRifleT0PipeRifle" />
-			</response>
-			<response id="SdcsPipeMachineGun" text="SdcsNPC_UsePipeMachineGun" ref_text="Use PipeMachinegun">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunMGT0PipeMachineGun" />
-				<action type="SwapWeapon, SCore" id="gunMGT0PipeMachineGun" />
-			</response>
-			<response id="SdcsM60" text="SdcsNPC_UseM60" ref_text="Use M60">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunMGT3M60" />
-				<action type="SwapWeapon, SCore" id="gunMGT3M60" />
-			</response>
-			<response id="SdcsAK47" text="SdcsNPC_UseAK47" ref_text="Use AK47">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunMGT1AK47" />
-				<action type="SwapWeapon, SCore" id="gunMGT1AK47" />
-			</response>
-			<response id="SdcsTacticalAR" text="SdcsNPC_UseTacticalAR" ref_text="Use AssaultRifle">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunMGT2TacticalAR" />
-				<action type="SwapWeapon, SCore" id="gunMGT2TacticalAR" />
-			</response>
-			<response id="SdcsHuntingRifle" text="SdcsNPC_UseHuntingRifle" ref_text="Use HuntingRifle">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunRifleT1HuntingRifle" />
-				<action type="SwapWeapon, SCore" id="gunRifleT1HuntingRifle" />
-			</response>
-			<response id="SdcsSniperRifle" text="SdcsNPC_UseSniperRifle" ref_text="Use SniperRifle">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunRifleT3SniperRifle" />
-				<action type="SwapWeapon, SCore" id="gunRifleT3SniperRifle" />
-			</response>
-			<response id="SdcsPipeShotgun" text="SdcsNPC_UsePipeShotgun" ref_text="Use PipeShotgun">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunShotgunT0PipeShotgun" />
-				<action type="SwapWeapon, SCore" id="gunShotgunT0PipeShotgun" />
-			</response>
-			<response id="SdcsPumpShotgun" text="SdcsNPC_UsePumpShotgun" ref_text="Use Shotgun">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunShotgunT2PumpShotgun" />
-				<action type="SwapWeapon, SCore" id="gunShotgunT2PumpShotgun" />
-			</response>
-			<response id="SdcsAutoShotgun" text="SdcsNPC_UseAutoShotgun" ref_text="Use AutoShotgun">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunShotgunT3AutoShotgun" />
-				<action type="SwapWeapon, SCore" id="gunShotgunT3AutoShotgun" />
-			</response>
-			<response id="SdcsLongbow" text="SdcsNPC_UseLongbow" ref_text="Use Longbow">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunBowT1WoodenBow" />
-				<action type="SwapWeapon, SCore" id="gunBowT1WoodenBow" />
-			</response>
-			<response id="SdcsCrossbow" text="SdcsNPC_UseCrossbow" ref_text="Use Crossbow">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunBowT1IronCrossbow" />
-				<action type="SwapWeapon, SCore" id="gunBowT1IronCrossbow" />
-			</response>
-			<response id="SdcsRocketLauncher" text="SdcsNPC_UseRocketLauncher" ref_text="Use RocketLauncher">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunExplosivesT3RocketLauncher" />
-				<action type="SwapWeapon, SCore" id="gunExplosivesT3RocketLauncher" />
-			</response>
-
-			<!-- The 20 missing vanilla player weapons, same possession driven pattern as
-			     the rows above: hidden unless the NPC holds the exact player item, and the
-			     swap equips that exact player item. -->
-			<response id="SdcsBoneKnife" text="SdcsNPC_UseBoneKnife" ref_text="Use Bone Knife">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnBladeT0BoneKnife" />
-				<action type="SwapWeapon, SCore" id="meleeWpnBladeT0BoneKnife" />
-			</response>
-			<response id="SdcsSteelClub" text="SdcsNPC_UseSteelClub" ref_text="Use Steel Club">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnClubT3SteelClub" />
-				<action type="SwapWeapon, SCore" id="meleeWpnClubT3SteelClub" />
-			</response>
-			<response id="SdcsPipeBaton" text="SdcsNPC_UsePipeBaton" ref_text="Use Pipe Baton">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnBatonT0PipeBaton" />
-				<action type="SwapWeapon, SCore" id="meleeWpnBatonT0PipeBaton" />
-			</response>
-			<response id="SdcsStunBaton" text="SdcsNPC_UseStunBaton" ref_text="Use Stun Baton">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnBatonT2StunBaton" />
-				<action type="SwapWeapon, SCore" id="meleeWpnBatonT2StunBaton" />
-			</response>
-			<response id="SdcsLeatherKnuckles" text="SdcsNPC_UseLeatherKnuckles" ref_text="Use Leather Knuckles">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnKnucklesT0LeatherKnuckles" />
-				<action type="SwapWeapon, SCore" id="meleeWpnKnucklesT0LeatherKnuckles" />
-			</response>
-			<response id="SdcsIronKnuckles" text="SdcsNPC_UseIronKnuckles" ref_text="Use Iron Knuckles">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnKnucklesT1IronKnuckles" />
-				<action type="SwapWeapon, SCore" id="meleeWpnKnucklesT1IronKnuckles" />
-			</response>
-			<response id="SdcsSteelKnuckles" text="SdcsNPC_UseSteelKnuckles" ref_text="Use Steel Knuckles">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnKnucklesT3SteelKnuckles" />
-				<action type="SwapWeapon, SCore" id="meleeWpnKnucklesT3SteelKnuckles" />
-			</response>
-			<response id="SdcsSteelAxe" text="SdcsNPC_UseSteelAxe" ref_text="Use Steel Axe">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeToolAxeT2SteelAxe" />
-				<action type="SwapWeapon, SCore" id="meleeToolAxeT2SteelAxe" />
-			</response>
-			<response id="SdcsChainsaw" text="SdcsNPC_UseChainsaw" ref_text="Use Chainsaw">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeToolAxeT3Chainsaw" />
-				<action type="SwapWeapon, SCore" id="meleeToolAxeT3Chainsaw" />
-			</response>
-			<response id="SdcsStoneSledge" text="SdcsNPC_UseStoneSledge" ref_text="Use Stone Sledgehammer">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnSledgeT0StoneSledgehammer" />
-				<action type="SwapWeapon, SCore" id="meleeWpnSledgeT0StoneSledgehammer" />
-			</response>
-			<response id="SdcsIronSledge" text="SdcsNPC_UseIronSledge" ref_text="Use Iron Sledgehammer">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnSledgeT1IronSledgehammer" />
-				<action type="SwapWeapon, SCore" id="meleeWpnSledgeT1IronSledgehammer" />
-			</response>
-			<response id="SdcsSteelSledge" text="SdcsNPC_UseSteelSledge" ref_text="Use Steel Sledgehammer">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnSledgeT3SteelSledgehammer" />
-				<action type="SwapWeapon, SCore" id="meleeWpnSledgeT3SteelSledgehammer" />
-			</response>
-			<response id="SdcsStoneSpear" text="SdcsNPC_UseStoneSpear" ref_text="Use Stone Spear">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnSpearT0StoneSpear" />
-				<action type="SwapWeapon, SCore" id="meleeWpnSpearT0StoneSpear" />
-			</response>
-			<response id="SdcsSteelSpear" text="SdcsNPC_UseSteelSpear" ref_text="Use Steel Spear">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="meleeWpnSpearT3SteelSpear" />
-				<action type="SwapWeapon, SCore" id="meleeWpnSpearT3SteelSpear" />
-			</response>
-			<response id="SdcsMagnum" text="SdcsNPC_UseMagnum" ref_text="Use Magnum">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunHandgunT2Magnum44" />
-				<action type="SwapWeapon, SCore" id="gunHandgunT2Magnum44" />
-			</response>
-			<response id="SdcsLeverRifle" text="SdcsNPC_UseLeverRifle" ref_text="Use Lever Action Rifle">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunRifleT2LeverActionRifle" />
-				<action type="SwapWeapon, SCore" id="gunRifleT2LeverActionRifle" />
-			</response>
-			<response id="SdcsDoubleBarrel" text="SdcsNPC_UseDoubleBarrel" ref_text="Use Double Barrel">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunShotgunT1DoubleBarrel" />
-				<action type="SwapWeapon, SCore" id="gunShotgunT1DoubleBarrel" />
-			</response>
-			<response id="SdcsPrimitiveBow" text="SdcsNPC_UsePrimitiveBow" ref_text="Use Primitive Bow">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunBowT0PrimitiveBow" />
-				<action type="SwapWeapon, SCore" id="gunBowT0PrimitiveBow" />
-			</response>
-			<response id="SdcsCompoundBow" text="SdcsNPC_UseCompoundBow" ref_text="Use Compound Bow">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunBowT3CompoundBow" />
-				<action type="SwapWeapon, SCore" id="gunBowT3CompoundBow" />
-			</response>
-			<response id="SdcsCompoundCrossbow" text="SdcsNPC_UseCompoundCrossbow" ref_text="Use Compound Crossbow">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<requirement type="NPCHasItemSDX, SCore" requirementtype="Hide" id="gunBowT3CompoundCrossbow" />
-				<action type="SwapWeapon, SCore" id="gunBowT3CompoundCrossbow" />
-			</response>
 
 			<!-- Menu navigation responses. Live: they only play a sound and change statement. -->
-			<!-- Nav into the Carried Weapons statement. The gates
-			     match the other rows (hired + the sdcsnpc tag), so the statement
-			     is reachable only by hired NPCs of our line. -->
-			<response id="Carried" text="SdcsNPC_Carried Weapons" nextstatementid="Carried Weapons" ref_text="Carried Weapons">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Weapon Classes" />
-			</response>
-			<response id="Weapon Menu" text="SdcsNPC_Weapon Menu" nextstatementid="Weapon Classes" ref_text="Weapon Menu">
-				<requirement type="Leader, SCore" requirementtype="Hide" />
-				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Weapon Classes" />
-			</response>
 			<response id="Command Menu" text="SdcsNPC_Command Menu" nextstatementid="Command Menu" ref_text="Command Menu">
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Command Menu" />
@@ -840,35 +455,6 @@
 				<requirement type="Leader, SCore" requirementtype="Hide" />
 				<requirement type="Admin" requirementtype="Hide" />
 				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Command Menu" />
-			</response>
-			<!-- Same category gate as the legacy menu. A category row is hidden when the NPC holds none of the weapons in its menu; each id list is derived from that menu's own NPCHasItemSDX leaf gates, so a category can never show when every leaf in it is hidden. -->
-			<response id="Blades" text="SdcsNPC_Blades" nextstatementid="Blades Menu" ref_text="Blades Menu">
-				<requirement type="NPCHasAnyItem, NPCSdcsCharacters" requirementtype="Hide" id="meleeWpnBladeT1HuntingKnife,meleeWpnBladeT3Machete,meleeWpnBladeT0BoneKnife" />
-				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Blades Menu" />
-			</response>
-			<response id="Clubs" text="SdcsNPC_Clubs" nextstatementid="Clubs Menu" ref_text="Clubs Menu">
-				<requirement type="NPCHasAnyItem, NPCSdcsCharacters" requirementtype="Hide" id="meleeWpnClubT0WoodenClub,meleeWpnClubT1BaseballBat,meleeWpnClubT3SteelClub,meleeWpnBatonT0PipeBaton,meleeWpnBatonT2StunBaton,meleeWpnKnucklesT0LeatherKnuckles,meleeWpnKnucklesT1IronKnuckles,meleeWpnKnucklesT3SteelKnuckles" />
-				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Clubs Menu" />
-			</response>
-			<response id="Heavy" text="SdcsNPC_Heavy" nextstatementid="Heavy Menu" ref_text="Heavy Menu">
-				<requirement type="NPCHasAnyItem, NPCSdcsCharacters" requirementtype="Hide" id="meleeToolAxeT1IronFireaxe,meleeWpnSpearT1IronSpear,meleeToolAxeT2SteelAxe,meleeToolAxeT3Chainsaw,meleeWpnSledgeT0StoneSledgehammer,meleeWpnSledgeT1IronSledgehammer,meleeWpnSledgeT3SteelSledgehammer,meleeWpnSpearT0StoneSpear,meleeWpnSpearT3SteelSpear" />
-				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Heavy Menu" />
-			</response>
-			<response id="Pistols" text="SdcsNPC_Pistols" nextstatementid="Pistol Menu" ref_text="Pistol Menu">
-				<requirement type="NPCHasAnyItem, NPCSdcsCharacters" requirementtype="Hide" id="gunHandgunT3SMG5,gunHandgunT0PipePistol,gunHandgunT1Pistol,gunHandgunT3DesertVulture,gunHandgunT2Magnum44" />
-				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Pistol Menu" />
-			</response>
-			<response id="Rifles" text="SdcsNPC_RifleMenu" nextstatementid="Rifle Menu" ref_text="Rifle Menu">
-				<requirement type="NPCHasAnyItem, NPCSdcsCharacters" requirementtype="Hide" id="gunRifleT0PipeRifle,gunMGT0PipeMachineGun,gunMGT3M60,gunMGT1AK47,gunMGT2TacticalAR,gunRifleT1HuntingRifle,gunRifleT3SniperRifle,gunRifleT2LeverActionRifle" />
-				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Weapon Classes" />
-			</response>
-			<response id="ShotGuns" text="SdcsNPC_ShotGunMenu" nextstatementid="ShotGun Menu" ref_text="ShotGun Menu">
-				<requirement type="NPCHasAnyItem, NPCSdcsCharacters" requirementtype="Hide" id="gunShotgunT0PipeShotgun,gunShotgunT2PumpShotgun,gunShotgunT3AutoShotgun,gunShotgunT1DoubleBarrel" />
-				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Weapon Classes" />
-			</response>
-			<response id="Others" text="SdcsNPC_OtherMenu" nextstatementid="Other Menu" ref_text="Other Menu">
-				<requirement type="NPCHasAnyItem, NPCSdcsCharacters" requirementtype="Hide" id="gunBowT1WoodenBow,gunBowT1IronCrossbow,gunExplosivesT3RocketLauncher,gunBowT0PrimitiveBow,gunBowT3CompoundBow,gunBowT3CompoundCrossbow" />
-				<action type="PlaySoundSDX, SCore" id="SdcsNPC_Weapon Classes" />
 			</response>
 
 			<!-- STUBS: one stub remains. Dialog.SelectResponse runs actions only if any
@@ -1036,25 +622,6 @@
         </statement>
     </append>
 
-    <!-- "What are you carrying?" in the SDCS Carried Weapons statement. The bag is private
-         (the player cannot open it), so this row is
-         how the leader sees it: the survivor SAYS one canned sentence listing the
-         medical, ammo and hire-currency kinds in her bag (the authority read is
-         VCCommandRouter.MutateSayCarrying, the sentence is BagSummaryRules.Line).
-         Leader-only with the same requirements as the neighbouring Carried row.
-         The row is appended AFTER the static back row on purpose: the 10 row grid
-         cuts from the tail, so at >=9 carried weapons THIS row is the one that
-         drops, and the Weapon Menu back row (grid row 10 at worst) always stays. -->
-    <append xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Carried Weapons']">
-        <response_entry id="WhatCarrying" ref_text="What are you carrying?" />
-    </append>
-    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
-        <response id="WhatCarrying" text="SdcsNPC_WhatCarrying" ref_text="What are you carrying?">
-            <requirement type="Leader, SCore" requirementtype="Hide" />
-            <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-            <action type="SayCarrying, 1-XNPCVoiceControl" />
-        </response>
-    </append>
     <!-- "Craft..." (crafting): leader only, our survivors whose class runs jobs. The
          row leads to the Craft Menu statement; the recipe rows (one page of what she
          can make now, then a More row) and, on the Craft Count statement, the count
@@ -1062,11 +629,13 @@
          row, the two statements and their own rows: Nevermind on the menu, Back on
          the count page. A count row sends the order and closes the dialog. Grid
          budget: 8 recipes, More and Nevermind make 10 rows. -->
-    <!-- The start page (the top menu): Hire or Dismiss, Follow me, Come here, Show Me your
-         inventory, Craft..., Order wheel, Jobs and gear, Nevermind. The base file holds Hire,
-         Dismiss, Follow me, Show Me your inventory and Nevermind; the rows below land before
-         Show Me (Come here) and before Nevermind (the rest, in file order). Hire hides once
-         she is hired and Dismiss shows only to her leader, so a page shows 8 rows at most. -->
+    <!-- The start page (the top menu): Hire or Dismiss, Follow me, Come here, Equipment...,
+         Craft..., Order wheel, Jobs and gear, Pay / Gift..., Admin Menu, Nevermind.
+         The base file holds Hire, Dismiss, Follow me, Show Me your inventory and Nevermind; the
+         rows below land before Show Me (Come here, then Equipment..., which takes Show Me's
+         place) and before Nevermind (the rest, in file order). Hire hides once she is hired and
+         Dismiss shows only to her leader, so a page
+         shows 10 rows at most, the dialog grid's size: a new start row must hide another. -->
     <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='done']">
         <response_entry id="Craft Menu" ref_text="Craft..." />
     </insertBefore>
@@ -1104,6 +673,8 @@
     <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='done']">
         <response_entry id="OrderWheel" ref_text="Order wheel" />
         <response_entry id="JobsAndGear" ref_text="Jobs and gear" />
+        <response_entry id="Pay Gift Menu" ref_text="Pay / Gift..." />
+        <response_entry id="Admin Menu" ref_text="Admin Menu" />
     </insertBefore>
     <append xpath="/dialogs/dialog[@id='SdcsNPC']">
         <response id="ComeHere" text="SdcsNPC_ComeHere" ref_text="Come here">
@@ -1117,6 +688,22 @@
         <response id="JobsAndGear" text="SdcsNPC_JobsAndGear" ref_text="Jobs and gear">
             <requirement type="Leader, SCore" requirementtype="Hide" />
             <action type="JobsAndGear, 1-XNPCVoiceControl" />
+        </response>
+    </append>
+    <!-- "Equipment...": leader only, our survivors. The row takes the start page slot of Show Me your
+         inventory (the page stays at 10 rows, the dialog grid's size) and opens her equipment window
+         (XUiC_NpcEquipWindow: her armour slots, weapon and ammo from her pack; its Open her backpack
+         button opens her pack and its What are you carrying? button has her say what her bag holds).
+         No next statement: the click closes the dialog. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='ShowMe']">
+        <response_entry id="Equipment Menu" ref_text="Equipment..." />
+    </insertBefore>
+    <remove xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='start']/response_entry[@id='ShowMe']"/>
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="Equipment Menu" text="SdcsNPC_EquipmentMenu" ref_text="Equipment...">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
+            <action type="EquipmentWindowOpen, 1-XNPCVoiceControl" />
         </response>
     </append>
     <!-- "Read...": leader only, our survivors whose class runs jobs (the Craft row's gate).
@@ -1138,22 +725,77 @@
             <response_entry id="Read Books Back" ref_text="Back" />
         </statement>
     </append>
-    <!-- "Wardrobe...": leader only, our survivors. The response leads to the Wardrobe statement;
-         its rows (each armour piece in her pack, greyed when it cannot be worn, and a back row for
-         each slot she wears a picked piece in) are injected at display time by CraftMenuPatch
-         (WardrobeMenuRows); picking one has her wear it. No start page row: her hold-E ring's
-         Wardrobe entry opens the statement straight. -->
+    <!-- "Pay / Gift...": leader only, our survivors. The response leads to the Pay Gift statement;
+         its rows (pay this week while it is due, else the paid up line; the gifts the leader can give
+         her) are injected at display time by CraftMenuPatch (PayGiftMenuRows). -->
     <append xpath="/dialogs/dialog[@id='SdcsNPC']">
-        <response id="Wardrobe Menu" text="SdcsNPC_WardrobeMenu" nextstatementid="Wardrobe" ref_text="Wardrobe...">
+        <response id="Pay Gift Menu" text="SdcsNPC_PayGiftMenu" nextstatementid="Pay Gift" ref_text="Pay / Gift...">
             <requirement type="Leader, SCore" requirementtype="Hide" />
             <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-            <action type="WardrobeMenuOpen, 1-XNPCVoiceControl" />
+            <action type="PayGiftOpen, 1-XNPCVoiceControl" />
         </response>
-        <response id="Wardrobe Back" text="SdcsNPC_CraftBack" nextstatementid="start" ref_text="Back">
+        <response id="Pay Gift Back" text="SdcsNPC_CraftBack" nextstatementid="start" ref_text="Back">
             <requirement type="Leader, SCore" requirementtype="Hide" />
         </response>
-        <statement id="Wardrobe" text="SdcsNPC_WardrobeText" ref_text="What should I wear?">
-            <response_entry id="Wardrobe Back" ref_text="Back" />
+        <statement id="Pay Gift" text="SdcsNPC_PayGiftText" ref_text="What have you got for me?">
+            <response_entry id="Pay Gift Back" ref_text="Back" />
+        </statement>
+    </append>
+    <!-- "Admin Menu": the base response keeps its leader gate and trades the game's Admin gate
+         (the debug menu) for our debug gate, so the start row shows only while VerboseLogging is
+         on; the cvar dump drops the game's Admin gate too. The Admin Menu statement gains
+         Bag totals... (before the cvar dump) and a Back to the start page. The Admin Bag statement's
+         rows (her bag's counts, one greyed row each) are injected at display time by CraftMenuPatch
+         (AdminBagMenuRows); its Back returns to the Admin Menu. -->
+    <remove xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Admin Menu']/requirement[@type='Admin']"/>
+    <remove xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Dump2Log']/requirement[@type='Admin']"/>
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']/response[@id='Admin Menu']">
+        <requirement type="SdcsDebug, NPCSdcsCharacters" requirementtype="Hide" />
+    </append>
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Admin Menu']/response_entry[@id='Dump2Log']">
+        <response_entry id="Admin Bag" ref_text="Bag totals..." />
+    </insertBefore>
+    <!-- "Remove (debug)...": leader only, on the Admin page, between the cvar dump and Back (anchored on the base done row, placed before the Back insert). The
+         row leads to the AdminRemoveConfirm statement (the base Dismiss
+         confirm shape); Yes runs the game's own trader remove (waypoint
+         cleanup + the game_remove_entity action, DialogActionAdminRemove),
+         No returns to the Admin page. The hold-E ring's game remove entry is
+         hidden for a hired survivor (SdcsHiredTradeHidePatch), so this is her
+         removal path. -->
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Admin Menu']/response_entry[@id='done']">
+        <response_entry id="Admin Remove" ref_text="Remove (debug)..." />
+    </insertBefore>
+    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Admin Menu']/response_entry[@id='done']">
+        <response_entry id="Admin Back" ref_text="Back" />
+    </insertBefore>
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="Admin Bag" text="SdcsNPC_AdminBag" nextstatementid="Admin Bag" ref_text="Bag totals...">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <response id="Admin Back" text="SdcsNPC_CraftBack" nextstatementid="start" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <response id="Admin Bag Back" text="SdcsNPC_CraftBack" nextstatementid="Admin Menu" ref_text="Back">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <statement id="Admin Bag" text="SdcsNPC_AdminBagText" ref_text="What is in my bag?">
+            <response_entry id="Admin Bag Back" ref_text="Back" />
+        </statement>
+    </append>
+    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
+        <response id="Admin Remove" text="VCAdminRemove" nextstatementid="AdminRemoveConfirm" ref_text="Remove (debug)...">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <response id="AdminRemoveYes" text="VCAdminRemoveYes" ref_text="Yes. Remove me from the world.">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+            <action type="AdminRemove, 1-XNPCVoiceControl" />
+        </response>
+        <response id="AdminRemoveNo" text="VCAdminRemoveNo" nextstatementid="Admin Menu" ref_text="No. Stay.">
+            <requirement type="Leader, SCore" requirementtype="Hide" />
+        </response>
+        <statement id="AdminRemoveConfirm" text="VCAdminRemoveConfirm" ref_text="Remove me from the world? This cannot be undone.">
+            <response_entry id="AdminRemoveYes" ref_text="Yes. Remove me from the world." />
+            <response_entry id="AdminRemoveNo" ref_text="No. Stay." />
         </statement>
     </append>
     <!-- "Your progress": leader only, our survivors. The response leads to the Progress
@@ -1194,28 +836,6 @@
         </response>
         <statement id="Progress Skill Group" text="SdcsNPC_SkillsText" ref_text="Here's what I've learned.">
             <response_entry id="Progress Skill Group Back" ref_text="Back" />
-        </statement>
-    </append>
-    <!-- "Ammo...": leader only, our survivors. The row leads to the Ammo statement;
-         its rows (each ammo type of the gun in her hand she carries, with the count,
-         the loaded one marked) are injected at display time by CraftMenuPatch
-         (AmmoMenuRows); picking one loads it. The row sits in the weapon menu (Weapon
-         Classes), right after Carried Weapons; its Back row returns there. Grid: that page lists 11 rows, so the 10 row
-         grid cuts Nevermind only when she carries a weapon of all seven classes. -->
-    <insertBefore xpath="/dialogs/dialog[@id='SdcsNPC']/statement[@id='Weapon Classes']/response_entry[@id='Blades']">
-        <response_entry id="Ammo Menu" ref_text="Ammo..." />
-    </insertBefore>
-    <append xpath="/dialogs/dialog[@id='SdcsNPC']">
-        <response id="Ammo Menu" text="SdcsNPC_AmmoMenu" nextstatementid="Ammo" ref_text="Ammo...">
-            <requirement type="Leader, SCore" requirementtype="Hide" />
-            <requirement type="HasTag, SCore" requirementtype="Hide" value="sdcsnpc" />
-            <action type="AmmoMenuOpen, 1-XNPCVoiceControl" />
-        </response>
-        <response id="Ammo Back" text="SdcsNPC_CraftBack" nextstatementid="Weapon Classes" ref_text="Back">
-            <requirement type="Leader, SCore" requirementtype="Hide" />
-        </response>
-        <statement id="Ammo" text="SdcsNPC_AmmoText" ref_text="Which ammo should I load?">
-            <response_entry id="Ammo Back" ref_text="Back" />
         </statement>
     </append>
 </configs>

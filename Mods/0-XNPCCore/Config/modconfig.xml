@@ -73,6 +73,43 @@
            navigation sockets (the ones with the chevron) and the command sockets.
            The command default matches the window XML, so sockets look as
            before unless you set one.
+      TargetLockSeconds: Go there (the wheel and the voice) keeps the last zombie,
+           hostile or wild animal you aimed at for this many seconds, so a wheel
+           open or a "go there" whose crosshair slipped onto the ground behind it
+           still orders the kill. A fresh entity under the crosshair always wins.
+           0 turns the lock off; 0 to 10, default 3.
+      MarkKey: the key that marks the enemy under your crosshair (a Unity KeyCode
+           name, default Mouse2, the middle mouse button). The mark is the Go there
+           and Stealth kill target, with an icon over it, until it dies, unloads or
+           leaves the command range; the key again on empty space clears it. It
+           only acts on a kill target and never while aiming down sights, so the
+           game keeps the key otherwise. None turns it off.
+      LookPickDegrees: how close to a hire your aim must be for the combat wheel to
+           open on her alone, degrees, 0 to 30, default 8; on a hire under the
+           crosshair it always does, and never while an enemy is under the
+           crosshair, marked or locked.
+      MarkReachMetres: how far the mark key reaches on its own ray (the
+           game's gun ray: it stops on terrain and walls, and a hire standing
+           in the line is looked past), metres, 10 to 80, default 50. The key
+           marks what its ray hits, so it reaches past the crosshair's own
+           reach, which stops on grass and plants in front of a distant target.
+      MarkAssistMetres / MarkAssistDegrees: the mark key's aim assist. When its
+           ray finds no enemy, the enemy whose chest or head sits nearest your
+           aim line is marked if it is within MarkAssistMetres of the line (0 to
+           2, default 0.6) or the MarkAssistDegrees cone (0 to 5, default 1.5),
+           whichever is wider, and in clear view. Both 0 turn it off.
+      MarkRangeMetres: how far from you a marked enemy may be before the mark
+           ends, metres, 10 to 80, default 60. The key reaches MarkReachMetres
+           with its own ray; this bounds how long a mark may outlive that reach
+           once the target walks away.
+
+    === Whistle Section ===
+      The whistle key, a menu feature that works with STT/TTS/LLM off.
+      Key: the whistle key (a Unity KeyCode name, default Quote). TAP = every hire
+           breaks off the fight and comes to you; HOLD = the combat wheel (names
+           on top, seven one-click orders). None disables it.
+      HoldSeconds: a press held this long is a HOLD (default 0.30).
+      Sound: the tap plays a whistle at you (default true).
 
     === LLM Section ===
       Controls the local language model via llama-server.
@@ -312,7 +349,59 @@
              look exactly as before unless set. -->
         <NavBorderColor>80,180,255,255</NavBorderColor>
         <CommandBorderColor>0,0,0,128</CommandBorderColor>
+        <!-- Target lock in seconds: the last kill target that sat under the
+             crosshair stays the Go there target this long when the wheel opens
+             (or "go there" is said) with the crosshair on a block or the ground.
+             A fresh entity under the crosshair always wins. 0 = off, 0 to 10. -->
+        <TargetLockSeconds>3</TargetLockSeconds>
+        <!-- The key that marks the enemy under your crosshair (a Unity KeyCode
+             name; Mouse2 is the middle mouse button): it becomes the Go there and
+             Stealth kill target, with an icon over it, until it dies or leaves
+             the command range. Again on empty space clears it. It only acts on
+             a hostile or wild animal and never while aiming down sights, so the
+             game keeps the key otherwise. None turns it off. -->
+        <MarkKey>Mouse2</MarkKey>
+        <!-- How close to a hire your aim must be for the combat wheel to open
+             on her alone, degrees, 0 to 30; on a hire under the crosshair it
+             always does. With an enemy under the crosshair, marked or locked the
+             wheel opens on All. -->
+        <LookPickDegrees>8</LookPickDegrees>
+        <!-- How far the mark key reaches on its own ray (the game's gun ray: it
+             stops on terrain and walls, and a hire standing in the line is looked
+             past), metres, 10 to 80, default 50. -->
+        <MarkReachMetres>50</MarkReachMetres>
+        <!-- The mark key's aim assist: when its ray finds no enemy, the enemy
+             whose chest or head sits nearest your aim line is marked if it is
+             within this many metres of the line (0 to 2, default 0.6) or this
+             cone in degrees (0 to 5, default 1.5), whichever is wider, and in
+             clear view. Both 0 turn the assist off. -->
+        <MarkAssistMetres>0.6</MarkAssistMetres>
+        <MarkAssistDegrees>1.5</MarkAssistDegrees>
+        <!-- How far from you a marked enemy may be before the mark ends, metres,
+             10 to 80, default 60. The key reaches MarkReachMetres with its own
+             ray; this bounds how long a mark may outlive that once the target
+             walks away. -->
+        <MarkRangeMetres>60</MarkRangeMetres>
     </FormationRadial>
+
+    <!-- ================================================================ -->
+    <!-- Whistle: the whistle key. TAP it and every hire breaks off the   -->
+    <!-- fight and comes to you (her stance comes back once she is back). -->
+    <!-- HOLD it and the combat wheel opens: the hires' names on top, and -->
+    <!-- seven one-click orders. A menu feature: works with STT/TTS/LLM   -->
+    <!-- off. The order wheel key above is not changed by this one.       -->
+    <!-- ================================================================ -->
+    <Whistle>
+        <!-- Key (a Unity KeyCode name). Default Quote, the key beside Semicolon.
+             Every letter A-Z, 0-9 and the F-keys carry a game default binding.
+             Set to None to disable the whistle key (empty falls back to Quote). -->
+        <Key>Quote</Key>
+        <!-- Seconds: a press held this long opens the combat wheel; released
+             sooner it is a tap (the whistle). -->
+        <HoldSeconds>0.30</HoldSeconds>
+        <!-- The tap plays a whistle at you (true / false). -->
+        <Sound>true</Sound>
+    </Whistle>
 
     <!-- ================================================================ -->
     <!-- LLM: Local Language Model (llama-server)                         -->
@@ -440,10 +529,11 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     </RAG>
 
     <!-- ================================================================ -->
-    <!-- NPCToNPC: Ambient NPC-to-NPC idle chatter                        -->
+    <!-- NPCToNPC: Ambient NPC-to-NPC idle chatter (off by default; the -->
+    <!-- two-resident small talk replaces it)                            -->
     <!-- ================================================================ -->
     <NPCToNPC>
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
         <Range>5</Range>
         <ScanIntervalSeconds>30</ScanIntervalSeconds>
         <Chance>0.25</Chance>
@@ -465,6 +555,54 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
         <GraceDays>2</GraceDays>
         <ApprovalTimeoutDays>3</ApprovalTimeoutDays>
     </Billing>
+
+    <!-- ================================================================ -->
+    <!-- Relationship: trust and affinity, the price, the event signals   -->
+    <!-- and gifts. Fully inert when Enabled is false or the class carries -->
+    <!-- OptOutTag.                                                        -->
+    <!-- ================================================================ -->
+    <Relationship>
+        <!-- Master switch: false makes the whole feature inert. -->
+        <Enabled>true</Enabled>
+        <!-- Entity class tag that opts a single hire out. -->
+        <OptOutTag>norelationship</OptOutTag>
+        <!-- Share of a per-hire delta that ripples to the player global. -->
+        <GlobalShare>0.25</GlobalShare>
+        <!-- A positive delta below 0 is multiplied by this. -->
+        <RecoveryRate>0.5</RecoveryRate>
+        <!-- Effective trust at or below this scars her. -->
+        <ScarThreshold>-50</ScarThreshold>
+        <!-- A scarred trust can never raise effective trust above this. -->
+        <ScarCeiling>50</ScarCeiling>
+        <!-- The price multiplier at +100 trust. -->
+        <PriceMinMultiplier>0.85</PriceMinMultiplier>
+        <!-- The price multiplier at -100 trust. -->
+        <PriceMaxMultiplier>1.50</PriceMaxMultiplier>
+        <!-- Trust on a paid week. -->
+        <PaidTrust>2</PaidTrust>
+        <!-- Trust when she goes down. -->
+        <DownedTrust>-4</DownedTrust>
+        <!-- Trust when her leader revives her. -->
+        <RevivedTrust>3</RevivedTrust>
+        <!-- Affinity when her leader revives her. -->
+        <RevivedAffinity>3</RevivedAffinity>
+        <!-- Global trust when one of your hires dies. -->
+        <HireDiedGlobalTrust>-5</HireDiedGlobalTrust>
+        <!-- Trust when you kill an enemy that was targeting her. -->
+        <AttackerKilledTrust>1</AttackerKilledTrust>
+        <!-- Affinity for a blood moon survived together. -->
+        <BloodMoonAffinity>4</BloodMoonAffinity>
+        <!-- Divisor for the gift value. -->
+        <GiftValueUnit>50</GiftValueUnit>
+        <!-- The per-hire daily cap on gift points. -->
+        <GiftDailyCap>6</GiftDailyCap>
+        <!-- Gift items her bag keeps: kind medical, stacks = how many stacks of that item. Drinks, her guns' ammo and coins are always gifts. -->
+        <GiftItems>
+            <Item name="medicalFirstAidBandage" kind="medical" stacks="2"/>
+            <Item name="medicalFirstAidKit" kind="medical" stacks="2"/>
+            <Item name="drugPainkillers" kind="medical" stacks="1"/>
+        </GiftItems>
+    </Relationship>
 
     <!-- ================================================================ -->
     <!-- FormationDistances: slot distances keyed by vcFormationDistance  -->
@@ -824,15 +962,23 @@ If the entire transcript contains no extractable facts, write only: NONE</Extrac
     <!-- not be announced. A companion walking beside or just ahead of you is routinely         -->
     <!-- outside a narrow cone, and facing changes second to second while it pathfinds, so a    -->
     <!-- tight cone flickers and silences normal greetings.                                    -->
-    <!-- The check is load-bearing, not redundant: our NPCs inherit MaxViewAngle 360, and both  -->
-    <!-- the base and SCore v4 CanSee skip their own view cone below 10 m - every greeting      -->
-    <!-- range. Watch [PROACTIVE] Skipped ... facing away to see how often it fires.           -->
+    <!-- The check is load-bearing, not redundant: our NPCs see 220 degrees awake              -->
+    <!-- (npcSdcsBase MaxViewAngle), and both the base and SCore v4 CanSee skip their own      -->
+    <!-- view cone below 10 m - every greeting range. Watch [PROACTIVE] Skipped ... facing     -->
+    <!-- away to see how often it fires.                                                       -->
     <GreetFacingConeDeg>270</GreetFacingConeDeg>
 
     <!-- How close, in metres, before a survivor greets you UNPROMPTED: the town-noise knob.   -->
     <!-- Must sit below the greet re-arm distance 20 (walk that far away and she may greet     -->
     <!-- again). 1 up to 20. Default 10.                                                       -->
     <ProactiveGreetRange>10</ProactiveGreetRange>
+
+    <!-- Once per group: after a survivor's greeting has played, no stranger within         -->
+    <!-- GreetGroupMetres greets for GreetGroupQuietSeconds (her contact is used up, so a   -->
+    <!-- POI greets you once, not once per resident). Your own hires always greet you.      -->
+    <!-- 0 turns it off. Metres 0 to 200, default 30; seconds 0 to 3600, default 120.       -->
+    <GreetGroupMetres>30</GreetGroupMetres>
+    <GreetGroupQuietSeconds>120</GreetGroupQuietSeconds>
 
     <!-- Tactical mode default: if true, every existing hire is put into tactical
          (command-only) mode once at the start of each session (it is re-applied at boot,

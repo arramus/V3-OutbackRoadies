@@ -407,8 +407,9 @@
 		<!-- [SDCS-SENTRY] Bandit sentry NPC entity groups, for the sleeper groups
 		     S_-Group_NPC_Bandits_Sentry and S_-Group_NPC_Bandits_SentryRanged (gamestages.xml):
 		     the Bandits All and Ranged groups above with each bandit replaced by her sentry,
-		     the same tiers by gamestage and the same weights. The Ranged sentries of tiers 2 and
-		     3 roll guns only. No none entries: every roll is a sentry. -->
+		     the same tiers by gamestage and the same weights. A sentry rolls from her tier's
+		     guns and spawns with 120 rounds for the rolled gun; the tier 1 melee sentry is
+		     the one melee sentry. No none entries: every roll is a sentry. -->
 		<entitygroup name="npcBanditsSentryGroupGS01">
 			<e n="npcSdcsBanditSentryMelee" p="0.007"/>
 			<e n="npcSdcsBanditSentryRanged" p="0.008"/>
@@ -2330,6 +2331,35 @@
 		<entitygroup name="npcSurvivorsGroupGS800">
 			<e n="npcSdcsSurvivorMaleT3" p="0.5"/>
 			<e n="npcSdcsSurvivorFemaleT3" p="0.5"/>
+		</entitygroup>
+
+		<!-- [SDCS-SENTRY] Friendly sentry NPC entity groups, for the sleeper group
+		     S_-Group_NPC_Survivors_Sentry (gamestages.xml): the POI resident survivor groups above
+		     with each survivor replaced by her sentry, the same tiers by gamestage and the same
+		     weights. No none entries: every roll is a sentry. -->
+		<entitygroup name="npcSurvivorsSentryGroupGS01">
+			<e n="npcSdcsSurvivorSentryMaleT1" p="0.5"/>
+			<e n="npcSdcsSurvivorSentryFemaleT1" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsSentryGroupGS50">
+			<e n="npcSdcsSurvivorSentryMaleT1" p="0.5"/>
+			<e n="npcSdcsSurvivorSentryFemaleT1" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsSentryGroupGS100">
+			<e n="npcSdcsSurvivorSentryMaleT2" p="0.5"/>
+			<e n="npcSdcsSurvivorSentryFemaleT2" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsSentryGroupGS200">
+			<e n="npcSdcsSurvivorSentryMaleT2" p="0.5"/>
+			<e n="npcSdcsSurvivorSentryFemaleT2" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsSentryGroupGS400">
+			<e n="npcSdcsSurvivorSentryMaleT3" p="0.5"/>
+			<e n="npcSdcsSurvivorSentryFemaleT3" p="0.5"/>
+		</entitygroup>
+		<entitygroup name="npcSurvivorsSentryGroupGS800">
+			<e n="npcSdcsSurvivorSentryMaleT3" p="0.5"/>
+			<e n="npcSdcsSurvivorSentryFemaleT3" p="0.5"/>
 		</entitygroup>
 
 		<!-- Friendly NPC entity groups -->

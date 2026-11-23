@@ -10,8 +10,8 @@
       Some actions require the player to be the NPC's leader (hired first):
         FollowPlayer, ComeHere, StopFollow, GuardHere, GuardReturn, Wander, Loot, LootHere, HarvestHere, MineHere, DigClayHere, PickHere, ButcherHere,
         BaseRepairHere, CombatRepairHere, RepairHere, RememberBase, MedicOn, MedicOff, RoleOn, RoleOff,
-        Dismiss, Pickup, OpenInventory, SwapWeapon, SetCombatMode, SetEngage,
-        SetCrouch, SetFollowDistance, SetFormation, MoveToPosition, Vehicle, Emote
+        Dismiss, Pickup, OpenInventory, SwapWeapon, SetWeaponPref, SetCombatMode, SetEngage,
+        SetCrouch, SetFollowDistance, SetFormation, MoveToPosition, Vehicle, Emote, GiftItem
 
       Actions that work on ANY NPC (no leader needed):
         Hire, OpenTraderInventory, GiveItem, GiveBuff, CustomDialog
@@ -70,13 +70,22 @@
                          carried weapon of that category; known names: pistol, rifle, shotgun, machinegun, bow, launcher,
                          blade, club, sledge, spear, baton, fists, gun, melee, hands)
       SetCombatMode      - Set combat behavior mode (ActionParam = 0/1/2; DEFERRED)
-      SetEngage          - Engagement (ActionParam 0=defensive, 1=aggressive, 2=hold fire, 3=disengage action)
+      SetEngage          - Engagement (ActionParam 0=defensive, 1=aggressive, 2=hold fire, 3=disengage action, 4=hunting)
+      SetWeaponPref      - The STICKY melee / ranged weapon order (ActionParam "ranged" / "melee"): the saved
+                           preference holds through fights and the base's automatic hand swaps respect it until
+                           the next weapon order. She takes the last weapon of that kind held by intent, else the
+                           best usable one; ranged with no usable gun falls back to melee and says so once
+                           (leader-only, squad-capable, passes the combat gate). NOT the one-shot SwapWeapon
+                           category phrases.
       SetAmmo            - The ammo for the gun in her hand (ActionParam kind:standard, ap, hp, slug, breaching,
                            flaming or exploding: her gun's own type of that kind; leader-only, individual)
       ReadBooks          - "read your books": she reads every schematic and crafting magazine she carries that
                            teaches her something, then says one line (leader-only, individual)
       Emote              - "wave", "salute", "dance": she plays a clip of the base's clip list in place
                            (ActionParam = the clip id, dance = a random dance; leader-only, the squad too)
+      GiftItem           - The player gives the NPC what he HOLDS: the held stack goes into her private bag
+                           (leader-only; SP / listen host only - a dedicated client is told. A held stack of
+                           her hire currency pays her due week first; only the coins left over are the gift)
       SetTacticalMode    - Player-wide tactical mode toggle (ActionParam 0=off, 1=command-only)
       SetCrouch          - CrouchOverride cvar (ActionParam 0=mirror leader, 1=crouch, 2=stand;
                            the order wheel shows only the 0/1 toggle, no stand socket)
@@ -1255,6 +1264,30 @@
             <Response lang="es">Voy en camino.;Me muevo hacia allí.</Response>
             <Response lang="de">Unterwegs.;Ich gehe dorthin.</Response>
             <ActionType>MoveToPosition</ActionType>
+        </Trigger>
+
+        <!-- === THE QUIET-KILL ORDER (SK2) === -->
+        <!-- "Take him out" / "quiet kill" and a "go there" aimed at an enemy all become the -->
+        <!-- quiet-kill order on the aimed enemy: the hire stalks it if it is unaware (the SK1 -->
+        <!-- task) and attacks it normally if it is already aware, in any stance. No ActionParam: -->
+        <!-- the target is the crosshair, resolved in the handler. The response pool is ORDERED, -->
+        <!-- not random: index 0 is the stalk line, index 1 the aware-target line, index 2 the -->
+        <!-- refusal (no enemy under the crosshair, or no melee-holding hire in a squad). -->
+        <Trigger enabled="true">
+            <Phrase>take him out quietly;take her out quietly;take it out quietly;take him out;take her out;quiet kill;</Phrase>
+            <Response lang="en">Going quiet.;On it.;Aim at someone first.</Response>
+            <Response lang="zh">我悄悄解决他。;收到，开打。;先瞄准目标。</Response>
+            <Response lang="tr">Sessize bitiyorum.;Hallediyorum.;Önce birine nişan al.</Response>
+            <Response lang="ru">Тихо подкрадусь.;Уже иду.;Сначала прицелься.</Response>
+            <Response lang="pt">Vou em silêncio.;Vou logo.;Aponte primeiro.</Response>
+            <Response lang="pl">Podeję cicho.;Zajmuję się.;Najpierw celuj.</Response>
+            <Response lang="ko">조용히 처리할게.;맡겼어.;먼저 조준해.</Response>
+            <Response lang="ja">静かにやるよ。;任せて。;先に狙いを定めて。</Response>
+            <Response lang="it">Ci vado in silenzio.;Ci sono.;Mira prima.</Response>
+            <Response lang="fr">J'y vais en silence.;J'y vais.;Vise d'abord.</Response>
+            <Response lang="es">Voy en silencio.;Me encargo.;Apunta primero.</Response>
+            <Response lang="de">Ich gehe still hin.;Mach ich.;Zielerst.</Response>
+            <ActionType>StealthKill</ActionType>
         </Trigger>
 
         <!-- === COMMANDED CROUCH (kneel) === -->
@@ -2864,13 +2897,15 @@
 
         <!-- === SIMPLE ENGAGEMENT MODEL === -->
         <!-- vcEngage gates hired combat via MayEngage. Stances: 1=aggressive, 0=defensive, 2=hold fire
-             (self-defence only, no leader-assist). This trigger is deliberately NOT named "full
+             (self-defence only, no leader-assist), 3=hunting (the leashed stalker: any enemy within
+             the hunting leash of the leader; the order arg is 4 because arg 3 is the action).
+             This trigger is deliberately NOT named "full
              control": that phrase collides with SetCombatMode mode 2 below and means ONLY the
              player-wide tactical mode. -->
         <!-- ActionParam 3 is not a stance - it is the DISENGAGE ACTION (break off, return, land in hold fire). -->
         <Trigger enabled="true">
-            <Phrase>weapons free;attack;engage;fight them;hunting mode;</Phrase>
-            <Aliases>engage;hunting;</Aliases>
+            <Phrase>weapons free;attack;engage;fight them;</Phrase>
+            <Aliases>engage;</Aliases>
             <Response lang="en">Weapons free.;Engaging.;On it.</Response>
             <Response lang="zh">武器放开。;开火。;执行。</Response>
             <Response lang="tr">Ateş izni var.;Savaşa giriyorum.;Tamam.</Response>
@@ -2942,6 +2977,66 @@
             <ActionType>SetEngage</ActionType>
             <ActionParam>3</ActionParam>
         </Trigger>
+        <!-- ActionParam 4 is the HUNTING STANCE (cvar 3, the leashed stalker). "hunting mode"
+             moved here from the Aggressive trigger (it meant the old player-wide mode 0 and now
+             names this stance); the bare word "hunting" is NOT an alias: aliases substring-match
+             the transcript and "hunting" would fire inside "hunting rifle" (SwapWeapon). -->
+        <Trigger enabled="true">
+            <Phrase>hunting mode;hunt them;go hunting;stalk;</Phrase>
+            <Response lang="en">Hunting mode.;On the hunt.;Stalking them.</Response>
+            <Response lang="zh">猎杀模式。;开始狩猎。;悄悄接近。</Response>
+            <Response lang="tr">Av modu.;Ava çıktım.;Sessizce takip ediyorum.</Response>
+            <Response lang="ru">Режим охоты.;Начинаю охоту.;Тихо подкрадываюсь.</Response>
+            <Response lang="pt">Modo caça.;Na caça.;Perseguindo em silêncio.</Response>
+            <Response lang="pl">Tryb polowania.;Wybiegamy na łowy.;Cicho ich poluję.</Response>
+            <Response lang="ko">사냥 모드. ;사냥 시작해. ;소리 없이 쫓을게.</Response>
+            <Response lang="ja">ハンティングモード。;狩りだ。;静かに追跡する。</Response>
+            <Response lang="it">Modalità caccia.;Alla caccia.;Li seguo in silenzio.</Response>
+            <Response lang="fr">Mode chasse.;En chasse.;Je les traque en silence.</Response>
+            <Response lang="es">Modo caza.;A cazar.;Los acecho en silencio.</Response>
+            <Response lang="de">Jagdmodus.;Auf die Jagd.;Ich stelle mich still an.</Response>
+            <ActionType>SetEngage</ActionType>
+            <ActionParam>4</ActionParam>
+        </Trigger>
+
+        <!-- === WEAPON PREFERENCE ORDER (STICKY MELEE / RANGED) === -->
+        <!-- The combat wheel's toggle sends the same order by click (VCCommand.SetWeaponPref).
+             Do NOT reuse "use your gun" / "switch to melee" here: those are the one-shot
+             SwapWeapon category phrases. -->
+        <Trigger enabled="true">
+            <Phrase>go ranged;ranged weapons;guns up;</Phrase>
+            <Response lang="en">Going ranged.;On the gun.;Switching to ranged.</Response>
+            <Response lang="zh">切远程。;上枪。;切换远程武器。</Response>
+            <Response lang="tr">Menzile geçiyorum.;Silaha geçiyorum.;Menzil silahına dönüyorum.</Response>
+            <Response lang="ru">Перевожуся на дальнобой.;Беру в руки оружие.;Перевожуся на огнестрел.</Response>
+            <Response lang="pt">Mudando para distância.;Pegando a arma.;Mudando para arma de fogo.</Response>
+            <Response lang="pl">Przechodzę na dystans.;Biorę broń.;Przełączam się na dystans.</Response>
+            <Response lang="ko">원거리로 전환해.;총 들어.;원거리 무기로.</Response>
+            <Response lang="ja">遠隔に切り替える。;銃を構える。;遠隔武器に。</Response>
+            <Response lang="it">Passo al tiro.;Prendo l'arma.;Passo alle armi da fuoco.</Response>
+            <Response lang="fr">Je passe au tir.;J'arme le fusil.;Je passe aux armes longues.</Response>
+            <Response lang="es">Paso a distancia.;Agarro el arma.;Paso al arma de fuego.</Response>
+            <Response lang="de">Gehe auf Distanz.;Ich nehme die Waffe.;Wechsle auf Schusswaffe.</Response>
+            <ActionType>SetWeaponPref</ActionType>
+            <ActionParam>ranged</ActionParam>
+        </Trigger>
+        <Trigger enabled="true">
+            <Phrase>go melee;melee weapons;blades out;</Phrase>
+            <Response lang="en">Going melee.;On the blade.;Switching to melee.</Response>
+            <Response lang="zh">切近战。;上刀。;切换近战武器。</Response>
+            <Response lang="tr">Yakın dövüşe geçiyorum.;Bıçakla.;Yakın dövüşe dönüyorum.</Response>
+            <Response lang="ru">Перевожуся в ближний бой.;Беру клинок.;Перевожуся на ближний бой.</Response>
+            <Response lang="pt">Mudando para corpo a corpo.;Pegando a faca.;Mudando para corpo a corpo.</Response>
+            <Response lang="pl">Przechodzę na wręcz.;Biorę nóż.;Przełączam się na wręcz.</Response>
+            <Response lang="ko">근접으로 전환해.;칼 들어.;근접 무기로.</Response>
+            <Response lang="ja">近接に切り替える。;刃を構える。;近接武器に。</Response>
+            <Response lang="it">Passo al corpo a corpo.;Prendo la lama.;Passo alle armi bianche.</Response>
+            <Response lang="fr">Je passe au corps à corps.;Je prends la lame.;Je passe aux armes blanches.</Response>
+            <Response lang="es">Paso a cuerpo a cuerpo.;Agarro la hoja.;Paso al arma blanca.</Response>
+            <Response lang="de">Gehe auf Nahkampf.;Ich nehme die Klinge.;Wechsle auf Nahkampfwaffe.</Response>
+            <ActionType>SetWeaponPref</ActionType>
+            <ActionParam>melee</ActionParam>
+        </Trigger>
 
         <!-- === COMBAT MODE SWITCHING (DEFERRED) === -->
         <!-- Retired in favor of simple engagement model. Code dormant for future richer-mode work. -->
@@ -3002,6 +3097,27 @@
                         <Response lang="de">Volle Kontrolle. Wir greifen nur an, wenn du es befiehlst.;Verstanden, volle Kontrolle aktiv.;Voller Kontrollmodus eingestellt.</Response>
             <ActionType>SetCombatMode</ActionType>
             <ActionParam>2</ActionParam>
+        </Trigger>
+
+        <!-- === GIFT (the player gives the NPC what he holds) === -->
+        <!-- The held stack goes into her private bag (VCCommand.GiftItem): SP / listen host
+             only, leader-only. A held stack of her hire currency pays her due week first. -->
+        <Trigger enabled="true">
+            <Phrase>a gift for you;give you a gift;</Phrase>
+            <Aliases>gift;</Aliases>
+                        <Response lang="en">Really? That's too kind.;You didn't have to, but I'll take it.</Response>
+                        <Response lang="zh">真的吗？太客气了。;不用这样，但我收下了。</Response>
+                        <Response lang="tr">Gerçekten mi? Çok naziksin.;Zoruna gitme, ama alırım.</Response>
+                        <Response lang="ru">Правда? Как мило с твоей стороны.;Не стоило, но я возьму.</Response>
+                        <Response lang="pt">Sério? Você é muito gentil.;Não precisava, mas aceito.</Response>
+                        <Response lang="pl">Naprawdę? To bardzo miłe.;Nie musiałeś, ale przyjmę.</Response>
+                        <Response lang="ko">정말? 너무 고마워요.;안 줘도 되는데, 받겠습니다.</Response>
+                        <Response lang="ja">本当に？とても優しいね。;別にいらないけど、もらうよ。</Response>
+                        <Response lang="it">Davvero? Sei molto gentile.;Non dovevi, ma lo prendo.</Response>
+                        <Response lang="fr">Vraiment ? C'est très gentil de ta part.;Ce n'était pas nécessaire, mais je l'accepte.</Response>
+                        <Response lang="es">¿De verdad? Eres muy amable.;No tenías que, pero lo acepto.</Response>
+                        <Response lang="de">Wirklich? Das ist aber nett von dir.;Du musstest nicht, aber ich nehme es an.</Response>
+            <ActionType>GiftItem</ActionType>
         </Trigger>
     </Triggers>
 </PhraseTriggers>

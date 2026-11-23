@@ -233,33 +233,6 @@ EntityNPCLootContainerXBow,entityclasses,Entity Info,,,,Dropped Loot,,Fallengela
 EntityNPCLootContainerRocketL,entityclasses,Entity Info,,,,Dropped Loot,,Fallengelassene Beute,Botín abandonado,Butin abandonné,Bottino caduto,落ちている略奪品,떨어진 약탈품,Upuszczony łup,Espólio caído,Выпавшие вещи,Düşürülmüş Ganimet,掉落的战利品,掉落戰利品
 EntityNPCLootContainerMech,entityclasses,Entity Info,,,,Dropped Loot,,Fallengelassene Beute,Botín abandonado,Butin abandonné,Bottino caduto,落ちている略奪品,떨어진 약탈품,Upuszczony łup,Espólio caído,Выпавшие вещи,Düşürülmüş Ganimet,掉落的战利品,掉落戰利品
 EntityNPCLootContainerPistolHidden,entityclasses,Entity Info,,,,Dropped Loot,,Fallengelassene Beute,Botín abandonado,Butin abandonné,Bottino caduto,落ちている略奪品,떨어진 약탈품,Upuszczony łup,Espólio caído,Выпавшие вещи,Düşürülmüş Ganimet,掉落的战利品,掉落戰利品
-SdcsNPC_UsePlayerHands,dialogs,Dialog,,,,Use Player Hands,,Bloße Hände benutzen,Usar las manos desnudas,Utilisez les mains nues,Usa le mani nude,素手を使う,맨손 사용,Użyj gołych rąk,Usar as mãos,Использовать голые руки,Çıplak elleri kullan,使用徒手,使用徒手
-SdcsNPC_UsePipePistol,dialogs,Dialog,,,,Use Pipe Pistol,,Selbstgebaute Pistole benutzen,Usar Revólver de tubería,Utilisez Pistolet en tuyau,Usa Pistola tubolare,パイプピストルを使う,파이프 피스톨 사용,Użyj: Pistolet rurowy,Usar Pistola de cano,Использовать: Пистолет из трубы,Boru Tabanca kullan,使用铁管手枪,使用鐵管手槍
-SdcsNPC_UseWoodenClub,dialogs,Dialog,,,,Use Wooden Club,,Holzknüppel benutzen,Usar Garrote de madera,Utilisez Massue en bois,Usa Mazza di legno,木製棍棒を使う,나무 둔기 사용,Użyj: Drewniana maczuga,Usar Taco de Madeira,Использовать: Деревянная дубинка,Tahta Sopa kullan,使用木棒,使用木棍
-SdcsNPC_UseKnife,dialogs,Dialog,,,,Use Knife,,Jagdmesser benutzen,Usar Cuchillo de caza,Utilisez Couteau de chasse,Usa Pugnale da caccia,狩猟ナイフを使う,사냥용 칼 사용,Użyj: Nóż myśliwski,Usar Faca de Caça,Использовать: Охотничий нож,Av Bıçağı kullan,使用猎刀,使用獵刀
-SdcsNPC_UseBat,dialogs,Dialog,,,,Use Bat,,Baseballschläger benutzen,Usar Bate de béisbol,Utilisez Batte de baseball,Usa Mazza da baseball,ベースボールバットを使う,야구방망이 사용,Użyj: Kij baseballowy,Usar Taco de beisebol,Использовать: Бейсбольная бита,Beyzbol Sopası kullan,使用球棒,使用棒球棒
-SdcsNPC_UseSpear,dialogs,Dialog,,,,Use Spear,,Eisenspeer benutzen,Usar Lanza de hierro,Utilisez Lance en fer,Usa Lancia di ferro,鉄槍を使う,철제 창 사용,Użyj: Żelazna włócznia,Usar Lança de Ferro,Использовать: Железное копье,Demir Mızrak kullan,使用铁矛,使用鐵矛
-SdcsNPC_UseMachete,dialogs,Dialog,,,,Use Machete,,Machete benutzen,Usar Machete,Utilisez Machette,Usa Machete,マチェーテを使う,마체테 사용,Użyj: Maczeta,Usar Facão,Использовать: Мачете,Pala kullan,使用砍刀,使用大砍刀
-SdcsNPC_UseAxe,dialogs,Dialog,,,,Use Axe,,Eiserne Feueraxt benutzen,Usar Hacha de bombero de hierro,Utilisez Hache de pompier en fer,Usa Ascia antincendio di ferro,鉄製消防斧を使う,철제 소방 도끼 사용,Użyj: Żelazna siekiera strażacka,Usar Machado de Ferro,Использовать: Железный пожарный топор,Demir Yangın Baltası kullan,使用铁斧,使用鐵消防斧
-SdcsNPC_UseSMG,dialogs,Dialog,,,,Use SMG,,MP-5 benutzen,Usar SMG-5,Utilisez SMG-5,Usa SMG-5,SMG-5を使う,SMG-5 사용,Użyj: SMG-5,Usar SMG -5,Использовать: ПП-5,SMG-5 kullan,使用SMG-5,使用衝鋒槍-5
-SdcsNPC_UseIronPistol,dialogs,Dialog,,,,Use Pistol,,Pistole benutzen,Usar PIstola,Utilisez Pistolet,Usa Pistola,ピストルを使う,피스톨 사용,Użyj: Pistolet,Usar Pistola,Использовать: Пистолет,Tabanca kullan,使用手枪,使用手槍
-SdcsNPC_UseDesertEagle,dialogs,Dialog,,,,Use DesertEagle,,.44 Desert Vulture benutzen,Usar Desert Vulture de calibre 44,Utilisez .44 Desert Vulture,Usa .44 Avvoltoio del deserto,.44 デザートヴァルチャーを使う,44구경 데저트 벌쳐 사용,Użyj: .44 Desert Vulture,Usar Desert Vulture calibre 44,Использовать: «Пустынный стервятник» калибра .44,.44 Desert Vulture kullan,使用.44 口径沙漠秃鹰,使用.44荒漠禿鷹
-SdcsNPC_UsePipeRifle,dialogs,Dialog,,,,Use PipeRifle,,Selbstgebautes Gewehr benutzen,Usar Rifle de tubería,Utilisez Fusil en tuyau,Usa Carabina tubolare,パイプライフルを使う,파이프 라이플 사용,Użyj: Karabin rurowy,Usar Fuzil de cano,Использовать: Винтовка из трубы,Boru Tüfek kullan,使用铁管步枪,使用鐵管步槍
-SdcsNPC_UsePipeMachineGun,dialogs,Dialog,,,,Use PipeMachinegun,,Selbstgebautes Maschinengewehr benutzen,Usar Metralleta de tubería,Utilisez Mitrailleuse en tuyau,Usa Mitragliatrice tubolare,パイプマシンガンを使う,파이프 기관총 사용,Użyj: Rurowy karabin maszynowy,Usar Metralhadora de cano,Использовать: Автомат из трубы,Boru Makineli Tüfek kullan,使用铁管机枪,使用鐵管機槍
-SdcsNPC_UseM60,dialogs,Dialog,,,,Use M60,,M60-Maschinengewehr benutzen,Usar Metralleta M60,Utilisez Mitrailleuse M60,Usa Mitragliatrice M60,M60マシンガンを使う,M60 기관총 사용,Użyj: Karabin maszynowy M60,Usar Metralhadora M60,Использовать: Пулемет М60,M60 Makineli Tüfek kullan,使用M60机枪,使用M60 機槍
-SdcsNPC_UseAK47,dialogs,Dialog,,,,Use AK47,,KV-47-Maschinengewehr benutzen,Usar Metralleta KV-47,Utilisez Mitrailleuse KV-47,Usa Mitragliatrice KV-47,KV-47マシンガンを使う,KV-47 기관총 사용,Użyj: Karabin maszynowy KV-47,Usar Metralhadora KV-47,Использовать: Автомат АК-47,KV-47 Makineli Tüfek kullan,使用KV-47机枪,使用KV-47 機槍
-SdcsNPC_UseTacticalAR,dialogs,Dialog,,,,Use AssaultRifle,,Taktisches Sturmgewehr benutzen,Usar Rifle de asalto táctico,Utilisez Fusil d'assaut tactique,Usa Fucile d'assalto tattico,タクティカルアサルトライフルを使う,전술용 돌격 라이플 사용,Użyj: Taktyczny karabin automatyczny,Usar Rifle de Assalto Tático,Использовать: Тактическая штурмовая винтовка,Taktik Saldırı Tüfeği kullan,使用战术突击步枪,使用戰術突擊步槍
-SdcsNPC_UseHuntingRifle,dialogs,Dialog,,,,Use HuntingRifle,,Jagdgewehr benutzen,Usar Rifle de caza,Utilisez Fusil de chasse,Usa Fucile da caccia,狩猟ライフルを使う,사냥용 라이플 사용,Użyj: Sztucer,Usar Rifle de caça,Использовать: Охотничье ружье,Av Tüfeği kullan,使用猎枪,使用狩獵步槍
-SdcsNPC_UseSniperRifle,dialogs,Dialog,,,,Use SniperRifle,,Scharfschützengewehr benutzen,Usar Rifle de francotirador,Utilisez Fusil de précision,Usa Fucile da cecchino,スナイパーライフルを使う,저격 라이플 사용,Użyj: Karabin snajperski,Usar Fuzil de Precisão,Использовать: Снайперская винтовка,Keskin Nişancı Tüfeği kullan,使用狙击步枪,使用狙擊步槍
-SdcsNPC_UsePipeShotgun,dialogs,Dialog,,,,Use PipeShotgun,,Selbstgebaute Schrotflinte benutzen,Usar Escopeta de tubería,Utilisez Fusil à pompe en tuyau,Usa Fucile tubolare,パイプショットガンを使う,파이프 샷건 사용,Użyj: Strzelba rurowa,Usar Espingarda de cano,Использовать: Дробовик из трубы,Boru Pompalı Tüfek kullan,使用铁管霰弹枪,使用鐵管散彈槍
-SdcsNPC_UsePumpShotgun,dialogs,Dialog,,,,Use Shotgun,,Pumpgun benutzen,Usar Escopeta de bombeo,Utilisez Fusil à percussion,Usa Fucile a pompa,ポンプアクション式ショットガンを使う,펌프식 샷건 사용,Użyj: Pompka,Usar Espingarda de ação bomba,Использовать: Помповое ружье,Pompalı Tüfek kullan,使用泵动式霰弹枪,使用泵動式散彈獵槍
-SdcsNPC_UseAutoShotgun,dialogs,Dialog,,,,Use AutoShotgun,,Automatische Schrotflinte benutzen,Usar Escopeta automática,Utilisez Fusil à pompe auto,Usa Fucile automatico,オートショットガンを使う,자동 샷건 사용,Użyj: Strzelba samopowtarzalna,Usar Espingarda Automática,Использовать: Автоматический дробовик,Otomatik Pompalı Tüfek kullan,使用自动霰弹枪,使用自動式散彈獵槍
-SdcsNPC_UseLongbow,dialogs,Dialog,,,,Use Longbow,,Holzbogen benutzen,Usar Arco de madera,Utilisez Arc en bois,Usa Arco di legno,木の弓を使う,목재 활 사용,Użyj: Drewniany łuk,Usar Arco de madeira.,Использовать: Деревянный лук,Tahta Yay kullan,使用木弓,使用木弓
-SdcsNPC_UseCrossbow,dialogs,Dialog,,,,Use Crossbow,,Eiserne Armbrust benutzen,Usar Ballesta de hierro,Utilisez Arbalète en fer,Usa Balestra di ferro,鉄製クロスボウを使う,철제 석궁 사용,Użyj: Żelazna kusza,Usar Besta de ferro,Использовать: Железный арбалет,Demir Arbalet kullan,使用铁弩,使用鐵十字弓
-SdcsNPC_UseRocketLauncher,dialogs,Dialog,,,,Use RocketLauncher,,Raketenwerfer benutzen,Usar Lanzacohetes,Utilisez Lance-roquettes,Usa Lanciarazzi,ロケットランチャーを使う,로켓탄 발사기 사용,Użyj: Wyrzutnia rakiet,Usar Lança-foguetes,Использовать: Гранатомет,Roketatar kullan,使用火箭发射器,使用火箭發射器
-SdcsNPC_RifleMenu,dialogs,Dialog,,,,Rifles,,Gewehre,Fusiles,Fusils,Fucili,ライフル,소총,Karabiny,Rifles,Винтовки,Tüfekler,步枪,步槍
-SdcsNPC_ShotGunMenu,dialogs,Dialog,,,,Shotguns,,Schrotflinten,Escopetas,Fusils à pompe,Fucili a pompa,ショットガン,산탄총,Strzelby,Escopetas,Дробовики,Pompalı Tüfekler,霰弹枪,霰彈槍
-SdcsNPC_OtherMenu,dialogs,Dialog,,,,Other Weapons,,Andere Waffen,Otras armas,Autres armes,Altre armi,その他の武器,기타 무기,Inna broń,Outras armas,Другое оружие,Diğer Silahlar,其他武器,其他武器
 SdcsNPC_Admin Menu,dialogs,Dialogs,,,,Admin Menu,,Admin-Menü,Menú de administración,Menu de administration,Menu amministratore,管理メニュー,관리자 메뉴,Menu administratora,Menu de administração,Меню администратора,Yönetici Menüsü,管理员菜单,管理員選單
 SdcsNPC_Command Menu,dialogs,Dialogs,,,,Command Menu,,Befehlsmenü,Menú de órdenes,Menu de commandes,Menu comandi,コマンドメニュー,명령 메뉴,Menu poleceń,Menu de comandos,Меню команд,Komut Menüsü,命令菜单,命令選單
 SdcsNPC_Dismiss,dialogs,Dialogs,,,,Dismiss,,Entlassen,Despedir,Congédier,Congeda,解雇する,해고,Odpraw,Dispensar,Уволить,Görevden al,解雇,解僱
@@ -272,42 +245,16 @@ SdcsNPC_GuardHere,dialogs,Dialogs,,,,Stay where I am standing,,"Bleib dort, wo i
 SdcsNPC_GuardReturnHere,dialogs,Dialogs,,,,Guard and return to where I am standing,,"Bewache und kehre dorthin zurück, wo ich stehe",Vigila y vuelve a donde estoy yo,Gardez et revenez où je suis debout,Fai la guardia e torna dove sono io,私が立っている場所に戻って警備してください,경계하다가 내가 서 있는 곳으로 돌아와,"Pilnuj i wracaj tam, gdzie stoję",Vigie e volte para onde eu estou,"Охраняй и возвращайся туда, где стою я",Nöbet tut ve durduğum yere dön,警戒并回到我站的地方,警戒並回到我站的地方
 SdcsNPC_Hire,dialogs,Dialogs,,,,I am interested in hiring you.,,Ich möchte dich anheuern.,Me interesa contratarte.,Je suis intéressé à vous embaucher.,Mi interessa assoldarti.,あなたを雇うことに興味があります。,당신을 고용하고 싶어요.,Chcę cię wynająć.,Tenho interesse em te contratar.,Я хочу тебя нанять.,Seni kiralamak istiyorum.,我想雇佣你。,我想僱用你。
 SdcsNPC_Pickup,dialogs,Dialogs,,,,Pick Me up!,,Heb mich auf!,¡Cógeme!,Ramassez-moi!,Prendimi in braccio!,私を拾ってください！,나를 들어 줘!,Podnieś mnie!,Me pegue!,Подними меня!,Beni al!,把我带上！,把我帶上！
-SdcsNPC_Pistol Menu,dialogs,Dialogs,,,,Pistols,,Pistolen,Pistolas,Pistolets,Pistole,ピストル,권총,Pistolety,Pistolas,Пистолеты,Tabancalar,手枪,手槍
-SdcsNPC_Pistols,dialogs,Dialogs,,,,Pistol Menu,,Pistolenmenü,Menú de pistolas,Menu des pistolets,Menu pistole,ピストルメニュー,권총 메뉴,Menu pistoletów,Menu de pistolas,Меню пистолетов,Tabanca Menüsü,手枪菜单,手槍選單
 SdcsNPC_ShowMe,dialogs,Dialogs,,,,Show me your inventory,,Zeig mir dein Inventar,Enséñame tu inventario,Montrez-moi votre inventaire,Mostrami il tuo inventario,あなたの在庫を見せてください,소지품을 보여 줘,Pokaż mi swój ekwipunek,Me mostre seu inventário,Покажи свой инвентарь,Envanterini göster,给我看看你的物品,給我看看你的物品
 SdcsNPC_StayHere,dialogs,Dialogs,,,,Stay where you are standing,,"Bleib, wo du stehst",Quédate donde estás,Restez où vous êtes debout,Resta dove sei,立っている場所にとどまってください,지금 그 자리에 있어,"Zostań tam, gdzie stoisz",Fique onde você está,Стой на месте,Durduğun yerde kal,待在原地,待在原地
-SdcsNPC_Weapon Classes,dialogs,Dialogs,,,,Weapon Classes,,Waffenklassen,Clases de armas,Classes d'armes,Classi di armi,武器クラス,무기 종류,Klasy broni,Classes de armas,Классы оружия,Silah Sınıfları,武器类别,武器類別
-SdcsNPC_Weapon Menu,dialogs,Dialogs,,,,Weapon Menu,,Waffenmenü,Menú de armas,Menu des armes,Menu armi,武器メニュー,무기 메뉴,Menu broni,Menu de armas,Меню оружия,Silah Menüsü,武器菜单,武器選單
-SdcsNPC_Carried Weapons,dialogs,Dialogs,,,,Carried Weapons,,Mitgeführte Waffen,Armas que lleva,Armes portées,Armi trasportate,所持している武器,소지한 무기,Noszona broń,Armas carregadas,Носимое оружие,Taşınan Silahlar,携带的武器,攜帶的武器
 SdcsNPC_done,dialogs,Dialogs,,,,Nevermind,,Schon gut,Olvídalo,Peu importe.,Lascia stare,気にしないでください。,됐어,Nieważne,Deixa pra lá,Неважно,Boş ver,算了,算了
 SdcsNPC_start,dialogs,Dialogs,,,,"Hello friend, how can I help you?",,"Hallo Freund, wie kann ich dir helfen?","Hola, amigo, ¿en qué puedo ayudarte?","Bonjour ami, comment puis-je vous aider?","Ciao amico, come posso aiutarti?",こんにちは友達、どのようにあなたを助けることができますか？,"안녕, 친구. 무엇을 도와줄까?","Witaj, przyjacielu, jak mogę ci pomóc?","Olá, amigo, como posso te ajudar?","Привет, друг, чем могу помочь?","Merhaba dostum, sana nasıl yardım edebilirim?",你好，朋友，有什么可以帮你的吗？,你好，朋友，有什麼可以幫你的嗎？
-SdcsNPC_UseBoneKnife,dialogs,Dialog,,,,Use Bone Knife,,Knochenmesser benutzen,Usar Cuchillo de hueso,Utilisez Couteau en os,Usa Pugnale d'osso,骨ナイフを使う,뼈칼 사용,Użyj: Kościany nóż,Usar Faca de Osso,Использовать: Костяной нож,Kemik Bıçağı kullan,使用骨刀,使用骨刀
-SdcsNPC_UseSteelClub,dialogs,Dialog,,,,Use Steel Club,,Stahlknüppel benutzen,Usar Esquema de palo de acero,Utilisez Massue en acier,Usa Mazza d'acciaio,鉄鋼製棍棒を使う,강철 곤봉 사용,Użyj: Stalowa pałka,Usar Porrete de aço,Использовать: Стальная дубина,Çelik Sopa kullan,使用钢棍,使用鋼棍
-SdcsNPC_UsePipeBaton,dialogs,Dialog,,,,Use Pipe Baton,,Selbstgebauter Stab benutzen,Usar Porra de tubería,Utilisez Matraque en tuyau,Usa Manganello tubolare,パイプバトンを使う,파이프 배턴 사용,Użyj: Pałka rurowa,Usar Cassetete de cano,Использовать: Дубинка из трубы,Boru Cop kullan,使用铁管棒,使用鐵管棍
-SdcsNPC_UseStunBaton,dialogs,Dialog,,,,Use Stun Baton,,Schockstab benutzen,Usar Porra de aturdimiento,Utilisez Matraque électrique,Usa Manganello elettrico.,スタンバトンを使う,전기 몽둥이 사용,Użyj: Pałka z paralizatorem,Usar Cassetete Atordoante,Использовать: Оглушающий жезл,Elektroşok Cihazı kullan,使用电击棒,使用致暈棍
-SdcsNPC_UseLeatherKnuckles,dialogs,Dialog,,,,Use Leather Knuckles,,Handwickel benutzen,Usar Protector de nudillos,Utilisez Bandages de boxe en cuir,Usa Fascia per le mani,ナックルラップを使う,너클 랩 사용,Użyj: Skórzane owijki bokserskie,Usar Faixas para as mãos,Использовать: Кожаная обмотка,Yumruk Sargısı kullan,使用拳手绑带,使用指套
-SdcsNPC_UseIronKnuckles,dialogs,Dialog,,,,Use Iron Knuckles,,Eisenschlagring benutzen,Usar Nudillos de hierro,Utilisez Poing américain en fer,Usa Tirapugni di ferro,鉄ナックルを使う,철제 너클 사용,Użyj: Żelazny kastet,Usar Soco Inglês,Использовать: Железный кастет,Demir Muşta kullan,使用铁质拳套,使用鐵指節
-SdcsNPC_UseSteelKnuckles,dialogs,Dialog,,,,Use Steel Knuckles,,Stahlschlagring benutzen,Usar Nudillos de acero,Utilisez Poing américain en acier,Usa Tirapugni d'acciaio,鉄鋼ナックルを使う,강철 너클 사용,Użyj: Stalowy kastet,Usar Soco Inglês de Aço,Использовать: Стальной кастет,Çelik Muşta kullan,使用钢质指虎,使用鋼質指虎
-SdcsNPC_UseSteelAxe,dialogs,Dialog,,,,Use Steel Axe,,Stahlaxt benutzen,Usar Hacha de acero,Utilisez Hache en acier,Usa Ascia d'acciaio,鉄鋼斧を使う,강철 도끼 사용,Użyj: Stalowa siekiera,Usar Machado de Aço,Использовать: Стальной топор,Çelik Balta kullan,使用钢斧,使用鋼斧
-SdcsNPC_UseChainsaw,dialogs,Dialog,,,,Use Chainsaw,,Kettensäge benutzen,Usar Motosierra,Utilisez Tronçonneuse,Usa Motosega,チェーンソーを使う,전기톱 사용,Użyj: Piła łańcuchowa,Usar Motosserra,Использовать: Бензопила,Testere kullan,使用电锯,使用鏈鋸
-SdcsNPC_UseStoneSledge,dialogs,Dialog,,,,Use Stone Sledgehammer,,Steinvorschlaghammer benutzen,Usar Mazo de piedra,Utilisez Masse en pierre,Usa Martello di pietra,石製スレッジハンマーを使う,돌 슬레지해머 사용,Użyj: Kamienny młot rozbiórkowy,Usar Marreta de Pedra,Использовать: Каменная кувалда,Taş Balyoz kullan,使用石质大锤,使用石鎚
-SdcsNPC_UseIronSledge,dialogs,Dialog,,,,Use Iron Sledgehammer,,Eisenvorschlaghammer benutzen,Usar Mazo de hierro,Utilisez Masse en fer,Usa Martello di ferro,鉄製スレッジハンマーを使う,철제 슬레지해머 사용,Użyj: Żelazny młot rozbiórkowy,Usar Marreta de Ferro,Использовать: Железная кувалда,Demir Balyoz kullan,使用铁质大锤,使用鐵鎚
-SdcsNPC_UseSteelSledge,dialogs,Dialog,,,,Use Steel Sledgehammer,,Stahlvorschlaghammer benutzen,Usar Mazo de acero,Utilisez Masse en acier,Usa Martello d'acciaio,鉄鋼製スレッジハンマーを使う,강철 슬레지해머 사용,Użyj: Stalowy młot rozbiórkowy,Usar Marreta de Aço,Использовать: Стальная кувалда,Çelik Balyoz kullan,使用钢质大锤,使用鋼鎚
-SdcsNPC_UseStoneSpear,dialogs,Dialog,,,,Use Stone Spear,,Steinspeer benutzen,Usar Lanza de piedra,Utilisez Lance en pierre,Usa Lancia di pietra,石槍を使う,돌 창 사용,Użyj: Kamienna włócznia,Usar Lança de Pedra,Использовать: Каменное копье,Taş Mızrak kullan,使用石矛,使用石矛
-SdcsNPC_UseSteelSpear,dialogs,Dialog,,,,Use Steel Spear,,Stahlspeer benutzen,Usar Lanza de acero,Utilisez Lance en acier,Usa Lancia d'acciaio,鉄鋼槍を使う,강철 창 사용,Użyj: Stalowa włócznia,Usar Lança de Aço,Использовать: Стальное копье,Çelik Mızrak kullan,使用钢矛,使用鋼矛
-SdcsNPC_UseMagnum,dialogs,Dialog,,,,Use Magnum,,.44 Magnum benutzen,Usar Magnum 44,Utilisez .44 Magnum,Usa .44 Magnum,.44マグナムを使う,.44 매그넘 사용,Użyj: Magnum .44,Usar .44 Magnum,Использовать: Револьвер .44 Magnum,.44 Magnum kullan,使用.44马格南,使用.44 馬格南手槍
-SdcsNPC_UseLeverRifle,dialogs,Dialog,,,,Use Lever Action Rifle,,Unterhebelrepetierer benutzen,Usar Rifle de palanca,Utilisez Fusil à levier,Usa Fucile a leva,レバーアクションライフルを使う,레버 액션 라이플 사용,Użyj: Karabin dwutaktowy,Usar Fuzil de ação de alavanca,Использовать: Винтовка рычажного действия,Levyeli Tüfek kullan,使用杠杆式步枪,使用槓桿式步槍
-SdcsNPC_UseDoubleBarrel,dialogs,Dialog,,,,Use Double Barrel,,Doppelläufige Schrotflinte benutzen,Usar Escopeta de dos cañones,Utilisez Fusil à pompe à double canon,Usa Doppietta,2連ショットガンを使う,2연발 샷건 사용,Użyj: Dwururka,Usar Espingarda de cano duplo,Использовать: Двустволка,Çift Namlulu Pompalı Tüfek kullan,使用双管霰弹枪,使用雙管散彈獵槍
-SdcsNPC_UsePrimitiveBow,dialogs,Dialog,,,,Use Primitive Bow,,Primitiver Bogen benutzen,Usar Arco primitivo,Utilisez Arc primitif,Usa Arco rudimentale,粗末な弓を使う,원시적 활 사용,Użyj: Prymitywny łuk,Usar Arco primitivo,Использовать: Простейший лук,İlkel Yay kullan,使用传统弓,使用原始弓
-SdcsNPC_UseCompoundBow,dialogs,Dialog,,,,Use Compound Bow,,Compoundbogen benutzen,Usar Arco compuesto,Utilisez Arc à poulies,Usa Arco composito,複合弓を使う,컴파운드 활 사용,Użyj: Łuk bloczkowy,Usar Arco composto,Использовать: Композитный лук,Yoğun Yay kullan,使用复合弓,使用複合弓
-SdcsNPC_UseCompoundCrossbow,dialogs,Dialog,,,,Use Compound Crossbow,,Compoundarmbrust benutzen,Usar Ballesta compuesta,Utilisez Arbalète à poulies,Usa Balestra composita,複合クロスボウを使う,컴파운드 석궁 사용,Użyj: Kusza bloczkowa,Usar Besta composta,Использовать: Композитный арбалет,Yoğun Arbalet kullan,使用复合弩,使用複合十字弓
-SdcsNPC_Blades Menu,dialogs,Dialogs,,,,Blades,,Klingen,Hojas,Lames,Lame,刃物,칼날 무기,Ostrza,Lâminas,Клинки,Bıçaklar,刀刃,刀刃
-SdcsNPC_Clubs Menu,dialogs,Dialogs,,,,Clubs,,Knüppel,Garrotes,Massues,Mazze,棍棒,둔기,Maczugi,Porretes,Дубины,Sopalar,棍棒,棍棒
-SdcsNPC_Heavy Menu,dialogs,Dialogs,,,,Heavy Weapons,,Schwere Waffen,Armas pesadas,Armes lourdes,Armi pesanti,重火器,중화기,Broń ciężka,Armas pesadas,Тяжёлое оружие,Ağır Silahlar,重武器,重武器
-SdcsNPC_Blades,dialogs,Dialogs,,,,Blades Menu,,Klingenmenü,Menú de hojas,Menu des lames,Menu lame,刃物メニュー,칼날 무기 메뉴,Menu ostrzy,Menu de lâminas,Меню клинков,Bıçak Menüsü,刀刃菜单,刀刃選單
-SdcsNPC_Clubs,dialogs,Dialogs,,,,Clubs Menu,,Knüppelmenü,Menú de garrotes,Menu des massues,Menu mazze,棍棒メニュー,둔기 메뉴,Menu maczug,Menu de porretes,Меню дубин,Sopa Menüsü,棍棒菜单,棍棒選單
-SdcsNPC_Heavy,dialogs,Dialogs,,,,Heavy Menu,,Menü schwere Waffen,Menú de armas pesadas,Menu des armes lourdes,Menu armi pesanti,重火器メニュー,중화기 메뉴,Menu broni ciężkiej,Menu de armas pesadas,Меню тяжёлого оружия,Ağır Silah Menüsü,重武器菜单,重武器選單
 SdcsNPC_PickupPackNotEmpty,UI,Tooltip,,,,You must empty the survivor's pack before picking them up.,,"Du musst den Rucksack des Überlebenden leeren, bevor du ihn aufheben kannst.",Debe vaciar la mochila del superviviente antes de recogerlo.,Vous devez vider le sac à dos du survivant avant de le prendre.,Devi svuotare lo zaino del sopravvissuto prima di raccoglierlo.,サバイバーのバックパックを空にしてからでなければ、拾うことはできません。,집어들기 전 생존자의 백팩을 비워야 합니다.,"Aby podnieść ocalałego, najpierw musisz opróżnić jego plecak.",É preciso esvaziar a mochila do sobrevivente antes de apanhá-lo.,"Прежде чем поднять выжившего, необходимо опустошить его рюкзак.",Almadan önce hayatta kalanın sırt çantasını boşaltman gerek.,你必须先清空幸存者的背包才能将其拾取。,拿起倖存者之前你必須清空背包內的東西。
+vcReviveTooltip,UI,Tooltip,,,,{0} Revive {1} ({2} s),,,,,,,,,,,,,
+vcReviveNeedItem,UI,Tooltip,,,,You need {0} to revive {1},,,,,,,,,,,,,
+vcDownedIsDown,UI,Tooltip,,,,{0} is down! {1} s to revive,,,,,,,,,,,,,
+vcDownedBleedWarning,UI,Tooltip,,,,{0} will bleed out in {1} s,,,,,,,,,,,,,
+vcPartyFull,UI,Tooltip,,,,Your party is full ({0}/{1}).,,Deine Gruppe ist voll ({0}/{1}).,Tu grupo está lleno ({0}/{1}).,Votre groupe est complet ({0}/{1}).,Il tuo gruppo è al completo ({0}/{1}).,パーティは満員です ({0}/{1}).,파티가 가득 찼습니다 ({0}/{1}).,Twoja partia jest pełna ({0}/{1}).,Seu grupo está cheio ({0}/{1}).,Ваша партия заполнена ({0}/{1}).,Partiniz dolu ({0}/{1}).,你的队伍已满 ({0}/{1}).,你的隊伍已滿 ({0}/{1}).
 traderNPC,entityclasses,Entity Info,,,,Backpack,,Rucksack,Mochila,Sac à dos,Zaino,バックパック,백팩,Plecak,Mochila,Рюкзак,Sırt Çantası,背包,背包
 Harley_Iseeyou,sounds,Voice Clip,,,,"I see you",,,,,,,,,,,,,
 Harley_Wannaplay,sounds,Voice Clip,,,,"Wanna play?",,,,,,,,,,,,,
@@ -357,6 +304,7 @@ SdcsNPC_CraftMenu,,,,,,Craft...,,Herstellen...,Fabricar...,Fabriquer...,Fabbrica
 SdcsNPC_ComeHere,,,,,,Come here,,Komm her,Acércate,Viens ici,Vieni qui,こっちに来て,여기 와,Przyjdź,Vem cá,Иди сюда,Buraya gel,过来,過來
 SdcsNPC_OrderWheel,,,,,,Order wheel,,Befehlsrad,Rueda de órdenes,Roue des ordres,Ruota degli ordini,命令ホイール,명령 휠,Koło rozkazów,Roda de ordens,Колесо приказов,Emir çarkı,命令轮盘,命令輪盤
 SdcsNPC_JobsAndGear,,,,,,Jobs and gear,,Aufgaben und Ausrüstung,Trabajos y equipo,Tâches et équipement,Lavori e equipaggiamento,仕事と装備,작업과 장비,Zadania i sprzęt,Tarefas e equipamento,Работа и снаряжение,İşler ve teçhizat,工作与装备,工作與裝備
+SdcsNPC_EquipmentMenu,,,,,,Equipment...,,Ausrüstung...,Equipo...,Équipement...,Equipaggiamento...,装備...,장비...,Wyposażenie...,Equipamento...,Снаряжение...,Teçhizat...,装备...,裝備...
 SdcsNPC_CraftMenuText,,,,,,What should I make?,,Was soll ich herstellen?,¿Qué debo fabricar?,Que dois-je fabriquer ?,Cosa devo fabbricare?,何を作ればいい？,뭘 만들까?,Co mam wytworzyć?,O que devo fabricar?,Что мне сделать?,Ne üreteyim?,我该做什么？,我該做什麼？
 SdcsNPC_CraftKindText,,,,,,What kind of thing?,,Welche Art von Ding?,¿Qué tipo de cosa?,Quel genre de chose ?,Che tipo di cosa?,どんな種類の物？,어떤 종류의 물건?,Jaki rodzaj rzeczy?,Que tipo de coisa?,Какого рода вещь?,Ne tür bir şey?,什么类型的东西？,什麼類型的東西？
 SdcsNPC_CraftCountText,,,,,,How many?,,Wie viele?,¿Cuántos?,Combien ?,Quanti?,いくつ？,몇 개?,Ile?,Quantos?,Сколько?,Kaç tane?,做几个？,做幾個？
@@ -394,6 +342,19 @@ SdcsNPC_SkillGroup_tools,,,,,,Tools and gear,,Werkzeuge und Ausrüstung,Herramie
 SdcsNPC_SkillGroup_survival,,,,,,Survival,,Überleben,Supervivencia,Survie,Sopravvivenza,サバイバル,생존,Przetrwanie,Sobrevivência,Выживание,Hayatta kalma,生存,生存
 SdcsNPC_SkillGroup_building,,,,,,Building,,Bauen,Construcción,Construction,Costruzione,建築,건축,Budowanie,Construção,Строительство,İnşaat,建造,建造
 SdcsNPC_SkillGroup_other,,,,,,Other,,Sonstiges,Otros,Autres,Altro,その他,기타,Inne,Outros,Другое,Diğer,其他,其他
+SdcsNPC_ProgressPerk,,,,,,{0}: {1} {2} (books {3}/{4}),,,,,,,,,,,,,
+SdcsNPC_ProgressPerkPlain,,,,,,{0}: {1} {2},,,,,,,,,,,,,
+SdcsNPC_PerkClass_pistols,,,,,,Pistols,,,,,,,,,,,,,
+SdcsNPC_PerkClass_rifles,,,,,,Rifles,,,,,,,,,,,,,
+SdcsNPC_PerkClass_machineguns,,,,,,Machine Guns,,,,,,,,,,,,,
+SdcsNPC_PerkClass_shotguns,,,,,,Shotguns,,,,,,,,,,,,,
+SdcsNPC_PerkClass_archery,,,,,,Archery,,,,,,,,,,,,,
+SdcsNPC_PerkClass_blades,,,,,,Blades,,,,,,,,,,,,,
+SdcsNPC_PerkClass_clubs,,,,,,Clubs,,,,,,,,,,,,,
+SdcsNPC_PerkClass_sledgehammers,,,,,,Sledgehammers,,,,,,,,,,,,,
+SdcsNPC_PerkClass_knuckles,,,,,,Knuckles,,,,,,,,,,,,,
+SdcsNPC_PerkClass_spears,,,,,,Spears,,,,,,,,,,,,,
+SdcsNPC_PerkClass_batons,,,,,,Batons,,,,,,,,,,,,,
 SdcsNPC_TitleMedic,,,,,,Medic,,Sanitäter,Médico,Médecin,Medico,衛生兵,의무병,Medyk,Médico,Медик,Sıhhiyeci,医疗兵,醫療兵
 SdcsNPC_TitleCook,,,,,,Cook,,Koch,Cocinero,Cuisinier,Cuoco,料理人,요리사,Kucharz,Cozinheiro,Повар,Aşçı,厨师,廚師
 SdcsNPC_TitleBlacksmith,,,,,,Smith,,Schmied,Herrero,Forgeron,Fabbro,鍛冶屋,대장장이,Kowal,Ferreiro,Кузнец,Demirci,铁匠,鐵匠
@@ -402,23 +363,31 @@ SdcsNPC_TitleCrafter,,,,,,Crafter,,Handwerker,Artesano,Artisan,Artigiano,職人,
 SdcsNPC_TitleFormat,,,,,,{0} - {1},,{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1},{0} - {1}
 entitycommand_vcjobs,,,,,,Jobs,,Aufgaben,Trabajos,Tâches,Lavori,仕事,작업,Zadania,Trabalhos,Работа,İşler,工作,工作
 entitycommand_vcroles,,,,,,Roles,,Rollen,Roles,Rôles,Ruoli,役割,역할,Role,Funções,Роли,Roller,职责,職責
-entitycommand_vcweapons,,,,,,Weapons,,Waffen,Armas,Armes,Armi,武器,무기,Broń,Armas,Оружие,Silahlar,武器,武器
+entitycommand_vcequipment,,,,,,Equipment,,Ausrüstung,Equipo,Équipement,Equipaggiamento,装備,장비,Wyposażenie,Equipamento,Снаряжение,Teçhizat,装备,裝備
 entitycommand_vcemotes,,,,,,Emotes,,Emotes,Gestos,Emotes,Emote,エモート,이모트,Emotki,Emotes,Эмоции,İfadeler,表情动作,表情動作
 entitycommand_vcread,,,,,,Read,,Lesen,Leer,Lire,Leggi,読む,읽기,Czytaj,Ler,Читать,Oku,阅读,閱讀
 entitycommand_vcprogress,,,,,,Your progress,,Dein Fortschritt,Tu progreso,Ta progression,I tuoi progressi,君の成長,너의 성장,Twoje postępy,Seu progresso,Твой прогресс,İlerlemen,你的成长,你的成長
-entitycommand_vcwardrobe,,,,,,Wardrobe,,Garderobe,Vestuario,Garde-robe,Guardaroba,衣装,옷장,Garderoba,Guarda-roupa,Гардероб,Gardırop,衣橱,衣櫥
 entitycommand_vcpickup,,,,,,Pick Me up,,Heb mich auf,Cógeme,Ramassez-moi,Prendimi in braccio,私を拾ってください,나를 들어 줘,Podnieś mnie,Me pegue,Подними меня,Beni al,把我带上,把我帶上
 entitycommand_vcinventory,,,,,,Inventory,,Inventar,Inventario,Inventaire,Inventario,所持品,인벤토리,Ekwipunek,Inventário,Инвентарь,Envanter,物品栏,物品欄
+entitycommand_vcRevive,,,,,,Revive,,Wiederbeleben,Revivir,Réanimer,Rianima,蘇生,부활,Ożyw,Reviver,Оживить,Hayata döndür,复活,復活
+entitycommand_vcgift,,,,,,Gift,,Geschenk,Regalo,Cadeau,Regalo,プレゼント,선물,Prezent,Presente,Подарок,Hediye,礼物,禮物
 vcWheel_Follow,,,,,,Follow,,Folgen,Seguir,Suivre,Seguire,追従,따라오기,Podążaj,Seguir,Следовать,Takip et,跟随,跟隨
 vcWheel_ComeHere,,,,,,Come here,,Komm her,Acércate,Viens ici,Vieni qui,こっちに来て,여기 와,Przyjdź,Vem cá,Иди сюда,Buraya gel,过来,過來
 vcWheel_Stay,,,,,,Stay,,Bleiben,Quedarse,Rester,Restare,待機,대기,Zostań,Ficar,Стоять,Bekle,待命,待命
 vcWheel_Guard,,,,,,Guard,,Bewachen,Vigilar,Garder,Sorvegliare,警備,경계,Pilnuj,Vigiar,Охранять,Nöbet tut,警戒,警戒
+vcWheel_Equipment,,,,,,Equipment,,Ausrüstung,Equipo,Équipement,Equipaggiamento,装備,장비,Wyposażenie,Equipamento,Снаряжение,Teçhizat,装备,裝備
 vcWheel_Jobs,,,,,,Jobs,,Aufgaben,Trabajos,Tâches,Lavori,仕事,작업,Zadania,Trabalhos,Работа,İşler,工作,工作
 vcWheel_Orders,,,,,,Orders,,Befehle,Órdenes,Ordres,Ordini,命令,명령,Rozkazy,Ordens,Приказы,Emirler,命令,命令
 vcWheel_Stance,,,,,,Stance,,Haltung,Postura,Posture,Atteggiamento,構え,태세,Postawa,Postura,Тактика,Tavır,姿态,姿態
 vcWheel_Position,,,,,,Position,,Position,Posición,Position,Posizione,位置,위치,Pozycja,Posição,Позиция,Konum,位置,位置
 vcWheel_Formation,,,,,,Formation,,Formation,Formación,Formation,Formazione,隊形,대형,Formacja,Formação,Строй,Düzen,队形,隊形
 vcWheel_Aggressive,,,,,,Aggressive,,Aggressiv,Agresivo,Agressif,Aggressivo,攻撃的,공격적,Agresywnie,Agressivo,Агрессивно,Saldırgan,激进,激進
+vcWheel_Hunting,,,,,,Hunting,,Jagd,Caza,Chasse,Caccia,狩り,사냥,Polowanie,Modo caça,Охота,Av,狩猎,狩獵
+vcWheel_MeleeRanged,,,,,,Melee -> Ranged,,Nahkampf -> Distanz,Cuerpo a cuerpo -> Distancia,Corps à corps -> Distanz,Corpo a corpo -> Tiro,近接 -> 遠隔,근접 -> 원거리,Wręcz -> Dystans,Corpo a corpo -> Distância,Ближний бой -> Дальний,Yakın dövüş -> Menzil,近战 -> 远程,近戰 -> 遠程
+vcWheel_RangedMelee,,,,,,Ranged -> Melee,,Distanz -> Nahkampf,Distancia -> Cuerpo a cuerpo,Distanz -> Corps à corps,Tiro -> Corpo a corpo,遠隔 -> 近接,원거리 -> 근접,Dystans -> Wręcz,Distância -> Corpo a corpo,Дальний -> Ближний бой,Menzil -> Yakın dövüş,远程 -> 近战,遠程 -> 近戰
+vcWheel_MixedRanged,,,,,,Mixed -> Ranged,,Gemischt -> Distanz,Mixto -> Distancia,Mélangé -> Distanz,Misto -> Tiro,混合 -> 遠隔,혼합 -> 원거리,Mieszany -> Dystans,Misto -> Distância,Смешанный -> Дальний,Karışık -> Menzil,混合 -> 远程,混合 -> 遠程
+vcWheel_GoingRanged,,,,,,Going ranged.,,Ich gehe auf Distanz.,Paso a distancia.,Je passe au tir.,Passo al tiro.,遠隔に切り替える。,원거리로 전환해.,Przechodzę na dystans.,Mudando para distância.,Перевожуся на дальнобой.,Menzile geçiyorum.,切远程。,切遠程。
+vcWheel_GoingMelee,,,,,,Going melee.,,Ich gehe auf Nahkampf.,Paso a cuerpo a cuerpo.,Je passe au corps à corps.,Passo al corpo a corpo.,近接に切り替える。,근접으로 전환해.,Przechodzę na wręcz.,Mudando para corpo a corpo.,Перевожуся в ближний бой.,Yakın dövüşe geçiyorum.,切近战。,切近戰。
 vcWheel_Defensive,,,,,,Defensive,,Defensiv,Defensivo,Défensif,Difensivo,防御的,방어적,Defensywnie,Defensivo,Оборона,Savunmacı,防守,防守
 vcWheel_HoldFire,,,,,,Hold fire,,Feuer einstellen,Alto el fuego,Cessez le feu,Cessate il fuoco,撃ち方やめ,사격 중지,Wstrzymaj ogień,Cessar fogo,Не стрелять,Ateşi kes,停火,停火
 vcWheel_Disengage,,,,,,Disengage,,Rückzug,Retirarse,Décrocher,Sganciarsi,離脱,이탈,Wycofaj się,Recuar,Отступить,Çekil,脱离战斗,脫離戰鬥
@@ -455,6 +424,7 @@ vcWheel_Normal,,,,,,Normal,,Normal,Normal,Normal,Normale,普通,보통,Normalnie
 vcWheel_Far,,,,,,Far,,Weit,Lejos,Loin,Lontano,遠い,멀리,Daleko,Longe,Далеко,Uzak,远,遠
 vcWheel_Point,,,,,,Point,,Vorne,Delante,En tête,In testa,先頭,선두,Na czele,À frente,Впереди,Önde,打头阵,打頭陣
 vcWheel_GoThere,,,,,,Go there,,Dorthin gehen,Ve allí,Va là-bas,Vai lì,そこへ行け,저기로 가,Idź tam,Vá até lá,Иди туда,Oraya git,去那里,去那裡
+vcWheel_StealthKill,,,,,,Stealth kill,,Lautlos ausschalten,Eliminación sigilosa,Élimination furtive,Uccisione furtiva,ステルスキル,은밀 처치,Ciche zabójstwo,Abate furtivo,Тихое убийство,Sessiz öldürme,潜行击杀,潛行擊殺
 vcWheel_JumpDown,,,,,,Jump down,,Runterspringen,Saltar abajo,Sauter en bas,Salta giù,飛び降りる,뛰어내리기,Zeskocz,Pular para baixo,Спрыгнуть,Aşağı atla,跳下,跳下
 vcWheel_GetIn,,,,,,Get in,,Einsteigen,Subir,Monter,Salire,乗車,탑승,Wsiadaj,Entrar,Сесть,Bin,上车,上車
 vcWheel_GetOut,,,,,,Get out,,Aussteigen,Bajar,Descendre,Scendere,降車,하차,Wysiadaj,Sair,Выйти,İn,下车,下車
@@ -509,6 +479,7 @@ vcWheel_Salsa,,,,,,Salsa,,Salsa,Salsa,Salsa,Salsa,サルサ,살사,Salsa,Salsa,�
 vcWheel_Samba,,,,,,Samba,,Samba,Samba,Samba,Samba,サンバ,삼바,Samba,Samba,Самба,Samba,桑巴,桑巴
 vcWheel_Snake,,,,,,Snake,,Schlange,Serpiente,Serpent,Serpente,スネーク,스네이크,Wąż,Cobra,Змейка,Yılan,蛇舞,蛇舞
 vcWheel_Back,,,,,,Back,,Zurück,Atrás,Retour,Indietro,戻る,뒤로,Wstecz,Voltar,Назад,Geri,返回,返回
+vcWheel_All,,,,,,All,,Alle,Todos,Tous,Tutti,全員,전원,Wszyscy,Todos,Все,Hepsi,全部,全部
 vcSettings_Title,,,,,,NPC AI Chat Configuration,,NPC-KI-Chat-Einstellungen,Configuración del chat IA de NPC,Configuration du chat IA des PNJ,Configurazione chat IA degli NPC,NPC AIチャット設定,NPC AI 대화 설정,Konfiguracja czatu AI postaci,Configuração do chat de IA dos NPCs,Настройки ИИ-чата NPC,NPC Yapay Zeka Sohbet Ayarları,NPC AI 聊天设置,NPC AI 聊天設定
 vcSettings_Tts,,,,,,Text-to-Speech,,Sprachausgabe,Texto a voz,Synthèse vocale,Sintesi vocale,音声読み上げ,음성 합성,Synteza mowy,Texto para fala,Озвучка текста,Metinden sese,文字转语音,文字轉語音
 vcSettings_Volume,,,,,,Volume,,Lautstärke,Volumen,Volume,Volume,音量,음량,Głośność,Volume,Громкость,Ses düzeyi,音量,音量
@@ -552,30 +523,80 @@ buffSdcsStanceAggressiveName,,,,,,Squad: aggressive,,Trupp: aggressiv,Escuadra: 
 buffSdcsStanceAggressiveDesc,,,,,,Your hired survivors fight anything hostile they see.,,Deine Leute bekämpfen alles Feindliche in Sicht.,Tus supervivientes contratados combaten a cualquier hostil que vean.,Tes survivants recrutés combattent tout ennemi qu'ils voient.,I tuoi sopravvissuti assoldati combattono ogni ostile che vedono.,雇った生存者は見かけた敵すべてと戦う。,고용한 생존자들이 보이는 모든 적과 싸운다.,Twoi najęci ocaleni walczą z każdym wrogiem w zasięgu wzroku.,Seus sobreviventes contratados combatem qualquer hostil que virem.,Твои наёмники атакуют любого врага в поле зрения.,Tuttuğun hayatta kalanlar gördükleri her düşmanla savaşır.,你雇佣的幸存者会攻击看到的任何敌人。,你僱用的倖存者會攻擊看到的任何敵人。
 buffSdcsStanceHoldFireName,,,,,,Squad: hold fire,,Trupp: Feuer einstellen,Escuadra: alto el fuego,Escouade : cessez le feu,Squadra: cessate il fuoco,部隊：射撃中止,분대: 사격 중지,Oddział: wstrzymać ogień,Esquadrão: cessar fogo,Отряд: не стрелять,Ekip: ateşi kes,小队：停火,小隊：停火
 buffSdcsStanceHoldFireDesc,,,,,,Your hired survivors only defend themselves.,,Deine Leute verteidigen nur sich selbst.,Tus supervivientes contratados solo se defienden a sí mismos.,Tes survivants recrutés se défendent seulement eux-mêmes.,I tuoi sopravvissuti assoldati difendono solo se stessi.,雇った生存者は自分の身を守るだけ。,고용한 생존자들은 자신만 방어한다.,Twoi najęci ocaleni tylko się bronią.,Seus sobreviventes contratados apenas se defendem.,Твои наёмники только защищаются.,Tuttuğun hayatta kalanlar yalnızca kendilerini savunur.,你雇佣的幸存者只会自卫。,你僱用的倖存者只會自衛。
-SdcsNPC_AmmoMenu,,,,,,Ammo...,,Munition...,Munición...,Munitions...,Munizioni...,弾薬...,탄약...,Amunicja...,Munição...,Патроны...,Mermi...,弹药...,彈藥...
-SdcsNPC_AmmoText,,,,,,Which ammo should I load?,,Welche Munition soll ich laden?,¿Qué munición cargo?,Quelles munitions je charge ?,Quali munizioni carico?,どの弾を込める？,어떤 탄약을 넣을까?,Jaką amunicję załadować?,Que munição eu carrego?,Какие патроны зарядить?,Hangi mermiyi takayım?,装哪种弹药？,裝哪種彈藥？
+buffSdcsStanceHuntingName,,,,,,Squad: hunting,,Trupp: Jagd,Escuadra: caza,Escouade : chasse,Squadra: caccia,部隊：狩り,분대: 사냥,Oddział: polowanie,Esquadrão: caça,Отряд: охота,Ekip: av,小队：狩猎,小隊：狩獵
+buffSdcsStanceHuntingDesc,,,,,,Your squad hunts enemies within reach of you and stays quiet where it can.,,Deine Leute jagen Gegner in deiner Nähe und halten sich wo möglich still.,Tu escuadra caza a los enemigos cerca de ti y con sigilo cuando puede.,Ton escouade traque les ennemis à portée et en silence quand elle peut.,La tua squadra caccia i nemici alla tua portata in silenzio quando può.,隊はあなたの手の届く範囲の敵を狩り、できる限り静かに動く。,분대가 당신의 손이 닿는 거리에서 적을 사냥하고 조용히 갈 수 있으면 조용히 간다.,Twoja drużyna poluje na wrogów w zasięgu ręki i cicho tam gdzie to możliwe.,Seu esquadrão caça inimigos ao seu alcance e em silêncio quando pode.,Твои наёмники охотятся на врагов в твоей зоне досягаемости и тихо там где могут.,Ekip senin erişim mesafendeki düşmanları avlar ve mümkün olduğunda sessizce ilerler.,你的小队会狩猎你射程内的敌人，能安静就安静。,你的小隊會狩獵你射程內的敵人，能安靜就安靜。
 SdcsNPC_AmmoLoaded,,,,,,{0} ({1}) - loaded,,{0} ({1}) - geladen,{0} ({1}) - cargada,{0} ({1}) - chargée,{0} ({1}) - caricata,{0}（{1}）- 装填中,{0} ({1}) - 장전됨,{0} ({1}) - załadowana,{0} ({1}) - carregada,{0} ({1}) - заряжено,{0} ({1}) - takılı,{0}（{1}）- 已装填,{0}（{1}）- 已裝填
+SdcsNPC_AmmoLoadedCount,,,,,,{0} ({1}) - {2} loaded,,{0} ({1}) - {2} geladen,{0} ({1}) - {2} cargada,{0} ({1}) - {2} chargée,{0} ({1}) - {2} caricata,{0}（{1}）- 装填中 {2},{0} ({1}) - 장전됨 {2},{0} ({1}) - {2} załadowana,{0} ({1}) - {2} carregada,{0} ({1}) - {2} заряжено,{0} ({1}) - {2} takılı,{0}（{1}）- 已装填 {2},{0}（{1}）- 已裝填 {2}
 SdcsNPC_AmmoNoGun,,,,,,I'm not holding a gun.,,Ich halte keine Schusswaffe.,No tengo un arma de fuego en la mano.,Je n'ai pas d'arme à feu en main.,Non ho un'arma da fuoco in mano.,銃を持ってない。,총을 들고 있지 않아.,Nie trzymam broni palnej.,Não estou segurando uma arma.,У меня в руках нет оружия.,Elimde silah yok.,我手里没有枪。,我手裡沒有槍。
 SdcsNPC_AmmoWheelLoaded,,,,,,{0} - loaded,,{0} - geladen,{0} - cargada,{0} - chargée,{0} - caricata,{0} - 装填中,{0} - 장전됨,{0} - załadowana,{0} - carregada,{0} - заряжено,{0} - takılı,{0} - 已装填,{0} - 已裝填
 SdcsNPC_ReadMenu,,,,,,Read...,,Lesen...,Leer...,Lire...,Leggi...,読む...,읽기...,Czytaj...,Ler...,Читать...,Oku...,阅读...,閱讀...
 SdcsNPC_ReadText,,,,,,Which one should I read?,,Welches soll ich lesen?,¿Cuál debo leer?,Lequel dois-je lire ?,Quale devo leggere?,どれを読めばいい？,어떤 걸 읽을까?,Które mam przeczytać?,Qual devo ler?,Что мне прочитать?,Hangisini okuyayım?,我该读哪一本？,我該讀哪一本？
 SdcsNPC_ReadNothingNew,,,,,,{0} (nothing new),,{0} (nichts Neues),{0} (nada nuevo),{0} (rien de nouveau),{0} (niente di nuovo),{0}（新しいことなし）,{0} (새로운 것 없음),{0} (nic nowego),{0} (nada novo),{0} (ничего нового),{0} (yeni bir şey yok),{0}（没有新内容）,{0}（沒有新內容）
 SdcsNPC_ReadNone,,,,,,I don't have anything to read.,,Ich habe nichts zu lesen.,No tengo nada para leer.,Je n'ai rien à lire.,Non ho niente da leggere.,読むものがない。,읽을 게 없어.,Nie mam nic do czytania.,Não tenho nada para ler.,Мне нечего читать.,Okuyacak bir şeyim yok.,我没有可读的东西。,我沒有可讀的東西。
+SdcsNPC_ReadAll,,,,,,Read all ({0}),,Alle lesen ({0}),Leer todos ({0}),Tout lire ({0}),Leggi tutto ({0}),すべて読む ({0}),모두 읽기 ({0}),Przeczytaj wszystkie ({0}),Ler tudo ({0}),Прочитать все ({0}),Hepsini oku ({0}),全部阅读 ({0}),全部閱讀 ({0})
+SdcsNPC_PayGiftMenu,,,,,,Pay / Gift...,,Bezahlen / Schenken...,Pagar / Regalar...,Payer / Offrir...,Paga / Regala...,支払い / 贈り物...,지불 / 선물...,Zapłać / Podaruj...,Pagar / Presentear...,Оплатить / Подарить...,Öde / Hediye ver...,付款 / 赠送...,付款 / 贈送...
+SdcsNPC_PayGiftText,,,,,,What have you got for me?,,Was hast du für mich?,¿Qué tienes para mí?,Qu'as-tu pour moi ?,Cos'hai per me?,何を持ってきてくれたの？,나한테 줄 거 있어?,Co masz dla mnie?,O que você tem para mim?,Что у тебя для меня?,Bana ne getirdin?,你有什么给我的？,你有什麼給我的？
+vcPayWeekRow,,,,,,Pay this week ({0} {1}),,Diese Woche bezahlen ({0} {1}),Pagar esta semana ({0} {1}),Payer cette semaine ({0} {1}),Paga questa settimana ({0} {1}),今週分を支払う（{0} {1}）,이번 주 급여 지불 ({0} {1}),Zapłać za ten tydzień ({0} {1}),Pagar esta semana ({0} {1}),Оплатить эту неделю ({0} {1}),Bu haftayı öde ({0} {1}),支付本周（{0} {1}）,支付本週（{0} {1}）
+vcPaidUpRow,,,,,,Paid up. Next pay day: day {0} ({1} {2}),,Bezahlt. Nächster Zahltag: Tag {0} ({1} {2}),Al día. Próximo pago: día {0} ({1} {2}),À jour. Prochaine paie : jour {0} ({1} {2}),In regola. Prossima paga: giorno {0} ({1} {2}),支払い済み。次の支払日：{0}日目（{1} {2}）,지불 완료. 다음 지급일: {0}일차 ({1} {2}),Zapłacone. Następna wypłata: dzień {0} ({1} {2}),Em dia. Próximo pagamento: dia {0} ({1} {2}),Оплачено. Следующая выплата: день {0} ({1} {2}),Ödendi. Sonraki ödeme günü: {0}. gün ({1} {2}),已付清。下次发薪日：第{0}天（{1} {2}）,已付清。下次發薪日：第{0}天（{1} {2}）
+vcPayNothingRow,,,,,,Nothing owed.,,Nichts offen.,No se debe nada.,Rien à payer.,Nulla da pagare.,支払うものはない。,갚을 건 없어.,Nic nie jesteś winien.,Nada a pagar.,Долгов нет.,Borç yok.,没有欠款。,沒有欠款。
+vcGiftWindowRow,,,,,,Give a gift...,,Schenke ein Geschenk...,Regalar un obsequio...,Offrir un cadeau...,Dona un dono...,贈り物を渡す...,선물 주기...,Podaruj prezent...,Dar um presente...,Подарить подарок...,Bir hediye ver...,给一份礼物...,給一份禮物...
+vcGiftPayWeekFirst,,,,,,{0}: pay the week first,,{0}: zuerst die Woche bezahlen,{0}: paga primero su semana,{0} : payez d'abord sa semaine,{0}: paga prima la sua settimana,{0}：先に今週分を払って,{0}: 먼저 이번 주 급여를 지불해,{0}: najpierw zapłać za tydzień,{0}: pague a semana primeiro,{0}: сначала оплати неделю,{0}: önce haftayı öde,{0}：先支付本周的薪水,{0}：先支付本週的薪水
+vcGiftWindowTitle,,,,,,Gifts for {0},,,,,,,,,,,,,
+vcGiftHeld,,,,,,Held: {0} / {1},,,,,,,,,,,,,
+vcGiftNoLimit,,,,,,No limit.,,,,,,,,,,,,,
+vcGiftGive,,,,,,Give,,,,,,,,,,,,,
+vcGiftNoneCarried,,,,,,You carry nothing they can use.,,,,,,,,,,,,,
+vcGiftWaiting,,,,,,Waiting...,,,,,,,,,,,,,
 SdcsNPC_ReadKnown,,,,,,{0} (already known),,{0} (schon bekannt),{0} (ya conocido),{0} (déjà connu),{0} (già noto),{0}（習得済み）,{0} (이미 앎),{0} (już znane),{0} (já conhecido),{0} (уже известно),{0} (zaten biliniyor),{0}（已掌握）,{0}（已掌握）
 SdcsNPC_ReadAtMax,,,,,,{0} (at max),,{0} (Maximum erreicht),{0} (al máximo),{0} (au maximum),{0} (al massimo),{0}（最大）,{0} (최대),{0} (maksimum),{0} (no máximo),{0} (максимум),{0} (azami),{0}（已满级）,{0}（已滿級）
 SdcsNPC_ReadNeedsRole,,,,,,{0} (needs the {1} role),,{0} (braucht die Rolle {1}),{0} (necesita la función {1}),{0} (nécessite le rôle {1}),{0} (serve il ruolo {1}),{0}（{1}の役割が必要）,{0} ({1} 역할 필요),{0} (wymaga roli: {1}),{0} (precisa da função {1}),{0} (нужна роль: {1}),{0} ({1} rolü gerekli),{0}（需要{1}角色）,{0}（需要{1}角色）
 SdcsNPC_ReadPerkBook,,,,,,{0} (a perk book: not yet),,{0} (Perk-Buch: noch nicht),{0} (libro de ventaja: aún no),{0} (livre d'atout : pas encore),{0} (libro di abilità: non ancora),{0}（パーク本：まだ）,{0} (퍽 책: 아직),{0} (książka atutu: jeszcze nie),{0} (livro de vantagem: ainda não),{0} (книга навыка: пока нет),{0} (yetenek kitabı: henüz değil),{0}（天赋书：暂不）,{0}（天賦書：暫不）
-SdcsNPC_ReadNoUse,,,,,,{0} (won't help her),,{0} (hilft ihr nicht),{0} (no le sirve),{0} (ne l'aidera pas),{0} (non le serve),{0}（彼女の役に立たない）,{0} (그녀에게 도움 안 됨),{0} (nie pomoże jej),{0} (não vai ajudá-la),{0} (ей не поможет),{0} (ona yardımı olmaz),{0}（对她没用）,{0}（對她沒用）
-SdcsNPC_WardrobeMenu,,,,,,Wardrobe...,,Garderobe...,Vestuario...,Garde-robe...,Guardaroba...,衣装...,옷장...,Garderoba...,Guarda-roupa...,Гардероб...,Gardırop...,衣橱...,衣櫥...
-SdcsNPC_WardrobeText,,,,,,What should I wear?,,Was soll ich tragen?,¿Qué me pongo?,Qu'est-ce que je porte ?,Cosa devo indossare?,何を着ればいい？,뭘 입을까?,Co mam założyć?,O que devo vestir?,Что мне надеть?,Ne giyeyim?,我该穿什么？,我該穿什麼？
-SdcsNPC_WardrobeWear,,,,,,Wear {0},,{0} tragen,Ponerse {0},Porter {0},Indossa {0},{0}を着る,{0} 착용,Załóż: {0},Vestir {0},Надеть: {0},{0} giy,穿上{0},穿上{0}
-SdcsNPC_WardrobeWrongSex,,,,,,{0} (not made for her),,{0} (nicht für sie gemacht),{0} (no está hecho para ella),{0} (pas fait pour elle),{0} (non fatto per lei),{0}（彼女には合わない）,{0} (그녀용이 아님),{0} (nie dla niej),{0} (não é feito para ela),{0} (не для неё),{0} (ona göre değil),{0}（不适合她）,{0}（不適合她）
-SdcsNPC_WardrobeNotDrawable,,,,,,{0} (does not show on her),,{0} (an ihr nicht sichtbar),{0} (no se ve en ella),{0} (ne s'affiche pas sur elle),{0} (non si vede su di lei),{0}（彼女には表示されない）,{0} (그녀에게 보이지 않음),{0} (nie widać tego na niej),{0} (não aparece nela),{0} (на ней не видно),{0} (onda görünmüyor),{0}（在她身上不显示）,{0}（在她身上不顯示）
-SdcsNPC_WardrobeBack,,,,,,Back to my own {0},,Zurück zu meinem eigenen Stück: {0},Volver a lo mío: {0},Revenir à mon équipement : {0},Torna ai miei: {0},自分の{0}に戻す,내 {0}(으)로 되돌리기,Wróć do moich: {0},Voltar ao meu: {0},Вернуть своё: {0},Kendi {0} parçama dön,换回我自己的{0},換回我自己的{0}
-SdcsNPC_WardrobeNone,,,,,,I have no armor in my pack.,,Ich habe keine Rüstung im Rucksack.,No tengo armadura en mi mochila.,Je n'ai pas d'armure dans mon sac.,Non ho armature nello zaino.,バッグに防具がない。,가방에 방어구가 없어.,Nie mam zbroi w plecaku.,Não tenho armadura na mochila.,В рюкзаке нет брони.,Çantamda zırh yok.,我的背包里没有护甲。,我的背包裡沒有護甲。
+SdcsNPC_ReadNoUse,,,,,,{0} (won't help),,{0} (hilft nicht),{0} (no le sirve),{0} (ne l'aidera pas),{0} (non serve),{0}（役に立たない）,{0} (도움 안 됨),{0} (nie pomoże),{0} (não vai ajudar),{0} (не поможет),{0} (ona yardımı olmaz),{0}（没用）,{0}（沒用）
+SdcsNPC_WardrobeWrongSex,,,,,,{0} (not made for them),,{0} (falsches Geschlecht),{0} (de otro sexo),{0} (de l'autre sexe),{0} (di altro sesso),{0}（性別が異なる）,{0} (성별이 다름),{0} (inna płeć),{0} (de outro sexo),{0} (другого пола),{0} (cinsiyeti uymuyor),{0}（性别不符）,{0}（性別不符）
+SdcsNPC_WardrobeNotDrawable,,,,,,{0} (does not show on them),,{0} (wird nicht angezeigt),{0} (no se muestra),{0} (ne s'affiche pas),{0} (non si vede),{0}（表示されない）,{0} (보이지 않음),{0} (nie wyświetla się),{0} (não aparece),{0} (не отображается),{0} (görünmüyor),{0}（不显示）,{0}（不顯示）
 SdcsNPC_WardrobeFixed,,,,,,{0} (my outfit is fixed),,{0} (mein Outfit ist fest),{0} (mi atuendo es fijo),{0} (ma tenue est fixe),{0} (il mio completo è fisso),{0}（服は固定）,{0} (내 옷은 고정이야),{0} (mój strój jest stały),{0} (minha roupa é fixa),{0} (мой наряд не меняется),{0} (kıyafetim sabit),{0}（我的服装是固定的）,{0}（我的服裝是固定的）
-SdcsNPC_WardrobeSlotHead,,,,,,headgear,,Kopfbedeckung,casco,casque,copricapo,頭防具,머리 방어구,nakrycie głowy,capacete,головной убор,başlık,头部护甲,頭部護甲
-SdcsNPC_WardrobeSlotChest,,,,,,chest armor,,Brustpanzer,peto,plastron,corazza,胴防具,가슴 방어구,napierśnik,peitoral,нагрудник,göğüslük,胸甲,胸甲
-SdcsNPC_WardrobeSlotHands,,,,,,gloves,,Handschuhe,guantes,gants,guanti,手袋,장갑,rękawice,luvas,перчатки,eldivenler,手套,手套
-SdcsNPC_WardrobeSlotFeet,,,,,,boots,,Stiefel,botas,bottes,stivali,ブーツ,부츠,buty,botas,ботинки,botlar,靴子,靴子
 vcMenu_SettingsButton,,,,,,NPC VoiceControl Settings,,,,,,,,,,,,,
+vcRelTrustWary,,,,,,wary,,,,,,,,,,,,,
+vcRelTrustSteady,,,,,,steady,,,,,,,,,,,,,
+vcRelTrustLoyal,,,,,,loyal,,,,,,,,,,,,,
+vcRelAffinityCold,,,,,,cold,,,,,,,,,,,,,
+vcRelAffinityNeutral,,,,,,neutral,,,,,,,,,,,,,
+vcRelAffinityWarm,,,,,,warm,,,,,,,,,,,,,
+vcRelProgressLine,,,,,,Trust: {0}  Feels: {1},,,,,,,,,,,,,
+vcStanceProgressLine,,,,,,Stance: {0},,Haltung: {0},Postura: {0},Posture : {0},Atteggiamento: {0},構え: {0},태세: {0},Postawa: {0},Postura: {0},Тактика: {0},Tavır: {0},姿态: {0},姿態: {0}
+vcGiftThanks,,,,,,{0} takes it. Thanks.,,,,,,,,,,,,,
+vcGiftCantUse,,,,,,{0} can't use that.,,,,,,,,,,,,,
+vcGiftFull,,,,,,{0} can't carry more of that.,,,,,,,,,,,,,
+vcGiftNotOnServer,,,,,,Gifts work in single player and on a host for now.,,,,,,,,,,,,,
+vcGiftNothing,,,,,,You are not holding anything.,,,,,,,,,,,,,
+vcGiftNoRelationship,,,,,,You and {0} don't have that kind of relationship.,,,,,,,,,,,,,
+vcGiftWeekShort,,,,,,{0} needs {1} for the week.,,,,,,,,,,,,,
+vcEquipWindowTitle,,,,,,{0}'s equipment,,,,,,,,,,,,,
+vcEquipSlotHead,,,,,,Head,,,,,,,,,,,,,
+vcEquipSlotChest,,,,,,Chest,,,,,,,,,,,,,
+vcEquipSlotHands,,,,,,Hands,,,,,,,,,,,,,
+vcEquipSlotFeet,,,,,,Feet,,,,,,,,,,,,,
+vcEquipSlotWeapon,,,,,,Weapon,,,,,,,,,,,,,
+vcEquipSlotAmmo,,,,,,Ammo,,,,,,,,,,,,,
+vcEquipOwnPiece,,,,,,Own piece,,,,,,,,,,,,,
+vcEquipBareHands,,,,,,Bare hands,,,,,,,,,,,,,
+vcEquipNone,,,,,,Nothing in the pack fits.,,,,,,,,,,,,,
+vcEquipShowBackpack,,,,,,Show backpack,,,,,,,,,,,,,
+vcEquipBagContents,,,,,,Bag contents,,,,,,,,,,,,,
+vcEquipShowBag,,,,,,Show bag,,,,,,,,,,,,,
+vcEquipBagEmpty,,,,,,The bag is empty.,,,,,,,,,,,,,
+SdcsNPC_AdminBag,,,,,,Bag totals...,,,,,,,,,,,,,
+SdcsNPC_AdminBagText,,,,,,What is in my bag?,,,,,,,,,,,,,
+vcAdminBagNotOnServer,,,,,,Bag totals work in single player and on a host only.,,,,,,,,,,,,,
+vcAdminBagGift,,,,,,Bag {0}: {1} / {2},,,,,,,,,,,,,
+vcAdminBagDrinks,,,,,,Bag drinks: {0} / {1},,,,,,,,,,,,,
+vcAdminBagAmmo,,,,,,Bag {0}: {1} / {2} ({3} of {4} stacks),,,,,,,,,,,,,
+vcAdminBagNoAmmo,,,,,,Bag ammo: none of the carried guns takes ammo,,,,,,,,,,,,,
+vcAdminBagCoins,,,,,,Bag coins: {0},,,,,,,,,,,,,
+vcAdminBagSlots,,,,,,Bag slots used: {0} / {1},,,,,,,,,,,,,
+vcAdminPackSlots,,,,,,Pack slots used: {0} / {1},,,,,,,,,,,,,
+vcAdminPackNone,,,,,,Pack: none yet,,,,,,,,,,,,,
+VCAdminRemove,,,,,,Remove (debug)...,,,,,,,,,,,,,
+VCAdminRemoveConfirm,,,,,,Remove me from the world? This cannot be undone.,,,,,,,,,,,,,
+VCAdminRemoveYes,,,,,,Yes. Remove me from the world.,,,,,,,,,,,,,
+VCAdminRemoveNo,,,,,,No. Stay.,,,,,,,,,,,,,
