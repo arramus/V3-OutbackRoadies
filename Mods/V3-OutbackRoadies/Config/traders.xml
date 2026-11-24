@@ -131,7 +131,7 @@
 	</append>
 	
 	<!-- Summon Animals Note - Custom Group -->
-
+	<insertBefore xpath="/traders/trader_item_groups/trader_item_group[@name='groupMeleeMods']">
 		<trader_item_group name="SummonAnimals">
 			<item name="noteqc_1-SummonAnimals"/>			
 		</trader_item_group>		

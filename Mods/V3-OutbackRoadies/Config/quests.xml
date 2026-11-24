@@ -96,7 +96,7 @@
 		<property name="difficulty" value="hard"/>
 		<property name="shareable" value="false"/>
 		
-		<objective type="EntityKill" id="zombieBurntRadiatedMini,stringfiller" value="25"/>
+		<objective type="EntityKill" id="zombieStoveWalkerQuest,zombieBurntRadiatedMini,zombieBurntRadiatedRegular,zombieBurntRadiatedlarge" value="25"/>
 		
 		<reward type="Exp" value="5000"/>
 		<reward type="SkillPoints" value="1" chainreward="false"/>
